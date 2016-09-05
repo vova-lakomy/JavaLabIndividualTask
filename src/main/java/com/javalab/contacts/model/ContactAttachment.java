@@ -3,9 +3,19 @@ package com.javalab.contacts.model;
 
 public class ContactAttachment {
 
+    private Integer id;
+
     private String attachmentLink;
 
     private String attachmentComment;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getAttachmentLink() {
         return attachmentLink;

@@ -8,6 +8,8 @@ import java.util.Date;
 
 public class Contact {
 
+    private Integer id;
+
     private String firstName;
 
     private String secondName;
@@ -33,6 +35,14 @@ public class Contact {
     private String photoLink;
 
     private PhoneNumber phoneNumber;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;

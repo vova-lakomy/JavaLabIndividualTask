@@ -3,6 +3,8 @@ package com.javalab.contacts.model;
 
 public class ContactAddress {
 
+    private Integer id;
+
     private String country;
 
     private String town;
@@ -14,6 +16,14 @@ public class ContactAddress {
     private int flatNumber;
 
     private int zipCode;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getCountry() {
         return country;

@@ -3,12 +3,12 @@ package com.javalab.contacts.dao;
 
 import com.javalab.contacts.model.ContactAddress;
 
-public interface ContactAddressDAO {
+public interface ContactAddressDao {
 
     public ContactAddress get(Integer id);
 
-    public Integer save(ContactAddress contactAddress);
+    public void save(ContactAddress contactAddress);
 
-    public Boolean delete(int id);
+    public void delete(int id);
 
 }

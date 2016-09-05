@@ -26,9 +26,10 @@ CREATE TABLE contacts.phone_number
 (
   id                  INT PRIMARY KEY  NOT NULL AUTO_INCREMENT,
   country_code        INT,
+  operator_code       INT,
   phone_number        INT,
   phone_type          VARCHAR(10),
-  phone_comment       VARCHAR(10)
+  phone_comment       VARCHAR(100)
 );
 
 

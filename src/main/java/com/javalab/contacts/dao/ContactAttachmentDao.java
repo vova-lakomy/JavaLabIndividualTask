@@ -3,12 +3,12 @@ package com.javalab.contacts.dao;
 
 import com.javalab.contacts.model.ContactAttachment;
 
-public interface ContactAttachmentDAO {
+public interface ContactAttachmentDao {
 
     public ContactAttachment get(Integer id);
 
-    public Integer save(ContactAttachment contactAttachment);
+    public void save(ContactAttachment contactAttachment);
 
-    public Boolean delete(int id);
+    public void delete(int id);
 
 }
