@@ -5,10 +5,10 @@ import com.javalab.contacts.model.Contact;
 
 public interface ContactDao {
 
-    public Contact get(Integer id);
+    Contact get(Integer id);
 
-    public void save(Contact contact);
+    void save(Contact contact);
 
-    public void delete(int id);
+    void delete(int id);
 
 }

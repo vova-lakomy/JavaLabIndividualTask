@@ -78,6 +78,26 @@ public class PhoneNumber {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PhoneNumber that = (PhoneNumber) o;
+
+        if (countryCode != that.countryCode) return false;
+        if (operatorCode != that.operatorCode) return false;
+        if (phoneNumber != that.phoneNumber) return false;
+        if (phoneType != that.phoneType) return false;
+        return phoneComment != null ? phoneComment.equals(that.phoneComment) : that.phoneComment == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
     public String toString() {
         return "PhoneNumber{" +
                 "id=" + id +

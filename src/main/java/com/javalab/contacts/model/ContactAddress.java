@@ -72,4 +72,51 @@ public class ContactAddress {
     public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
     }
+
+    public ContactAddress(Integer id, String country, String town, String street, int houseNumber, int flatNumber, int zipCode) {
+        this.id = id;
+        this.country = country;
+        this.town = town;
+        this.street = street;
+        this.houseNumber = houseNumber;
+        this.flatNumber = flatNumber;
+        this.zipCode = zipCode;
+    }
+
+    public ContactAddress() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ContactAddress that = (ContactAddress) o;
+
+        if (houseNumber != that.houseNumber) return false;
+        if (flatNumber != that.flatNumber) return false;
+        if (zipCode != that.zipCode) return false;
+        if (country != null ? !country.equals(that.country) : that.country != null) return false;
+        if (town != null ? !town.equals(that.town) : that.town != null) return false;
+        return street != null ? street.equals(that.street) : that.street == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactAddress{" +
+                "id=" + id +
+                ", country='" + country + '\'' +
+                ", town='" + town + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", flatNumber=" + flatNumber +
+                ", zipCode=" + zipCode +
+                '}';
+    }
 }

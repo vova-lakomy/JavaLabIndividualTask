@@ -5,10 +5,12 @@ import com.javalab.contacts.model.PhoneNumber;
 
 public interface PhoneNumberDao {
 
-    public PhoneNumber get(Integer id);
+    PhoneNumber get(Integer id);
 
-    public void save(PhoneNumber phoneNumber);
+    PhoneNumber getByContactId(Integer contactId);
 
-    public void delete(int id);
+    void save(PhoneNumber phoneNumber, Integer contactId);
+
+    void delete(int id);
 
 }

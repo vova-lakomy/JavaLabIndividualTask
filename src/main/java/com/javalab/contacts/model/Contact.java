@@ -3,8 +3,8 @@ package com.javalab.contacts.model;
 
 import com.javalab.contacts.model.enumerations.Sex;
 
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 
 public class Contact {
 
@@ -16,7 +16,7 @@ public class Contact {
 
     private String lastName;
 
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     private Sex sex;
 
@@ -68,11 +68,11 @@ public class Contact {
         this.lastName = lastName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -146,5 +146,77 @@ public class Contact {
 
     public void setPhoneNumber(PhoneNumber phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Contact(Integer id, String firstName, String secondName, String lastName, LocalDate dateOfBirth,
+                   Sex sex, String nationality, String webSite, String eMail, String currentJob,
+                   ContactAddress contactAddress, Collection<ContactAttachment> attachments, String photoLink,
+                   PhoneNumber phoneNumber) {
+        this.id = id;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.sex = sex;
+        this.nationality = nationality;
+        this.webSite = webSite;
+        this.eMail = eMail;
+        this.currentJob = currentJob;
+        this.contactAddress = contactAddress;
+        this.attachments = attachments;
+        this.photoLink = photoLink;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Contact() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Contact contact = (Contact) o;
+
+        if (firstName != null ? !firstName.equals(contact.firstName) : contact.firstName != null) return false;
+        if (secondName != null ? !secondName.equals(contact.secondName) : contact.secondName != null) return false;
+        if (lastName != null ? !lastName.equals(contact.lastName) : contact.lastName != null) return false;
+        if (dateOfBirth != null ? !dateOfBirth.equals(contact.dateOfBirth) : contact.dateOfBirth != null) return false;
+        if (sex != contact.sex) return false;
+        if (nationality != null ? !nationality.equals(contact.nationality) : contact.nationality != null) return false;
+        if (webSite != null ? !webSite.equals(contact.webSite) : contact.webSite != null) return false;
+        if (eMail != null ? !eMail.equals(contact.eMail) : contact.eMail != null) return false;
+        if (currentJob != null ? !currentJob.equals(contact.currentJob) : contact.currentJob != null) return false;
+        if (contactAddress != null ? !contactAddress.equals(contact.contactAddress) : contact.contactAddress != null)
+            return false;
+        if (attachments != null ? !attachments.equals(contact.attachments) : contact.attachments != null) return false;
+        if (photoLink != null ? !photoLink.equals(contact.photoLink) : contact.photoLink != null) return false;
+        return phoneNumber != null ? phoneNumber.equals(contact.phoneNumber) : contact.phoneNumber == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return firstName != null ? firstName.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", sex=" + sex +
+                ", nationality='" + nationality + '\'' +
+                ", webSite='" + webSite + '\'' +
+                ", eMail='" + eMail + '\'' +
+                ", currentJob='" + currentJob + '\'' +
+                ", contactAddress=" + contactAddress +
+                ", attachments=" + attachments +
+                ", photoLink='" + photoLink + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                '}';
     }
 }

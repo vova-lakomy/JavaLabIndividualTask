@@ -5,20 +5,22 @@ import com.javalab.contacts.model.PhoneNumber;
 import com.javalab.contacts.model.enumerations.PhoneType;
 
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static com.javalab.contacts.dao.impl.jdbc.DbWorker.*;
+import static com.javalab.contacts.dao.impl.jdbc.DbConnectionProvider.*;
+import static com.javalab.contacts.dao.impl.jdbc.StatementExecutor.executeStatement;
 
 
 public class JdbcPhoneNumberDao implements PhoneNumberDao {
 
     public PhoneNumber get(Integer id) {
+        Connection connection = receiveConnection();
         PhoneNumber resultObject = new PhoneNumber();
         String query = "SELECT * FROM phone_number WHERE id=" + id;
-        try {
-            Statement statement = receiveConnection().createStatement();
+        try(Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()){
                 resultObject.setId(resultSet.getInt("id"));
@@ -28,15 +30,20 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
                 resultObject.setPhoneType(PhoneType.valueOf(resultSet.getString("phone_type")));
                 resultObject.setPhoneComment(resultSet.getString("phone_comment"));
             }
-            statement.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return resultObject;
+        putBackConnection(connection);
+        return resultObject.getId() != null ? resultObject : null;
     }
 
-    public void save(PhoneNumber phoneNumber) {
+    @Override
+    public PhoneNumber getByContactId(Integer contactId) {
+        return null;
+    }
+
+    public void save(PhoneNumber phoneNumber, Integer contactId) {
         Integer countryCode = phoneNumber.getCountryCode();
         Integer operatorCode = phoneNumber.getOperatorCode();
         Integer number = phoneNumber.getPhoneNumber();
@@ -50,13 +57,15 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
                     "operator_code, " +
                     "phone_number, " +
                     "phone_type, " +
-                    "phone_comment) " +
+                    "phone_comment, " +
+                    "contact_id) " +
                     "VALUES (" +
                     countryCode + "," +
                     operatorCode + "," +
                     number + ", '" +
                     phoneType + "','" +
-                    phoneComment + "')";
+                    phoneComment + "'," +
+                    contactId + ")";
         } else {
             query = "UPDATE phone_number SET " +
                     "country_code=" + countryCode +

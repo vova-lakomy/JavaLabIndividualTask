@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 
-class DbWorker {
+class DbConnectionProvider {
 
     private static Properties properties = new Properties();
     static {
@@ -27,7 +26,7 @@ class DbWorker {
             String user = properties.getProperty("mysql.user");
             String password = properties.getProperty("mysql.password");
             String options = "?useSSL=false";
-            String dbURL = properties.getProperty("mysql.url") +options;
+            String dbURL = properties.getProperty("mysql.url") + options;
             connection = DriverManager.getConnection(dbURL,user,password);
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,16 +42,6 @@ class DbWorker {
         }
     }
 
-    static void executeStatement(String query){
-        try {
-            Statement statement = receiveConnection().createStatement();
-            statement.executeUpdate(query);
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private DbWorker() {
+    private DbConnectionProvider() {
     }
 }
