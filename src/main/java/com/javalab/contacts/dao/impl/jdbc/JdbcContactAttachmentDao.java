@@ -5,6 +5,7 @@ import com.javalab.contacts.model.ContactAttachment;
 
 
 public class JdbcContactAttachmentDao implements ContactAttachmentDao {
+
     public ContactAttachment get(Integer id) {
         return null;
     }

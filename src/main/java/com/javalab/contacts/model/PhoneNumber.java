@@ -65,6 +65,9 @@ public class PhoneNumber {
         this.phoneComment = phoneComment;
     }
 
+    public PhoneNumber() {
+    }
+
     public PhoneNumber(Integer id, int countryCode, int operatorCode, int phoneNumber, PhoneType phoneType, String phoneComment) {
         this.id = id;
         this.countryCode = countryCode;
@@ -79,8 +82,8 @@ public class PhoneNumber {
         return "PhoneNumber{" +
                 "id=" + id +
                 " +" + countryCode +
-                " (" + operatorCode +
-                ") " + phoneNumber +
+                "(" + operatorCode +
+                ")" + phoneNumber +
                 ", phoneType=" + phoneType +
                 ", phoneComment='" + phoneComment + '\'' +
                 '}';

@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
-class ConnectionProvider {
+class DbWorker {
 
     private static Properties properties = new Properties();
     static {
@@ -42,6 +43,16 @@ class ConnectionProvider {
         }
     }
 
-    private ConnectionProvider() {
+    static void executeStatement(String query){
+        try {
+            Statement statement = receiveConnection().createStatement();
+            statement.executeUpdate(query);
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private DbWorker() {
     }
 }

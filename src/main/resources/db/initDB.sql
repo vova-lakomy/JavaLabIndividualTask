@@ -1,9 +1,9 @@
-DROP DATABASE IF EXISTS contacts;
-CREATE DATABASE contacts;
+DROP DATABASE IF EXISTS contacts_vladimir_lakomy;
+CREATE DATABASE contacts_vladimir_lakomy;
 
-USE contacts;
+USE contacts_vladimir_lakomy;
 
-CREATE TABLE contacts.contact_address
+CREATE TABLE contacts_vladimir_lakomy.contact_address
 (
   id                  INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   country             VARCHAR(30),
@@ -14,7 +14,7 @@ CREATE TABLE contacts.contact_address
   zap_code            INT
 );
 
-CREATE TABLE contacts.contact_attachment
+CREATE TABLE contacts_vladimir_lakomy.contact_attachment
 (
   id                  INT PRIMARY KEY  NOT NULL AUTO_INCREMENT,
   attachment_link     VARCHAR(200),
@@ -22,7 +22,7 @@ CREATE TABLE contacts.contact_attachment
   contact_id          INT
 );
 
-CREATE TABLE contacts.phone_number
+CREATE TABLE contacts_vladimir_lakomy.phone_number
 (
   id                  INT PRIMARY KEY  NOT NULL AUTO_INCREMENT,
   country_code        INT,
@@ -33,7 +33,7 @@ CREATE TABLE contacts.phone_number
 );
 
 
-CREATE TABLE contacts.contact
+CREATE TABLE contacts_vladimir_lakomy.contact
 (
   id                  INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   first_name          VARCHAR(20),
@@ -49,10 +49,10 @@ CREATE TABLE contacts.contact
   photo_link          VARCHAR(200),
   phone_number_id     INT,
     FOREIGN KEY (contact_address_id)
-      REFERENCES contacts.contact_address(id)
+      REFERENCES contacts_vladimir_lakomy.contact_address(id)
       ON DELETE CASCADE,
     FOREIGN KEY (phone_number_id)
-      REFERENCES contacts.phone_number(id)
+      REFERENCES contacts_vladimir_lakomy.phone_number(id)
 );
 
 

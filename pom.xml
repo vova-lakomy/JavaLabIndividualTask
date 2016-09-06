@@ -15,6 +15,7 @@
         <servlet.version>3.1.0</servlet.version>
         <jstl.version>1.2</jstl.version>
         <log4j.version>2.6.2</log4j.version>
+        <junit.version>4.11</junit.version>
     </properties>
 
     <dependencies>
@@ -53,6 +54,14 @@
             <version>${log4j.version}</version>
         </dependency>
         <!--end logging-->
+
+        <!--test-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+        </dependency>
+        <!--end test-->
 
     </dependencies>
 

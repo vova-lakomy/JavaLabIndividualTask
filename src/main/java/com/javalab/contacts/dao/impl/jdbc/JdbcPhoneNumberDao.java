@@ -9,23 +9,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static com.javalab.contacts.dao.impl.jdbc.ConnectionProvider.*;
+import static com.javalab.contacts.dao.impl.jdbc.DbWorker.*;
 
 
 public class JdbcPhoneNumberDao implements PhoneNumberDao {
 
     public PhoneNumber get(Integer id) {
-        String query = "SELECT * FROM contacts.phone_number WHERE id=" + id;
+        PhoneNumber resultObject = new PhoneNumber();
+        String query = "SELECT * FROM phone_number WHERE id=" + id;
         try {
             Statement statement = receiveConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(query);
-            //// TODO: 06.09.16
+            while (resultSet.next()){
+                resultObject.setId(resultSet.getInt("id"));
+                resultObject.setCountryCode(resultSet.getInt("country_code"));
+                resultObject.setOperatorCode(resultSet.getInt("operator_code"));
+                resultObject.setPhoneNumber(resultSet.getInt("phone_number"));
+                resultObject.setPhoneType(PhoneType.valueOf(resultSet.getString("phone_type")));
+                resultObject.setPhoneComment(resultSet.getString("phone_comment"));
+            }
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return null;
+        return resultObject;
     }
 
     public void save(PhoneNumber phoneNumber) {
@@ -37,7 +45,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
         String query;
 
         if (phoneNumber.getId() == null) {
-            query = "INSERT INTO contacts.phone_number " +
+            query = "INSERT INTO phone_number " +
                     "(country_code, " +
                     "operator_code, " +
                     "phone_number, " +
@@ -50,7 +58,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
                     phoneType + "','" +
                     phoneComment + "')";
         } else {
-            query = "UPDATE contacts.phone_number SET " +
+            query = "UPDATE phone_number SET " +
                     "country_code=" + countryCode +
                     ", operator_code=" + operatorCode +
                     ", phone_number=" + number +
@@ -62,24 +70,6 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
     }
 
     public void delete(int id) {
-        executeStatement("DELETE FROM contacts.phone_number WHERE id=" + id);
-    }
-
-    private void executeStatement(String query){
-        try {
-            Statement statement = receiveConnection().createStatement();
-            statement.executeUpdate(query);
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) throws SQLException {
-        JdbcPhoneNumberDao dao = new JdbcPhoneNumberDao();
-        dao.save(new PhoneNumber(null,370,25,7571231,PhoneType.MOBILE,"qwecefcefcdxfcer"));
-        dao.save(new PhoneNumber(1,375,2323,71231,PhoneType.HOME,"qwer2"));
-        dao.delete(5);
-        System.out.println(dao.get(6));
+        executeStatement("DELETE FROM phone_number WHERE id=" + id);
     }
 }
