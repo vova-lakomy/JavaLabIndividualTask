@@ -15,33 +15,17 @@ import static com.javalab.contacts.dao.impl.jdbc.StatementExecutor.executeStatem
 
 public class JdbcContactAddressDao implements ContactAddressDao {
 
+    @Override
     public ContactAddress get(Integer id) {
-        Connection connection = receiveConnection();
-        ContactAddress resultObject = new ContactAddress();
-        String query = "SELECT * FROM contact_address WHERE id=" + id;
-        try(Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()){
-                resultObject.setId(resultSet.getInt("id"));
-                resultObject.setCountry(resultSet.getString("country"));
-                resultObject.setTown(resultSet.getString("town"));
-                resultObject.setStreet(resultSet.getString("street"));
-                resultObject.setHouseNumber(resultSet.getInt("house_number"));
-                resultObject.setFlatNumber(resultSet.getInt("flat_number"));
-                resultObject.setZipCode(resultSet.getInt("zip_code"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        putBackConnection(connection);
-        return resultObject.getId() != null ? resultObject : null;
+        return executeQuery("SELECT * FROM contact_address WHERE id=" + id);
     }
 
     @Override
     public ContactAddress getByContactId(Integer contactId) {
-        return null;
+        return executeQuery("SELECT * FROM contact_address WHERE contact_id=" + contactId);
     }
 
+    @Override
     public void save(ContactAddress contactAddress, Integer contactId) {
         String country = contactAddress.getCountry();
         String town = contactAddress.getTown();
@@ -75,13 +59,35 @@ public class JdbcContactAddressDao implements ContactAddressDao {
                     "', house_number=" + houseNumber +
                     ", flat_number=" + flatNumber +
                     ", zip_code=" + zipCode +
-                    ", contactId=" + contactId +
+                    ", contact_id=" + contactId +
                     " WHERE id=" + contactAddress.getId();
         }
         executeStatement(query);
     }
 
+    @Override
     public void delete(int id) {
         executeStatement("DELETE FROM contact_address WHERE id=" + id);
+    }
+
+    private ContactAddress executeQuery(String query){
+        Connection connection = receiveConnection();
+        ContactAddress resultObject = new ContactAddress();
+        try(Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()){
+                resultObject.setId(resultSet.getInt("id"));
+                resultObject.setCountry(resultSet.getString("country"));
+                resultObject.setTown(resultSet.getString("town"));
+                resultObject.setStreet(resultSet.getString("street"));
+                resultObject.setHouseNumber(resultSet.getInt("house_number"));
+                resultObject.setFlatNumber(resultSet.getInt("flat_number"));
+                resultObject.setZipCode(resultSet.getInt("zip_code"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        putBackConnection(connection);
+        return resultObject.getId() != null ? resultObject : null;
     }
 }

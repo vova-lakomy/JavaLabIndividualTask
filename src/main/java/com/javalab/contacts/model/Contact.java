@@ -1,6 +1,7 @@
 package com.javalab.contacts.model;
 
 
+import com.javalab.contacts.model.enumerations.MartialStatus;
 import com.javalab.contacts.model.enumerations.Sex;
 
 import java.time.LocalDate;
@@ -21,6 +22,8 @@ public class Contact {
     private Sex sex;
 
     private String nationality;
+
+    private MartialStatus martialStatus;
 
     private String webSite;
 
@@ -92,6 +95,14 @@ public class Contact {
         this.nationality = nationality;
     }
 
+    public MartialStatus getMartialStatus() {
+        return martialStatus;
+    }
+
+    public void setMartialStatus(MartialStatus martialStatus) {
+        this.martialStatus = martialStatus;
+    }
+
     public String getWebSite() {
         return webSite;
     }
@@ -149,9 +160,9 @@ public class Contact {
     }
 
     public Contact(Integer id, String firstName, String secondName, String lastName, LocalDate dateOfBirth,
-                   Sex sex, String nationality, String webSite, String eMail, String currentJob,
-                   ContactAddress contactAddress, Collection<ContactAttachment> attachments, String photoLink,
-                   PhoneNumber phoneNumber) {
+                   Sex sex, String nationality, MartialStatus martialStatus, String webSite, String eMail,
+                   String currentJob, ContactAddress contactAddress, Collection<ContactAttachment> attachments,
+                   String photoLink, PhoneNumber phoneNumber) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -159,6 +170,7 @@ public class Contact {
         this.dateOfBirth = dateOfBirth;
         this.sex = sex;
         this.nationality = nationality;
+        this.martialStatus = martialStatus;
         this.webSite = webSite;
         this.eMail = eMail;
         this.currentJob = currentJob;
@@ -184,12 +196,13 @@ public class Contact {
         if (dateOfBirth != null ? !dateOfBirth.equals(contact.dateOfBirth) : contact.dateOfBirth != null) return false;
         if (sex != contact.sex) return false;
         if (nationality != null ? !nationality.equals(contact.nationality) : contact.nationality != null) return false;
+        if (martialStatus != contact.martialStatus) return false;
         if (webSite != null ? !webSite.equals(contact.webSite) : contact.webSite != null) return false;
         if (eMail != null ? !eMail.equals(contact.eMail) : contact.eMail != null) return false;
         if (currentJob != null ? !currentJob.equals(contact.currentJob) : contact.currentJob != null) return false;
         if (contactAddress != null ? !contactAddress.equals(contact.contactAddress) : contact.contactAddress != null)
             return false;
-        if (attachments != null ? !attachments.equals(contact.attachments) : contact.attachments != null) return false;
+        if (attachments != null ? !(attachments.size() == (contact.attachments.size())) : contact.attachments != null) return false;
         if (photoLink != null ? !photoLink.equals(contact.photoLink) : contact.photoLink != null) return false;
         return phoneNumber != null ? phoneNumber.equals(contact.phoneNumber) : contact.phoneNumber == null;
 
@@ -210,6 +223,7 @@ public class Contact {
                 ", dateOfBirth=" + dateOfBirth +
                 ", sex=" + sex +
                 ", nationality='" + nationality + '\'' +
+                ", martialStatus=" + martialStatus +
                 ", webSite='" + webSite + '\'' +
                 ", eMail='" + eMail + '\'' +
                 ", currentJob='" + currentJob + '\'' +

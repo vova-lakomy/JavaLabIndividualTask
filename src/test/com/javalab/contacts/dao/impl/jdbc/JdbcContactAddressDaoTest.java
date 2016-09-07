@@ -27,8 +27,8 @@ public class JdbcContactAddressDaoTest {
         ContactAddress address1 = new ContactAddress(null, "Germany", "Berlin", "Grunenstrasse", 112, 1, 54995);
         ContactAddress address2 = new ContactAddress(5, "Germany", "Frankfurt-am-Main", "Kernstrasse", 1, 554, 54915);
         JdbcContactAddressDao addressDao = new JdbcContactAddressDao();
-        addressDao.save(address1);
-        addressDao.save(address2);
+        addressDao.save(address1,1);
+        addressDao.save(address2,2);
         assertTrue(address2.equals(addressDao.get(5)));
     }
 

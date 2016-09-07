@@ -10,6 +10,8 @@ import java.util.Properties;
 
 class DbConnectionProvider {
 
+    private static int connectionCount;
+
     private static Properties properties = new Properties();
     static {
         try {
@@ -31,6 +33,7 @@ class DbConnectionProvider {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("connection count - " + ++connectionCount);
         return connection;
     }
 

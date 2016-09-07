@@ -19,6 +19,7 @@ import static com.javalab.contacts.dao.impl.jdbc.StatementExecutor.executeStatem
 
 public class JdbcContactAttachmentDao implements ContactAttachmentDao {
 
+    @Override
     public ContactAttachment get(Integer id) {
         Connection connection = receiveConnection();
         ContactAttachment resultObject = new ContactAttachment();
@@ -38,6 +39,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
         return resultObject.getId() != null ? resultObject : null;
     }
 
+    @Override
     public Collection<ContactAttachment> getByContactId(Integer contactId) {
         Connection connection = receiveConnection();
         Collection<ContactAttachment> resultCollection = new HashSet<>();
@@ -59,34 +61,40 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
         return resultCollection;
     }
 
+    @Override
     public void save(ContactAttachment contactAttachment, Integer contactId) {
-        String attachmentLink = contactAttachment.getAttachmentLink();
-        String attachmentComment = contactAttachment.getAttachmentComment();
-        String dateOfUpload = contactAttachment.getDateOfUpload().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String query;
+        if (contactAttachment != null) {
 
-        if (contactAttachment.getId() == null) {
-            query = "INSERT INTO contact_attachment " +
-                    "(attachment_link, " +
-                    "attachment_comment, " +
-                    "date_of_upload, " +
-                    "contact_id) " +
-                    "VALUES ('" +
-                    attachmentLink + "','" +
-                    attachmentComment + "','" +
-                    dateOfUpload + "'," +
-                    contactId + ")";
-        } else {
-            query = "UPDATE contact_attachment SET " +
-                    "attachment_link='" + attachmentLink +
-                    "', attachment_comment='" + attachmentComment +
-                    "', date_of_upload='" + dateOfUpload +
-                    "', contact_id=" + contactId +
-                    " WHERE id=" + contactAttachment.getId();
+
+            String attachmentLink = contactAttachment.getAttachmentLink();
+            String attachmentComment = contactAttachment.getAttachmentComment();
+            String dateOfUpload = contactAttachment.getDateOfUpload().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String query;
+
+            if (contactAttachment.getId() == null) {
+                query = "INSERT INTO contact_attachment " +
+                        "(attachment_link, " +
+                        "attachment_comment, " +
+                        "date_of_upload, " +
+                        "contact_id) " +
+                        "VALUES ('" +
+                        attachmentLink + "','" +
+                        attachmentComment + "','" +
+                        dateOfUpload + "'," +
+                        contactId + ")";
+            } else {
+                query = "UPDATE contact_attachment SET " +
+                        "attachment_link='" + attachmentLink +
+                        "', attachment_comment='" + attachmentComment +
+                        "', date_of_upload='" + dateOfUpload +
+                        "', contact_id=" + contactId +
+                        " WHERE id=" + contactAttachment.getId();
+            }
+            executeStatement(query);
         }
-        executeStatement(query);
     }
 
+    @Override
     public void delete(int id) {
         executeStatement("DELETE FROM contact_attachment WHERE id=" + id);
     }

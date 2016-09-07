@@ -17,30 +17,12 @@ import static com.javalab.contacts.dao.impl.jdbc.StatementExecutor.executeStatem
 public class JdbcPhoneNumberDao implements PhoneNumberDao {
 
     public PhoneNumber get(Integer id) {
-        Connection connection = receiveConnection();
-        PhoneNumber resultObject = new PhoneNumber();
-        String query = "SELECT * FROM phone_number WHERE id=" + id;
-        try(Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()){
-                resultObject.setId(resultSet.getInt("id"));
-                resultObject.setCountryCode(resultSet.getInt("country_code"));
-                resultObject.setOperatorCode(resultSet.getInt("operator_code"));
-                resultObject.setPhoneNumber(resultSet.getInt("phone_number"));
-                resultObject.setPhoneType(PhoneType.valueOf(resultSet.getString("phone_type")));
-                resultObject.setPhoneComment(resultSet.getString("phone_comment"));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        putBackConnection(connection);
-        return resultObject.getId() != null ? resultObject : null;
+        return executeQuery("SELECT * FROM phone_number WHERE id=" + id);
     }
 
     @Override
     public PhoneNumber getByContactId(Integer contactId) {
-        return null;
+        return executeQuery("SELECT * FROM phone_number WHERE contact_id=" + contactId);
     }
 
     public void save(PhoneNumber phoneNumber, Integer contactId) {
@@ -80,5 +62,25 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
 
     public void delete(int id) {
         executeStatement("DELETE FROM phone_number WHERE id=" + id);
+    }
+
+    private PhoneNumber executeQuery(String query){
+        Connection connection = receiveConnection();
+        PhoneNumber resultObject = new PhoneNumber();
+        try(Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()){
+                resultObject.setId(resultSet.getInt("id"));
+                resultObject.setCountryCode(resultSet.getInt("country_code"));
+                resultObject.setOperatorCode(resultSet.getInt("operator_code"));
+                resultObject.setPhoneNumber(resultSet.getInt("phone_number"));
+                resultObject.setPhoneType(PhoneType.valueOf(resultSet.getString("phone_type")));
+                resultObject.setPhoneComment(resultSet.getString("phone_comment"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        putBackConnection(connection);
+        return resultObject.getId() != null ? resultObject : null;
     }
 }

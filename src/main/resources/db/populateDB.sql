@@ -1,37 +1,37 @@
 USE contacts_vladimir_lakomy;
 
 INSERT INTO contacts_vladimir_lakomy.contact
-(id, first_name, second_name, last_name, date_of_birth, sex, nationality, web_site,
+(id, first_name, second_name, last_name, date_of_birth, sex, nationality, martial_status, web_site,
  e_mail, current_job, photo_link)
 VALUES
-  (1,'Alexandr','Sergeevich', 'Ivanov', '1990-02-27', 'MALE','Russian','alex.com',
+  (1,'Alexandr','Sergeevich', 'Ivanov', '1990-02-27', 'MALE','Russian','SINGLE','alex.com',
      'alex.ivan@gmail.com', 'Google', './uploads/img/alex.jpg'),
 
-  (2,'Grigory','Fedorovich', 'Smirnov', '1985-09-22', 'MALE','Belarus','grigor.com',
+  (2,'Grigory','Fedorovich', 'Smirnov', '1985-09-22', 'MALE','Belarus','MARRIED','grigor.com',
      'grig.fedor@gmail.com', 'Microsoft', './uploads/img/grigo.jpg'),
 
-  (3,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','sidorova.com',
+  (3,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
      'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
 
-  (4,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','sidorova.com',
+  (4,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
      'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
 
-  (5,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','sidorova.com',
+  (5,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
      'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
 
-  (6,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','sidorova.com',
+  (6,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
      'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
 
-  (7,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','sidorova.com',
+  (7,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
      'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
 
-  (8,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','sidorova.com',
+  (8,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
      'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
 
-  (9,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','sidorova.com',
+  (9,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
      'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
 
-  (10,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','sidorova.com',
+  (10,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
       'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg');
 
 INSERT INTO contacts_vladimir_lakomy.phone_number (id,country_code,operator_code,phone_number,phone_type, phone_comment, contact_id)

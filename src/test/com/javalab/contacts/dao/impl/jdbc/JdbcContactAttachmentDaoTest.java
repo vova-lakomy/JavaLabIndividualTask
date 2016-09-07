@@ -5,7 +5,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import static com.javalab.contacts.dao.impl.jdbc.SqlScriptLoader.loadScript;
 import static org.junit.Assert.*;
@@ -33,9 +32,8 @@ public class JdbcContactAttachmentDaoTest {
         attachmentDao.save(attachment1,8);
         attachmentDao.save(attachment2,8);
 
-        System.out.println(attachmentDao.get(15));
-        System.out.println(null != attachmentDao.get(15));
-        System.out.println(attachment2.equals(attachmentDao.get(2)));
+        attachmentDao.save(null,null);
+
         assertTrue(null != attachmentDao.get(15));
         assertTrue(attachment2.equals(attachmentDao.get(2)));
     }
@@ -44,15 +42,14 @@ public class JdbcContactAttachmentDaoTest {
     public void delete() throws Exception {
         JdbcContactAttachmentDao attachmentDao = new JdbcContactAttachmentDao();
         attachmentDao.delete(11);
+
         assertTrue(null == attachmentDao.get(11));
     }
 
     @Test
     public void getByContactId() throws Exception {
         JdbcContactAttachmentDao attachmentDao = new JdbcContactAttachmentDao();
+
         assertTrue(attachmentDao.getByContactId(2).size() == 3);
     }
-
-
-
 }

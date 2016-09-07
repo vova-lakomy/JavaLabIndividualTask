@@ -12,6 +12,7 @@ CREATE TABLE contacts_vladimir_lakomy.contact
   date_of_birth       DATE,
   sex                 VARCHAR(7),
   nationality         VARCHAR(20),
+  martial_status     VARCHAR(17),
   web_site            VARCHAR(200),
   e_mail              VARCHAR(50),
   current_job         VARCHAR(50),
@@ -31,6 +32,7 @@ CREATE TABLE contacts_vladimir_lakomy.contact_address
   contact_id          INT,
   FOREIGN KEY (contact_id)
     REFERENCES contacts_vladimir_lakomy.contact(id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE contacts_vladimir_lakomy.contact_attachment
@@ -41,7 +43,8 @@ CREATE TABLE contacts_vladimir_lakomy.contact_attachment
   date_of_upload      DATE,
   contact_id          INT,
   FOREIGN KEY (contact_id)
-  REFERENCES contacts_vladimir_lakomy.contact(id)
+    REFERENCES contacts_vladimir_lakomy.contact(id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE contacts_vladimir_lakomy.phone_number
@@ -54,7 +57,8 @@ CREATE TABLE contacts_vladimir_lakomy.phone_number
   phone_comment       VARCHAR(100),
   contact_id          INT,
   FOREIGN KEY (contact_id)
-  REFERENCES contacts_vladimir_lakomy.contact(id)
+    REFERENCES contacts_vladimir_lakomy.contact(id)
+    ON DELETE CASCADE
 );
 
 

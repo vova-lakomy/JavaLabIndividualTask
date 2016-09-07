@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 
 public class ContactServlet extends HttpServlet {
@@ -21,16 +22,24 @@ public class ContactServlet extends HttpServlet {
         super.init(config);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request,response);
-    }
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        PrintWriter writer = resp.getWriter();
+        writer.write("<html><head></head><body>");
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.info("method GET");
-        processRequest(request,response);
-    }
+        writer.write("<h4>");
+        writer.write("using service method, request method type : " + req.getMethod());
+        writer.write("</h4>");
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        writer.write("<h4>");
+        writer.write("using service method, requested URI : " + req.getRequestURI());
+        writer.write("</h4>");
 
+        writer.write("<h4>");
+        writer.write("using service method, query string : " + req.getQueryString());
+        writer.write("</h4>");
+
+        writer.write("</body></html>");
     }
 }
