@@ -1,11 +1,12 @@
 package com.javalab.contacts.web;
 
-import com.javalab.contacts.util.SqlScriptLoader;
+import com.javalab.contacts.controller.FrontController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,44 +15,30 @@ import java.io.PrintWriter;
 
 import static com.javalab.contacts.util.SqlScriptLoader.*;
 
-
+@WebServlet(loadOnStartup = 1, urlPatterns = "/contacts")
 public class ContactServlet extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(ContactServlet.class);
+    private FrontController controller = new FrontController();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        loadScript("/home/vv/DATA/JavaLabIndividualTask/JavaLabIndividualTask/target/contacts-list-1.0-SNAPSHOT/WEB-INF/classes/db/initDB.sql");
         logger.debug("Contact servlet init");
         super.init(config);
+        loadScript(getServletContext().getRealPath("./WEB-INF/classes//initDB.sql"));
+        loadScript(getServletContext().getRealPath("./WEB-INF/classes/populateDB.sql"));
+    }
+
+    @Override
+    public void destroy() {
+        logger.debug("Destroying Contact servlet");
+        super.destroy();
     }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.debug("context - " + getServletContext().getContextPath());
-        logger.debug("in props - " + "/home/vv/DATA/JavaLabIndividualTask/JavaLabIndividualTask/target/contacts-list-1.0-SNAPSHOT/WEB-INF/classes/db/initDB.sql");
-
         resp.setContentType("text/html; charset=UTF-8");
-        PrintWriter writer = resp.getWriter();
-        writer.write("<html><head></head><body>");
-
-        writer.write("<h4>");
-        writer.write("using service method, request method type : " + req.getMethod());
-        writer.write("</h4>");
-
-        writer.write("<h4>");
-        writer.write("using service method, requested URI : " + req.getRequestURI());
-        writer.write("</h4>");
-
-        writer.write("<h4>");
-        writer.write("using service method, query string : " + req.getQueryString());
-        writer.write("</h4>");
-
-        writer.write("<h4>");
-        writer.write("using service method, servlet context : " + getServletContext().getRealPath("initDB.sql"));
-        writer.write("</h4>");
-
-
-        writer.write("</body></html>");
+        req.setAttribute("contacts",controller.getAllContacts());
+        req.getRequestDispatcher("WEB-INF/index.jsp").forward(req,resp);
     }
 }

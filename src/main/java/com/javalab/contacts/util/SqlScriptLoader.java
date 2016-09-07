@@ -1,33 +1,32 @@
 package com.javalab.contacts.util;
 
 
-import java.io.*;
+import com.javalab.contacts.web.ContactServlet;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.Statement;
-import java.util.Properties;
+
+import static com.javalab.contacts.dao.impl.jdbc.DbConnectionProvider.receiveConnection;
 
 public class SqlScriptLoader {
-    private static Properties props = new Properties();
-    static {
-        try {
-            props.load(new FileInputStream("/home/vv/DATA/JavaLabIndividualTask/JavaLabIndividualTask/target/contacts-list-1.0-SNAPSHOT/WEB-INF/classes/db/mySqlConnection.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void loadScript(String path){
+    private static final Logger logger = LogManager.getLogger(SqlScriptLoader.class);
 
 
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(path)))){
+    public static void loadScript(String path) {
+        logger.debug("loading script at path:" + path);
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(path)))) {
             String line;
             StringBuilder fileBody = new StringBuilder();
-            while((line = bufferedReader.readLine()) != null){
+            while ((line = bufferedReader.readLine()) != null) {
                 fileBody.append(line);
             }
             String[] sqlLines = fileBody.toString().split(";");
-            try(Connection connection = receiveConnection()){
+            try (Connection connection = receiveConnection()) {
                 Statement statement = connection.createStatement();
                 for (String sqlLine : sqlLines) {
                     if (!sqlLine.trim().equals("")) { //don't execute empty line
@@ -35,23 +34,11 @@ public class SqlScriptLoader {
                     }
                 }
             }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
-    private static Connection receiveConnection(){
-        Connection connection = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(props.getProperty("mysql.url") + "?useSSL=false",
-                                                    props.getProperty("mysql.user"),props.getProperty("mysql.password"));
         } catch (Exception e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
-        return connection;
+        logger.debug("script loaded");
     }
 
 }

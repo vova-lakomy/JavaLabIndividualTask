@@ -11,8 +11,8 @@ import static org.junit.Assert.*;
 public class JdbcContactAddressDaoTest {
     @BeforeClass
     public static void setUp() throws Exception {
-        loadScript("src/main/resources/db/initDB.sql");
-        loadScript("src/main/resources/db/populateDB.sql");
+        loadScript("src/main/resources/initDB.sql");
+        loadScript("src/main/resources/populateDB.sql");
     }
 
     @Test

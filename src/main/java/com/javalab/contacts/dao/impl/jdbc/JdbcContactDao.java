@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
 import static com.javalab.contacts.dao.impl.jdbc.DbConnectionProvider.putBackConnection;
 import static com.javalab.contacts.dao.impl.jdbc.DbConnectionProvider.receiveConnection;
@@ -33,27 +35,32 @@ public class JdbcContactDao implements ContactDao {
         try(Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()){
-                resultObject.setId(resultSet.getInt("id"));
-                resultObject.setFirstName(resultSet.getString("first_name"));
-                resultObject.setSecondName(resultSet.getString("second_name"));
-                resultObject.setLastName(resultSet.getString("last_name"));
-                resultObject.setDateOfBirth(resultSet.getDate("date_of_birth").toLocalDate());
-                resultObject.setSex(Sex.valueOf(resultSet.getString("sex")));
-                resultObject.setNationality(resultSet.getString("nationality"));
-                resultObject.setMartialStatus(MartialStatus.valueOf(resultSet.getString("martial_status")));
-                resultObject.setWebSite(resultSet.getString("web_site"));
-                resultObject.seteMail(resultSet.getString("e_mail"));
-                resultObject.setCurrentJob(resultSet.getString("current_job"));
-                resultObject.setPhotoLink(resultSet.getString("photo_link"));
-                resultObject.setContactAddress(addressDao.getByContactId(id));
-                resultObject.setPhoneNumber(phoneNumberDao.getByContactId(id));
-                resultObject.setAttachments(attachmentDao.getByContactId(id));
+                resultObject = createContactFromResultSet(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         putBackConnection(connection);
         return resultObject.getId() != null ? resultObject : null;
+    }
+
+    @Override
+    public Collection<Contact> getAllContacts(){
+        Collection<Contact> resultCollection = new LinkedHashSet<>();
+        Connection connection = receiveConnection();
+
+        String query = "SELECT * FROM contact ORDER BY first_name";
+        try(Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()){
+                resultCollection.add(createContactFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        putBackConnection(connection);
+
+        return  resultCollection;
     }
 
     @Override
@@ -126,5 +133,26 @@ public class JdbcContactDao implements ContactDao {
     @Override
     public void delete(int id) {
         executeStatement("DELETE FROM contact WHERE id=" + id);
+    }
+
+    private Contact createContactFromResultSet(ResultSet resultSet) throws SQLException {
+        Contact resultObject = new Contact();
+
+        resultObject.setId(resultSet.getInt("id"));
+        resultObject.setFirstName(resultSet.getString("first_name"));
+        resultObject.setSecondName(resultSet.getString("second_name"));
+        resultObject.setLastName(resultSet.getString("last_name"));
+        resultObject.setDateOfBirth(resultSet.getDate("date_of_birth").toLocalDate());
+        resultObject.setSex(Sex.valueOf(resultSet.getString("sex")));
+        resultObject.setNationality(resultSet.getString("nationality"));
+        resultObject.setMartialStatus(MartialStatus.valueOf(resultSet.getString("martial_status")));
+        resultObject.setWebSite(resultSet.getString("web_site"));
+        resultObject.seteMail(resultSet.getString("e_mail"));
+        resultObject.setCurrentJob(resultSet.getString("current_job"));
+        resultObject.setPhotoLink(resultSet.getString("photo_link"));
+        resultObject.setContactAddress(addressDao.getByContactId(resultObject.getId()));
+        resultObject.setPhoneNumber(phoneNumberDao.getByContactId(resultObject.getId()));
+        resultObject.setAttachments(attachmentDao.getByContactId(resultObject.getId()));
+        return resultObject;
     }
 }

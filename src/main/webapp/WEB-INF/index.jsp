@@ -8,5 +8,9 @@
 <form method="post" action="contacts/add/?dfsdf=1">
     <button type="submit">post</button>
 </form>
+<form method="get" action="contacts/add/?dfsdf=1">
+    <button type="submit">get</button>
+</form>
+
 </body>
 </html>
