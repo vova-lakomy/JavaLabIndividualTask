@@ -4,7 +4,7 @@ import com.javalab.contacts.model.ContactAddress;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static com.javalab.contacts.dao.impl.jdbc.SqlScriptLoader.loadScript;
+import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
 import static org.junit.Assert.*;
 
 

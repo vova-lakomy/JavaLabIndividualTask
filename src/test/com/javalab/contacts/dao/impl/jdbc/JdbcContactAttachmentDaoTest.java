@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 
-import static com.javalab.contacts.dao.impl.jdbc.SqlScriptLoader.loadScript;
+import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
 import static org.junit.Assert.*;
 
 
