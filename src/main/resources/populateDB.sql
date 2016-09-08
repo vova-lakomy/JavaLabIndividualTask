@@ -5,34 +5,34 @@ INSERT INTO contacts_vladimir_lakomy.contact
  e_mail, current_job, photo_link)
 VALUES
   (1,'Alexandr','Sergeevich', 'Ivanov', '1990-02-27', 'MALE','Russian','SINGLE','alex.com',
-     'alex.ivan@gmail.com', 'Google', './uploads/img/alex.jpg'),
+     'alex.ivan@gmail.com', 'Google', './resources/uploaded_files/img/alex.jpg'),
 
-  (2,'Grigory','Fedorovich', 'Smirnov', '1985-09-22', 'MALE','Belarus','MARRIED','grigor.com',
-     'grig.fedor@gmail.com', 'Microsoft', './uploads/img/grigo.jpg'),
+  (2,'Grigory','Fedorovich', 'Smirnov', '1985-09-22', 'MALE','Belarussian','MARRIED','grigor.com',
+     'grig.fedor@gmail.com', 'Microsoft', './resources/uploaded_files/img/grigo.jpg'),
 
   (3,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
-     'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
+     'helen.sid@gmail.com', 'Apple', '../resources/uploaded_files/img/hel.jpg'),
 
-  (4,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
-     'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
+  (4,'Sergey','Sergeevich', 'Karpov', '1990-01-11', 'MALE','Belarussian','DIVORCED','karpov.com',
+     'serega.karp@gmail.com', 'IBM', './uploads/img/hel.jpg'),
 
-  (5,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
-     'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
+  (5,'Vladimir','Vladimirovich', 'Tootin', '1952-10-07', 'MALE','Russian','DIVORCED','tootin.com',
+     'tutin.vv@gmail.com', 'Yandex', './resources/uploaded_files/img/vv.jpg'),
 
-  (6,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
-     'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
+  (6,'Julia','Igorevna', 'Cherepanova', '1971-12-01', 'FEMALE','Russian','MARRIED','cherepan.com',
+     'jul.cherep@gmail.com', 'Google', './resources/uploaded_files/img/jul.jpg'),
 
-  (7,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
-     'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
+  (7,'Victor','Robertovich', 'Joy', '1962-07-21', 'MALE','Russian','MARRIED','joy.com',
+     'joy.victor@gmail.com', 'StokeHold', './resources/uploaded_files/img/vict.jpg'),
 
-  (8,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
-     'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
+  (8,'Kate','Ivanovna', 'Sokolova', '1985-03-15', 'FEMALE','BELARUSSIAN','WIDOWED','sokol.com',
+     'katjusha85@gmail.com', 'Mail.Ru', './resources/uploaded_files/img/kate.jpg'),
 
-  (9,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
-     'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg'),
+  (9,'Igor','Victorovich', 'Stepanov', '1980-04-01', 'MALE','Ukrainian','MARRIED','stepa.com',
+     'stepasha2001@gmail.com', 'Google', './resources/uploaded_files/img/igAr.jpg'),
 
-  (10,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
-      'helen.sid@gmail.com', 'Apple', './uploads/img/hel.jpg');
+  (10,'Dmitry','Anatoljevich', 'Mefnedev', '1965-09-14', 'MALE','Russian','MARRIED','mefned.com',
+      'mefned.dima@gmail.com', 'Yandex', './resources/uploaded_files/img/dima.jpg');
 
 INSERT INTO contacts_vladimir_lakomy.phone_number (id,country_code,operator_code,phone_number,phone_type, phone_comment, contact_id)
     VALUES (1, 375, 29, 7641640, 'MOBILE', 'comment1', 1),

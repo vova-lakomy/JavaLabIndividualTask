@@ -50,7 +50,7 @@ public class JdbcContactDao implements ContactDao {
         Collection<Contact> resultCollection = new ArrayList<>();
         Connection connection = receiveConnection();
 
-        String query = "SELECT * FROM contact ORDER BY first_name";
+        String query = "SELECT * FROM contact ORDER BY last_name";
         try(Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()){

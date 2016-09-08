@@ -3,7 +3,7 @@ package com.javalab.contacts.model.enumerations;
 
 public enum MartialStatus {
     MARRIED,
-    DIVORSED,
+    DIVORCED,
     WIDOWED,
     SEPARATED,
     SINGLE,

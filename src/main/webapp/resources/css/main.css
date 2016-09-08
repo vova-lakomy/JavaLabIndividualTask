@@ -1,0 +1,119 @@
+ul {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+    padding: 0;
+    border: none;
+    /*background-image: url("../img/sheet5.png");*/
+}
+ul li {
+    padding: 8px 16px;
+    border-bottom: 1px solid #c3c3c3;
+}
+ul li:first-child{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+ul li:last-child {
+    border-bottom: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    font-family: sans-serif;
+    font-size: 15px;
+}
+
+.jlab-header-caption-black{
+    font-size: 20px;
+    font-weight: 900;
+    color: black;
+}
+.jlab-header-caption-red{
+    font-size: 20px;
+    font-weight: 900;
+    color: #ed1c24;
+}
+
+.jlab-header-panel{
+    padding-top: 10px;
+    padding-left: 40px;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    min-width: 100%;
+    height: 30px;
+    background-color: #ffffff;
+    border-bottom-color: #f0f0f0;
+    border-bottom-width: 5px;
+    border-bottom-style: solid;
+    box-shadow: 6px 1px 10px 1px rgba(0, 0, 0, 0.71);
+}
+.jlab-margin-top-70{
+    margin-top: 70px;
+}
+
+.jlab-main-content-container{
+    max-width: 1024px;
+    margin: auto;
+}
+.jlab-main-content{
+    padding: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-color: grey;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 6px 6px 10px 1px rgba(0, 0, 0, 0.71);
+}
+
+.jlab-contact-table-caption{
+    height: 25px;
+    padding: 1px 16px;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.jlab-clickable-contact{
+    transition: 150ms;
+}
+.jlab-clickable-contact:hover{
+    background-color: #9d99fa;
+    cursor: pointer;
+    transition: 120ms;
+}
+
+.jlab-padding-10{
+    word-wrap: break-word;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.jlab-photo-thumbnail-container{
+    height: 50px;
+    width: 50px;
+    background-color: #ffffff;
+    border-style: solid;
+    border-color: #c3c3c3;
+    border-width: 1px;
+    padding: 1px;
+    margin: 1px;
+}
+.jlab-contact-full-name{
+    font-size: 18px;
+    font-weight: 600;
+    margin: auto;
+}
+
+.jlab-footer-panel{
+    background-color: #383838;
+    position: fixed;
+    min-width: 100%;
+    height: 30px;
+    bottom: 0;
+}
+

@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import static com.javalab.contacts.util.SqlScriptLoader.*;
 
@@ -26,7 +25,7 @@ public class ContactServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         logger.debug("Contact servlet init");
         super.init(config);
-        loadScript(getServletContext().getRealPath("./WEB-INF/classes//initDB.sql"));
+        loadScript(getServletContext().getRealPath("./WEB-INF/classes/initDB.sql"));
         loadScript(getServletContext().getRealPath("./WEB-INF/classes/populateDB.sql"));
     }
 
