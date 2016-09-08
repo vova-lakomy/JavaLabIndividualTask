@@ -7,6 +7,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
 import static com.javalab.contacts.dao.impl.jdbc.DbConnectionProvider.putBackConnection;
 import static com.javalab.contacts.dao.impl.jdbc.DbConnectionProvider.receiveConnection;
@@ -17,12 +20,34 @@ public class JdbcContactAddressDao implements ContactAddressDao {
 
     @Override
     public ContactAddress get(Integer id) {
-        return executeQuery("SELECT * FROM contact_address WHERE id=" + id);
+        Connection connection = receiveConnection();
+        ContactAddress resultObject = new ContactAddress();
+        try(Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM contact_address WHERE id=" + id);
+            while (resultSet.next()){
+                resultObject = createAddressFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        putBackConnection(connection);
+        return resultObject.getId() != null ? resultObject : null;
     }
 
     @Override
-    public ContactAddress getByContactId(Integer contactId) {
-        return executeQuery("SELECT * FROM contact_address WHERE contact_id=" + contactId);
+    public Collection<ContactAddress> getByContactId(Integer contactId) {
+        Connection connection = receiveConnection();
+        Collection<ContactAddress> resultCollection = new ArrayList<>();
+        try(Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM contact_address WHERE contact_id=" + contactId);
+            while (resultSet.next()){
+                resultCollection.add(createAddressFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        putBackConnection(connection);
+        return resultCollection;
     }
 
     @Override
@@ -76,18 +101,24 @@ public class JdbcContactAddressDao implements ContactAddressDao {
         try(Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()){
-                resultObject.setId(resultSet.getInt("id"));
-                resultObject.setCountry(resultSet.getString("country"));
-                resultObject.setTown(resultSet.getString("town"));
-                resultObject.setStreet(resultSet.getString("street"));
-                resultObject.setHouseNumber(resultSet.getInt("house_number"));
-                resultObject.setFlatNumber(resultSet.getInt("flat_number"));
-                resultObject.setZipCode(resultSet.getInt("zip_code"));
+                resultObject = createAddressFromResultSet(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         putBackConnection(connection);
         return resultObject.getId() != null ? resultObject : null;
+    }
+
+    private ContactAddress createAddressFromResultSet(ResultSet resultSet) throws SQLException {
+        ContactAddress resultObject = new ContactAddress();
+        resultObject.setId(resultSet.getInt("id"));
+        resultObject.setCountry(resultSet.getString("country"));
+        resultObject.setTown(resultSet.getString("town"));
+        resultObject.setStreet(resultSet.getString("street"));
+        resultObject.setHouseNumber(resultSet.getInt("house_number"));
+        resultObject.setFlatNumber(resultSet.getInt("flat_number"));
+        resultObject.setZipCode(resultSet.getInt("zip_code"));
+        return resultObject;
     }
 }

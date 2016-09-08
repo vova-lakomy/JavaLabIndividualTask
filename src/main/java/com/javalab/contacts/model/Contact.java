@@ -31,13 +31,13 @@ public class Contact {
 
     private String currentJob;
 
-    private ContactAddress contactAddress;
+    private Collection<ContactAddress> contactAddresses;
 
     private Collection<ContactAttachment> attachments;
 
     private String photoLink;
 
-    private PhoneNumber phoneNumber;
+    private Collection <PhoneNumber> phoneNumbers;
 
     public Integer getId() {
         return id;
@@ -127,12 +127,12 @@ public class Contact {
         this.currentJob = currentJob;
     }
 
-    public ContactAddress getContactAddress() {
-        return contactAddress;
+    public Collection<ContactAddress> getContactAddresses() {
+        return contactAddresses;
     }
 
-    public void setContactAddress(ContactAddress contactAddress) {
-        this.contactAddress = contactAddress;
+    public void setContactAddresses(Collection<ContactAddress> contactAddresses) {
+        this.contactAddresses = contactAddresses;
     }
 
     public Collection<ContactAttachment> getAttachments() {
@@ -151,18 +151,18 @@ public class Contact {
         this.photoLink = photoLink;
     }
 
-    public PhoneNumber getPhoneNumber() {
-        return phoneNumber;
+    public Collection<PhoneNumber> getPhoneNumbers() {
+        return phoneNumbers;
     }
 
-    public void setPhoneNumber(PhoneNumber phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhoneNumbers(Collection<PhoneNumber> phoneNumbers) {
+        this.phoneNumbers = phoneNumbers;
     }
 
-    public Contact(Integer id, String firstName, String secondName, String lastName, LocalDate dateOfBirth,
-                   Sex sex, String nationality, MartialStatus martialStatus, String webSite, String eMail,
-                   String currentJob, ContactAddress contactAddress, Collection<ContactAttachment> attachments,
-                   String photoLink, PhoneNumber phoneNumber) {
+    public Contact(Integer id, String firstName, String secondName, String lastName, LocalDate dateOfBirth, Sex sex,
+                   String nationality, MartialStatus martialStatus, String webSite, String eMail, String currentJob,
+                   Collection<ContactAddress> contactAddresses, Collection<ContactAttachment> attachments,
+                   String photoLink, Collection<PhoneNumber> phoneNumbers) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -174,10 +174,10 @@ public class Contact {
         this.webSite = webSite;
         this.eMail = eMail;
         this.currentJob = currentJob;
-        this.contactAddress = contactAddress;
+        this.contactAddresses = contactAddresses;
         this.attachments = attachments;
         this.photoLink = photoLink;
-        this.phoneNumber = phoneNumber;
+        this.phoneNumbers = phoneNumbers;
     }
 
     public Contact() {
@@ -200,11 +200,12 @@ public class Contact {
         if (webSite != null ? !webSite.equals(contact.webSite) : contact.webSite != null) return false;
         if (eMail != null ? !eMail.equals(contact.eMail) : contact.eMail != null) return false;
         if (currentJob != null ? !currentJob.equals(contact.currentJob) : contact.currentJob != null) return false;
-        if (contactAddress != null ? !contactAddress.equals(contact.contactAddress) : contact.contactAddress != null)
-            return false;
-        if (attachments != null ? !(attachments.size() == (contact.attachments.size())) : contact.attachments != null) return false;
+        if (contactAddresses != null ? !(contactAddresses.size()
+                == (contact.contactAddresses.size())) : contact.contactAddresses != null) return false;
+        if (attachments != null ? !(attachments.size()
+                == (contact.attachments.size())) : contact.attachments != null) return false;
         if (photoLink != null ? !photoLink.equals(contact.photoLink) : contact.photoLink != null) return false;
-        return phoneNumber != null ? phoneNumber.equals(contact.phoneNumber) : contact.phoneNumber == null;
+        return (phoneNumbers != null ? (phoneNumbers.size() == (contact.phoneNumbers.size())) : contact.phoneNumbers != null);
 
     }
 
@@ -227,10 +228,10 @@ public class Contact {
                 ", webSite='" + webSite + '\'' +
                 ", eMail='" + eMail + '\'' +
                 ", currentJob='" + currentJob + '\'' +
-                ", contactAddress=" + contactAddress +
+                ", contactAddresses=" + contactAddresses +
                 ", attachments=" + attachments +
                 ", photoLink='" + photoLink + '\'' +
-                ", phoneNumber=" + phoneNumber +
+                ", phoneNumbers=" + phoneNumbers +
                 '}';
     }
 }

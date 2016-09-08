@@ -4,6 +4,7 @@ import com.javalab.contacts.controller.FrontController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +16,7 @@ import java.io.PrintWriter;
 
 import static com.javalab.contacts.util.SqlScriptLoader.*;
 
-@WebServlet(loadOnStartup = 1, urlPatterns = "/contacts")
+@WebServlet(loadOnStartup = 1, urlPatterns = "/contacts/*")
 public class ContactServlet extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(ContactServlet.class);
@@ -39,6 +40,6 @@ public class ContactServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=UTF-8");
         req.setAttribute("contacts",controller.getAllContacts());
-        req.getRequestDispatcher("WEB-INF/index.jsp").forward(req,resp);
+        req.getRequestDispatcher("WEB-INF/contacts.jsp").forward(req,resp);
     }
 }

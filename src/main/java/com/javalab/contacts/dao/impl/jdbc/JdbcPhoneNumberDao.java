@@ -9,6 +9,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
 import static com.javalab.contacts.dao.impl.jdbc.DbConnectionProvider.*;
 import static com.javalab.contacts.dao.impl.jdbc.StatementExecutor.executeStatement;
@@ -17,12 +20,34 @@ import static com.javalab.contacts.dao.impl.jdbc.StatementExecutor.executeStatem
 public class JdbcPhoneNumberDao implements PhoneNumberDao {
 
     public PhoneNumber get(Integer id) {
-        return executeQuery("SELECT * FROM phone_number WHERE id=" + id);
+        Connection connection = receiveConnection();
+        PhoneNumber resultObject = new PhoneNumber();
+        try(Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM phone_number WHERE id=" + id);
+            while (resultSet.next()){
+                resultObject = createPhoneNumberFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        putBackConnection(connection);
+        return resultObject.getId() != null ? resultObject : null;
     }
 
     @Override
-    public PhoneNumber getByContactId(Integer contactId) {
-        return executeQuery("SELECT * FROM phone_number WHERE contact_id=" + contactId);
+    public Collection<PhoneNumber> getByContactId(Integer contactId) {
+        Connection connection = receiveConnection();
+        Collection <PhoneNumber> resultCollection = new ArrayList<>();
+        try(Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM phone_number WHERE contact_id=" + contactId);
+            while (resultSet.next()){
+                resultCollection.add(createPhoneNumberFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        putBackConnection(connection);
+        return resultCollection;
     }
 
     public void save(PhoneNumber phoneNumber, Integer contactId) {
@@ -64,23 +89,14 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
         executeStatement("DELETE FROM phone_number WHERE id=" + id);
     }
 
-    private PhoneNumber executeQuery(String query){
-        Connection connection = receiveConnection();
+    private PhoneNumber createPhoneNumberFromResultSet(ResultSet resultSet) throws SQLException {
         PhoneNumber resultObject = new PhoneNumber();
-        try(Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()){
-                resultObject.setId(resultSet.getInt("id"));
-                resultObject.setCountryCode(resultSet.getInt("country_code"));
-                resultObject.setOperatorCode(resultSet.getInt("operator_code"));
-                resultObject.setPhoneNumber(resultSet.getInt("phone_number"));
-                resultObject.setPhoneType(PhoneType.valueOf(resultSet.getString("phone_type")));
-                resultObject.setPhoneComment(resultSet.getString("phone_comment"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        putBackConnection(connection);
-        return resultObject.getId() != null ? resultObject : null;
+        resultObject.setId(resultSet.getInt("id"));
+        resultObject.setCountryCode(resultSet.getInt("country_code"));
+        resultObject.setOperatorCode(resultSet.getInt("operator_code"));
+        resultObject.setPhoneNumber(resultSet.getInt("phone_number"));
+        resultObject.setPhoneType(PhoneType.valueOf(resultSet.getString("phone_type")));
+        resultObject.setPhoneComment(resultSet.getString("phone_comment"));
+        return resultObject;
     }
 }

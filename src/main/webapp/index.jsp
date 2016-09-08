@@ -5,10 +5,10 @@
 </head>
 <body>
 <h3>testing</h3>
-<form method="post" action="contacts/add/?dfsdf=1">
+<form method="post" action="/contacts">
     <button type="submit">post</button>
 </form>
-<form method="get" action="contacts/add/?dfsdf=1">
+<form method="get" action="/contacts/add/?dfsdf=1">
     <button type="submit">get</button>
 </form>
 
