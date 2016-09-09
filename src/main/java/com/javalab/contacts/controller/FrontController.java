@@ -19,6 +19,8 @@ public class FrontController {
         Collection<ContactDTO> contactDTOs = new ArrayList<>();
         contactDao.getAllContacts().forEach(contact -> {
 
+            Integer id = contact.getId();
+
             String fullName = contact.getLastName() + "<br/>"
                             + contact.getFirstName() + " "
                             + contact.getSecondName();
@@ -38,7 +40,7 @@ public class FrontController {
 
             String company = contact.getCurrentJob();
 
-            contactDTOs.add(new ContactDTO(fullName,dateOfBirth,addresses,company));
+            contactDTOs.add(new ContactDTO(id,fullName,dateOfBirth,addresses,company));
         });
 
         return contactDTOs;

@@ -56,6 +56,12 @@ body{
     margin-top: 70px;
 }
 
+.jlab-contact-table-top-navigation-bar{
+    border-radius: 5px;
+    background-color: rgba(195, 195, 195, 0.48);
+    height: 35px;
+}
+
 .jlab-main-content-container{
     max-width: 1024px;
     margin: auto;
@@ -77,22 +83,19 @@ body{
     padding: 1px 16px;
     font-size: 12px;
     font-weight: 900;
+    margin-bottom: -15px;
 }
 
 .jlab-clickable-contact{
+    padding: 5px 5px;
     transition: 150ms;
 }
 .jlab-clickable-contact:hover{
-    background-color: #9d99fa;
+    background-color:#f0f0f0;
     cursor: pointer;
     transition: 120ms;
 }
 
-.jlab-padding-10{
-    word-wrap: break-word;
-    padding-left: 10px;
-    padding-right: 10px;
-}
 .jlab-photo-thumbnail-container{
     height: 50px;
     width: 50px;
@@ -103,10 +106,21 @@ body{
     padding: 1px;
     margin: 1px;
 }
+.jlab-main-photo-container{
+    height: 150px;
+    width: 130px;
+    border: 1px solid #c3c3c3;
+}
 .jlab-contact-full-name{
     font-size: 18px;
     font-weight: 600;
     margin: auto;
+}
+
+.jlab-table-bottom-navigation-bar {
+    text-align: right;
+    font-weight: 900;
+    font-size: 14px;
 }
 
 .jlab-footer-panel{
@@ -115,5 +129,19 @@ body{
     min-width: 100%;
     height: 30px;
     bottom: 0;
+}
+
+
+.jlab-horizontal-padding-10 {
+    word-wrap: break-word;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.jlab-vertical-padding-10{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.jlab-left-padding-15{
+    padding-left: 15px;
 }
 

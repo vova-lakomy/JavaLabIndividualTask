@@ -5,6 +5,8 @@ import java.util.Collection;
 
 public class ContactDTO {
 
+    private Integer id;
+
     private String fullName;
 
     private String dateOfBirth;
@@ -12,6 +14,10 @@ public class ContactDTO {
     private Collection<String> addresses;
 
     private String company;
+
+    public Integer getId() {
+        return id;
+    }
 
     public String getFullName() {
         return fullName;
@@ -29,7 +35,8 @@ public class ContactDTO {
         return company;
     }
 
-    public ContactDTO(String fullName, String dateOfBirth, Collection<String> addresses, String company) {
+    public ContactDTO(Integer id, String fullName, String dateOfBirth, Collection<String> addresses, String company) {
+        this.id = id;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
         this.addresses = addresses;

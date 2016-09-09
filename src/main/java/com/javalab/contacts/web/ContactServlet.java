@@ -39,6 +39,7 @@ public class ContactServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=UTF-8");
         req.setAttribute("contacts",controller.getAllContacts());
-        req.getRequestDispatcher("WEB-INF/contacts.jsp").forward(req,resp);
+//        req.getRequestDispatcher("WEB-INF/contacts.jsp").forward(req,resp);
+        req.getRequestDispatcher("WEB-INF/contact-edit-form.jsp").forward(req,resp);
     }
 }
