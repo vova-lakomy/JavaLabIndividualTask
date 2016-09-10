@@ -1,132 +1,39 @@
-.jlab-button-middle {
-    border: 1px solid gray;
-    border-radius: 0px;
-    padding: 4px 18px;
-    background-color: rgb(245, 245, 245);
-    color: black;
-    font-family: sans-serif;
-    font-size: 12px;
-    font-weight: 900;
-    transition: 500ms;
-    cursor: pointer;
-}
-
-
-.jlab-button-middle-disabled {
-    border: 1px solid gray;
-    border-radius: 0px;
-    padding: 4px 18px;
-    background-color: rgb(245, 245, 245);
-    color:rgba(0, 0, 0, 0.34);
-    font-family: sans-serif;
-    font-size: 12px;
-    font-weight: 900;
-    transition: 500ms;
-    cursor: not-allowed;
-}
-.jlab-button-left{
-    border: 1px solid gray;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    padding: 4px 18px;
-    background-color: rgb(245, 245, 245);
-    color: black;
-    font-family: sans-serif;
-    font-size: 12px;
-    font-weight: 900;
-    transition: 500ms;
-    cursor: pointer;
-}
-
-.jlab-button-disabled-left{
-    border: 1px solid gray;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    padding: 4px 18px;
-    background-color: rgb(245, 245, 245);
-    color:rgba(0, 0, 0, 0.34);
-    font-family: sans-serif;
-    font-size: 12px;
-    font-weight: 900;
-    transition: 500ms;
-    cursor: not-allowed;
-}
-.jlab-button-right{
-    border: 1px solid gray;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    padding: 4px 18px;
-    background-color: rgb(245, 245, 245);
-    color: black;
-    font-family: sans-serif;
-    font-size: 12px;
-    font-weight: 900;
-    transition: 500ms;
-    cursor: pointer;
-}
-
-.jlab-button-disabled-right{
-    border: 1px solid gray;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    padding: 4px 18px;
-    background-color: rgb(245, 245, 245);
-    color:rgba(0, 0, 0, 0.34);
-    font-family: sans-serif;
-    font-size: 12px;
-    font-weight: 900;
-    transition: 500ms;
-    cursor: not-allowed;
-}
-
 .jlab-button {
     border: 1px solid gray;
     border-radius: 5px;
     padding: 4px 18px;
     background-color: rgb(245, 245, 245);
     color: black;
-    font-family: sans-serif;
     font-size: 12px;
     font-weight: 900;
     transition: 500ms;
     cursor: pointer;
 }
 
-
-.jlab-button-disabled {
-    border: 1px solid gray;
-    border-radius: 5px;
-    padding: 4px 18px;
+.jlab-button:disabled{
     background-color: rgb(245, 245, 245);
     color:rgba(0, 0, 0, 0.34);
-    font-family: sans-serif;
-    font-size: 12px;
-    font-weight: 900;
-    transition: 500ms;
     cursor: not-allowed;
 }
 
-.jlab-button-middle:hover{
+.jlab-button:hover:not(:disabled){
     color: #ed1c24;
     background-color: #fff;
     transition: 250ms;
     box-shadow: 0px 0px 19px white;
 }
-.jlab-button-right:hover{
-    color: #ed1c24;
-    background-color: #fff;
-    transition: 250ms;
-    box-shadow: 0px 0px 19px white;
+.jlab-button-block .jlab-button{
+    float: left;
+    border-right-width: 0;
+    border-radius: 0;
 }
-.jlab-button-left:hover{
-    color: #ed1c24;
-    background-color: #fff;
-    transition: 250ms;
-    box-shadow: 0px 0px 19px white;
+.jlab-button-block .jlab-button:first-child{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+
 }
-.jlab-button:hover{
-    color: #ed1c24;
-    background-color: #fff;
-    transition: 250ms;
-    box-shadow: 0px 0px 19px white;
+.jlab-button-block .jlab-button:last-child{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-right-width: 1px;
 }

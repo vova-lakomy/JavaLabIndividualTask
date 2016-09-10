@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--<jsp:include page="page_components/header.jsp"/>--%>
 
 <div class="jlab-main-content-container">
     <div class="jlab-main-content">
@@ -23,10 +22,10 @@
                         Phone numbers:
                     </div>
                     <div class="jlab-cell-12">
-                        <div class="jlab-pull-right">
-                            <button class="jlab-button-left">add new</button>
-                            <button class="jlab-button-middle">edit</button>
-                            <button class="jlab-button-right">delete</button>
+                        <div class="jlab-pull-right jlab-button-block">
+                            <button type="button" class="jlab-button">add new</button>
+                            <button type="button" class="jlab-button">edit</button>
+                            <button type="button" class="jlab-button" disabled>delete</button>
                         </div>
                     </div>
                 </div>
@@ -49,6 +48,3 @@
         </div>
     </div>
 </div>
-
-
-<%--<jsp:include page="page_components/footer.jsp"/>--%>

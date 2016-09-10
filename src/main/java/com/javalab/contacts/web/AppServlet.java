@@ -4,7 +4,6 @@ import com.javalab.contacts.controller.FrontController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,9 +15,9 @@ import java.io.IOException;
 import static com.javalab.contacts.util.SqlScriptLoader.*;
 
 @WebServlet(loadOnStartup = 1, urlPatterns = "/contacts/*")
-public class ContactServlet extends HttpServlet {
+public class AppServlet extends HttpServlet {
 
-    private static final Logger logger = LogManager.getLogger(ContactServlet.class);
+    private static final Logger logger = LogManager.getLogger(AppServlet.class);
     private FrontController controller = new FrontController();
 
     @Override

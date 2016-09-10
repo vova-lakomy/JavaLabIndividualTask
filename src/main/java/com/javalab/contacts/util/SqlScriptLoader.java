@@ -1,7 +1,6 @@
 package com.javalab.contacts.util;
 
 
-import com.javalab.contacts.web.ContactServlet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
