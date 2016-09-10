@@ -29,7 +29,7 @@ public class DbConnectionProvider {
     }
 
     public static Connection receiveConnection(){
-        logger.debug("trying to get connection to DB");
+//        logger.debug("trying to get connection to DB");
         Connection connection = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -41,14 +41,14 @@ public class DbConnectionProvider {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        logger.debug("connection got.. connection number - " + ++connectionCount);
+//        logger.debug("connection got.. connection number - " + ++connectionCount);
         return connection;
     }
 
     static void putBackConnection(Connection connection){
         try {
             connection.close();
-            logger.debug("connection closed " + --connectionCount);
+//            logger.debug("connection closed " + --connectionCount);
         } catch (SQLException e) {
             e.printStackTrace();
         }

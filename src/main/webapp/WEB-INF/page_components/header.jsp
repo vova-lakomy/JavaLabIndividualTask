@@ -2,9 +2,9 @@
 <html>
 <head>
     <title>JavaLab 2016 Contacts List (Vova L.)</title>
-    <link href="resources/css/main.css" type="text/css" rel="stylesheet">
-    <link href="resources/css/custom-grid.css" type="text/css" rel="stylesheet">
-    <link href="resources/css/jlab-buttons.css" type="text/css" rel="stylesheet">
+    <link href="../resources/css/main.css" type="text/css" rel="stylesheet">
+    <link href="../resources/css/custom-grid.css" type="text/css" rel="stylesheet">
+    <link href="../resources/css/jlab-buttons.css" type="text/css" rel="stylesheet">
 </head>
 <body>
 <div class="jlab-header-panel">

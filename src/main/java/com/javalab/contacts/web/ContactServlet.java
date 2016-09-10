@@ -39,7 +39,11 @@ public class ContactServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=UTF-8");
         req.setAttribute("contacts",controller.getAllContacts());
-//        req.getRequestDispatcher("WEB-INF/contacts.jsp").forward(req,resp);
-        req.getRequestDispatcher("WEB-INF/contact-edit-form.jsp").forward(req,resp);
+        String requestURI = req.getRequestURI();
+        String form = requestURI.substring(requestURI.lastIndexOf('/')+1);
+        req.setAttribute("path",form);
+//        req.getRequestDispatcher("/WEB-INF/contacts.jsp").forward(req,resp);
+        logger.debug("method service");
+        req.getRequestDispatcher("/WEB-INF/app.jsp").forward(req,resp);
     }
 }
