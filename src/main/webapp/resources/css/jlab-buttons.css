@@ -6,7 +6,7 @@
     color: black;
     font-size: 12px;
     font-weight: 900;
-    transition: 500ms;
+    transition: background-color,color 500ms;
     cursor: pointer;
     text-decoration: none;
 }
@@ -20,7 +20,7 @@
 .jlab-button:hover:not(:disabled){
     color: #ed1c24;
     background-color: #fff;
-    transition: 250ms;
+    transition: background-color,color 250ms;
     box-shadow: 0px 0px 19px white;
 }
 .jlab-button-block .jlab-button{

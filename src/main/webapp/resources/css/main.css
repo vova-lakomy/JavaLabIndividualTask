@@ -146,6 +146,37 @@ body{
     border-radius: 5px;
     padding: 5px 20px;
 }
+.jlab-modal-container{
+    transition: 500ms;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.37);
+    z-index: 2;
+}
+.jlab-hidden{
+    /*transform: translateY(-100vh);*/
+    opacity: 0;
+    z-index: -1;
+}
+
+.jlab-modal{
+    border-radius: 5px;
+    border: 1px solid grey;
+    background-color: #ffffff;
+    max-width: 350px;
+    z-index: 3;
+    padding: 35px 20px;
+    margin: 140px auto auto;
+    box-shadow: 6px 6px 10px 1px rgba(0, 0, 0, 0.71);
+}
+.jlab-form-item{
+    padding: 10px 0;
+    width: 280px;
+    text-align: right;
+}
 
 .jlab-horizontal-padding-10 {
     word-wrap: break-word;
