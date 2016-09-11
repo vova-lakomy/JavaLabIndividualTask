@@ -32,8 +32,8 @@ public class JdbcPhoneNumberDaoTest {
         phoneNumberDao.save(phoneNumber1,1);
         phoneNumberDao.save(phoneNumber2,2);
 
+        assertTrue(phoneNumber1.equals(phoneNumberDao.get(15)));
         assertTrue(phoneNumber2.equals(phoneNumberDao.get(10)));
-        assertTrue(phoneNumber1.equals(phoneNumberDao.get(11)));
     }
 
     @Test
