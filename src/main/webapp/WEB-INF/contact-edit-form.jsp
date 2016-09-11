@@ -17,24 +17,9 @@
 
                 <jsp:include page="page_components/contact-edit-form/address-part.jsp"/>
 
-                <div class="jlab-row jlab-vertical-padding-10">
-                    <div class="jlab-cell-12">
-                        Phone numbers:
-                    </div>
-                    <div class="jlab-cell-12">
-                        <div class="jlab-pull-right jlab-button-block">
-                            <button type="button" class="jlab-button">add new</button>
-                            <button type="button" class="jlab-button">edit</button>
-                            <button type="button" class="jlab-button" disabled>delete</button>
-                        </div>
-                    </div>
-                </div>
+                <jsp:include page="page_components/contact-edit-form/phone-numbers-part.jsp"/>
 
-                <div class="jlab-row jlab-vertical-padding-10">
-                    <div class="jlab-cell-12">
-                        Attachments:
-                    </div>
-                </div>
+                <jsp:include page="page_components/contact-edit-form/attachments-part.jsp"/>
 
                 <%--submit--%>
                 <div class="jlab-row jlab-vertical-padding-10">
@@ -48,3 +33,29 @@
         </div>
     </div>
 </div>
+<form class="jlab-modal jlab-phone-number-edit-form">
+    <div class="jlab-form-item">
+        <label for="phone-number-country-code">Country code</label>
+        <input id="phone-number-country-code" name="countryCode" type="text" value="" placeholder="country code">
+    </div>
+    <div class="jlab-form-item">
+        <label for="phone-number-operator-code">Operator code</label>
+        <input id="phone-number-operator-code" name="operatorCode" type="text" value="" placeholder="operator code">
+    </div>
+    <div class="jlab-form-item">
+        <label for="phone-number">Phone number</label>
+        <input id="phone-number" name="phoneNumber" type="text" value="" placeholder="phone number">
+    </div>
+    <div class="jlab-form-item">
+        <label for="phone-type-select">Phone type</label>
+        <select id="phone-type-select" name="phoneType">
+            <option>mobile</option>
+            <option>home</option>
+        </select>
+    </div>
+
+    <div class="jlab-form-item">
+        <label for="phone-number-comment">Comment</label>
+        <input id="phone-number-comment" type="text" value="" placeholder="comment">
+    </div>
+</form>

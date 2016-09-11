@@ -19,11 +19,15 @@ ul li:last-child {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+li a{
+    color: black;
+    text-decoration: none;
+}
 body{
     margin: 0;
     padding: 0;
     background-color: #f7f7f7;
-    font-family: Verdana, Arial, sans-serif;
+    font-family: Arial, Verdana, sans-serif;
     font-size: 15px;
 }
 
@@ -47,9 +51,7 @@ body{
     min-width: 100%;
     height: 30px;
     background-color: #ffffff;
-    border-bottom-color: #f0f0f0;
-    border-bottom-width: 5px;
-    border-bottom-style: solid;
+    border-bottom: 5px solid #f0f0f0;
     box-shadow: 6px 1px 10px 1px rgba(0, 0, 0, 0.71);
 }
 .jlab-margin-top-70{
@@ -74,9 +76,7 @@ body{
     padding: 5px;
     margin-left: 10px;
     margin-right: 10px;
-    border-color: grey;
-    border-style: solid;
-    border-width: 1px;
+    border: 1px solid grey;
     border-radius: 5px;
     background-color: #fff;
     box-shadow: 6px 6px 10px 1px rgba(0, 0, 0, 0.71);
@@ -90,14 +90,13 @@ body{
     margin-bottom: -15px;
 }
 
-.jlab-clickable-contact{
+.jlab-selected-contact {
     padding: 5px 5px;
-    transition: 150ms;
+    transition: background-color 250ms;
 }
-.jlab-clickable-contact:hover{
+.jlab-selected-contact:hover{
     background-color:#f0f0f0;
-    cursor: pointer;
-    transition: 120ms;
+    transition: 130ms;
 }
 
 .jlab-photo-thumbnail-container{
@@ -134,7 +133,19 @@ body{
     height: 30px;
     bottom: 0;
 }
+.jlab-phone-numbers-table-caption{
 
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.jlab-phone-number-table-container{
+    border-style: solid;
+    border-width: 1px;
+    border-color: #c3c3c3;
+    border-radius: 5px;
+    padding: 5px 20px;
+}
 
 .jlab-horizontal-padding-10 {
     word-wrap: break-word;

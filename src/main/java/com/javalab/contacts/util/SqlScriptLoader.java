@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 
 import static com.javalab.contacts.dao.impl.jdbc.DbConnectionProvider.receiveConnection;
+import static com.javalab.contacts.dao.impl.jdbc.DbConnectionProvider.receiveInitialConnection;
 
 public class SqlScriptLoader {
     private static final Logger logger = LogManager.getLogger(SqlScriptLoader.class);
@@ -25,7 +26,7 @@ public class SqlScriptLoader {
                 fileBody.append(line);
             }
             String[] sqlLines = fileBody.toString().split(";");
-            try (Connection connection = receiveConnection()) {
+            try (Connection connection = receiveInitialConnection()) {
                 Statement statement = connection.createStatement();
                 for (String sqlLine : sqlLines) {
                     if (!sqlLine.trim().equals("")) { //don't execute empty line

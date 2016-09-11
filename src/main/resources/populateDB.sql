@@ -44,7 +44,11 @@ INSERT INTO contacts_vladimir_lakomy.phone_number (id,country_code,operator_code
            (7, 372, 23, 8574321, 'MOBILE', 'comment3', 7),
            (8, 375, 29, 9658123, 'HOME', 'comment4', 8),
            (9, 370, 32, 7456123, 'MOBILE', 'comment5', 9),
-           (10, 379, 29, 3214566, 'MOBILE', 'comment6', 10);
+           (10, 379, 29, 3214566, 'MOBILE', 'comment', 10),
+           (11, 790, 17, 1246531, 'HOME', 'this is home phone', 10),
+           (12, 560, 43, 1321456, 'HOME', 'one one one one', 10),
+           (13, 308, 12, 2194353, 'MOBILE', 'bla bla', 10),
+           (14, 120, 98, 3154687, 'MOBILE', 'bla bal bla bla', 10);
 
 INSERT INTO contacts_vladimir_lakomy.contact_address (id,country,town,street,house_number,flat_number,zip_code, contact_id)
     VALUES (1,'Belarus','Minsk','Independence ave.',12,65,220000, 1),

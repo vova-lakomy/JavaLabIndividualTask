@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS contacts_vladimir_lakomy;
-CREATE DATABASE contacts_vladimir_lakomy;
+CREATE DATABASE contacts_vladimir_lakomy CHARACTER SET utf8 ;
 
 USE contacts_vladimir_lakomy;
 

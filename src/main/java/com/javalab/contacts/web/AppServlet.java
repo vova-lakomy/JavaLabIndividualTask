@@ -35,14 +35,28 @@ public class AppServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html; charset=UTF-8");
-        req.setAttribute("contacts",controller.getAllContacts());
-        String requestURI = req.getRequestURI();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        processRequest(request,response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        processRequest(request,response);
+    }
+
+
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer contactId = null;
+        if (request.getParameter("contactId") != null) {
+            contactId = Integer.valueOf(request.getParameter("contactId"));
+        }
+        response.setContentType("text/html; charset=UTF-8");
+        request.setAttribute("phoneNumbers",controller.getPhoneNumbers(contactId));
+        request.setAttribute("attachments",controller.getAttachments(contactId));
+        request.setAttribute("contacts",controller.getAllContacts());
+        String requestURI = request.getRequestURI();
         String form = requestURI.substring(requestURI.lastIndexOf('/')+1);
-        req.setAttribute("path",form);
-//        req.getRequestDispatcher("/WEB-INF/contacts.jsp").forward(req,resp);
-        logger.debug("method service");
-        req.getRequestDispatcher("/WEB-INF/app.jsp").forward(req,resp);
+        request.setAttribute("path",form);
+        request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request,response);
     }
 }

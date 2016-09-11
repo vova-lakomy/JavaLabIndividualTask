@@ -8,6 +8,7 @@
     font-weight: 900;
     transition: 500ms;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .jlab-button:disabled{

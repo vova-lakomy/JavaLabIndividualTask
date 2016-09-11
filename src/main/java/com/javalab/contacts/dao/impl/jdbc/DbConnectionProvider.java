@@ -17,6 +17,7 @@ public class DbConnectionProvider {
     private static int connectionCount;
 
     private static Properties properties = new Properties();
+
     static {
         try {
             logger.debug("trying to get connection properties");
@@ -27,7 +28,7 @@ public class DbConnectionProvider {
         }
     }
 
-    public static Connection receiveConnection(){
+    private static Connection createConnection(Boolean isInitial) {
 //        logger.debug("trying to get connection to DB");
         Connection connection = null;
         try {
@@ -35,8 +36,13 @@ public class DbConnectionProvider {
             String user = properties.getProperty("mysql.user");
             String password = properties.getProperty("mysql.password");
             String options = "?useSSL=false";
-            String dbURL = properties.getProperty("mysql.url") + options;
-            connection = DriverManager.getConnection(dbURL,user,password);
+            String dbURL;
+            if (isInitial){
+                dbURL = properties.getProperty("mysql.db.url") + options;
+            } else {
+                dbURL = properties.getProperty("mysql.schema.url") + options;
+            }
+            connection = DriverManager.getConnection(dbURL, user, password);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,7 +50,15 @@ public class DbConnectionProvider {
         return connection;
     }
 
-    static void putBackConnection(Connection connection){
+    public static Connection receiveConnection() {
+        return createConnection(false);
+    }
+
+    public static Connection receiveInitialConnection(){
+        return createConnection(true);
+    }
+
+    static void putBackConnection(Connection connection) {
         try {
             connection.close();
 //            logger.debug("connection closed " + --connectionCount);

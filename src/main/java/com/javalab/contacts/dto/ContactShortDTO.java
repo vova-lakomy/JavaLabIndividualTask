@@ -3,7 +3,7 @@ package com.javalab.contacts.dto;
 
 import java.util.Collection;
 
-public class ContactDTO {
+public class ContactShortDTO {
 
     private Integer id;
 
@@ -35,7 +35,7 @@ public class ContactDTO {
         return company;
     }
 
-    public ContactDTO(Integer id, String fullName, String dateOfBirth, Collection<String> addresses, String company) {
+    public ContactShortDTO(Integer id, String fullName, String dateOfBirth, Collection<String> addresses, String company) {
         this.id = id;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
