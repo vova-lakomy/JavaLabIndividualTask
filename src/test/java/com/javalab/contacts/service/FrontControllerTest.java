@@ -1,7 +1,7 @@
 package com.javalab.contacts.service;
 
 
-import com.javalab.contacts.dto.DtoRepository;
+import com.javalab.contacts.repository.DtoRepository;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

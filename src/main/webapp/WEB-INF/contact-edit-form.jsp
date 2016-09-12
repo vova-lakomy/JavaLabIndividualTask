@@ -13,6 +13,8 @@
 
             <form action="javascript: alert('hello')">
 
+                <c:set var="fullContact" value="${fullContactInfo}" scope="request"/>
+
                 <jsp:include page="page_components/contact-edit-form/main-info-part.jsp"/>
 
                 <jsp:include page="page_components/contact-edit-form/address-part.jsp"/>

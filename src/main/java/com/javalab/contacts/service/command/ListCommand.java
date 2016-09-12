@@ -1,7 +1,7 @@
 package com.javalab.contacts.service.command;
 
 
-import com.javalab.contacts.dto.DtoRepository;
+import com.javalab.contacts.repository.DtoRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

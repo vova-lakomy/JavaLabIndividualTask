@@ -1,4 +1,4 @@
-package com.javalab.contacts.dto;
+package com.javalab.contacts.repository;
 
 
 import com.javalab.contacts.dao.ContactDao;
@@ -6,8 +6,10 @@ import com.javalab.contacts.dao.impl.jdbc.JdbcContactAttachmentDao;
 import com.javalab.contacts.dao.impl.jdbc.JdbcContactDao;
 import com.javalab.contacts.dao.impl.jdbc.JdbcPhoneNumberDao;
 import com.javalab.contacts.dto.AttachmentDTO;
+import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
+import com.javalab.contacts.model.Contact;
 
 
 import java.time.format.DateTimeFormatter;
@@ -86,5 +88,14 @@ public class DtoRepository {
         } else {
             return null;
         }
+    }
+
+    public ContactFullDTO getContactFullInfo(Integer id){
+        Contact contact = contactDao.get(id);
+        return new ContactFullDTO(id,contact.getFirstName(),contact.getSecondName(), contact.getLastName(),
+                contact.getDateOfBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                contact.getSex().name().toLowerCase(), contact.getNationality(),
+                contact.getMartialStatus().name().toLowerCase(), contact.getWebSite(), contact.geteMail(),
+                contact.getCurrentJob(), contact.getPhotoLink());
     }
 }
