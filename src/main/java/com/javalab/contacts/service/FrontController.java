@@ -28,7 +28,7 @@ public class FrontController {
         if (command != null) {
             command.execute(request,response);
         } else {
-            response.sendRedirect("/404.jsp");
+            response.sendRedirect("../404.jsp");
         }
     }
 
