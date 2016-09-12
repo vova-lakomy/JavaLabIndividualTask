@@ -2,7 +2,7 @@
 
 <div class="jlab-main-content-container">
     <div class="jlab-main-content">
-        <div class="jlab-edit-contact-form-container">
+        <div class="jlab-form-container">
             <div class="jlab-row">
                 <div class="jlab-cell-12">
                     <div class="jlab-main-photo-container">
@@ -35,4 +35,5 @@
 </div>
 
 <jsp:include page="page_components/contact-edit-form/modal-phone-edit.jsp"/>
+<jsp:include page="page_components/contact-edit-form/modal-attachment-edit.jsp"/>
 

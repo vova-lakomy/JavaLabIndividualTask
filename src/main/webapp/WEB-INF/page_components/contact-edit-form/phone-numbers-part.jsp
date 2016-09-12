@@ -1,12 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="jlab-row jlab-vertical-padding-10">
     <div class="jlab-cell-12">
-        <b>Phone numbers:</b>
+        <h4>Phone numbers:</h4>
     </div>
     <div class="jlab-cell-12">
         <div class="jlab-pull-right jlab-button-block">
             <button type="button" class="jlab-button"
-                    onclick="javascript: toggleClass($('#modal-phone-edit'),'jlab-hidden')">add new</button>
+                    onclick="toggleClass($('#modal-phone-edit'),'jlab-hidden')">add new</button>
             <button type="button" class="jlab-button">edit</button>
             <button type="button" class="jlab-button">delete</button>
         </div>

@@ -1,4 +1,4 @@
-package com.javalab.contacts.controller;
+package com.javalab.contacts.dto;
 
 
 import com.javalab.contacts.dao.ContactDao;
@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 
-public class FrontController {
+public class DtoRepository {
     private ContactDao contactDao = new JdbcContactDao();
 
-    public Collection<ContactShortDTO> getAllContacts(){
+    public Collection<ContactShortDTO> getContactsList(){
 
         Collection<ContactShortDTO> contactDTOs = new ArrayList<>();
         contactDao.getAllContacts().forEach(contact -> {

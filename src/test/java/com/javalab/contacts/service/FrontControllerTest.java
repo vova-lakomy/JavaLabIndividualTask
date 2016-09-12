@@ -1,6 +1,7 @@
-package com.javalab.contacts.controller;
+package com.javalab.contacts.service;
 
 
+import com.javalab.contacts.dto.DtoRepository;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -17,8 +18,8 @@ public class FrontControllerTest {
 
     @Test
     public void getAllContacts() throws Exception {
-        FrontController controller = new FrontController();
-        assertTrue(controller.getAllContacts().size() == 10);
+        DtoRepository controller = new DtoRepository();
+        assertTrue(controller.getContactsList().size() == 10);
     }
 
 }

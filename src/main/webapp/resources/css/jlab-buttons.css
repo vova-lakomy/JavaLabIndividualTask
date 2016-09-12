@@ -1,6 +1,6 @@
 .jlab-button {
     border: 1px solid gray;
-    border-radius: 5px;
+    border-radius: 3px;
     padding: 4px 18px;
     background-color: rgb(245, 245, 245);
     color: black;
@@ -29,12 +29,12 @@
     border-radius: 0;
 }
 .jlab-button-block .jlab-button:first-child{
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
 
 }
 .jlab-button-block .jlab-button:last-child{
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
     border-right-width: 1px;
 }

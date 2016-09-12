@@ -1,6 +1,6 @@
 <div id="modal-phone-edit" class="jlab-modal-container jlab-hidden">
     <form class="jlab-modal jlab-phone-number-edit-form">
-        <b>Edit a phone</b>
+        <h4>Edit phone</h4>
         <div class="jlab-form-item">
             <label for="phone-number-country-code">Country code</label>
             <input id="phone-number-country-code" name="countryCode" type="text" value="" placeholder="country code">
@@ -23,12 +23,12 @@
 
         <div class="jlab-form-item">
             <label for="phone-number-comment">Comment</label>
-            <input id="phone-number-comment" type="text" value="" placeholder="comment">
+            <input id="phone-number-comment" name="attachmentComment" type="text" value="" placeholder="comment">
         </div>
         <div class="jlab-form-item">
             <button type="button" class="jlab-button">save</button>
             <button type="button" class="jlab-button"
-                    onclick="javascript: toggleClass($('#modal-phone-edit'),'jlab-hidden')">cancel</button>
+                    onclick="toggleClass($('#modal-phone-edit'),'jlab-hidden')">cancel</button>
         </div>
     </form>
 </div>
