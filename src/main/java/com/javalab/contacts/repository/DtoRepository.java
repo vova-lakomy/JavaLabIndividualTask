@@ -10,6 +10,7 @@ import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
 import com.javalab.contacts.model.Contact;
+import com.javalab.contacts.model.ContactAddress;
 
 
 import java.time.format.DateTimeFormatter;
@@ -92,10 +93,16 @@ public class DtoRepository {
 
     public ContactFullDTO getContactFullInfo(Integer id){
         Contact contact = contactDao.get(id);
+        Collection<ContactAddress> addresses = contact.getContactAddresses();
+        ContactAddress address = null;                 // FIXME: 13.09.16 (takes the last item from collection only)
+        for (ContactAddress item : addresses){
+            address = item;
+        }
         return new ContactFullDTO(id,contact.getFirstName(),contact.getSecondName(), contact.getLastName(),
                 contact.getDateOfBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 contact.getSex().name().toLowerCase(), contact.getNationality(),
                 contact.getMartialStatus().name().toLowerCase(), contact.getWebSite(), contact.geteMail(),
-                contact.getCurrentJob(), contact.getPhotoLink());
+                contact.getCurrentJob(), address.getCountry(), address.getTown(), address.getStreet(),
+                address.getHouseNumber(),address.getFlatNumber(), address.getZipCode(),contact.getPhotoLink());
     }
 }

@@ -9,11 +9,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FrontController {
+public class AppController {
     private Map<String,Command> commandMap = new HashMap<>();
 
-    public FrontController(){
-        commandMap.put("list",new ListCommand());
+    public AppController(){
+        commandMap.put("list",new ListCommand());               //make lazy initialization
         commandMap.put("edit",new EditCommand());
         commandMap.put("search",new SearchCommand());
         commandMap.put("email",new MailCommand());

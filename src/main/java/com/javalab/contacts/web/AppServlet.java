@@ -1,6 +1,6 @@
 package com.javalab.contacts.web;
 
-import com.javalab.contacts.service.FrontController;
+import com.javalab.contacts.service.AppController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +19,7 @@ public class AppServlet extends HttpServlet {
 
 
     private static final Logger logger = LogManager.getLogger(AppServlet.class);
-    private FrontController frontController = new FrontController();
+    private AppController frontController = new AppController();
 
     @Override
     public void init(ServletConfig config) throws ServletException {

@@ -1,19 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="fullContact" value="${fullContactInfo}" scope="request"/>
 
 <div class="jlab-main-content-container">
     <div class="jlab-main-content">
         <div class="jlab-form-container">
-            <div class="jlab-row">
-                <div class="jlab-cell-12">
-                    <div class="jlab-main-photo-container">
-
-                    </div>
-                </div>
-            </div>
+            <jsp:include page="page_components/contact-edit-form/contact-photo-part.jsp"/>
 
             <form action="javascript: alert('hello')">
-
-                <c:set var="fullContact" value="${fullContactInfo}" scope="request"/>
 
                 <jsp:include page="page_components/contact-edit-form/main-info-part.jsp"/>
 
