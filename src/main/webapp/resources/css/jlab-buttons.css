@@ -21,7 +21,7 @@
     color: #ed1c24;
     background-color: #fff;
     transition: background-color,color 250ms;
-    box-shadow: 0px 0px 19px white;
+    /*box-shadow: 0px 0px 19px white;*/
 }
 .jlab-button-block .jlab-button{
     float: left;

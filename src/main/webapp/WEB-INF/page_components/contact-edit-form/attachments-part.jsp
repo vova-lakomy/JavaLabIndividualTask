@@ -1,13 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="jlab-row jlab-vertical-padding-10">
-    <div class="jlab-cell-12">
-        <h4>Attachments:</h4>
-    </div>
-    <div class="jlab-cell-12">
+<div class="jlab-row">
+    <div class="jlab-cell-12 jlab-inner-table-caption">
+        <span>Attachments:</span>
         <div class="jlab-pull-right jlab-button-block">
             <button type="button" class="jlab-button">add new</button>
             <button type="button" class="jlab-button"
-                    onclick="toggleClass($('#modal-attachment-edit'),'jlab-hidden')">edit</button>
+                    onclick="toggleClass($('#modal-attachment-edit'),'jlab-fade')">edit</button>
             <button type="button" class="jlab-button">delete</button>
         </div>
     </div>
@@ -15,8 +13,8 @@
 <c:choose>
     <c:when test="${attachments != null}">
 
-        <div class="jlab-phone-number-table-container">
-            <div class="jlab-row jlab-phone-numbers-table-caption jlab-left-padding-15">
+        <div class="jlab-inner-table-container">
+            <div class="jlab-row jlab-inner-table-column-caption jlab-left-padding-15">
                 <div class="jlab-cell-2">
                     File Name
                 </div>
@@ -53,7 +51,7 @@
     <c:otherwise>
         <div class="jlab-row jlab-vertical-padding-10">
             <div class="jlab-cell-12">
-                <i>nothing to display <a href="">add</a></i>
+                <i>nothing to display <a href="javascript: toggleClass($('#modal-attachment-edit'),'jlab-fade')">add</a></i>
             </div>
         </div>
     </c:otherwise>

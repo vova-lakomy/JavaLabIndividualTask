@@ -1,9 +1,17 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-    <div class="jlab-row">
+<div class="jlab-row">
         <div class="jlab-cell-12">
             <div class="jlab-main-photo-container">
 
-                <img src="http://vivabraslav.by/wp-content/uploads/2013/03/unknown-person.png" width="130" height="150">
+                <c:choose>
+                    <c:when test="${fullContact.photoLink == null}">
+                        <img src="../resources/img/unknown_person.png">
+                    </c:when>
+                   <c:otherwise>
+                       <img src="${fullContact.photoLink}">
+                   </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>

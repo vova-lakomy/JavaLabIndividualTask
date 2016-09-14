@@ -13,11 +13,14 @@ public class AppController {
     private Map<String,Command> commandMap = new HashMap<>();
 
     public AppController(){
-        commandMap.put("list",new ListCommand());               //make lazy initialization
+        commandMap.put("list",new ListCommand());               // FIXME: 13.09.16  make lazy initialization
         commandMap.put("edit",new EditCommand());
         commandMap.put("search",new SearchCommand());
         commandMap.put("email",new MailCommand());
+        commandMap.put("save",new SaveCommand());
     }
+
+
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

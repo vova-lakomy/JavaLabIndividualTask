@@ -1,4 +1,4 @@
-<div id="modal-phone-edit" class="jlab-modal-container jlab-hidden">
+<div id="modal-phone-edit" class="jlab-modal-container jlab-fade">
     <form class="jlab-modal jlab-phone-number-edit-form">
         <h4>Edit phone</h4>
         <div class="jlab-form-item">
@@ -28,7 +28,7 @@
         <div class="jlab-form-item">
             <button type="button" class="jlab-button">save</button>
             <button type="button" class="jlab-button"
-                    onclick="toggleClass($('#modal-phone-edit'),'jlab-hidden')">cancel</button>
+                    onclick="toggleClass($('#modal-phone-edit'),'jlab-fade')">cancel</button>
         </div>
     </form>
 </div>

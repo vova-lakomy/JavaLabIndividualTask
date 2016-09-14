@@ -31,6 +31,42 @@ body{
     font-size: 15px;
 }
 
+label {
+    width: 30%;
+}
+input[type="text"], select {
+    padding: 4px 5px;
+    border: 1px solid #c3c3c3;
+    border-radius: 3px;
+    width: 70%;
+    font-size: 15px;
+    margin-left: 10px;
+}
+select{
+    background-color: white;
+}
+.jlab-date-field{
+    width: 70%;
+    margin-left: 10px;
+}
+.jlab-date-field input[type="text"]{
+    border-radius: 0;
+    width: 33%;
+    margin: 0;
+    float: left;
+}
+.jlab-date-field input[type="text"]:first-child{
+    border-right-style: none;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+.jlab-date-field input[type="text"]:last-child{
+    border-left-style: none;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+
 .jlab-header-caption-black{
     font-size: 20px;
     font-weight: 900;
@@ -113,9 +149,16 @@ body{
     margin: 1px;
 }
 .jlab-main-photo-container{
-    height: 150px;
-    width: 130px;
+    height: 200px;
+    width: 200px;
     border: 1px solid #c3c3c3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.jlab-main-photo-container img{
+    max-height: 200px;
+    max-width: 200px;
 }
 .jlab-contact-full-name{
     font-size: 18px;
@@ -136,13 +179,24 @@ body{
     height: 30px;
     bottom: 0;
 }
-.jlab-phone-numbers-table-caption{
 
+.jlab-footer-panel-margin{
+    margin-bottom: 50px;
+}
+
+.jlab-inner-table-column-caption {
     font-size: 12px;
     font-weight: 900;
 }
 
-.jlab-phone-number-table-container{
+.jlab-inner-table-caption{
+    margin-top: 20px;
+    margin-bottom: -1px;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.jlab-inner-table-container {
     border-style: solid;
     border-width: 1px;
     border-color: #c3c3c3;
@@ -150,7 +204,7 @@ body{
     padding: 5px 20px;
 }
 .jlab-modal-container{
-    transition: 500ms;
+    transition: 300ms;
     position: fixed;
     top: 0;
     bottom: 0;
@@ -160,7 +214,10 @@ body{
     z-index: 2;
 }
 .jlab-hidden{
-    /*transform: translateY(-100vh);*/
+    display: none;
+}
+
+.jlab-fade{
     opacity: 0;
     z-index: -1;
 }
@@ -177,8 +234,9 @@ body{
 }
 .jlab-form-item{
     padding: 10px 0;
-    width: 280px;
     text-align: right;
+    display: flex;
+    align-items: center;
 }
 
 .jlab-horizontal-padding-10 {
@@ -199,4 +257,3 @@ body{
 .jlab-pull-left{
     float: left;
 }
-

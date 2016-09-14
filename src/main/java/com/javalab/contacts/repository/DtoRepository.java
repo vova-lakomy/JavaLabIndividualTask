@@ -11,8 +11,13 @@ import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
 import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
+import com.javalab.contacts.model.ContactAttachment;
+import com.javalab.contacts.model.PhoneNumber;
+import com.javalab.contacts.model.enumerations.MartialStatus;
+import com.javalab.contacts.model.enumerations.Sex;
 
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -95,14 +100,36 @@ public class DtoRepository {
         Contact contact = contactDao.get(id);
         Collection<ContactAddress> addresses = contact.getContactAddresses();
         ContactAddress address = null;                 // FIXME: 13.09.16 (takes the last item from collection only)
+        LocalDate dateOfBirth = contact.getDateOfBirth();
         for (ContactAddress item : addresses){
             address = item;
         }
         return new ContactFullDTO(id,contact.getFirstName(),contact.getSecondName(), contact.getLastName(),
-                contact.getDateOfBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                dateOfBirth.getDayOfMonth(), dateOfBirth.getMonthValue(), dateOfBirth.getYear(),
                 contact.getSex().name().toLowerCase(), contact.getNationality(),
                 contact.getMartialStatus().name().toLowerCase(), contact.getWebSite(), contact.geteMail(),
                 contact.getCurrentJob(), address.getCountry(), address.getTown(), address.getStreet(),
                 address.getHouseNumber(),address.getFlatNumber(), address.getZipCode(),contact.getPhotoLink());
+    }
+
+    public void saveContact(ContactFullDTO contact){
+        Collection<ContactAddress> addresses = new ArrayList<>();
+        contactDao.save(new Contact(
+                contact.getId(),
+                contact.getFirstName(),
+                contact.getSecondName(),
+                contact.getLastName(),
+                LocalDate.of(contact.getYearOfBirth(),contact.getMonthOfBirth(),contact.getDayOfBirth()),
+                Sex.valueOf(contact.getSex().toUpperCase()),
+                contact.getNationality(),
+                MartialStatus.valueOf(contact.getMartialStatus().toUpperCase()),
+                contact.getWebSite(),
+                contact.geteMail(),
+                contact.getCurrentJob(),
+                null,
+                null,
+                "test",
+                null
+        ));
     }
 }

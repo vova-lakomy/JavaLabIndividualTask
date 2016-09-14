@@ -29,10 +29,15 @@ VALUES
      'katjusha85@gmail.com', 'Mail.Ru', './resources/uploaded_files/img/kate.jpg'),
 
   (9,'Igor','Victorovich', 'Stepanov', '1980-04-01', 'MALE','Ukrainian','MARRIED','stepa.com',
-     'stepasha2001@gmail.com', 'Google', './resources/uploaded_files/img/igAr.jpg'),
+     'stepasha2001@gmail.com', 'Google', './resources/uploaded_files/img/igAr.jpg');
+
+INSERT INTO contacts_vladimir_lakomy.contact
+(id, first_name, second_name, last_name, date_of_birth, sex, nationality, martial_status, web_site,
+ e_mail, current_job)
+VALUES
 
   (10,'Dmitry','Anatoljevich', 'Mefnedev', '1965-09-14', 'MALE','Russian','MARRIED','mefned.com',
-      'mefned.dima@gmail.com', 'Yandex', './resources/uploaded_files/img/dima.jpg');
+      'mefned.dima@gmail.com', 'Yandex');
 
 INSERT INTO contacts_vladimir_lakomy.phone_number (id,country_code,operator_code,phone_number,phone_type, phone_comment, contact_id)
     VALUES (1, 375, 29, 7641640, 'MOBILE', 'comment1', 1),

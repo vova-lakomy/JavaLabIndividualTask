@@ -14,12 +14,12 @@ import java.io.IOException;
 
 import static com.javalab.contacts.util.SqlScriptLoader.*;
 
-@WebServlet(loadOnStartup = 1, urlPatterns = "/contacts/*")
-public class AppServlet extends HttpServlet {
+@WebServlet(loadOnStartup = 1, urlPatterns = {"/contacts/*"})
+public class FrontServlet extends HttpServlet {
 
 
-    private static final Logger logger = LogManager.getLogger(AppServlet.class);
-    private AppController frontController = new AppController();
+    private static final Logger logger = LogManager.getLogger(FrontServlet.class);
+    private AppController appController = new AppController();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -36,15 +36,7 @@ public class AppServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        frontController.processRequest(request,response);
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        appController.processRequest(req,resp);
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        frontController.processRequest(request,response);
-    }
-
-
-
 }

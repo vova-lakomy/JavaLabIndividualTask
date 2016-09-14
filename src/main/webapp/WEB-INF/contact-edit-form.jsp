@@ -4,11 +4,17 @@
 <div class="jlab-main-content-container">
     <div class="jlab-main-content">
         <div class="jlab-form-container">
-            <jsp:include page="page_components/contact-edit-form/contact-photo-part.jsp"/>
 
-            <form action="javascript: alert('hello')">
 
-                <jsp:include page="page_components/contact-edit-form/main-info-part.jsp"/>
+            <form action="save">
+                <div class="jlab-row">
+                    <div class="jlab-cell-3">
+                        <jsp:include page="page_components/contact-edit-form/contact-photo-part.jsp"/>
+                    </div>
+                    <div class="jlab-cell-9">
+                        <jsp:include page="page_components/contact-edit-form/main-info-part.jsp"/>
+                    </div>
+                </div>
 
                 <jsp:include page="page_components/contact-edit-form/address-part.jsp"/>
 
@@ -19,7 +25,7 @@
                 <%--submit--%>
                 <div class="jlab-row jlab-vertical-padding-10">
                     <div class="jlab-cell-12">
-                        <button type="submit" class="jlab-button">submit</button>
+                        <button type="submit" class="jlab-button jlab-pull-right">submit</button>
                     </div>
                 </div>
                 <%--/submit--%>

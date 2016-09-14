@@ -11,7 +11,11 @@ public class ContactFullDTO {
 
     private String lastName;
 
-    private String dateOfBirth;
+    private Integer dayOfBirth;
+
+    private Integer monthOfBirth;
+
+    private Integer yearOfBirth;
 
     private String sex;
 
@@ -55,8 +59,16 @@ public class ContactFullDTO {
         return lastName;
     }
 
-    public String getDateOfBirth() {
-        return dateOfBirth;
+    public Integer getDayOfBirth() {
+        return dayOfBirth;
+    }
+
+    public Integer getMonthOfBirth() {
+        return monthOfBirth;
+    }
+
+    public Integer getYearOfBirth() {
+        return yearOfBirth;
     }
 
     public String getSex() {
@@ -83,10 +95,6 @@ public class ContactFullDTO {
         return currentJob;
     }
 
-    public String getPhotoLink() {
-        return photoLink;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -111,15 +119,21 @@ public class ContactFullDTO {
         return zipCode;
     }
 
-    public ContactFullDTO(Integer id, String firstName, String secondName, String lastName, String dateOfBirth,
-                          String sex, String nationality, String martialStatus, String webSite, String eMail,
-                          String currentJob, String country, String town, String street, int houseNumber,
-                          int flatNumber, int zipCode, String photoLink) {
+    public String getPhotoLink() {
+        return photoLink;
+    }
+
+    public ContactFullDTO(Integer id, String firstName, String secondName, String lastName, Integer dayOfBirth,
+                          Integer monthOfBirth, Integer yearOfBirth, String sex, String nationality,
+                          String martialStatus, String webSite, String eMail, String currentJob, String country,
+                          String town, String street, int houseNumber, int flatNumber, int zipCode, String photoLink) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
+        this.dayOfBirth = dayOfBirth;
+        this.monthOfBirth = monthOfBirth;
+        this.yearOfBirth = yearOfBirth;
         this.sex = sex;
         this.nationality = nationality;
         this.martialStatus = martialStatus;
