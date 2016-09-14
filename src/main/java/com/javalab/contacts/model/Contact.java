@@ -31,7 +31,7 @@ public class Contact {
 
     private String currentJob;
 
-    private Collection<ContactAddress> contactAddresses;
+    private ContactAddress contactAddress;
 
     private Collection<ContactAttachment> attachments;
 
@@ -127,12 +127,12 @@ public class Contact {
         this.currentJob = currentJob;
     }
 
-    public Collection<ContactAddress> getContactAddresses() {
-        return contactAddresses;
+    public ContactAddress getContactAddress() {
+        return contactAddress;
     }
 
-    public void setContactAddresses(Collection<ContactAddress> contactAddresses) {
-        this.contactAddresses = contactAddresses;
+    public void setContactAddress(ContactAddress contactAddress) {
+        this.contactAddress = contactAddress;
     }
 
     public Collection<ContactAttachment> getAttachments() {
@@ -161,7 +161,7 @@ public class Contact {
 
     public Contact(Integer id, String firstName, String secondName, String lastName, LocalDate dateOfBirth, Sex sex,
                    String nationality, MartialStatus martialStatus, String webSite, String eMail, String currentJob,
-                   Collection<ContactAddress> contactAddresses, Collection<ContactAttachment> attachments,
+                   ContactAddress contactAddress, Collection<ContactAttachment> attachments,
                    String photoLink, Collection<PhoneNumber> phoneNumbers) {
         this.id = id;
         this.firstName = firstName;
@@ -174,7 +174,7 @@ public class Contact {
         this.webSite = webSite;
         this.eMail = eMail;
         this.currentJob = currentJob;
-        this.contactAddresses = contactAddresses;
+        this.contactAddress = contactAddress;
         this.attachments = attachments;
         this.photoLink = photoLink;
         this.phoneNumbers = phoneNumbers;
@@ -200,8 +200,7 @@ public class Contact {
         if (webSite != null ? !webSite.equals(contact.webSite) : contact.webSite != null) return false;
         if (eMail != null ? !eMail.equals(contact.eMail) : contact.eMail != null) return false;
         if (currentJob != null ? !currentJob.equals(contact.currentJob) : contact.currentJob != null) return false;
-        if (contactAddresses != null ? !(contactAddresses.size()
-                == (contact.contactAddresses.size())) : contact.contactAddresses != null) return false;
+        if (contactAddress != null ? !contactAddress.equals(contact.contactAddress) : contact.contactAddress != null) return false;
         if (attachments != null ? !(attachments.size()
                 == (contact.attachments.size())) : contact.attachments != null) return false;
         if (photoLink != null ? !photoLink.equals(contact.photoLink) : contact.photoLink != null) return false;
@@ -228,7 +227,7 @@ public class Contact {
                 ", webSite='" + webSite + '\'' +
                 ", eMail='" + eMail + '\'' +
                 ", currentJob='" + currentJob + '\'' +
-                ", contactAddresses=" + contactAddresses +
+                ", contactAddress=" + contactAddress +
                 ", attachments=" + attachments +
                 ", photoLink='" + photoLink + '\'' +
                 ", phoneNumbers=" + phoneNumbers +

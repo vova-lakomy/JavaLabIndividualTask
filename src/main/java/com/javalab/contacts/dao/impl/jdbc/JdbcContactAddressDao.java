@@ -35,19 +35,20 @@ public class JdbcContactAddressDao implements ContactAddressDao {
     }
 
     @Override
-    public Collection<ContactAddress> getByContactId(Integer contactId) {
+    public ContactAddress getByContactId(Integer contactId) {
         Connection connection = receiveConnection();
-        Collection<ContactAddress> resultCollection = new ArrayList<>();
+//        Collection<ContactAddress> resultCollection = new ArrayList<>();
+        ContactAddress resultObject = new ContactAddress();
         try(Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM contact_address WHERE contact_id=" + contactId);
             while (resultSet.next()){
-                resultCollection.add(createAddressFromResultSet(resultSet));
+                resultObject = createAddressFromResultSet(resultSet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         putBackConnection(connection);
-        return resultCollection;
+        return resultObject;
     }
 
     @Override

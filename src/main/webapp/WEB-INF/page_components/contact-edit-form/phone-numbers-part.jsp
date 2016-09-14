@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="jlab-row">
+<div id="phone-number-caption" class="jlab-row">
     <div class="jlab-cell-12 jlab-inner-table-caption">
         <span>Phone numbers:</span>
         <div class="jlab-pull-right jlab-button-block">
@@ -15,45 +15,47 @@
 </div>
 
 <c:choose>
-    <c:when test="${phoneNumbers != null}">
+    <c:when test="${fullContact.phoneNumbers != null}">
+        <div id="inner-phone-number-table" class="jlab-inner-table-container">
+            <ul class="jlab-row jlab-inner-table-column-caption">
+                <li class="jlab-cell-3">Phone number</li>
+                <li class="jlab-cell-2">Type</li>
+                <li class="jlab-cell-7">Comment</li>
+            </ul>
+            <div id="phone-number-rows">
+                <c:forEach var="phoneNumber" items="${fullContact.phoneNumbers}" varStatus="counter">
+                    <ul class="jlab-row">
+                        <li class="jlab-cell-3">
+                            <input type="checkbox" id="phoneNumberId${phoneNumber.id}">
+                            <input class="jlab-hidden" type="text" name="${counter.index}-phoneNumberId"
+                                   value="${phoneNumber.id}">
+                            <label for="phoneNumberId${phoneNumber.id}">${phoneNumber.fullNumber}</label>
+                            <input class="jlab-hidden" type="text" name="${counter.index}-countryCode"
+                                   value="${phoneNumber.countryCode}">
+                            <input class="jlab-hidden" type="text" name="${counter.index}-operatorCode"
+                                   value="${phoneNumber.operatorCode}">
+                            <input class="jlab-hidden" type="text" name="${counter.index}-number"
+                                   value="${phoneNumber.number}">
+                        </li>
 
-        <div class="jlab-inner-table-container">
-            <div class="jlab-row jlab-inner-table-column-caption jlab-left-padding-15">
-                <div class="jlab-cell-2">
-                    Phone number
-                </div>
-                <div class="jlab-cell-2">
-                    Type
-                </div>
-                <div class="jlab-cell-8">
-                    Comment
-                </div>
+                        <li class="jlab-cell-2">
+                                ${phoneNumber.type}
+                            <input class="jlab-hidden" type="text" name="${counter.index}-phoneType"
+                                   value="${phoneNumber.type}">
+                        </li>
+
+                        <li class="jlab-cell-7">
+                                ${phoneNumber.comment}
+                            <input class="jlab-hidden" type="text" name="${counter.index}-comment"
+                                   value="${phoneNumber.comment}">
+                        </li>
+                    </ul>
+                </c:forEach>
             </div>
-            <c:forEach var="phoneNumber" items="${phoneNumbers}">
-
-                <div class="jlab-row jlab-vertical-padding-10">
-                    <jsp:element name="input">
-                        <jsp:attribute name="type">checkbox</jsp:attribute>
-                        <jsp:attribute name="id">phoneNumberId=${phoneNumber.id}</jsp:attribute>
-                    </jsp:element>
-                    <div class="jlab-cell-2">
-                        <jsp:element name="label">
-                            <jsp:attribute name="for">phoneNumberId=${phoneNumber.id}</jsp:attribute>
-                            <jsp:body>${phoneNumber.number}</jsp:body>
-                        </jsp:element>
-                    </div>
-                    <div class="jlab-cell-2">
-                            ${phoneNumber.type}
-                    </div>
-                    <div class="jlab-cell-8">
-                            ${phoneNumber.comment}
-                    </div>
-                </div>
-            </c:forEach>
         </div>
     </c:when>
     <c:otherwise>
-        <div class="jlab-row jlab-vertical-padding-10">
+        <div id="nothing-to-display-phone-numbers" class="jlab-row jlab-vertical-padding-10">
             <div class="jlab-cell-12">
                 <i>nothing to display <a href="javascript:toggleClass($('#modal-phone-edit'),'jlab-fade')">add</a></i>
             </div>

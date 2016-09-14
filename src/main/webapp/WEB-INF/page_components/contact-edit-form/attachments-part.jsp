@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div class="jlab-row">
+<div id="attachment-table-caption" class="jlab-row">
     <div class="jlab-cell-12 jlab-inner-table-caption">
         <span>Attachments:</span>
         <div class="jlab-pull-right jlab-button-block">
@@ -28,15 +28,10 @@
             <c:forEach var="attachment" items="${attachments}">
 
                 <div class="jlab-row jlab-vertical-padding-10">
-                    <jsp:element name="input">
-                        <jsp:attribute name="type">checkbox</jsp:attribute>
-                        <jsp:attribute name="id">attachmentId=${attachment.id}</jsp:attribute>
-                    </jsp:element>
+                    <input class="jlab-hidden" type="text" name="attachmentId" value="${attachment.id}">
+                    <input type="checkbox" id="attachment-id ${attachment.id}">
                     <div class="jlab-cell-2">
-                        <jsp:element name="label">
-                            <jsp:attribute name="for">attachmentId=${attachment.id}</jsp:attribute>
-                            <jsp:body>${attachment.fileName}</jsp:body>
-                        </jsp:element>
+                        <label for="attachment-id ${attachment.id}">${attachment.fileName}</label>
                     </div>
                     <div class="jlab-cell-2">
                             ${attachment.uploadDate}

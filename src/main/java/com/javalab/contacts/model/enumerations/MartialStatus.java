@@ -6,6 +6,5 @@ public enum MartialStatus {
     DIVORCED,
     WIDOWED,
     SEPARATED,
-    SINGLE,
-    LIVING_COMMON_LAW
+    SINGLE
 }

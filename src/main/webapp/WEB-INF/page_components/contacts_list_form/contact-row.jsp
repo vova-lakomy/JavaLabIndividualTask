@@ -18,7 +18,7 @@
         </div>
         <div class="jlab-cell-4">
             <div class="jlab-horizontal-padding-10">
-                ${contact.addresses[0]}
+                ${contact.address}
             </div>
         </div>
         <div class="jlab-cell-2">

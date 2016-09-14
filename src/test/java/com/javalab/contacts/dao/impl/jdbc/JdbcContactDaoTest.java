@@ -36,19 +36,17 @@ public class JdbcContactDaoTest {
     @Test
     public void save() throws Exception {
         JdbcContactDao contactDao = new JdbcContactDao();
-        Collection<ContactAddress> addresses = new LinkedHashSet<>();
         Collection<ContactAttachment> attachments = new LinkedHashSet<>();
         Collection<PhoneNumber> phoneNumbers = new LinkedHashSet<>();
-        addresses.add(new ContactAddress(null,"Germany", "Giessen", "BlobStrasse", 2, 45, 55250));
-        addresses.add(new ContactAddress(null,"Germany", "Giessen", "ClobStrasse", 67, 2, 55252));
         phoneNumbers.add(new PhoneNumber(null,71,14,5547851, PhoneType.MOBILE,"lol"));
         Contact contact = new Contact(null,"firstName1","secondName1","lastName1", LocalDate.now(), Sex.FEMALE,
-                "German", MartialStatus.MARRIED,"super.web.site.com","name1@gmail.com","Oracle", addresses ,attachments,
+                "German", MartialStatus.MARRIED,"super.web.site.com","name1@gmail.com","Oracle",
+                new ContactAddress(null,"Germany", "Giessen", "ClobStrasse", 67, 2, 55252) ,attachments,
                 "./uploads/img/ava.jpg", phoneNumbers);
         contactDao.save(contact);
 
         assertTrue(contactDao.get(11).equals(contact));
-        assertTrue(contactDao.get(11).getContactAddresses().size() == 2);
+        assertTrue(contactDao.get(11).getContactAddress().getCountry().equals("Germany"));
 
 
         contact = contactDao.get(11);
@@ -58,8 +56,6 @@ public class JdbcContactDaoTest {
         contact.getAttachments().add(new ContactAttachment(null,"/uploads/test_save4.txt","attachment4",LocalDate.now()));
         contactDao.save(contact);
 
-        System.out.println(contact.getContactAddresses().size());
-        System.out.println(contactDao.get(11).getContactAddresses().size());
         assertTrue(contactDao.get(11).equals(contact));
     }
 

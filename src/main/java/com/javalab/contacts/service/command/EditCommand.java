@@ -11,16 +11,17 @@ public class EditCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        Integer contactId = null;
+
+        Integer contactId;
         if (request.getParameter("contactId") != null) {
             contactId = Integer.valueOf(request.getParameter("contactId"));
             request.setAttribute("fullContactInfo", dtoRepository.getContactFullInfo(contactId));
-            request.setAttribute("phoneNumbers", dtoRepository.getPhoneNumbers(contactId));
             request.setAttribute("attachments", dtoRepository.getAttachments(contactId));
-
         }
 
-
+        request.setAttribute("sexList",dtoRepository.getSexList());
+        request.setAttribute("martialStatusList",dtoRepository.getMartialStatusList());
+        request.setAttribute("phoneTypeList",dtoRepository.getPhoneTypeList());
         request.setAttribute("path","contact-edit-form.jsp");
         try {
             request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request,response);

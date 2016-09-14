@@ -6,7 +6,7 @@
         <div class="jlab-form-container">
 
 
-            <form action="save">
+            <form id="contact-edit-form" action="save">
                 <div class="jlab-row">
                     <div class="jlab-cell-3">
                         <jsp:include page="page_components/contact-edit-form/contact-photo-part.jsp"/>
@@ -37,4 +37,5 @@
 
 <jsp:include page="page_components/contact-edit-form/modal-phone-edit.jsp"/>
 <jsp:include page="page_components/contact-edit-form/modal-attachment-edit.jsp"/>
+<script type="text/javascript" src="../resources/js/contact-edit-form.js"></script>
 

@@ -127,8 +127,8 @@ public class JdbcContactDao implements ContactDao {
         if (contact.getAttachments() != null) {
             contact.getAttachments().forEach(attachment -> attachmentDao.save(attachment,contact.getId()));
         }
-        if (contact.getContactAddresses() != null) {
-            contact.getContactAddresses().forEach(address -> addressDao.save(address,contact.getId()));
+        if (contact.getContactAddress() != null) {
+            addressDao.save(contact.getContactAddress(),contact.getId());
         }
         if (contact.getPhoneNumbers() != null) {
             contact.getPhoneNumbers().forEach(phoneNumber -> phoneNumberDao.save(phoneNumber,contact.getId()));
@@ -156,7 +156,7 @@ public class JdbcContactDao implements ContactDao {
         resultObject.seteMail(resultSet.getString("e_mail"));
         resultObject.setCurrentJob(resultSet.getString("current_job"));
         resultObject.setPhotoLink(resultSet.getString("photo_link"));
-        resultObject.setContactAddresses(addressDao.getByContactId(resultObject.getId()));
+        resultObject.setContactAddress(addressDao.getByContactId(resultObject.getId()));
         resultObject.setPhoneNumbers(phoneNumberDao.getByContactId(resultObject.getId()));
         resultObject.setAttachments(attachmentDao.getByContactId(resultObject.getId()));
         return resultObject;

@@ -11,7 +11,7 @@ public class ContactShortDTO {
 
     private String dateOfBirth;
 
-    private Collection<String> addresses;
+    private String address;
 
     private String company;
 
@@ -27,19 +27,19 @@ public class ContactShortDTO {
         return dateOfBirth;
     }
 
-    public Collection<String> getAddresses() {
-        return addresses;
+    public String getAddress() {
+        return address;
     }
 
     public String getCompany() {
         return company;
     }
 
-    public ContactShortDTO(Integer id, String fullName, String dateOfBirth, Collection<String> addresses, String company) {
+    public ContactShortDTO(Integer id, String fullName, String dateOfBirth, String address, String company) {
         this.id = id;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
-        this.addresses = addresses;
+        this.address = address;
         this.company = company;
     }
 }

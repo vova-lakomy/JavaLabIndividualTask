@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="jlab-main-content-container">
-    <div class="jlab-main-content">
+    <div class="jlab-main-content jlab-main-list">
         <jsp:include page="page_components/contacts_list_form/top-navigation-bar.jsp"/>
         <ul>
             <li>

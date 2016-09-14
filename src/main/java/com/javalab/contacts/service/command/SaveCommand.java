@@ -38,12 +38,14 @@ public class SaveCommand implements Command {
                         Integer.parseInt(request.getParameter("houseNumber")),
                         Integer.parseInt(request.getParameter("flatNumber")),
                         Integer.parseInt(request.getParameter("zipCode")),
-                        request.getParameter("photoLink"))
+                        request.getParameter("photoLink"),
+                        null,null)
         );
 
         request.setAttribute("path","contact-list-form.jsp");
         try {
-            request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request,response);
+            response.sendRedirect("list");
+//            request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request,response);
         } catch (Exception e) {
             e.printStackTrace();
         }

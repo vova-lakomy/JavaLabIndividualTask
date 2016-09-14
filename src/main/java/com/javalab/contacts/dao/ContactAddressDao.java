@@ -9,7 +9,7 @@ public interface ContactAddressDao {
 
     ContactAddress get(Integer id);
 
-    Collection<ContactAddress> getByContactId(Integer contactId);
+    ContactAddress getByContactId(Integer contactId);
 
     void save(ContactAddress contactAddress, Integer contactId);
 

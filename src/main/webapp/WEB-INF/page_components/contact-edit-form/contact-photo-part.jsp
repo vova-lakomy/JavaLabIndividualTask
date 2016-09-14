@@ -5,7 +5,7 @@
             <div class="jlab-main-photo-container">
 
                 <c:choose>
-                    <c:when test="${fullContact.photoLink == null}">
+                    <c:when test="${(fullContact.photoLink == null) || (fullContact.photoLink eq 'null')}">
                         <img src="../resources/img/unknown_person.png">
                     </c:when>
                    <c:otherwise>

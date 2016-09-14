@@ -1,6 +1,8 @@
 package com.javalab.contacts.dto;
 
 
+import java.util.Collection;
+
 public class ContactFullDTO {
 
     private Integer id;
@@ -42,6 +44,10 @@ public class ContactFullDTO {
     private int zipCode;
 
     private String photoLink;
+
+    private Collection<PhoneNumberDTO> phoneNumbers;
+
+    private Collection<AttachmentDTO> attachments;
 
     public Integer getId() {
         return id;
@@ -123,10 +129,19 @@ public class ContactFullDTO {
         return photoLink;
     }
 
+    public Collection<PhoneNumberDTO> getPhoneNumbers() {
+        return phoneNumbers;
+    }
+
+    public Collection<AttachmentDTO> getAttachments() {
+        return attachments;
+    }
+
     public ContactFullDTO(Integer id, String firstName, String secondName, String lastName, Integer dayOfBirth,
                           Integer monthOfBirth, Integer yearOfBirth, String sex, String nationality,
                           String martialStatus, String webSite, String eMail, String currentJob, String country,
-                          String town, String street, int houseNumber, int flatNumber, int zipCode, String photoLink) {
+                          String town, String street, int houseNumber, int flatNumber, int zipCode, String photoLink,
+                          Collection<PhoneNumberDTO> phoneNumbers, Collection<AttachmentDTO> attachments) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -147,5 +162,7 @@ public class ContactFullDTO {
         this.flatNumber = flatNumber;
         this.zipCode = zipCode;
         this.photoLink = photoLink;
+        this.phoneNumbers = phoneNumbers;
+        this.attachments = attachments;
     }
 }

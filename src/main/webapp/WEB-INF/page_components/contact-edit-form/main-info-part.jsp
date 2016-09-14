@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="jlab-row">
     <div class="jlab-cell-12">
 
@@ -6,7 +7,7 @@
 
             <div class="jlab-cell-6">
                 <div class="jlab-form-item">
-                    <input class="jlab-hidden" name="contactId" value="${fullContact.contactId}">
+                    <input class="jlab-hidden" name="contactId" value="${fullContact.id}">
                     <label for="edit-form-first-name">First name</label>
                     <input id="edit-form-first-name" type="text" name="firstName" value="${fullContact.firstName}"
                            placeholder="first name">
@@ -20,7 +21,7 @@
 
                 <div class="jlab-form-item">
                     <label for="edit-form-second-name">Second name</label>
-                    <input id="edit-form-second-name" type="text" name="secondtName" value="${fullContact.secondName}"
+                    <input id="edit-form-second-name" type="text" name="secondName" value="${fullContact.secondName}"
                            placeholder="second name">
                 </div>
 
@@ -39,8 +40,16 @@
                 <div class="jlab-form-item">
                     <label for="edit-form-sex">Sex</label>
                     <select id="edit-form-sex" name="sex">
-                        <option>male</option>
-                        <option>female</option>
+                        <c:forEach items="${sexList}" var="value">
+                            <c:choose>
+                                <c:when test="${value eq fullContact.sex}">
+                                    <option selected value="${value}">${value}</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="${value}">${value}</option>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
                     </select>
                 </div>
 
@@ -56,9 +65,18 @@
 
                 <div class="jlab-form-item">
                     <label for="edit-form-martial-status">Martial status</label>
-                    <input id="edit-form-martial-status" type="text" name="martialStatus"
-                           value="${fullContact.martialStatus}"
-                           placeholder="martial status">
+                    <select id="edit-form-martial-status" name="martialStatus">
+                        <c:forEach items="${martialStatusList}" var="value">
+                            <c:choose>
+                                <c:when test="${value eq fullContact.martialStatus}">
+                                    <option selected value="${value}">${value}</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="${value}">${value}</option>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </select>
                 </div>
 
                 <div class="jlab-form-item">
@@ -75,7 +93,7 @@
 
                 <div class="jlab-form-item">
                     <label for="edit-form-company">Company</label>
-                    <input id="edit-form-company" type="text" name="company" value="${fullContact.currentJob}"
+                    <input id="edit-form-company" type="text" name="currentJob" value="${fullContact.currentJob}"
                            placeholder="company">
                 </div>
 

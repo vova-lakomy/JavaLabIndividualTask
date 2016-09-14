@@ -1,5 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div id="modal-phone-edit" class="jlab-modal-container jlab-fade">
-    <form class="jlab-modal jlab-phone-number-edit-form">
+    <form id="phone-edit-form" class="jlab-modal jlab-phone-number-edit-form">
         <h4>Edit phone</h4>
         <div class="jlab-form-item">
             <label for="phone-number-country-code">Country code</label>
@@ -16,19 +17,30 @@
         <div class="jlab-form-item">
             <label for="phone-type-select">Phone type</label>
             <select id="phone-type-select" name="phoneType">
-                <option>mobile</option>
-                <option>home</option>
+                <c:forEach items="${phoneTypeList}" var="value">
+                    <c:choose>
+                        <c:when test="${value eq null}">
+                            <option selected value="${value}">${value}</option>
+                        </c:when>
+                        <c:otherwise>
+                            <option value="${value}">${value}</option>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
             </select>
         </div>
 
         <div class="jlab-form-item">
             <label for="phone-number-comment">Comment</label>
-            <input id="phone-number-comment" name="attachmentComment" type="text" value="" placeholder="comment">
+            <input id="phone-number-comment" name="phoneComment" type="text" value="" placeholder="comment">
         </div>
         <div class="jlab-form-item">
-            <button type="button" class="jlab-button">save</button>
+            <button id="save-phoneNumber" type="button" class="jlab-button">save</button>
             <button type="button" class="jlab-button"
                     onclick="toggleClass($('#modal-phone-edit'),'jlab-fade')">cancel</button>
+        </div>
+        <div id="stored-phone-numbers">
+
         </div>
     </form>
 </div>
