@@ -8,18 +8,13 @@ import javax.servlet.http.HttpServletResponse;
 
 public class SaveCommand implements Command {
 
-    DtoRepository repository = new DtoRepository();
+    private DtoRepository repository = new DtoRepository();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         Integer id = null;
         if (!request.getParameter("contactId").equals("")){
             id = Integer.parseInt(request.getParameter("contactId"));
-        }
-
-        Integer addressId = null;
-        if (!request.getParameter("addressId").equals("")) {
-            addressId = Integer.parseInt(request.getParameter("addressId"));
         }
 
         repository.saveContact(
@@ -37,7 +32,7 @@ public class SaveCommand implements Command {
                         request.getParameter("webSite"),
                         request.getParameter("eMail"),
                         request.getParameter("currentJob"),
-                        addressId,
+                        null,
                         request.getParameter("country"),
                         request.getParameter("town"),
                         request.getParameter("street"),
@@ -51,7 +46,6 @@ public class SaveCommand implements Command {
         request.setAttribute("path","contact-list-form.jsp");
         try {
             response.sendRedirect("list");
-//            request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request,response);
         } catch (Exception e) {
             e.printStackTrace();
         }

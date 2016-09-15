@@ -46,6 +46,7 @@ public class JdbcContactDaoTest {
         contactDao.save(contact);
 
         assertTrue(contactDao.get(11).equals(contact));
+
         assertTrue(contactDao.get(11).getContactAddress().getCountry().equals("Germany"));
 
 

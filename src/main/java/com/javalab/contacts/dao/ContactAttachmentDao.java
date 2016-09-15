@@ -13,6 +13,6 @@ public interface ContactAttachmentDao {
 
     void save(ContactAttachment contactAttachment, Integer contactId);
 
-    void delete(int id);
+    void delete(Integer id);
 
 }

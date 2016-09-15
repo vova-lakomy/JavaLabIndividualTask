@@ -10,10 +10,10 @@ public interface ContactDao {
 
     Contact get(Integer id);
 
-    Collection<Contact> getAllContacts();
+    Collection<Contact> getContactList();
 
     void save(Contact contact);
 
-    void delete(int id);
+    void delete(Integer id);
 
 }

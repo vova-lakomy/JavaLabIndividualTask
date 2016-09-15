@@ -16,24 +16,30 @@ CREATE TABLE contacts_vladimir_lakomy.contact
   web_site            VARCHAR(200),
   e_mail              VARCHAR(50),
   current_job         VARCHAR(50),
-  photo_link          VARCHAR(200)
-
-);
-
-CREATE TABLE contacts_vladimir_lakomy.contact_address
-(
-  id                  INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  photo_link          VARCHAR(200),
   country             VARCHAR(30),
   town                VARCHAR(30),
   street              VARCHAR(30),
   house_number        INT,
   flat_number         INT,
-  zip_code            INT,
-  contact_id          INT,
-  FOREIGN KEY (contact_id)
-    REFERENCES contacts_vladimir_lakomy.contact(id)
-    ON DELETE CASCADE
+  zip_code            INT
+
 );
+
+# CREATE TABLE contacts_vladimir_lakomy.contact_address
+# (
+#   id                  INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+#   country             VARCHAR(30),
+#   town                VARCHAR(30),
+#   street              VARCHAR(30),
+#   house_number        INT,
+#   flat_number         INT,
+#   zip_code            INT,
+#   contact_id          INT,
+#   FOREIGN KEY (contact_id)
+#     REFERENCES contacts_vladimir_lakomy.contact(id)
+#     ON DELETE CASCADE
+# );
 
 CREATE TABLE contacts_vladimir_lakomy.contact_attachment
 (

@@ -3,6 +3,7 @@ package com.javalab.contacts.dao;
 
 import com.javalab.contacts.model.PhoneNumber;
 
+import java.sql.SQLException;
 import java.util.Collection;
 
 public interface PhoneNumberDao {
@@ -13,6 +14,6 @@ public interface PhoneNumberDao {
 
     void save(PhoneNumber phoneNumber, Integer contactId);
 
-    void delete(int id);
+    void delete(Integer id);
 
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<Context>
+
+    <Resource name="jdbc/contacts_vladimir_lakomy"
+              auth="Container"
+              type="javax.sql.DataSource"
+              validationQuery="SELECT 1"
+              timeBetweenEvictionRunsMillis="30000"
+              maxTotal="20"
+              minIdle="10"
+              maxWaitMillis="10000"
+              initialSize="10"
+              minEvictableIdleTimeMillis="30000"
+              username="root"
+              password="root"
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/contacts_vladimir_lakomy?useSSL=false"/>
+</Context>

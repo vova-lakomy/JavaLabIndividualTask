@@ -49,7 +49,7 @@ public class DtoRepository {
     public Collection<ContactShortDTO> getContactsList(){
 
         Collection<ContactShortDTO> contactDTOs = new ArrayList<>();
-        contactDao.getAllContacts().forEach(contact -> {
+        contactDao.getContactList().forEach(contact -> {
 
             Integer id = contact.getId();
 

@@ -32,8 +32,6 @@ public class JdbcContactAttachmentDaoTest {
         attachmentDao.save(attachment1,8);
         attachmentDao.save(attachment2,8);
 
-        attachmentDao.save(null,null);
-
         assertTrue(null != attachmentDao.get(15));
         assertTrue(attachment2.equals(attachmentDao.get(2)));
     }

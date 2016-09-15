@@ -5,88 +5,146 @@ import com.javalab.contacts.model.PhoneNumber;
 import com.javalab.contacts.model.enumerations.PhoneType;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashSet;
-
-import static com.javalab.contacts.dao.impl.jdbc.DbConnectionProvider.*;
-import static com.javalab.contacts.dao.impl.jdbc.StatementExecutor.executeStatement;
-
 
 public class JdbcPhoneNumberDao implements PhoneNumberDao {
 
+    private ConnectionManager connectionManager = ConnectionManager.getInstance();
+
     public PhoneNumber get(Integer id) {
-        Connection connection = receiveConnection();
+        PreparedStatement statementGetPhoneNumber = null;
+        Connection connection = connectionManager.receiveConnection();
         PhoneNumber resultObject = new PhoneNumber();
-        try(Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM phone_number WHERE id=" + id);
-            while (resultSet.next()){
+        try {
+            connection.setAutoCommit(false);
+            statementGetPhoneNumber = connection.prepareStatement("SELECT * FROM phone_number WHERE id= ?");
+            statementGetPhoneNumber.setInt(1, id);
+            ResultSet resultSet = statementGetPhoneNumber.executeQuery();
+            while (resultSet.next()) {
                 resultObject = createPhoneNumberFromResultSet(resultSet);
             }
+            resultSet.close();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (statementGetPhoneNumber != null) {
+                    statementGetPhoneNumber.close();
+                }
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            connectionManager.putBackConnection(connection);
         }
-        putBackConnection(connection);
         return resultObject.getId() != null ? resultObject : null;
     }
 
     @Override
     public Collection<PhoneNumber> getByContactId(Integer contactId) {
-        Connection connection = receiveConnection();
-        Collection <PhoneNumber> resultCollection = new ArrayList<>();
-        try(Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM phone_number WHERE contact_id=" + contactId);
-            while (resultSet.next()){
+        Connection connection = connectionManager.receiveConnection();
+        Collection<PhoneNumber> resultCollection = new ArrayList<>();
+        PreparedStatement statementGetByContactId = null;
+        try {
+            connection.setAutoCommit(false);
+            statementGetByContactId = connection.prepareStatement("SELECT * FROM phone_number WHERE contact_id=?");
+            statementGetByContactId.setInt(1, contactId);
+            ResultSet resultSet = statementGetByContactId.executeQuery();
+            while (resultSet.next()) {
                 resultCollection.add(createPhoneNumberFromResultSet(resultSet));
             }
+            resultSet.close();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (statementGetByContactId != null) {
+                    statementGetByContactId.close();
+                }
+                connection.setAutoCommit(false);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            connectionManager.putBackConnection(connection);
         }
-        putBackConnection(connection);
         return resultCollection;
     }
 
-    public void save(PhoneNumber phoneNumber, Integer contactId) {
+    public void save(PhoneNumber phoneNumber, Integer contactId){
+
+        PreparedStatement statementSavePhoneNumber = null;
+        Connection connection = connectionManager.receiveConnection();
+        String queryAddPhoneNumber = "";
+        if (phoneNumber.getId() == null){
+            queryAddPhoneNumber =
+                    "INSERT INTO phone_number " +
+                            "(country_code, operator_code, phone_number, phone_type, phone_comment, contact_id) " +
+                            "VALUES (?,?,?,?,?,?)";
+        } else {
+            queryAddPhoneNumber =
+                    "UPDATE phone_number SET " +
+                            "country_code=?, operator_code=?, phone_number=?, phone_type=?, phone_comment=?, contact_id=? " +
+                            "WHERE id=" + phoneNumber.getId();
+        }
         Integer countryCode = phoneNumber.getCountryCode();
         Integer operatorCode = phoneNumber.getOperatorCode();
         Integer number = phoneNumber.getPhoneNumber();
         String phoneType = phoneNumber.getPhoneType().name();
         String phoneComment = phoneNumber.getPhoneComment();
-        String query;
 
-        if (phoneNumber.getId() == null) {
-            query = "INSERT INTO phone_number " +
-                    "(country_code, " +
-                    "operator_code, " +
-                    "phone_number, " +
-                    "phone_type, " +
-                    "phone_comment, " +
-                    "contact_id) " +
-                    "VALUES (" +
-                    countryCode + "," +
-                    operatorCode + "," +
-                    number + ", '" +
-                    phoneType + "','" +
-                    phoneComment + "'," +
-                    contactId + ")";
-        } else {
-            query = "UPDATE phone_number SET " +
-                    "country_code=" + countryCode +
-                    ", operator_code=" + operatorCode +
-                    ", phone_number=" + number +
-                    ", phone_type='" + phoneType +
-                    "', phone_comment='" + phoneComment +
-                    "' WHERE id=" + phoneNumber.getId();
+        try {
+            connection.setAutoCommit(false);
+            statementSavePhoneNumber = connection.prepareStatement(queryAddPhoneNumber);
+            statementSavePhoneNumber.setInt(1,countryCode);
+            statementSavePhoneNumber.setInt(2,operatorCode);
+            statementSavePhoneNumber.setInt(3,number);
+            statementSavePhoneNumber.setString(4,phoneType);
+            statementSavePhoneNumber.setString(5,phoneComment);
+            statementSavePhoneNumber.setInt(6,contactId);
+            statementSavePhoneNumber.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (statementSavePhoneNumber != null) {
+                    statementSavePhoneNumber.close();
+                }
+                connection.setAutoCommit(true);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            connectionManager.putBackConnection(connection);
         }
-        executeStatement(query);
     }
 
-    public void delete(int id) {
-        executeStatement("DELETE FROM phone_number WHERE id=" + id);
+    public void delete(Integer id) {
+        PreparedStatement statementDeletePhoneNumber = null;
+        Connection connection = connectionManager.receiveConnection();
+        try {
+            connection.setAutoCommit(false);
+            statementDeletePhoneNumber = connection.prepareStatement("DELETE FROM phone_number WHERE id= ?");
+            statementDeletePhoneNumber.setInt(1,id);
+            statementDeletePhoneNumber.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (statementDeletePhoneNumber != null) {
+                    statementDeletePhoneNumber.close();
+                }
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            connectionManager.putBackConnection(connection);
+        }
     }
 
     private PhoneNumber createPhoneNumberFromResultSet(ResultSet resultSet) throws SQLException {
