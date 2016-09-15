@@ -3,10 +3,7 @@ package com.javalab.contacts.dao.impl.jdbc;
 import com.javalab.contacts.dao.ContactAddressDao;
 import com.javalab.contacts.model.ContactAddress;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -17,6 +14,7 @@ import static com.javalab.contacts.dao.impl.jdbc.StatementExecutor.executeStatem
 
 
 public class JdbcContactAddressDao implements ContactAddressDao {
+
 
     @Override
     public ContactAddress get(Integer id) {
@@ -53,42 +51,85 @@ public class JdbcContactAddressDao implements ContactAddressDao {
 
     @Override
     public void save(ContactAddress contactAddress, Integer contactId) {
+        PreparedStatement statementSaveAddress = null;
+        Connection connection = receiveConnection();
+        String querySaveAddress;
+        if (contactAddress.getId() == null){
+            querySaveAddress =
+                    "INSERT INTO contact_address " +
+                    "(country, town, street, house_number, flat_number, zip_code, contact_id) " +
+                    "VALUES (?,?,?,?,?,?,?)";
+        } else {
+            querySaveAddress = "UPDATE contact_address SET " +
+                    "country=?, town=?, street=?, house_number=?, flat_number=?, zip_code=?, contact_id=? " +
+                    "WHERE id=" + contactAddress.getId();
+        }
+
+
         String country = contactAddress.getCountry();
         String town = contactAddress.getTown();
         String street = contactAddress.getStreet();
         int houseNumber = contactAddress.getHouseNumber();
         int flatNumber = contactAddress.getFlatNumber();
         int zipCode = contactAddress.getZipCode();
-        String query;
-        if (contactAddress.getId() == null) {
-            query = "INSERT INTO contact_address " +
-                    "(country, " +
-                    "town, " +
-                    "street, " +
-                    "house_number, " +
-                    "flat_number, " +
-                    "zip_code, " +
-                    "contact_id) " +
-                    "VALUES ('" +
-                    country + "', '" +
-                    town + "', '" +
-                    street + "', " +
-                    houseNumber + ", " +
-                    flatNumber + ", " +
-                    zipCode + "," +
-                    contactId + ")";
-        } else {
-            query = "UPDATE contact_address SET " +
-                    "country='" + country +
-                    "', town='" + town +
-                    "', street='" + street +
-                    "', house_number=" + houseNumber +
-                    ", flat_number=" + flatNumber +
-                    ", zip_code=" + zipCode +
-                    ", contact_id=" + contactId +
-                    " WHERE id=" + contactAddress.getId();
+
+        try {
+            connection.setAutoCommit(false);
+            statementSaveAddress = connection.prepareStatement(querySaveAddress);
+            statementSaveAddress.setString(1,country);
+            statementSaveAddress.setString(2,town);
+            statementSaveAddress.setString(3,street);
+            statementSaveAddress.setInt(4,houseNumber);
+            statementSaveAddress.setInt(5,flatNumber);
+            statementSaveAddress.setInt(6,zipCode);
+            statementSaveAddress.setInt(7,contactId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statementSaveAddress.close();
+                connection.commit();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            putBackConnection(connection);
         }
-        executeStatement(query);
+    }
+
+    @Override
+    public void save(ContactAddress contactAddress, Integer contactId, Connection connection) {
+//        PreparedStatement statementSaveAddress = null;
+//        String querySaveAddress = "INSERT INTO contact_address " +
+//                "(country, town, street, house_number, flat_number, zip_code, contact_id) " +
+//                "VALUES (?,?,?,?,?,?,?)";
+//
+//        String country = contactAddress.getCountry();
+//        String town = contactAddress.getTown();
+//        String street = contactAddress.getStreet();
+//        int houseNumber = contactAddress.getHouseNumber();
+//        int flatNumber = contactAddress.getFlatNumber();
+//        int zipCode = contactAddress.getZipCode();
+//
+//        try {
+//            statementSaveAddress = connection.prepareStatement(querySaveAddress);
+//            statementSaveAddress.setString(1,country);
+//            statementSaveAddress.setString(2,town);
+//            statementSaveAddress.setString(3,street);
+//            statementSaveAddress.setInt(4,houseNumber);
+//            statementSaveAddress.setInt(5,flatNumber);
+//            statementSaveAddress.setInt(6,zipCode);
+//            statementSaveAddress.setInt(7,contactId);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                statementSaveAddress.close();
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+
     }
 
     @Override

@@ -7,11 +7,9 @@ import com.javalab.contacts.dao.PhoneNumberDao;
 import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.enumerations.MartialStatus;
 import com.javalab.contacts.model.enumerations.Sex;
+import com.mysql.jdbc.JDBC4PreparedStatement;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,24 +22,40 @@ import static com.javalab.contacts.dao.impl.jdbc.StatementExecutor.executeStatem
 
 public class JdbcContactDao implements ContactDao {
 
+
+
     private ContactAddressDao addressDao = new JdbcContactAddressDao();
     private PhoneNumberDao phoneNumberDao = new JdbcPhoneNumberDao();
     private ContactAttachmentDao attachmentDao = new JdbcContactAttachmentDao();
 
     @Override
     public Contact get(Integer id) {
+        PreparedStatement statementGetContact = null;
+        String queryGetContact = "SELECT * FROM contact WHERE id= ?";
         Connection connection = receiveConnection();
         Contact resultObject = new Contact();
-        String query = "SELECT * FROM contact WHERE id=" + id;
-        try(Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(query);
+
+        try {
+            connection.setAutoCommit(false);
+            statementGetContact = connection.prepareStatement(queryGetContact);
+            statementGetContact.setInt(1,id);
+            ResultSet resultSet = statementGetContact.executeQuery();
             while (resultSet.next()){
                 resultObject = createContactFromResultSet(resultSet);
             }
+            connection.commit();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        putBackConnection(connection);
+        finally {
+            try {
+                statementGetContact.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            putBackConnection(connection);
+        }
         return resultObject.getId() != null ? resultObject : null;
     }
 
@@ -66,6 +80,24 @@ public class JdbcContactDao implements ContactDao {
 
     @Override
     public void save(Contact contact) {
+        PreparedStatement statementSaveContact = null;
+        Connection connection = receiveConnection();
+        String queryAddContact = "";
+        if (contact.getId() == null){
+            queryAddContact =
+                    "INSERT INTO contact " +
+                    "(first_name, second_name, last_name, date_of_birth, sex, nationality, martial_status, web_site, " +
+                    "e_mail, current_job, photo_link) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        } else {
+            queryAddContact =
+                    "UPDATE contact SET " +
+                    "first_name=?, second_name=?, last_name=?, date_of_birth=?, sex=?, nationality=?, " +
+                    "martial_status=?, web_site=?, e_mail=?, current_job=?, photo_link=? " +
+                    "WHERE id=" + contact.getId();
+        }
+        Integer lastGeneratedValue=null;
+
         String firstName = contact.getFirstName();
         String secondName = contact.getSecondName();
         String lastName = contact.getLastName();
@@ -78,58 +110,50 @@ public class JdbcContactDao implements ContactDao {
         String currentJob = contact.getCurrentJob();
         String photoLink = contact.getPhotoLink();
 
-        String query;
-        if (contact.getId() == null) {
-            query = "INSERT INTO contact " +
-                    "(first_name, " +
-                    "second_name, " +
-                    "last_name, " +
-                    "date_of_birth, " +
-                    "sex, " +
-                    "nationality, " +
-                    "martial_status, " +
-                    "web_site, " +
-                    "e_mail, " +
-                    "current_job, " +
-                    "photo_link) " +
-                    "VALUES ('" +
-                    firstName + "','" +
-                    secondName + "','" +
-                    lastName + "','" +
-                    dateOfBirth + "','" +
-                    sex + "','" +
-                    nationality + "','" +
-                    martialStatus + "','" +
-                    webSite + "','" +
-                    eMail + "','" +
-                    currentJob + "','" +
-                    photoLink + "')";
-        } else {
-            query = "UPDATE contact SET " +
-                    "first_name='" + firstName +
-                    "', second_name='" + secondName +
-                    "', last_name='" + lastName +
-                    "', date_of_birth='" + dateOfBirth +
-                    "', sex='" + sex +
-                    "', nationality='" + nationality +
-                    "', martial_status='" + martialStatus +
-                    "', web_site='" + webSite +
-                    "', e_mail='" + eMail +
-                    "', current_job='" + currentJob +
-                    "', photo_link='" + photoLink +
-                    "' WHERE id=" + contact.getId();
+
+        try {
+            connection.setAutoCommit(false);
+            statementSaveContact = connection.prepareStatement(queryAddContact,Statement.RETURN_GENERATED_KEYS);
+            statementSaveContact.setString(1,firstName);
+            statementSaveContact.setString(2,secondName);
+            statementSaveContact.setString(3,lastName);
+            statementSaveContact.setString(4,dateOfBirth);
+            statementSaveContact.setString(5,sex);
+            statementSaveContact.setString(6,nationality);
+            statementSaveContact.setString(7,martialStatus);
+            statementSaveContact.setString(8,webSite);
+            statementSaveContact.setString(9,eMail);
+            statementSaveContact.setString(10,currentJob);
+            statementSaveContact.setString(11,photoLink);
+            statementSaveContact.executeUpdate();
+            ResultSet generatedKeys = statementSaveContact.getGeneratedKeys();
+            if (generatedKeys.next()){
+                lastGeneratedValue = generatedKeys.getInt(1);
+            }
+            generatedKeys.close();
+            if (contact.getId() == null){
+                contact.setId(lastGeneratedValue);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                statementSaveContact.close();
+                connection.commit();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            putBackConnection(connection);
         }
-        Integer lastGeneratedValue = executeStatement(query);
-        if (contact.getId() == null){
-            contact.setId(lastGeneratedValue);
+
+        if (contact.getContactAddress() != null) {
+            addressDao.save(contact.getContactAddress(),contact.getId());
         }
 
         if (contact.getAttachments() != null) {
             contact.getAttachments().forEach(attachment -> attachmentDao.save(attachment,contact.getId()));
         }
-        if (contact.getContactAddress() != null) {
-            addressDao.save(contact.getContactAddress(),contact.getId());
-        }
+
         if (contact.getPhoneNumbers() != null) {
             contact.getPhoneNumbers().forEach(phoneNumber -> phoneNumberDao.save(phoneNumber,contact.getId()));
         }

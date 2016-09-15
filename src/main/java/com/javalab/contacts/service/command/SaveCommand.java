@@ -17,6 +17,11 @@ public class SaveCommand implements Command {
             id = Integer.parseInt(request.getParameter("contactId"));
         }
 
+        Integer addressId = null;
+        if (!request.getParameter("addressId").equals("")) {
+            addressId = Integer.parseInt(request.getParameter("addressId"));
+        }
+
         repository.saveContact(
                 new ContactFullDTO(
                         id,
@@ -32,6 +37,7 @@ public class SaveCommand implements Command {
                         request.getParameter("webSite"),
                         request.getParameter("eMail"),
                         request.getParameter("currentJob"),
+                        addressId,
                         request.getParameter("country"),
                         request.getParameter("town"),
                         request.getParameter("street"),

@@ -135,6 +135,7 @@ public class DtoRepository {
                 contact.getWebSite(),
                 contact.geteMail(),
                 contact.getCurrentJob(),
+                address.getId(),
                 address.getCountry(),
                 address.getTown(),
                 address.getStreet(),
@@ -148,7 +149,7 @@ public class DtoRepository {
 
     public void saveContact(ContactFullDTO contact){
         ContactAddress address =
-                new ContactAddress(null,
+                new ContactAddress(contact.getId(),
                         contact.getCountry(),
                         contact.getTown(),
                         contact.getStreet(),

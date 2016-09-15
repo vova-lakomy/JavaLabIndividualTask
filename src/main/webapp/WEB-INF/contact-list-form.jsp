@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="jlab-main-content-container">
-    <div class="jlab-main-content jlab-main-list">
+    <form class="jlab-main-content jlab-main-list" action="delete">
         <jsp:include page="page_components/contacts_list_form/top-navigation-bar.jsp"/>
         <ul>
             <li>
@@ -15,6 +15,6 @@
                 <jsp:include page="page_components/contacts_list_form/bottom-navigation-bar.jsp"/>
             </li>
         </ul>
-    </div>
+    </form>
 </div>
 

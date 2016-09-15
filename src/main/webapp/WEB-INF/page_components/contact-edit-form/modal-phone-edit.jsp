@@ -34,13 +34,13 @@
             <label for="phone-number-comment">Comment</label>
             <input id="phone-number-comment" name="phoneComment" type="text" value="" placeholder="comment">
         </div>
-        <div class="jlab-form-item">
+
+        <div class="jlab-pull-right jlab-button-block ">
             <button id="save-phoneNumber" type="button" class="jlab-button">save</button>
             <button type="button" class="jlab-button"
-                    onclick="toggleClass($('#modal-phone-edit'),'jlab-fade')">cancel</button>
+                    onclick="toggleClass($('#modal-phone-edit'),'jlab-fade')">cancel
+            </button>
         </div>
-        <div id="stored-phone-numbers">
 
-        </div>
     </form>
 </div>
