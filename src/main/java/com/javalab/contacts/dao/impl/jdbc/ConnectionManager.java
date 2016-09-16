@@ -15,8 +15,6 @@ class ConnectionManager {
     private int openedConnectionCount;
     private int totalConnectionsMade;
 
-
-    private DataSource dataSource;
     private static final Logger logger = LogManager.getLogger(ConnectionManager.class);
 
     private static ConnectionManager instance = new ConnectionManager();
@@ -24,6 +22,8 @@ class ConnectionManager {
     static ConnectionManager getInstance() {
         return instance;
     }
+
+    private DataSource dataSource;
 
     private ConnectionManager() {
         try {

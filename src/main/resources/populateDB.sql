@@ -2,48 +2,34 @@ USE contacts_vladimir_lakomy;
 
 INSERT INTO contacts_vladimir_lakomy.contact
 (id, first_name, second_name, last_name, date_of_birth, sex, nationality, martial_status, web_site,
- e_mail, current_job, photo_link, country, town, street, house_number, flat_number, zip_code)
-VALUES
-  (1,'Alexandr','Sergeevich', 'Ivanov', '1990-02-27', 'MALE','Russian','SINGLE','alex.com',
-     'alex.ivan@gmail.com', 'Google', './resources/uploaded_files/img/alex.jpg',
-     'Belarus','Minsk','Independence ave.',12,65,220000),
-
-  (2,'Grigory','Fedorovich', 'Smirnov', '1985-09-22', 'MALE','Belarussian','MARRIED','grigor.com',
-     'grig.fedor@gmail.com', 'Microsoft', './resources/uploaded_files/img/grigo.jpg',
-   'Belarus','Gomel','Sovetskaya st.',34,2,246144),
-
-  (3,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
-     'helen.sid@gmail.com', 'Apple', '../resources/uploaded_files/img/hel.jpg',
-     'Ukraine','Odessa','Filatov st.',32,21,131241),
-
-  (4,'Sergey','Sergeevich', 'Karpov', '1990-01-11', 'MALE','Belarussian','DIVORCED','karpov.com',
-     'serega.karp@gmail.com', 'IBM', './uploads/img/hel.jpg',
-   'Ukraine','Kharkov','Revolution st.',56,256,199321),
-
-  (5,'Vladimir','Vladimirovich', 'Tootin', '1952-10-07', 'MALE','Russian','DIVORCED','tootin.com',
-     'tutin.vv@gmail.com', 'WhiteHouse', './resources/uploaded_files/img/vv.jpg','Russia',
-     'Moscow','Victory st.',111,8,124365),
-
-  (6,'Julia','Igorevna', 'Cherepanova', '1971-12-01', 'FEMALE','Russian','MARRIED','cherepan.com',
-     'jul.cherep@gmail.com', 'Google', './resources/uploaded_files/img/jul.jpg',
-     'Belarus','Mogilev','Frunze st.',14,57,236674),
-
-  (7,'Victor','Robertovich', 'Joy', '1962-07-21', 'MALE','Russian','MARRIED','joy.com',
-     'joy.victor@gmail.com', 'StokeHold', './resources/uploaded_files/img/vict.jpg',
-     'Russia','St. Petersburg','Budapest st.',5,122,115321),
-
-  (8,'Kate','Ivanovna', 'Sokolova', '1985-03-15', 'FEMALE','BELARUSSIAN','WIDOWED','sokol.com',
-     'katjusha85@gmail.com', 'Mail.Ru', './resources/uploaded_files/img/kate.jpg',
-     'Poland','Warsaw','Lenin ave.',322,99,112000),
-
-  (9,'Igor','Victorovich', 'Stepanov', '1980-04-01', 'MALE','Ukrainian','MARRIED','stepa.com',
-     'stepasha2001@gmail.com', 'Google', './resources/uploaded_files/img/igAr.jpg',
-      'Ukraine','Kiev','Suvorov st.',98,76,133251);
-
-INSERT INTO contacts_vladimir_lakomy.contact
-(id, first_name, second_name, last_name, date_of_birth, sex, nationality, martial_status, web_site,
  e_mail, current_job, country, town, street, house_number, flat_number, zip_code)
 VALUES
+  (1,'Alexandr','Sergeevich', 'Ivanov', '1990-02-27', 'MALE','Russian','SINGLE','alex.com',
+     'alex.ivan@gmail.com', 'Google', 'Belarus','Minsk','Independence ave.',12,65,220000),
+
+  (2,'Grigory','Fedorovich', 'Smirnov', '1985-09-22', 'MALE','Belarussian','MARRIED','grigor.com',
+     'grig.fedor@gmail.com', 'Microsoft', 'Belarus','Gomel','Sovetskaya st.',34,2,246144),
+
+  (3,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
+     'helen.sid@gmail.com', 'Apple', 'Ukraine','Odessa','Filatov st.',32,21,131241),
+
+  (4,'Sergey','Sergeevich', 'Karpov', '1990-01-11', 'MALE','Belarussian','DIVORCED','karpov.com',
+     'serega.karp@gmail.com', 'IBM', 'Ukraine','Kharkov','Revolution st.',56,256,199321),
+
+  (5,'Vladimir','Vladimirovich', 'Tootin', '1952-10-07', 'MALE','Russian','DIVORCED','tootin.com',
+     'tutin.vv@gmail.com', 'WhiteHouse', 'Russia', 'Moscow','Victory st.',111,8,124365),
+
+  (6,'Julia','Igorevna', 'Cherepanova', '1971-12-01', 'FEMALE','Russian','MARRIED','cherepan.com',
+     'jul.cherep@gmail.com', 'Google', 'Belarus','Mogilev','Frunze st.',14,57,236674),
+
+  (7,'Victor','Robertovich', 'Joy', '1962-07-21', 'MALE','Russian','MARRIED','joy.com',
+     'joy.victor@gmail.com', 'StokeHold', 'Russia','St. Petersburg','Budapest st.',5,122,115321),
+
+  (8,'Kate','Ivanovna', 'Sokolova', '1985-03-15', 'FEMALE','BELARUSSIAN','WIDOWED','sokol.com',
+     'katjusha85@gmail.com', 'Mail.Ru', 'Poland','Warsaw','Lenin ave.',322,99,112000),
+
+  (9,'Igor','Victorovich', 'Stepanov', '1980-04-01', 'MALE','Ukrainian','MARRIED','stepa.com',
+     'stepasha2001@gmail.com', 'Google', 'Ukraine','Kiev','Suvorov st.',98,76,133251),
 
   (10,'Dmitry','Anatoljevich', 'Mefnedev', '1965-09-14', 'MALE','Russian','MARRIED','mefned.com',
       'mefned.dima@gmail.com', 'WhiteHouse','Russia','Rostov','Korolev st.',16,76,195123);

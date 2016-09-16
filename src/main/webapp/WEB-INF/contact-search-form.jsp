@@ -26,8 +26,15 @@
                         </div>
 
                         <div class="jlab-form-item">
-                            <label for="search-form-birth-date">Birth date</label>
-                            <input id="search-form-birth-date" type="date" name="birthDate" value="">
+                            <label for="edit-form-birth-day">Birth date</label>
+                            <div class="jlab-date-field">
+                                <input id="edit-form-birth-day" type="text" placeholder="day" title="day" name="dayOfBirth"
+                                       value="">
+                                <input id="edit-form-birth-month" type="text" placeholder="month" title="month" name="monthOfBirth"
+                                       value="">
+                                <input id="edit-form-birth-year" type="text" placeholder="year" title="year" name="yearOfBirth"
+                                       value="">
+                            </div>
                         </div>
 
                         <div class="jlab-form-item">

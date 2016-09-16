@@ -3,6 +3,7 @@ package com.javalab.contacts.dao;
 
 import com.javalab.contacts.model.ContactAttachment;
 
+import java.sql.Connection;
 import java.util.Collection;
 
 public interface ContactAttachmentDao {
@@ -12,6 +13,8 @@ public interface ContactAttachmentDao {
     Collection<ContactAttachment> getByContactId(Integer contactId);
 
     void save(ContactAttachment contactAttachment, Integer contactId);
+
+    void save(ContactAttachment contactAttachment, Integer contactId, Connection connection);
 
     void delete(Integer id);
 

@@ -3,10 +3,10 @@
     <div class="jlab-cell-12 jlab-inner-table-caption">
         <span>Attachments:</span>
         <div class="jlab-pull-right jlab-button-block">
-            <button type="button" class="jlab-button">add new</button>
+            <button type="button" class="jlab-button" disabled>add new</button>
             <button type="button" class="jlab-button"
                     onclick="toggleClass($('#modal-attachment-edit'),'jlab-fade')">edit</button>
-            <button type="button" class="jlab-button">delete</button>
+            <button type="button" class="jlab-button" disabled>delete</button>
         </div>
     </div>
 </div>
