@@ -59,6 +59,3 @@ function isElementExist(elementId) {
     return $(elementId) !== null;
 }
 
-function addEvent(element){
-
-}

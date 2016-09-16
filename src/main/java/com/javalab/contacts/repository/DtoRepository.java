@@ -135,7 +135,6 @@ public class DtoRepository {
                 contact.getWebSite(),
                 contact.geteMail(),
                 contact.getCurrentJob(),
-                address.getId(),
                 address.getCountry(),
                 address.getTown(),
                 address.getStreet(),
@@ -148,6 +147,11 @@ public class DtoRepository {
     }
 
     public void saveContact(ContactFullDTO contact){
+        Collection<PhoneNumber> phoneNumbers = new ArrayList<>();
+        contact.getPhoneNumbers().forEach(phoneN -> {
+            phoneNumbers.add(new PhoneNumber(phoneN.getId(),phoneN.getCountryCode(),phoneN.getOperatorCode(),
+                    phoneN.getNumber(),PhoneType.valueOf(phoneN.getType().toUpperCase()),phoneN.getComment()));
+        });
         ContactAddress address =
                 new ContactAddress(contact.getId(),
                         contact.getCountry(),
@@ -171,7 +175,7 @@ public class DtoRepository {
                 address,
                 null,
                 null,
-                null
+                phoneNumbers
         ));
     }
 }

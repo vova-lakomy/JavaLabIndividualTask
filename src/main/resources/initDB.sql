@@ -12,7 +12,7 @@ CREATE TABLE contacts_vladimir_lakomy.contact
   date_of_birth       DATE,
   sex                 VARCHAR(7),
   nationality         VARCHAR(20),
-  martial_status     VARCHAR(17),
+  martial_status      VARCHAR(17),
   web_site            VARCHAR(200),
   e_mail              VARCHAR(50),
   current_job         VARCHAR(50),
@@ -25,21 +25,6 @@ CREATE TABLE contacts_vladimir_lakomy.contact
   zip_code            INT
 
 );
-
-# CREATE TABLE contacts_vladimir_lakomy.contact_address
-# (
-#   id                  INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-#   country             VARCHAR(30),
-#   town                VARCHAR(30),
-#   street              VARCHAR(30),
-#   house_number        INT,
-#   flat_number         INT,
-#   zip_code            INT,
-#   contact_id          INT,
-#   FOREIGN KEY (contact_id)
-#     REFERENCES contacts_vladimir_lakomy.contact(id)
-#     ON DELETE CASCADE
-# );
 
 CREATE TABLE contacts_vladimir_lakomy.contact_attachment
 (

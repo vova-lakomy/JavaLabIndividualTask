@@ -32,9 +32,18 @@
         <jstl.version>1.2</jstl.version>
         <log4j.version>2.6.2</log4j.version>
         <junit.version>4.11</junit.version>
+        <commons.fileupload.version>1.3</commons.fileupload.version>
     </properties>
 
     <dependencies>
+
+        <!--apache-commons-->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons.fileupload.version}</version>
+        </dependency>
+        <!--end apache-commons-->
 
         <!--DB driver-->
         <dependency>

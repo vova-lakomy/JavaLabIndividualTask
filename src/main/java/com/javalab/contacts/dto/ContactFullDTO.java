@@ -31,8 +31,6 @@ public class ContactFullDTO {
 
     private String currentJob;
 
-    private Integer addressId;
-
     private String country;
 
     private String town;
@@ -103,10 +101,6 @@ public class ContactFullDTO {
         return currentJob;
     }
 
-    public Integer getAddressId() {
-        return addressId;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -145,9 +139,9 @@ public class ContactFullDTO {
 
     public ContactFullDTO(Integer id, String firstName, String secondName, String lastName, Integer dayOfBirth,
                           Integer monthOfBirth, Integer yearOfBirth, String sex, String nationality,
-                          String martialStatus, String webSite, String eMail, String currentJob, Integer addressId,
-                          String country, String town, String street, int houseNumber, int flatNumber, int zipCode,
-                          String photoLink, Collection<PhoneNumberDTO> phoneNumbers, Collection<AttachmentDTO> attachments) {
+                          String martialStatus, String webSite, String eMail, String currentJob, String country,
+                          String town, String street, int houseNumber, int flatNumber, int zipCode, String photoLink,
+                          Collection<PhoneNumberDTO> phoneNumbers, Collection<AttachmentDTO> attachments) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -161,7 +155,6 @@ public class ContactFullDTO {
         this.webSite = webSite;
         this.eMail = eMail;
         this.currentJob = currentJob;
-        this.addressId = addressId;
         this.country = country;
         this.town = town;
         this.street = street;

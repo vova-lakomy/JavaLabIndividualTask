@@ -1,10 +1,15 @@
 package com.javalab.contacts.service.command;
 
+import com.javalab.contacts.dao.ContactAddressDao;
+import com.javalab.contacts.dto.AddressDTO;
 import com.javalab.contacts.dto.ContactFullDTO;
+import com.javalab.contacts.dto.PhoneNumberDTO;
 import com.javalab.contacts.repository.DtoRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class SaveCommand implements Command {
 
@@ -12,14 +17,15 @@ public class SaveCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        Integer id = null;
+        Integer contactId = null;
         if (!request.getParameter("contactId").equals("")){
-            id = Integer.parseInt(request.getParameter("contactId"));
+            contactId = Integer.parseInt(request.getParameter("contactId"));
         }
+
 
         repository.saveContact(
                 new ContactFullDTO(
-                        id,
+                        contactId,
                         request.getParameter("firstName"),
                         request.getParameter("secondName"),
                         request.getParameter("lastName"),
@@ -32,7 +38,6 @@ public class SaveCommand implements Command {
                         request.getParameter("webSite"),
                         request.getParameter("eMail"),
                         request.getParameter("currentJob"),
-                        null,
                         request.getParameter("country"),
                         request.getParameter("town"),
                         request.getParameter("street"),
@@ -40,7 +45,8 @@ public class SaveCommand implements Command {
                         Integer.parseInt(request.getParameter("flatNumber")),
                         Integer.parseInt(request.getParameter("zipCode")),
                         request.getParameter("photoLink"),
-                        null,null)
+                        createPhoneNumbersFromRequest(request),
+                        null)
         );
 
         request.setAttribute("path","contact-list-form.jsp");
@@ -49,5 +55,27 @@ public class SaveCommand implements Command {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private Collection<PhoneNumberDTO> createPhoneNumbersFromRequest(HttpServletRequest request){
+        String[] phoneNumberIds = request.getParameterValues("phoneNumberId");
+        String[] countryCodes = request.getParameterValues("countryCode");
+        String[] operatorCodes = request.getParameterValues("operatorCode");
+        String[] numbers = request.getParameterValues("number");
+        String[] phoneTypes = request.getParameterValues("phoneType");
+        String[] comments = request.getParameterValues("comment");
+        Collection<PhoneNumberDTO> phoneNumbers = new ArrayList<>();
+        for (int i = 0; i < phoneNumberIds.length; i++) {
+            Integer phoneId;
+            if (!phoneNumberIds[i].equals("")) {
+                phoneId = Integer.parseInt(phoneNumberIds[i]);
+            } else {
+                phoneId = null;
+            }
+
+            phoneNumbers.add(new PhoneNumberDTO(phoneId, Integer.parseInt(countryCodes[i]),
+                    Integer.parseInt(operatorCodes[i]), Integer.parseInt(numbers[i]), phoneTypes[i], comments[i]));
+        }
+        return phoneNumbers;
     }
 }

@@ -4,7 +4,6 @@ import com.javalab.contacts.dao.ContactAttachmentDao;
 import com.javalab.contacts.model.ContactAttachment;
 
 
-
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

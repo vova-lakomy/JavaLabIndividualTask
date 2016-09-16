@@ -7,8 +7,6 @@
 <div class="jlab-row">
     <div class="jlab-cell-6">
 
-        <input class="jlab-hidden" name="addressId" value="${fullContact.addressId}">
-
         <div class="jlab-form-item">
             <label for="edit-form-country">Country</label>
             <input id="edit-form-country" type="text" name="country" value="${fullContact.country}"

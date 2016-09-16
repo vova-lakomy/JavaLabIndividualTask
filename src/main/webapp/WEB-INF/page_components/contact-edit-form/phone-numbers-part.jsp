@@ -27,27 +27,22 @@
                     <ul class="jlab-row">
                         <li class="jlab-cell-3">
                             <input type="checkbox" id="phoneNumberId${phoneNumber.id}">
-                            <input class="jlab-hidden" type="text" name="${counter.index}-phoneNumberId"
-                                   value="${phoneNumber.id}">
+                            <input class="jlab-hidden" type="text" name="phoneNumberId" value="${phoneNumber.id}">
                             <label for="phoneNumberId${phoneNumber.id}">${phoneNumber.fullNumber}</label>
-                            <input class="jlab-hidden" type="text" name="${counter.index}-countryCode"
-                                   value="${phoneNumber.countryCode}">
-                            <input class="jlab-hidden" type="text" name="${counter.index}-operatorCode"
+                            <input class="jlab-hidden" type="text" name="countryCode" value="${phoneNumber.countryCode}">
+                            <input class="jlab-hidden" type="text" name="operatorCode"
                                    value="${phoneNumber.operatorCode}">
-                            <input class="jlab-hidden" type="text" name="${counter.index}-number"
-                                   value="${phoneNumber.number}">
+                            <input class="jlab-hidden" type="text" name="number" value="${phoneNumber.number}">
                         </li>
 
                         <li class="jlab-cell-2">
                                 ${phoneNumber.type}
-                            <input class="jlab-hidden" type="text" name="${counter.index}-phoneType"
-                                   value="${phoneNumber.type}">
+                            <input class="jlab-hidden" type="text" name="phoneType"  value="${phoneNumber.type}">
                         </li>
 
                         <li class="jlab-cell-7">
                                 ${phoneNumber.comment}
-                            <input class="jlab-hidden" type="text" name="${counter.index}-comment"
-                                   value="${phoneNumber.comment}">
+                            <input class="jlab-hidden" type="text" name="comment" value="${phoneNumber.comment}">
                         </li>
                     </ul>
                 </c:forEach>
@@ -55,7 +50,7 @@
         </div>
     </c:when>
     <c:otherwise>
-        <div id="nothing-to-display-phone-numbers" class="jlab-row jlab-vertical-padding-10">
+        <div id="phone-numbers-empty-table" class="jlab-row jlab-vertical-padding-10">
             <div class="jlab-cell-12">
                 <i>nothing to display <a href="javascript:toggleClass($('#modal-phone-edit'),'jlab-fade')">add</a></i>
             </div>

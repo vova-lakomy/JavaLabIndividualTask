@@ -12,8 +12,8 @@
               maxWaitMillis="10000"
               initialSize="10"
               minEvictableIdleTimeMillis="30000"
-              username="root"
-              password="root"
+              username="vova_lakomy"
+              password="1234567"
               driverClassName="com.mysql.jdbc.Driver"
               url="jdbc:mysql://localhost:3306/contacts_vladimir_lakomy?useSSL=false"/>
 </Context>
