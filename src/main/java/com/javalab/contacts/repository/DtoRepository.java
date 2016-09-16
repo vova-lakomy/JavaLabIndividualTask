@@ -174,7 +174,7 @@ public class DtoRepository {
                 contact.getCurrentJob(),
                 address,
                 null,
-                null,
+                contact.getPhotoLink(),
                 phoneNumbers
         ));
     }

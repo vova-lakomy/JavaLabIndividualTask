@@ -21,8 +21,12 @@ public class SaveCommand implements Command {
         if (!request.getParameter("contactId").equals("")){
             contactId = Integer.parseInt(request.getParameter("contactId"));
         }
-
-
+        String photoLink;
+        if (request.getAttribute("photoLink") == null){
+            photoLink = request.getParameter("photoLink");
+        } else {
+            photoLink = (String) request.getAttribute("photoLink");
+        }
         repository.saveContact(
                 new ContactFullDTO(
                         contactId,
@@ -44,7 +48,7 @@ public class SaveCommand implements Command {
                         Integer.parseInt(request.getParameter("houseNumber")),
                         Integer.parseInt(request.getParameter("flatNumber")),
                         Integer.parseInt(request.getParameter("zipCode")),
-                        request.getParameter("photoLink"),
+                        photoLink,
                         createPhoneNumbersFromRequest(request),
                         null)
         );

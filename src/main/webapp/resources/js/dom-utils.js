@@ -59,3 +59,17 @@ function isElementExist(elementId) {
     return $(elementId) !== null;
 }
 
+// function submitPhotoHandler() {
+//
+//     addOptionalCommandToForm('#contact-edit-form','upload');
+//     toggleClass($('#modal-upload-photo'),'jlab-fade');
+// }
+//
+// function generateHiddenInput(name, value) {
+//     return '<input class="jlab-hidden" name="' + name + '" value="' + value + '">'
+// }
+//
+// function addOptionalCommandToForm(formId,command) {
+//     $(formId).innerHTML += generateHiddenInput('optionalCommand',command);
+// }
+

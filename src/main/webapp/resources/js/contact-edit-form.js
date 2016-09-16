@@ -10,13 +10,20 @@
         };
     }
 
-    function submitHandler() {
+    function submitPhoneNumberHandler() {
         if (isElementExist('#phone-numbers-empty-table')){
             $('#contact-edit-form').replaceChild(generatePhoneNumberEmptyList(),$('#phone-numbers-empty-table'))
         }
         var formData = getPhoneNumberData();
         $('#phone-number-rows').innerHTML += buildPhoneRecord(phoneNumberCounter++, formData);
         toggleClass($('#modal-phone-edit'),'jlab-fade');
+    }
+
+    function submitPhotoHandler(e) {
+        e.preventDefault();
+        addOptionalCommandToForm('#contact-edit-form','upload');
+        toggleClass($('#modal-upload-photo'),'jlab-fade');
+
     }
 
     function buildPhoneRecord(counter,data) {
@@ -47,8 +54,6 @@
             '</ul>'
     }
 
-
-
     function generatePhoneNumberEmptyList() {
         var list = document.createElement('div');
         list.className = "jlab-inner-table-container";
@@ -64,6 +69,19 @@
         return list;
     }
 
-    $('#save-phoneNumber').addEventListener('click', submitHandler, false);
+    function generateHiddenInput(name, value) {
+        var element = document.createElement('div');
+        element.innerHTML = '<input class="jlab-hidden" name="' + name + '" value="' + value + '">';
+        return element.children[0];
+    }
+
+    function addOptionalCommandToForm(formId,command) {
+        $(formId).appendChild(generateHiddenInput('optionalCommand',command));
+    }
+
+
+
+    $('#upload-photo').addEventListener('click', submitPhotoHandler, true);
+    $('#save-phoneNumber').addEventListener('click', submitPhoneNumberHandler, false);
     var phoneNumberCounter = (isElementExist('#phone-number-rows'))? $('#phone-number-rows').childElementCount : 0;
 })();

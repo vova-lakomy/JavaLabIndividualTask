@@ -13,6 +13,7 @@
                         </c:otherwise>
                     </c:choose>
                 </a>
+                <input class="jlab-hidden" type="text" name="photoLink" value="${fullContact.photoLink}">
             </div>
         </div>
     </div>
