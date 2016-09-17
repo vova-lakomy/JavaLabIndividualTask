@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class UploadCommand implements Command {
+public class UploadPhotoCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String applicationPath = request.getServletContext().getRealPath("");
@@ -22,11 +22,11 @@ public class UploadCommand implements Command {
         }
 
         String fileName = null;
-        //Get all the parts from request and write it to the file on server
         try {
             //for (Part part : request.getParts()) {
-                Part part = request.getPart("data");
-                fileName = getFileName(part);
+                Part part = request.getPart("attachedPhoto");
+//                fileName = getFileName(part);
+                fileName = request.getParameter("lastName") + "-photo";
                 part.write(uploadFilePath + File.separator + fileName);
                 request.setAttribute("photoLink","../resources/uploads/contact_photos/" + fileName);
             //}
@@ -34,16 +34,14 @@ public class UploadCommand implements Command {
             e1.printStackTrace();
         }
     }
-    /**
-     * Utility method to get file name from HTTP header content-disposition
-     */
+
     private String getFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        System.out.println("content-disposition header= " + contentDisp);
-        String[] tokens = contentDisp.split(";");
-        for (String token : tokens) {
-            if (token.trim().startsWith("filename")) {
-                return token.substring(token.indexOf("=") + 2, token.length() - 1);
+
+        String contentDispositionHeader = part.getHeader("content-disposition");
+        String[] properties = contentDispositionHeader.split(";");
+        for (String prop : properties) {
+            if (prop.trim().startsWith("filename")) {
+                return prop.substring(prop.indexOf("=") + 2, prop.length() - 1);
             }
         }
         return "";

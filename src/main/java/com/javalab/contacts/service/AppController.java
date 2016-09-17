@@ -18,7 +18,7 @@ public class AppController {
         commandMap.put("email",new MailCommand());
         commandMap.put("save",new SaveCommand());
         commandMap.put("delete",new DeleteCommand());
-        commandMap.put("upload", new UploadCommand());
+        commandMap.put("uploadPhoto", new UploadPhotoCommand());
     }
 
 

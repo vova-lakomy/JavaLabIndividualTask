@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <div id="modal-attachment-edit" class="jlab-modal-container jlab-fade">
     <form class="jlab-modal jlab-phone-number-edit-form">
         <h4>Edit attachment</h4>
@@ -12,8 +14,7 @@
         </div>
         <div class="jlab-form-item">
             <button type="button" class="jlab-button">save</button>
-            <button type="button" class="jlab-button"
-                    onclick="toggleClass($('#modal-attachment-edit'),'jlab-fade')">cancel</button>
+            <button id="button-cancel-attachments-edit-modal" type="button" class="jlab-button">cancel</button>
         </div>
     </form>
 </div>

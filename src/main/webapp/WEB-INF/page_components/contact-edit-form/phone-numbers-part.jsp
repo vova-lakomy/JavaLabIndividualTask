@@ -1,16 +1,15 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div id="phone-number-caption" class="jlab-row">
     <div class="jlab-cell-12 jlab-inner-table-caption">
         <span>Phone numbers:</span>
         <div class="jlab-pull-right jlab-button-block">
-            <button type="button" class="jlab-button"
-                    onclick="toggleClass($('#modal-phone-edit'),'jlab-fade')">add new
-            </button>
+            <button id="button-show-phone-number-modal" type="button" class="jlab-button">add new</button>
             <button type="button" class="jlab-button" disabled>edit</button>
             <button type="button" class="jlab-button" disabled>delete</button>
         </div>
     </div>
-
 
 </div>
 

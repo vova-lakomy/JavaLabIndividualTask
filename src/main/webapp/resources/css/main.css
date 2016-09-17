@@ -115,6 +115,7 @@ select{
 
 .jlab-main-content-container{
     max-width: 1024px;
+    min-width: 840px;
     margin: auto;
 }
 .jlab-main-content{
@@ -161,6 +162,7 @@ select{
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 .jlab-main-photo-container img{
     max-height: 200px;

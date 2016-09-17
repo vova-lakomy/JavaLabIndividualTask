@@ -1,14 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="fullContact" value="${fullContactInfo}" scope="request"/>
 
-
-
 <div class="jlab-main-content-container">
     <div class="jlab-main-content">
         <div class="jlab-form-container">
 
             <form id="contact-edit-form" action="save" accept-charset="UTF-8" method="post" enctype="multipart/form-data">
-                <jsp:include page="page_components/contact-edit-form/modal-upload.jsp"/>
                 <div class="jlab-row">
                     <div class="jlab-cell-3">
                         <jsp:include page="page_components/contact-edit-form/contact-photo-part.jsp"/>

@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <div class="jlab-row">
     <div class="jlab-cell-12 jlab-inner-table-caption">
         <span>Address:</span>

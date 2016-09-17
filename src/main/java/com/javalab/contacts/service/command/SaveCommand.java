@@ -1,7 +1,5 @@
 package com.javalab.contacts.service.command;
 
-import com.javalab.contacts.dao.ContactAddressDao;
-import com.javalab.contacts.dto.AddressDTO;
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
 import com.javalab.contacts.repository.DtoRepository;
@@ -21,12 +19,7 @@ public class SaveCommand implements Command {
         if (!request.getParameter("contactId").equals("")){
             contactId = Integer.parseInt(request.getParameter("contactId"));
         }
-        String photoLink;
-        if (request.getAttribute("photoLink") == null){
-            photoLink = request.getParameter("photoLink");
-        } else {
-            photoLink = (String) request.getAttribute("photoLink");
-        }
+
         repository.saveContact(
                 new ContactFullDTO(
                         contactId,
@@ -48,7 +41,7 @@ public class SaveCommand implements Command {
                         Integer.parseInt(request.getParameter("houseNumber")),
                         Integer.parseInt(request.getParameter("flatNumber")),
                         Integer.parseInt(request.getParameter("zipCode")),
-                        photoLink,
+                        definePhotoLink(request),
                         createPhoneNumbersFromRequest(request),
                         null)
         );
@@ -68,6 +61,7 @@ public class SaveCommand implements Command {
         String[] numbers = request.getParameterValues("number");
         String[] phoneTypes = request.getParameterValues("phoneType");
         String[] comments = request.getParameterValues("comment");
+
         Collection<PhoneNumberDTO> phoneNumbers = new ArrayList<>();
         for (int i = 0; i < phoneNumberIds.length; i++) {
             Integer phoneId;
@@ -81,5 +75,13 @@ public class SaveCommand implements Command {
                     Integer.parseInt(operatorCodes[i]), Integer.parseInt(numbers[i]), phoneTypes[i], comments[i]));
         }
         return phoneNumbers;
+    }
+
+    private String definePhotoLink(HttpServletRequest request){
+        if (request.getAttribute("photoLink") == null){
+            return request.getParameter("photoLink");
+        } else {
+            return  (String) request.getAttribute("photoLink");
+        }
     }
 }
