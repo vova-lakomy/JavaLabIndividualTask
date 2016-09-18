@@ -71,6 +71,10 @@ select{
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
+.jlab-date-field.jlab-not-valid input[type="text"]{
+    border-color: #ed1c24 !important;
+    outline-color: #ed1c24;
+}
 
 
 .jlab-header-caption-black{
@@ -129,7 +133,8 @@ select{
 }
 
 .jlab-not-valid{
-    background-color: rgba(255, 0, 0, 0.11);
+    border-color: #ed1c24 !important;
+    outline-color: #ed1c24;
 }
 
 .jlab-contact-table-caption{

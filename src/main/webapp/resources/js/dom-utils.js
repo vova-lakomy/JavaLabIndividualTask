@@ -27,13 +27,15 @@ function getClasses(element) {
 }
 
 function addClass(element, className) {
-    var classes = getClasses(element);
-    classes.push(className);
-    classes = classes.join(' ');
-    element.setAttribute(
-        'class',
-        classes
-    );
+    if (!hasClass(element,className)){
+        var classes = getClasses(element);
+        classes.push(className);
+        classes = classes.join(' ');
+        element.setAttribute(
+            'class',
+            classes
+        );
+    }
 }
 
 function removeClass(element, className) {

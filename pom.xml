@@ -45,6 +45,15 @@
         </dependency>
         <!--end apache-commons-->
 
+        <!--mail-->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.5</version>
+        </dependency>
+
+        <!--end mail-->
+
         <!--DB driver-->
         <dependency>
             <groupId>mysql</groupId>
