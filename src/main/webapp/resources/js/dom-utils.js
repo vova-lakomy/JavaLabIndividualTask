@@ -45,7 +45,7 @@ function removeClass(element, className) {
 }
 
 function hide(selector) {
-    var elem = $(selector);
+    var elem = typeof selector === 'string' ? $(selector) : selector;
     if (elem) {
         setCSS(elem, 'display', 'none');
     }
@@ -55,21 +55,14 @@ function $(selector) {
     return document.querySelector(selector);
 }
 
+function $all(selector) {
+    return document.querySelectorAll(selector) || [];
+}
+
 function isElementExist(elementId) {
     return $(elementId) !== null;
 }
 
-// function submitPhotoHandler() {
-//
-//     addOptionalCommandToForm('#contact-edit-form','upload');
-//     toggleClass($('#modal-upload-photo'),'jlab-fade');
-// }
-//
-// function generateHiddenInput(name, value) {
-//     return '<input class="jlab-hidden" name="' + name + '" value="' + value + '">'
-// }
-//
-// function addOptionalCommandToForm(formId,command) {
-//     $(formId).innerHTML += generateHiddenInput('optionalCommand',command);
-// }
+
+
 

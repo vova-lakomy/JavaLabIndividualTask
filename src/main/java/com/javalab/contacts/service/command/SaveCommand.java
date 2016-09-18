@@ -63,6 +63,9 @@ public class SaveCommand implements Command {
         String[] comments = request.getParameterValues("comment");
 
         Collection<PhoneNumberDTO> phoneNumbers = new ArrayList<>();
+        if (phoneNumberIds == null) {
+            return phoneNumbers;
+        }
         for (int i = 0; i < phoneNumberIds.length; i++) {
             Integer phoneId;
             if (!phoneNumberIds[i].equals("")) {
@@ -79,7 +82,7 @@ public class SaveCommand implements Command {
 
     private String definePhotoLink(HttpServletRequest request){
         if (request.getAttribute("photoLink") == null){
-            return request.getParameter("photoLink");
+            return request.getParameter("photoLink").equals("") ? null : request.getParameter("photoLink");
         } else {
             return  (String) request.getAttribute("photoLink");
         }

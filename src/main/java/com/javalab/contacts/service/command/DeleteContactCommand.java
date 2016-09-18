@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 
-public class DeleteCommand implements Command {
+public class DeleteContactCommand implements Command {
 
     private ContactDao contactDao = new JdbcContactDao();
 

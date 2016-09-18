@@ -6,6 +6,7 @@
     <link href="../resources/css/custom-grid.css" type="text/css" rel="stylesheet">
     <link href="../resources/css/jlab-buttons.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="../resources/js/dom-utils.js"></script>
+    <script type="text/javascript" src="../resources/js/validator.js"></script>
 
 </head>
 <body>

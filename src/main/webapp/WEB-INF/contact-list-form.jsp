@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="jlab-main-content-container">
-    <form class="jlab-main-content jlab-main-list" action="delete">
+    <form class="jlab-main-content jlab-main-list" action="deleteContact" data-form-name="contactForm">
         <jsp:include page="page_components/contacts_list_form/top-navigation-bar.jsp"/>
         <ul>
             <li>

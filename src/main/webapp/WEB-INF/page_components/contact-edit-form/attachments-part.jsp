@@ -28,11 +28,11 @@
                             <input class="jlab-hidden" type="text" name="attachmentId" value="${attachment.id}">
                             <input type="checkbox" id="attachment-${counter.index}">
                             <label for="attachment-${counter.index}">${attachment.fileName}</label>
-
                         </li>
 
                         <li class="jlab-cell-2">
                             ${attachment.uploadDate}
+                            <input class="jlab-hidden" type="text" name="uploadDate" value="${attachment.uploadDate}">
                         </li>
 
                         <li class="jlab-cell-7">

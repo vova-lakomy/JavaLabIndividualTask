@@ -4,8 +4,8 @@
     <div id="upload-form" class="jlab-modal jlab-phone-number-edit-form">
         <h4>Ulpoad photo</h4>
         <div class="jlab-form-item">
-            <label for="photo-file-input">Select image</label>
-            <input id="photo-file-input" class="file" type="file" name="attachedPhoto" accept="image/*">
+            <label class="" for="photo-file-input">Select image</label>
+            <input id="photo-file-input" class="" type="file" name="attachedPhoto" accept="image/*">
         </div>
 
         <div class="jlab-pull-right jlab-button-block ">

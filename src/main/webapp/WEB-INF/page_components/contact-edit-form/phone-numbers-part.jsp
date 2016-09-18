@@ -7,7 +7,7 @@
         <div class="jlab-pull-right jlab-button-block">
             <button id="button-show-phone-number-modal" type="button" class="jlab-button">add new</button>
             <button type="button" class="jlab-button" disabled>edit</button>
-            <button type="button" class="jlab-button" disabled>delete</button>
+            <button id="button-delete-phone-number" type="button" class="jlab-button" >delete</button>
         </div>
     </div>
 
@@ -25,7 +25,7 @@
                 <c:forEach var="phoneNumber" items="${fullContact.phoneNumbers}" varStatus="counter">
                     <ul class="jlab-row">
                         <li class="jlab-cell-3">
-                            <input type="checkbox" id="phoneNumberId${counter.index}" >
+                            <input type="checkbox" name="selectedId" value="${phoneNumber.id}" id="phoneNumberId${counter.index}" data-action="deletePhone" >
                             <input class="jlab-hidden" type="text" name="phoneNumberId" value="${phoneNumber.id}">
                             <label for="phoneNumberId${counter.index}">${phoneNumber.fullNumber}</label>
                             <input class="jlab-hidden" type="text" name="countryCode" value="${phoneNumber.countryCode}">

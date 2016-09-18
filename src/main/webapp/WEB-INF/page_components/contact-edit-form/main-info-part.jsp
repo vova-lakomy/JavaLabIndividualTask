@@ -11,14 +11,20 @@
                 <div class="jlab-form-item">
                     <input class="jlab-hidden" name="contactId" value="${fullContact.id}">
                     <label for="edit-form-first-name">First name</label>
-                    <input id="edit-form-first-name" type="text" name="firstName" value="${fullContact.firstName}"
-                           placeholder="first name">
+                    <input
+                        id="edit-form-first-name"
+                        type="text"
+                        name="firstName"
+                        value="${fullContact.firstName}"
+                        placeholder="first name"
+                        data-validation-type="string"
+                        required/>
                 </div>
 
                 <div class="jlab-form-item">
                     <label for="edit-form-last-name">Last name</label>
                     <input id="edit-form-last-name" type="text" name="lastName" value="${fullContact.lastName}"
-                           placeholder="last name">
+                           placeholder="last name" required>
                 </div>
 
                 <div class="jlab-form-item">
@@ -90,7 +96,7 @@
                 <div class="jlab-form-item">
                     <label for="edit-form-email">e-mail</label>
                     <input id="edit-form-email" type="text" name="eMail" value="${fullContact.eMail}"
-                           placeholder="e-mail">
+                           placeholder="e-mail" data-validation-type="email">
                 </div>
 
                 <div class="jlab-form-item">
