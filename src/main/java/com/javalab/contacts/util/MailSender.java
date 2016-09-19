@@ -33,7 +33,7 @@ public class MailSender {
             message.setReplyTo(InternetAddress.parse(mailProps.getProperty("mail.from")));
             message.setRecipients(Message.RecipientType.TO, addresses);
             message.setSubject(mailSubject);
-            message.setText(messageText);
+            message.setContent(messageText,"text/html");
             Transport.send(message);
             logger.info("sending e-mail to" + addresses + " done");
         } catch (MessagingException e) {

@@ -10,6 +10,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,12 +32,15 @@ public class MailCommand implements Command {
             request.setAttribute("path", "contact-email-form.jsp");
         } else if (request.getParameterValues("mailTo") != null){
             sendMail(request);
-            request.setAttribute("path", "contact-list-form.jsp");
+            try {
+                response.sendRedirect("list");
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             request.setAttribute("path", "contact-email-form.jsp");
         }
-
-
 
         try {
             request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request, response);
@@ -46,9 +50,15 @@ public class MailCommand implements Command {
     }
 
     private void sendMail(HttpServletRequest request) {
-        String mailTopic = request.getParameter("mailTopic");
+        String mailSubject = request.getParameter("mailSubject");
+        if (mailSubject == null) {
+            mailSubject = "(No subject)";
+        }
         String mailText = request.getParameter("mailText");
-        mailSender.sendMail(getAddressesFromRequest(request), mailTopic, mailText);
+        if (mailText == null) {
+            mailText = "";
+        }
+        mailSender.sendMail(getAddressesFromRequest(request), mailSubject, mailText);
     }
 
     private Address[] getAddressesFromRequest(HttpServletRequest request) {

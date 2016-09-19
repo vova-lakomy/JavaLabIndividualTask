@@ -31,8 +31,8 @@
                 </c:choose>
 
                 <div class="jlab-form-item jlab-row">
-                    <label class="jlab-cell-1" for="mailTopic">Topic :</label>
-                    <input class="jlab-cell-12" id="mailTopic" type="text" placeholder="topic" name="mailTopic">
+                    <label class="jlab-cell-1" for="mailSubject">Topic :</label>
+                    <input class="jlab-cell-12" id="mailSubject" type="text" placeholder="subject" name="mailSubject">
                 </div>
 
                 <div class="jlab-row">

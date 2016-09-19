@@ -52,7 +52,7 @@ public class SqlScriptLoader {
             Class.forName("com.mysql.jdbc.Driver");
             String user = properties.getProperty("mysql.user");
             String password = properties.getProperty("mysql.password");
-            String options = "?useSSL=false";
+            String options = "?useSSL=false&characterEncoding=UTF-8";
             String dbURL = properties.getProperty("mysql.schema.url") + options;
 
             connection = DriverManager.getConnection(dbURL, user, password);

@@ -13,7 +13,7 @@ VALUES
   (3,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
      'helen.sid@gmail.com', 'Apple', 'Ukraine','Odessa','Filatov st.',32,21,131241),
 
-  (4,'Sergey','Sergeevich', 'Karpov', '1990-01-11', 'MALE','Belarussian','DIVORCED','karpov.com',
+  (4,'Сергей','Сергеевич', 'Карпов', '1990-01-11', 'MALE','Belarussian','DIVORCED','karpov.com',
      'serega.karp@gmail.com', 'IBM', 'Ukraine','Kharkov','Revolution st.',56,256,199321),
 
   (5,'Vladimir','Vladimirovich', 'Tootin', '1952-10-07', 'MALE','Russian','DIVORCED','tootin.com',

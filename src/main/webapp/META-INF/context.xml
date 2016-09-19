@@ -5,15 +5,13 @@
     <Resource name="jdbc/contacts_vladimir_lakomy"
               auth="Container"
               type="javax.sql.DataSource"
-              validationQuery="SELECT 1"
+              connectionProperties="useUnicode=yes;characterEncoding=utf8;useSSL=false"
               timeBetweenEvictionRunsMillis="30000"
-              maxTotal="20"
-              minIdle="10"
+              minIdle="30"
               maxWaitMillis="10000"
-              initialSize="10"
               minEvictableIdleTimeMillis="30000"
               username="vova_lakomy"
               password="1234567"
               driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/contacts_vladimir_lakomy?useSSL=false"/>
+              url="jdbc:mysql://localhost:3306/contacts_vladimir_lakomy"/>
 </Context>

@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS contacts_vladimir_lakomy;
-CREATE DATABASE contacts_vladimir_lakomy CHARACTER SET utf8 ;
+CREATE DATABASE contacts_vladimir_lakomy CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ;
 
 USE contacts_vladimir_lakomy;
 
