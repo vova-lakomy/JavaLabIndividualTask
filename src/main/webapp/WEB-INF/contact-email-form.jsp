@@ -7,16 +7,35 @@
             <h4>Send email</h4>
             <form action="mail" method="post">
 
-                <div class="jlab-form-item jlab-row" >
-                        <label class="jlab-cell-1" for="messageRecipient0">To:</label>
-                        <input class="jlab-cell-12" id="messageRecipient0" type="text" name="mailTo" value=""
-                               placeholder="message recipient" required>
-                </div>
-                <div class="jlab-form-item jlab-row" >
-                    <label class="jlab-cell-1" for="messageRecipient1">To:</label>
-                    <input class="jlab-cell-12" id="messageRecipient1" type="text" name="mailTo" value=""
-                           placeholder="message recipient">
-                </div>
+                <c:choose>
+                    <c:when test="${emailContact eq null}">
+                        <div class="jlab-form-item jlab-row">
+                            <label class="jlab-cell-1"
+                                   for="messageRecipient${counter.index}">To:${contact.fullName}</label>
+                            <input class="jlab-cell-12" id="messageRecipient${counter.index}" type="text" name="mailTo"
+                                   value="${contact.eMail}" placeholder="message recipient" required/>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="contact" items="${emailContacts}" varStatus="counter">
+                            <div class="jlab-form-item jlab-row">
+                                <label class="jlab-cell-1"
+                                       for="messageRecipient${counter.index}">To:${contact.fullName}</label>
+                                <input class="jlab-cell-12" id="messageRecipient${counter.index}" type="text"
+                                       name="mailTo"
+                                       value="${contact.eMail}"
+                                       placeholder="message recipient"
+                                        <c:choose>
+                                            <c:when test="${counter.index == 0}">
+                                                required
+                                            </c:when>
+                                        </c:choose>
+                                />
+                            </div>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+
                 <div class="jlab-form-item jlab-row">
                     <label class="jlab-cell-1" for="mailTopic">Topic :</label>
                     <input class="jlab-cell-12" id="mailTopic" type="text" placeholder="topic" name="mailTopic">

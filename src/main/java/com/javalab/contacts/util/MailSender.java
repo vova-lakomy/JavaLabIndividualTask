@@ -25,17 +25,17 @@ public class MailSender {
         }
     }
 
-    public void sendMail(String toAddress, String mailSubject, String messageText) {
+    public void sendMail(Address[] addresses, String mailSubject, String messageText) {
 
         try {
             Message message = new MimeMessage(getMailSession(getMailServerProperties()));
             message.setFrom(new InternetAddress(mailProps.getProperty("mail.from")));
             message.setReplyTo(InternetAddress.parse(mailProps.getProperty("mail.from")));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toAddress));
+            message.setRecipients(Message.RecipientType.TO, addresses);
             message.setSubject(mailSubject);
             message.setText(messageText);
             Transport.send(message);
-            logger.info("sending e-mail done");
+            logger.info("sending e-mail to" + addresses + " done");
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
@@ -60,12 +60,6 @@ public class MailSender {
         serverProperties.put("mail.smtp.auth", mailProps.getProperty("mail.smtp.auth"));
         serverProperties.put("mail.smtp.port", mailProps.getProperty("mail.smtp.port"));
         return serverProperties;
-    }
-
-
-    public static void main(String args[]) {
-        MailSender mailSender = new MailSender();
-        mailSender.sendMail("vovan228@ya.ru","HelloWorld","This is hello world message from Java");
     }
 }
 

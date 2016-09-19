@@ -4,14 +4,12 @@ package com.javalab.contacts.repository;
 import com.javalab.contacts.dao.ContactDao;
 import com.javalab.contacts.dao.impl.jdbc.JdbcContactAttachmentDao;
 import com.javalab.contacts.dao.impl.jdbc.JdbcContactDao;
-import com.javalab.contacts.dao.impl.jdbc.JdbcPhoneNumberDao;
 import com.javalab.contacts.dto.AttachmentDTO;
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
 import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
-import com.javalab.contacts.model.ContactAttachment;
 import com.javalab.contacts.model.PhoneNumber;
 import com.javalab.contacts.model.enumerations.MartialStatus;
 import com.javalab.contacts.model.enumerations.PhoneType;
@@ -28,55 +26,37 @@ import java.util.Collection;
 public class DtoRepository {
     private ContactDao contactDao = new JdbcContactDao();
 
-    public Collection<String> getSexList(){
+    public Collection<String> getSexList() {
         Collection<String> sexList = new ArrayList<>();
         Arrays.stream(Sex.values()).forEach(value -> sexList.add(value.name().toLowerCase()));
         return sexList;
     }
 
-    public Collection<String> getMartialStatusList(){
+    public Collection<String> getMartialStatusList() {
         Collection<String> statusList = new ArrayList<>();
         Arrays.stream(MartialStatus.values()).forEach(value -> statusList.add(value.name().toLowerCase()));
         return statusList;
     }
 
-    public Collection<String> getPhoneTypeList(){
+    public Collection<String> getPhoneTypeList() {
         Collection<String> typesList = new ArrayList<>();
         Arrays.stream(PhoneType.values()).forEach(value -> typesList.add(value.name().toLowerCase()));
         return typesList;
     }
 
-    public Collection<ContactShortDTO> getContactsList(){
+    public ContactShortDTO getContactShortDTO(Integer contactId) {
+        Contact contactShortInfo = contactDao.getContactShortInfo(contactId);
+        return createContactShortDTO(contactShortInfo);
+    }
 
+    public Collection<ContactShortDTO> getContactsList() {
         Collection<ContactShortDTO> contactDTOs = new ArrayList<>();
-        contactDao.getContactList().forEach(contact -> {
-
-            Integer id = contact.getId();
-
-            String fullName = contact.getLastName() + "<br/>"
-                            + contact.getFirstName() + " "
-                            + contact.getSecondName();
-
-            String dateOfBirth = contact.getDateOfBirth().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-
-            ContactAddress contactAddress = contact.getContactAddress();
-            String stringAddress =
-                          contactAddress.getStreet() + ", "
-                        + contactAddress.getHouseNumber() + "-"
-                        + contactAddress.getFlatNumber() + "<br/>"
-                        + contactAddress.getTown() + ", "
-                        + contactAddress.getCountry() + "<br/>"
-                        + contactAddress.getZipCode();
-
-            String company = contact.getCurrentJob();
-
-            contactDTOs.add(new ContactShortDTO(id,fullName,dateOfBirth,stringAddress,company));
-        });
-
+        contactDao.getContactList().forEach(contact ->
+                contactDTOs.add(createContactShortDTO(contact)));
         return contactDTOs;
     }
 
-    public Collection<PhoneNumberDTO> getPhoneNumberDTOs (Collection<PhoneNumber> phoneNumbers){
+    public Collection<PhoneNumberDTO> getPhoneNumberDTOs(Collection<PhoneNumber> phoneNumbers) {
         if (phoneNumbers != null) {
             Collection<PhoneNumberDTO> phoneNumberDTOs = new ArrayList<>();
             phoneNumbers.forEach(phone -> {
@@ -91,7 +71,7 @@ public class DtoRepository {
                 String phoneType = phone.getPhoneType().name().toLowerCase();
                 String comment = phone.getPhoneComment();
 
-                phoneNumberDTOs.add(new PhoneNumberDTO(id,countryCode,operatorCode,number,phoneType,comment,fullNumber));
+                phoneNumberDTOs.add(new PhoneNumberDTO(id, countryCode, operatorCode, number, phoneType, comment, fullNumber));
             });
             return phoneNumberDTOs.size() > 0 ? phoneNumberDTOs : null;
         } else {
@@ -99,17 +79,17 @@ public class DtoRepository {
         }
     }
 
-    public Collection<AttachmentDTO> getAttachments (Integer contactId){
+    public Collection<AttachmentDTO> getAttachments(Integer contactId) {
         if (contactId != null) {
             Collection<AttachmentDTO> attachmentDTOs = new ArrayList<>();
             new JdbcContactAttachmentDao().getByContactId(contactId).forEach(attachment -> {
                 Integer id = attachment.getId();
                 String fileName = attachment.getAttachmentLink()
-                        .substring(attachment.getAttachmentLink().lastIndexOf("/")+1);
+                        .substring(attachment.getAttachmentLink().lastIndexOf("/") + 1);
                 String uploadDate = attachment.getDateOfUpload().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
                 String comment = attachment.getAttachmentComment();
 
-                attachmentDTOs.add(new AttachmentDTO(id,fileName,uploadDate,comment));
+                attachmentDTOs.add(new AttachmentDTO(id, fileName, uploadDate, comment));
             });
             return attachmentDTOs.size() > 0 ? attachmentDTOs : null;
         } else {
@@ -117,7 +97,7 @@ public class DtoRepository {
         }
     }
 
-    public ContactFullDTO getContactFullInfo(Integer id){
+    public ContactFullDTO getContactFullInfo(Integer id) {
         Contact contact = contactDao.get(id);
         ContactAddress address = contact.getContactAddress();
         LocalDate dateOfBirth = contact.getDateOfBirth();
@@ -146,11 +126,11 @@ public class DtoRepository {
                 null);
     }
 
-    public void saveContact(ContactFullDTO contact){
+    public void saveContact(ContactFullDTO contact) {
         Collection<PhoneNumber> phoneNumbers = new ArrayList<>();
         contact.getPhoneNumbers().forEach(phoneN -> {
-            phoneNumbers.add(new PhoneNumber(phoneN.getId(),phoneN.getCountryCode(),phoneN.getOperatorCode(),
-                    phoneN.getNumber(),PhoneType.valueOf(phoneN.getType().toUpperCase()),phoneN.getComment()));
+            phoneNumbers.add(new PhoneNumber(phoneN.getId(), phoneN.getCountryCode(), phoneN.getOperatorCode(),
+                    phoneN.getNumber(), PhoneType.valueOf(phoneN.getType().toUpperCase()), phoneN.getComment()));
         });
         ContactAddress address =
                 new ContactAddress(contact.getId(),
@@ -165,7 +145,7 @@ public class DtoRepository {
                 contact.getFirstName(),
                 contact.getSecondName(),
                 contact.getLastName(),
-                LocalDate.of(contact.getYearOfBirth(),contact.getMonthOfBirth(),contact.getDayOfBirth()),
+                LocalDate.of(contact.getYearOfBirth(), contact.getMonthOfBirth(), contact.getDayOfBirth()),
                 Sex.valueOf(contact.getSex().toUpperCase()),
                 contact.getNationality(),
                 MartialStatus.valueOf(contact.getMartialStatus().toUpperCase()),
@@ -177,5 +157,31 @@ public class DtoRepository {
                 contact.getPhotoLink(),
                 phoneNumbers
         ));
+    }
+
+    private ContactShortDTO createContactShortDTO(Contact contact) {
+
+        Integer id = contact.getId();
+
+        String fullName = contact.getLastName() + "<br/>"
+                + contact.getFirstName() + " "
+                + contact.getSecondName();
+
+        String dateOfBirth = contact.getDateOfBirth().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+
+        ContactAddress contactAddress = contact.getContactAddress();
+        String stringAddress =
+                contactAddress.getStreet() + ", "
+                        + contactAddress.getHouseNumber() + "-"
+                        + contactAddress.getFlatNumber() + "<br/>"
+                        + contactAddress.getTown() + ", "
+                        + contactAddress.getCountry() + "<br/>"
+                        + contactAddress.getZipCode();
+
+        String company = contact.getCurrentJob();
+
+        String eMail = contact.geteMail();
+
+        return new ContactShortDTO(id, fullName, dateOfBirth, stringAddress, company, eMail);
     }
 }

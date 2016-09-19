@@ -1,8 +1,6 @@
 package com.javalab.contacts.dto;
 
 
-import java.util.Collection;
-
 public class ContactShortDTO {
 
     private Integer id;
@@ -14,6 +12,8 @@ public class ContactShortDTO {
     private String address;
 
     private String company;
+
+    private String eMail;
 
     public Integer getId() {
         return id;
@@ -35,11 +35,16 @@ public class ContactShortDTO {
         return company;
     }
 
-    public ContactShortDTO(Integer id, String fullName, String dateOfBirth, String address, String company) {
+    public String geteMail() {
+        return eMail;
+    }
+
+    public ContactShortDTO(Integer id, String fullName, String dateOfBirth, String address, String company, String eMail) {
         this.id = id;
         this.fullName = fullName;
         this.dateOfBirth = dateOfBirth;
         this.address = address;
         this.company = company;
+        this.eMail = eMail;
     }
 }

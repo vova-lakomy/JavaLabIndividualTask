@@ -25,7 +25,16 @@ public class JdbcContactDao implements ContactDao {
     private ContactAttachmentDao attachmentDao = new JdbcContactAttachmentDao();
 
     @Override
-    public Contact get(Integer id) {
+    public Contact get(Integer contactId) {
+        return getContactFromDB(contactId,true);
+    }
+
+    @Override
+    public Contact getContactShortInfo(Integer contactId) {
+        return getContactFromDB(contactId,false);
+    }
+
+    private Contact getContactFromDB(Integer id, Boolean fullInfo){
         logger.debug("search for contact with id - " + id);
         PreparedStatement statementGetContact = null;
         Contact resultObject = new Contact();
@@ -37,7 +46,7 @@ public class JdbcContactDao implements ContactDao {
             statementGetContact.setInt(1,id);
             ResultSet resultSet = statementGetContact.executeQuery();
             while (resultSet.next()){
-                resultObject = createContactFromResultSet(resultSet,true);
+                resultObject = createContactFromResultSet(resultSet,fullInfo);
             }
             resultSet.close();
             connection.commit();
