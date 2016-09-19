@@ -3,9 +3,9 @@
     <div class="jlab-cell-12">
         <div class="jlab-button-block jlab-pull-right">
             <a class="jlab-button" href="edit">new contact</a>
-            <button class="jlab-button" >delete</button>
+            <button class="jlab-button" type="submit" formaction="deleteContact">delete</button>
             <a class="jlab-button" href="search" target="_self">search</a>
-            <a class="jlab-button" href="mail?">send e-mail</a>
+            <button class="jlab-button" type="submit" formaction="mail">send e-mail</button>
         </div>
     </div>
 </div>

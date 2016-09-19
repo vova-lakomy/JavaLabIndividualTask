@@ -8,29 +8,23 @@
             <form action="mail" method="post">
 
                 <c:choose>
-                    <c:when test="${emailContact eq null}">
+                    <c:when test="${emailContacts eq null}">
                         <div class="jlab-form-item jlab-row">
                             <label class="jlab-cell-1"
-                                   for="messageRecipient${counter.index}">To:${contact.fullName}</label>
-                            <input class="jlab-cell-12" id="messageRecipient${counter.index}" type="text" name="mailTo"
-                                   value="${contact.eMail}" placeholder="message recipient" required/>
+                                   for="messageRecipient">To:</label>
+                            <input class="jlab-cell-12" id="messageRecipient" type="text" name="mailTo"
+                                   value="" placeholder="message recipient" required data-validation-type="email"/>
                         </div>
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="contact" items="${emailContacts}" varStatus="counter">
                             <div class="jlab-form-item jlab-row">
                                 <label class="jlab-cell-1"
-                                       for="messageRecipient${counter.index}">To:${contact.fullName}</label>
+                                       for="messageRecipient${counter.index}">To: </label>
                                 <input class="jlab-cell-12" id="messageRecipient${counter.index}" type="text"
                                        name="mailTo"
                                        value="${contact.eMail}"
-                                       placeholder="message recipient"
-                                        <c:choose>
-                                            <c:when test="${counter.index == 0}">
-                                                required
-                                            </c:when>
-                                        </c:choose>
-                                />
+                                       placeholder="message recipient" required/>
                             </div>
                         </c:forEach>
                     </c:otherwise>
@@ -48,7 +42,7 @@
                 </div>
 
                 <div class="jlab-button-block jlab-vertical-padding-10 jlab-pull-right">
-                    <button type="button" class="jlab-button">cancel</button>
+                    <a type="submit" class="jlab-button" href="list">cancel</a>
                     <button type="submit" class="jlab-button">send</button>
                 </div>
             </form>
