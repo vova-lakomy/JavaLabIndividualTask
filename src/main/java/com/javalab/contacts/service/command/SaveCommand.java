@@ -1,13 +1,19 @@
 package com.javalab.contacts.service.command;
 
+import com.javalab.contacts.dto.AttachmentDTO;
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
 import com.javalab.contacts.repository.DtoRepository;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class SaveCommand implements Command {
 
@@ -15,6 +21,7 @@ public class SaveCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+
         Integer contactId = null;
         if (!request.getParameter("contactId").equals("")){
             contactId = Integer.parseInt(request.getParameter("contactId"));
@@ -43,7 +50,7 @@ public class SaveCommand implements Command {
                         Integer.parseInt(request.getParameter("zipCode")),
                         definePhotoLink(request),
                         createPhoneNumbersFromRequest(request),
-                        null)
+                        defineAttachments(request))
         );
 
         request.setAttribute("path","contact-list-form.jsp");
@@ -86,5 +93,36 @@ public class SaveCommand implements Command {
         } else {
             return  (String) request.getAttribute("photoLink");
         }
+    }
+
+    private Collection<AttachmentDTO> defineAttachments(HttpServletRequest request){
+        List<String> idNames = new ArrayList<>();
+        try {
+            request.getParts().forEach(part -> {
+                if (part.getName().contains("attachmentId")){
+                    idNames.add(part.getName());
+                }
+            });
+        } catch (IOException | ServletException e) {
+            e.printStackTrace();
+        }
+        Collection<AttachmentDTO> attachmentDTOs = new ArrayList<>();
+        idNames.forEach(idName -> {
+            String index = idName.substring(idName.lastIndexOf('-'));
+//            public AttachmentDTO(Integer id, String fileName, String uploadDate, String comment, String attachmentLink)
+            Integer id = (request.getParameter(idName) == null)? null : Integer.valueOf(request.getParameter(idName));
+            String fileName = request.getParameter("attachmentFileName"+index);
+            String uploadDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String comment = request.getParameter("attachmentComment"+index);
+            String attachmentLink;
+            if (request.getAttribute("attachmentLink"+index) != null){
+                attachmentLink = (String) request.getAttribute("attachmentLink"+index);
+            } else {
+                attachmentLink = request.getParameter("attachmentLink"+index);
+            }
+            attachmentDTOs.add(new AttachmentDTO(id,fileName,uploadDate,comment,attachmentLink));
+        });
+        System.out.println();
+        return attachmentDTOs;
     }
 }

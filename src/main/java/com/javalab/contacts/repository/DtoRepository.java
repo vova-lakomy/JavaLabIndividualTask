@@ -88,8 +88,9 @@ public class DtoRepository {
                         .substring(attachment.getAttachmentLink().lastIndexOf("/") + 1);
                 String uploadDate = attachment.getDateOfUpload().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
                 String comment = attachment.getAttachmentComment();
+                String attachmentLink = attachment.getAttachmentLink();
 
-                attachmentDTOs.add(new AttachmentDTO(id, fileName, uploadDate, comment));
+                attachmentDTOs.add(new AttachmentDTO(id, fileName, uploadDate, comment, attachmentLink));
             });
             return attachmentDTOs.size() > 0 ? attachmentDTOs : null;
         } else {

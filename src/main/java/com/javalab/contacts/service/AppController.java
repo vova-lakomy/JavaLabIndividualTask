@@ -20,13 +20,14 @@ public class AppController {
         commandMap.put("deleteContact",new DeleteContactCommand());
         commandMap.put("deletePhone",new DeletePhoneCommand());
         commandMap.put("uploadPhoto", new UploadPhotoCommand());
+        commandMap.put("uploadAttachment", new UploadAttachmentCommand());
     }
 
 
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        List<String> commandKeys = new ArrayList<>();
+        Set<String> commandKeys = new LinkedHashSet<>();
         String[] optionalCommands = request.getParameterValues("optionalCommand");
         if (optionalCommands != null) {
             for (String s : optionalCommands) {

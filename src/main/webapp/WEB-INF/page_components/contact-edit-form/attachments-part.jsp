@@ -1,8 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<jsp:include page="modal-attachment-upload.jsp"/>
-
 <div id="attachment-table-caption" class="jlab-row">
     <div class="jlab-cell-12 jlab-inner-table-caption">
         <span>Attachments:</span>
@@ -23,21 +21,22 @@
             </ul>
             <div id="attachment-rows">
                 <c:forEach var="attachment" items="${attachments}" varStatus="counter">
-                    <ul class="jlab-row">
+                    <ul class="jlab-row" >
                         <li class="jlab-cell-3">
-                            <input class="jlab-hidden" type="text" name="attachmentId" value="${attachment.id}">
-                            <input type="checkbox" id="attachment-${counter.index}">
+                            <input class="jlab-hidden" type="text" name="attachmentId-${counter.index}" value="${attachment.id}">
+                            <input class="jlab-hidden" type="text" name="attachmentLink-${counter.index}" value="${attachment.id}">
+                            <input type="checkbox" id="attachment-${counter.index}" data-action="deleteAttachment">
                             <label for="attachment-${counter.index}">${attachment.fileName}</label>
+                            <input class="jlab-hidden" type="text" name="attachmentFileName-${counter.index}" value="${attachment.fileName}">
                         </li>
 
                         <li class="jlab-cell-2">
                             ${attachment.uploadDate}
-                            <input class="jlab-hidden" type="text" name="uploadDate" value="${attachment.uploadDate}">
                         </li>
 
                         <li class="jlab-cell-7">
                             ${attachment.comment}
-                            <input class="jlab-hidden" type="text" name="attachmentComment" value="${attachment.comment}">
+                            <input class="jlab-hidden" type="text" name="attachmentComment-${counter.index}" value="${attachment.comment}">
                         </li>
                     </ul>
                 </c:forEach>

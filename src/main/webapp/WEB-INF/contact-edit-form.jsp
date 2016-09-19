@@ -31,12 +31,14 @@
                 <%--/submit--%>
 
             </form>
+
         </div>
     </div>
 </div>
 
 <jsp:include page="page_components/contact-edit-form/modal-phone-edit.jsp"/>
 <jsp:include page="page_components/contact-edit-form/modal-attachment-edit.jsp"/>
+<jsp:include page="page_components/contact-edit-form/modal-attachment-upload.jsp"/>
 <script type="text/javascript" src="../resources/js/contact-edit-form.js"></script>
 
 

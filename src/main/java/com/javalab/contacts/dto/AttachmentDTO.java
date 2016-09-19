@@ -11,6 +11,8 @@ public class AttachmentDTO {
 
     private String comment;
 
+    private String attachmentLink;
+
     public Integer getId() {
         return id;
     }
@@ -27,10 +29,15 @@ public class AttachmentDTO {
         return comment;
     }
 
-    public AttachmentDTO(Integer id, String fileName, String uploadDate, String comment) {
+    public String getAttachmentLink() {
+        return attachmentLink;
+    }
+
+    public AttachmentDTO(Integer id, String fileName, String uploadDate, String comment, String attachmentLink) {
         this.id = id;
         this.fileName = fileName;
         this.uploadDate = uploadDate;
         this.comment = comment;
+        this.attachmentLink = attachmentLink;
     }
 }

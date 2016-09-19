@@ -11,11 +11,18 @@
     }
 
     function getAttachmentData() {
+        var date = new Date();
+        var day = date.getDate();
+        var monthIndex = date.getMonth() + 1;  // lol
+        var year = date.getFullYear();
         var form = $('#upload-attachment-form');
+        var originalFileName = form.attachedFile.files[0].name;
+        var ext = originalFileName.lastIndexOf('.') ? originalFileName.substring(originalFileName.lastIndexOf('.')) : '';
         return {
-            fileName: form.fileName.value,
-            uploadDate: form.uploadDate.value,
-            attachmentComment: form.attachmentComment
+            fileName: form.attachedFileName.value ? (form.attachedFileName.value + ext) : originalFileName,
+            uploadDate: day+ '.' + monthIndex + '.' + year,
+            attachmentComment: form.attachedFileComment.value,
+            attachedFileNode: form.attachedFile
         }
     }
 
@@ -35,9 +42,12 @@
     }
 
     function submitAddAttachmentHandler() {
+        addOptionalCommandToForm('#contact-edit-form', 'uploadAttachment');
         if (isElementExist('#attachments-empty-table')) {
-            $('#contact-edit-form').replaceChild(generateAttachmentEmptyList(), $('#attachments-empty-table'))
+            $('#contact-edit-form').replaceChild(generateAttachmentEmptyList(), $('#attachments-empty-table'));
         }
+        $('#attachment-rows').appendChild(generateAttachmentRecord(attachmentCounter++,getAttachmentData()));
+        toggleAttachmentsUploadModal();
     }
 
     function togglePhoneNumberModal() {
@@ -85,21 +95,29 @@
     }
 
     function generateAttachmentRecord(counter, data) {
+        var fileNode = data.attachedFileNode.cloneNode();
+        var emptyList = fileNode.files;
+        fileNode.files = data.attachedFileNode.files;
+        data.attachedFileNode.files = emptyList;
+        fileNode.id = 'attachedFileId-' + counter;
+        fileNode.className = 'jlab-hidden';
+        fileNode.name = 'attachedFile-'+ counter;
         var ul = document.createElement('ul');
         ul.className = 'jlab-row';
         ul.innerHTML = '<li class="jlab-cell-3">' +
-            '<input class="jlab-hidden" type="text" name="attachmentId" value="">' +
-            '<input type="checkbox" id="attachment-' + counter + '">' +
-            '<label for="attachment-' + counter + '">' + data.fileName + '</label>' +
+            '<input class="jlab-hidden" type="text" name="attachmentId-' + counter + '" value="">' +
+            '<input type="checkbox" id="attachment-' + counter + '" data-action="deleteAttachment">' +
+            '<label for="attachedFileId-' + counter + '">' + data.fileName + '</label>' +
+            '<input class="jlab-hidden" type="text" name="attachmentFileName-' + counter +  '" value="' + data.fileName + '"/>' +
             '</li>' +
             '<li class="jlab-cell-2">' +
             data.uploadDate +
-            '<input class="jlab-hidden" type="text" name="uploadDate" value="' + data.uploadDate + '">' +
             '</li>' +
             '<li class="jlab-cell-7">' +
             data.attachmentComment +
             '<input class="jlab-hidden" type="text" name="attachmentComment" value="' + data.attachmentComment + '">' +
             '</li>';
+        ul.appendChild(fileNode);
         return ul;
     }
 
