@@ -1,43 +1,71 @@
 package com.javalab.contacts.util;
 
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.util.Properties;
 
 public class MailSender {
-    public static void main(String args[]){
+    private static final Logger logger = LogManager.getLogger(MailSender.class);
 
-        String to = "vovan228@ya.ru";         // sender email
-        String from = "lakomy.vova@gmail.com";       // receiver email
-        String host = "127.0.0.1";            // mail server host
+    private Properties mailProps = new Properties();
 
-        Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.host", host);
+    public MailSender() {
+        try {
+            logger.debug("trying to get mail credentials from configuration file");
+            mailProps.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("mail-credentials.properties"));
+        } catch (IOException e) {
+            logger.error("getting mail credentials failed " + e.getMessage() + " " + e.getCause());
+            e.printStackTrace();
+        }
+    }
 
-        Session session = Session.getDefaultInstance(properties); // default session
+    public void sendMail(String toAddress, String mailSubject, String messageText) {
 
         try {
-            MimeMessage message = new MimeMessage(session); // email message
+            Message message = new MimeMessage(getMailSession(getMailServerProperties()));
+            message.setFrom(new InternetAddress(mailProps.getProperty("mail.from")));
+            message.setReplyTo(InternetAddress.parse(mailProps.getProperty("mail.from")));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toAddress));
+            message.setSubject(mailSubject);
+            message.setText(messageText);
+            Transport.send(message);
+            logger.info("sending e-mail done");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
 
-            message.setFrom(new InternetAddress(from)); // setting header fields
+    }
 
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+    private Session getMailSession(Properties serverProperties) {
+        Session session = Session.getDefaultInstance(serverProperties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(mailProps.getProperty("mail.login"),
+                        mailProps.getProperty("mail.password"));
+            }
+        });
+        return session;
+    }
 
-            message.setSubject("Test Mail from Java Program"); // subject line
+    private Properties getMailServerProperties(){
+        Properties serverProperties = new Properties();
+        serverProperties.put("mail.smtp.host", mailProps.getProperty("mail.smtp.host"));
+        serverProperties.put("mail.smtp.socketFactory.port", mailProps.getProperty("mail.smtp.socketFactory.port"));
+        serverProperties.put("mail.smtp.socketFactory.class", mailProps.getProperty("mail.smtp.socketFactory.class"));
+        serverProperties.put("mail.smtp.auth", mailProps.getProperty("mail.smtp.auth"));
+        serverProperties.put("mail.smtp.port", mailProps.getProperty("mail.smtp.port"));
+        return serverProperties;
+    }
 
-            // actual mail body
-            message.setText("You can send mail from Java program by using mail API, but you need" +
-                    "couple of more JAR files e.g. smtp.jar and activation.jar");
 
-            // Send message
-            Transport.send(message); System.out.println("Email Sent successfully....");
-        } catch (MessagingException mex){ mex.printStackTrace(); }
-
+    public static void main(String args[]) {
+        MailSender mailSender = new MailSender();
+        mailSender.sendMail("vovan228@ya.ru","HelloWorld","This is hello world message from Java");
     }
 }
 

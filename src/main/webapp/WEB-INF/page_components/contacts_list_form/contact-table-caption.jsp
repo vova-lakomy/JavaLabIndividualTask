@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="jlab-contact-table-caption">
     <div class="jlab-row">
         <div class="jlab-cell-1 jlab-horizontal-padding-10">
