@@ -7,22 +7,14 @@ import org.apache.logging.log4j.Logger;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.util.Properties;
 
 public class MailSender {
     private static final Logger logger = LogManager.getLogger(MailSender.class);
 
-    private Properties mailProps = new Properties();
+    private Properties mailProps = PropertiesProvider.getInstance().getMailProperties();
 
     public MailSender() {
-        try {
-            logger.debug("trying to get mail credentials from configuration file");
-            mailProps.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("mail-credentials.properties"));
-        } catch (IOException e) {
-            logger.error("getting mail credentials failed " + e.getMessage() + " " + e.getCause());
-            e.printStackTrace();
-        }
     }
 
     public void sendMail(Address[] addresses, String mailSubject, String messageText) {
@@ -43,13 +35,12 @@ public class MailSender {
     }
 
     private Session getMailSession(Properties serverProperties) {
-        Session session = Session.getDefaultInstance(serverProperties, new javax.mail.Authenticator() {
+        return Session.getDefaultInstance(serverProperties, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(mailProps.getProperty("mail.login"),
                         mailProps.getProperty("mail.password"));
             }
         });
-        return session;
     }
 
     private Properties getMailServerProperties(){

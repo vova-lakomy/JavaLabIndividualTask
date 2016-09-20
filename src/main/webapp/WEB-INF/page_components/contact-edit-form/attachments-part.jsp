@@ -7,7 +7,7 @@
         <div class="jlab-pull-right jlab-button-block">
             <button id="button-show-attachments-upload-modal" type="button" class="jlab-button">add new</button>
             <button id="button-show-attachments-edit-modal" type="button" class="jlab-button">edit</button>
-            <button type="button" class="jlab-button" disabled>delete</button>
+            <button id="button-delete-attachment" type="button" class="jlab-button" >delete</button>
         </div>
     </div>
 </div>
@@ -25,7 +25,7 @@
                         <li class="jlab-cell-3">
                             <input class="jlab-hidden" type="text" name="attachmentId-${counter.index}" value="${attachment.id}">
                             <input class="jlab-hidden" type="text" name="attachmentLink-${counter.index}" value="${attachment.attachmentLink}">
-                            <input type="checkbox" id="attachment-${counter.index}" data-action="deleteAttachment">
+                            <input type="checkbox" id="attachment-${counter.index}" name="selectedId" value="${attachment.id}" data-action="deleteAttachment">
                             <a href="${attachment.attachmentLink}" target="_blank"><label>${attachment.fileName}</label></a>
                             <input class="jlab-hidden" type="text" name="attachmentFileName-${counter.index}" value="${attachment.fileName}">
                         </li>

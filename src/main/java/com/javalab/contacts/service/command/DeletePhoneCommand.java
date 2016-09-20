@@ -16,7 +16,7 @@ public class DeletePhoneCommand implements Command{
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
-            Arrays.stream(selectedIds).forEach(id -> numberDao.delete(Integer.parseInt(id)));
+            Arrays.stream(selectedIds).forEach(id -> numberDao.delete(Integer.parseInt(id)));  // FIXME: 20.09.16 make via DTO
         }
     }
 }

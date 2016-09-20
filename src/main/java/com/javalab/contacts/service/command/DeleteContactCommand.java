@@ -18,7 +18,8 @@ public class DeleteContactCommand implements Command {
 
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
-            Arrays.stream(selectedIds).forEach(id -> contactDao.delete(Integer.parseInt(id)));
+            Arrays.stream(selectedIds).forEach(id ->
+                    contactDao.delete(Integer.parseInt(id)));   // FIXME: 20.09.16 make via DTO
         }
         try {
             response.sendRedirect("list");

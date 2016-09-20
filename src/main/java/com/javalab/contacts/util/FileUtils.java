@@ -1,6 +1,8 @@
 package com.javalab.contacts.util;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FileUtils {
+    private static final Logger logger = LogManager.getLogger(SqlScriptLoader.class);
     private static Map<String, Integer> filePrefixMap = new HashMap<String, Integer>();
 
     private FileUtils() {
@@ -73,7 +76,7 @@ public class FileUtils {
      * @param path     path to save file into
      * @return
      */
-    private static File defineFile(String fileName, String path) {
+    public static File defineFile(String fileName, String path) {
         File resultFile;
 
         do {
@@ -94,7 +97,7 @@ public class FileUtils {
      * @param fileName
      * @return
      */
-    private static String generatePrefix(String fileName) {
+    public static String generatePrefix(String fileName) {
         if (!filePrefixMap.containsKey(fileName)) {
             filePrefixMap.put(fileName, 0);
         }
@@ -107,7 +110,7 @@ public class FileUtils {
      *
      * @param fileName
      */
-    private static void resetPrefixCounter(String fileName) {
+    public static void resetPrefixCounter(String fileName) {
         filePrefixMap.put(fileName, 0);
     }
 
@@ -151,4 +154,16 @@ public class FileUtils {
                 RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY );
         return graphics;
     }
+
+    /**
+     * deletes file by specified path
+     * @param path file pat to delete
+     * @return
+     */
+    public static boolean deleteFile(String path) {
+        logger.debug("trying to delete file with path " + path);
+        File file = new File(path);
+        return file.exists() && file.delete();
+    }
+
 }

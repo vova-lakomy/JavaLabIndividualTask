@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-
+@Deprecated   //methods will be implemented in separate classes
 public class DtoRepository {
     private ContactDao contactDao = new JdbcContactDao();
 

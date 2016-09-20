@@ -1,6 +1,8 @@
 package com.javalab.contacts.service;
 
 import com.javalab.contacts.service.command.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +11,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class AppController {
+    private static final Logger logger = LogManager.getLogger(AppController.class);
     private Map<String,Command> commandMap = new HashMap<>();
 
     public AppController(){
@@ -21,6 +24,7 @@ public class AppController {
         commandMap.put("deletePhone",new DeletePhoneCommand());
         commandMap.put("uploadPhoto", new UploadPhotoCommand());
         commandMap.put("uploadAttachment", new UploadAttachmentCommand());
+        commandMap.put("deleteAttachment", new DeleteAttachmentCommand());
     }
 
 
@@ -30,11 +34,14 @@ public class AppController {
         Set<String> commandKeys = new LinkedHashSet<>();
         String[] optionalCommands = request.getParameterValues("optionalCommand");
         if (optionalCommands != null) {
-            for (String s : optionalCommands) {
-                commandKeys.add(s);
+            for (String commandKey : optionalCommands) {
+                logger.debug("adding " + commandKey + " to command keys");
+                commandKeys.add(commandKey);
             }
         }
-        commandKeys.add(request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/')+1));
+        String mainCommand = request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1);
+        logger.debug("adding " + mainCommand + " to command keys");
+        commandKeys.add(mainCommand);
 
         response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -42,6 +49,7 @@ public class AppController {
         for (String key : commandKeys){
             Command command = commandMap.get(key);
             if (command != null) {
+                logger.debug("executing " + command.getClass().getSimpleName());
                 command.execute(request,response);
             }else {
                 response.sendRedirect("../404.jsp");

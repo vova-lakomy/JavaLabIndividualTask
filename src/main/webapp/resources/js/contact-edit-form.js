@@ -169,6 +169,14 @@
         }
     }
 
+    function deleteCheckedAttachments() {
+        addOptionalCommandToForm('#contact-edit-form', 'deleteAttachment');
+        var checkboxes = $all('[data-action="deleteAttachment"]:checked');
+        for (var i = 0; i < checkboxes.length; i++){
+            hide(checkboxes[i].parentNode.parentNode);
+        }
+    }
+
 
 // listeners
     $('#button-upload-photo').addEventListener('click', submitPhotoHandler, false);
@@ -183,6 +191,7 @@
     $('#button-cancel-upload-attachment').addEventListener('click', toggleAttachmentsUploadModal, false);
     $('#button-upload-attachment').addEventListener('click', submitAddAttachmentHandler, false);
     $('#button-delete-phone-number').addEventListener('click', deleteCheckedPhoneNumbers, false);
+    $('#button-delete-attachment').addEventListener('click', deleteCheckedAttachments, false);
     $('#contact-edit-form').addEventListener('keyup', formValidation, false);
     $('#contact-edit-form').addEventListener('input', formValidation, false);
 

@@ -16,17 +16,8 @@ import java.util.Properties;
 
 public class SqlScriptLoader {
     private static final Logger logger = LogManager.getLogger(SqlScriptLoader.class);
-    private static Properties properties = new Properties();
 
-    static {
-        try {
-            logger.debug("trying to get connection properties from configuration file");
-            properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("mySqlConnection.properties"));
-        } catch (IOException e) {
-            logger.error("getting connection properties failed " + e.getMessage() + " " + e.getCause());
-            e.printStackTrace();
-        }
-    }
+    private static Properties properties = PropertiesProvider.getInstance().getConnectionProperties();
 
     public static void loadScript(String path) {
         logger.debug("Try loading script at path: " + path);
