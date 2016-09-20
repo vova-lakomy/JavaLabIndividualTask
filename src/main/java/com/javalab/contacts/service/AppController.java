@@ -27,8 +27,6 @@ public class AppController {
         commandMap.put("deleteAttachment", new DeleteAttachmentCommand());
     }
 
-
-
     public void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Set<String> commandKeys = new LinkedHashSet<>();
@@ -56,5 +54,4 @@ public class AppController {
             }
         }
     }
-
 }

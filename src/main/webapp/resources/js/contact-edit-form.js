@@ -73,7 +73,7 @@
             '<input class="jlab-hidden" type="text" name="phoneNumberId" value="">' +
 
             '<label for="PhoneNumberId' + counter + '"> +' + data.countryCode + ' (' + data.operatorCode + ') '
-            + data.phoneNumber + '</label>' +
+            + data.phoneNumber + '&nbsp;&nbsp;</label>' +
 
             '<input class="jlab-hidden" type="text" name="countryCode" value="'
             + data.countryCode + '">' +
@@ -81,7 +81,8 @@
             '<input class="jlab-hidden" type="text" name="operatorCode" value="'
             + data.operatorCode + '">' +
 
-            '<input class="jlab-hidden" type="text" name="number" value="' + data.phoneNumber + '">' +
+            '<input class="jlab-hidden" type="text" name="number" value="' + data.phoneNumber + '"> ' +
+            '<img class="jlab-edit-image" src="../resources/img/pencil_12x12.png" title="edit" data-action="edit">' +
             '</li>' +
 
             '<li class="jlab-cell-2">' + data.phoneType +
@@ -107,7 +108,7 @@
         ul.innerHTML = '<li class="jlab-cell-3">' +
             '<input class="jlab-hidden" type="text" name="attachmentId-' + counter + '" value="">' +
             '<input type="checkbox" id="attachment-' + counter + '" data-action="deleteAttachment">' +
-            '<label for="attachedFileId-' + counter + '">' + data.fileName + '</label>' +
+            '<label class="jlab-not-uploaded" for="attachedFileId-' + counter + '" title="submit to upload">' + data.fileName + '</label>' +
             '<input class="jlab-hidden" type="text" name="attachmentFileName-' + counter + '" value="' + data.fileName + '"/>' +
             '</li>' +
             '<li class="jlab-cell-2">' +

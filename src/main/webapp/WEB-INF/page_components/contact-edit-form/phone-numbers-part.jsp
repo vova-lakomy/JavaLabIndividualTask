@@ -27,11 +27,12 @@
                         <li class="jlab-cell-3">
                             <input type="checkbox" name="selectedId" value="${phoneNumber.id}" id="phoneNumberId${counter.index}" data-action="deletePhone" >
                             <input class="jlab-hidden" type="text" name="phoneNumberId" value="${phoneNumber.id}">
-                            <label for="phoneNumberId${counter.index}">${phoneNumber.fullNumber}</label>
+                            <label for="phoneNumberId${counter.index}">${phoneNumber.fullNumber}&nbsp;&nbsp;</label>
                             <input class="jlab-hidden" type="text" name="countryCode" value="${phoneNumber.countryCode}">
                             <input class="jlab-hidden" type="text" name="operatorCode"
                                    value="${phoneNumber.operatorCode}">
                             <input class="jlab-hidden" type="text" name="number" value="${phoneNumber.number}">
+                            <img class="jlab-edit-image" src="../resources/img/pencil_12x12.png" title="edit" data-action="edit">
                         </li>
 
                         <li class="jlab-cell-2">

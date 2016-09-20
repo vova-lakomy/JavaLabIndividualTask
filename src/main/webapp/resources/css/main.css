@@ -1,3 +1,8 @@
+a label {
+    color: #000;
+    cursor: pointer;
+}
+
 .jlab-main-list ul {
     margin-top: 0;
     margin-bottom: 0;
@@ -29,6 +34,11 @@
     margin-bottom: 10px;
     margin-top: 5px;
 }
+
+.jlab-inner-table-container a{
+    text-decoration: none;
+}
+
 body{
     margin: 0;
     padding: 0;
@@ -221,6 +231,7 @@ select{
     border-radius: 3px;
     padding: 5px 20px;
 }
+
 .jlab-modal-container{
     transition: 300ms;
     position: fixed;
@@ -260,6 +271,15 @@ select{
     text-align: left;
 }
 
+.jlab-edit-image{
+    /*height: 12px;*/
+}
+.jlab-edit-image:hover{
+    cursor: pointer;
+    -webkit-filter: brightness(250%);
+    /*box-shadow: 1px 1px 15px #ed1c24;*/
+}
+
 .jlab-horizontal-padding-10 {
     word-wrap: break-word;
     padding-left: 10px;
@@ -277,6 +297,11 @@ select{
 }
 .jlab-pull-left{
     float: left;
+}
+
+.jlab-not-uploaded{
+    color: #6b6b6b;
+    font-style: italic;
 }
 #mailText{
     width: 100%;
