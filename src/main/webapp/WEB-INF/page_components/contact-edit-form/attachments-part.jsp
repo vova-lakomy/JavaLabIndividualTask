@@ -24,9 +24,9 @@
                     <ul class="jlab-row" >
                         <li class="jlab-cell-3">
                             <input class="jlab-hidden" type="text" name="attachmentId-${counter.index}" value="${attachment.id}">
-                            <input class="jlab-hidden" type="text" name="attachmentLink-${counter.index}" value="${attachment.id}">
+                            <input class="jlab-hidden" type="text" name="attachmentLink-${counter.index}" value="${attachment.attachmentLink}">
                             <input type="checkbox" id="attachment-${counter.index}" data-action="deleteAttachment">
-                            <label for="attachment-${counter.index}">${attachment.fileName}</label>
+                            <a href="${attachment.attachmentLink}" target="_blank"><label>${attachment.fileName}</label></a>
                             <input class="jlab-hidden" type="text" name="attachmentFileName-${counter.index}" value="${attachment.fileName}">
                         </li>
 

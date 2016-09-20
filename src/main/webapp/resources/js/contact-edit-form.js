@@ -108,14 +108,14 @@
             '<input class="jlab-hidden" type="text" name="attachmentId-' + counter + '" value="">' +
             '<input type="checkbox" id="attachment-' + counter + '" data-action="deleteAttachment">' +
             '<label for="attachedFileId-' + counter + '">' + data.fileName + '</label>' +
-            '<input class="jlab-hidden" type="text" name="attachmentFileName-' + counter +  '" value="' + data.fileName + '"/>' +
+            '<input class="jlab-hidden" type="text" name="attachmentFileName-' + counter + '" value="' + data.fileName + '"/>' +
             '</li>' +
             '<li class="jlab-cell-2">' +
             data.uploadDate +
             '</li>' +
             '<li class="jlab-cell-7">' +
             data.attachmentComment +
-            '<input class="jlab-hidden" type="text" name="attachmentComment" value="' + data.attachmentComment + '">' +
+            '<input class="jlab-hidden" type="text" name="attachmentComment-' + counter + '" value="' + data.attachmentComment + '">' +
             '</li>';
         ul.appendChild(fileNode);
         return ul;

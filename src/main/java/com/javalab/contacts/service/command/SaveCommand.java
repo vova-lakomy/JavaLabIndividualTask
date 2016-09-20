@@ -109,8 +109,7 @@ public class SaveCommand implements Command {
         Collection<AttachmentDTO> attachmentDTOs = new ArrayList<>();
         idNames.forEach(idName -> {
             String index = idName.substring(idName.lastIndexOf('-'));
-//            public AttachmentDTO(Integer id, String fileName, String uploadDate, String comment, String attachmentLink)
-            Integer id = (request.getParameter(idName) == null)? null : Integer.valueOf(request.getParameter(idName));
+            Integer id = (request.getParameter(idName).isEmpty())? null : Integer.valueOf(request.getParameter(idName));
             String fileName = request.getParameter("attachmentFileName"+index);
             String uploadDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             String comment = request.getParameter("attachmentComment"+index);
@@ -122,7 +121,6 @@ public class SaveCommand implements Command {
             }
             attachmentDTOs.add(new AttachmentDTO(id,fileName,uploadDate,comment,attachmentLink));
         });
-        System.out.println();
         return attachmentDTOs;
     }
 }

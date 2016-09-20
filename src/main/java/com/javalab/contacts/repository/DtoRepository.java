@@ -10,6 +10,7 @@ import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
 import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
+import com.javalab.contacts.model.ContactAttachment;
 import com.javalab.contacts.model.PhoneNumber;
 import com.javalab.contacts.model.enumerations.MartialStatus;
 import com.javalab.contacts.model.enumerations.PhoneType;
@@ -133,6 +134,11 @@ public class DtoRepository {
             phoneNumbers.add(new PhoneNumber(phoneN.getId(), phoneN.getCountryCode(), phoneN.getOperatorCode(),
                     phoneN.getNumber(), PhoneType.valueOf(phoneN.getType().toUpperCase()), phoneN.getComment()));
         });
+        Collection<ContactAttachment> attachments = new ArrayList<>();
+        contact.getAttachments().forEach(attachment -> {
+            attachments.add(new ContactAttachment(attachment.getId(),attachment.getAttachmentLink(),
+                    attachment.getComment(), LocalDate.parse(attachment.getUploadDate())));
+        });
         ContactAddress address =
                 new ContactAddress(contact.getId(),
                         contact.getCountry(),
@@ -154,7 +160,7 @@ public class DtoRepository {
                 contact.geteMail(),
                 contact.getCurrentJob(),
                 address,
-                null,
+                attachments,
                 contact.getPhotoLink(),
                 phoneNumbers
         ));
