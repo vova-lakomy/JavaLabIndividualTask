@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div id="modal-attachment-edit" class="jlab-modal-container jlab-fade">
-    <form class="jlab-modal jlab-phone-number-edit-form">
+    <form id="modal-attachment-edit-form" class="jlab-modal jlab-phone-number-edit-form">
         <h4>Edit attachment</h4>
         <div class="jlab-form-item">
             <label for="attachment-name">Attachment name</label>
@@ -12,8 +12,8 @@
             <label for="attachment-comment">Comment</label>
             <input id="attachment-comment" name="attachmentComment" type="text" value="" placeholder="comment">
         </div>
-        <div class="jlab-form-item">
-            <button type="button" class="jlab-button">save</button>
+        <div class="jlab-pull-right jlab-button-block ">
+            <button id="button-save-attachment-edit-modal" type="button" class="jlab-button">save</button>
             <button id="button-cancel-attachments-edit-modal" type="button" class="jlab-button">cancel</button>
         </div>
     </form>

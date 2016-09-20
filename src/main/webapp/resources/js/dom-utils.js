@@ -65,6 +65,9 @@ function isElementExist(elementId) {
     return $(elementId) !== null;
 }
 
+function resetForm(formSelector) {
+    $(formSelector).reset();
+}
 
 
 

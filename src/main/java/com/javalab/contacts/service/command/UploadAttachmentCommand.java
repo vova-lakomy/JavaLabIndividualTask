@@ -1,7 +1,6 @@
 package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.util.PropertiesProvider;
-import com.javalab.contacts.util.SqlScriptLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

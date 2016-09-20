@@ -3,7 +3,8 @@ package com.javalab.contacts.service.command;
 import com.javalab.contacts.dto.AttachmentDTO;
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
-import com.javalab.contacts.repository.DtoRepository;
+import com.javalab.contacts.repository.ContactDtoRepository;
+import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class SaveCommand implements Command {
 
-    private DtoRepository repository = new DtoRepository();
+    private ContactDtoRepository repository = new ContactDtoRepositoryImpl();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {

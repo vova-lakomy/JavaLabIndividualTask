@@ -1,18 +1,19 @@
 package com.javalab.contacts.service.command;
 
 
-import com.javalab.contacts.repository.DtoRepository;
+import com.javalab.contacts.repository.ContactDtoRepository;
+import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ListCommand implements Command{
 
-    DtoRepository controller = new DtoRepository();
+    ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response){
-        request.setAttribute("contacts",controller.getContactsList());
+        request.setAttribute("contacts",contactRepository.getContactsList());
         request.setAttribute("path","contact-list-form.jsp");
         try {
             request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request,response);

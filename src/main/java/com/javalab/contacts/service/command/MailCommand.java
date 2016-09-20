@@ -2,7 +2,8 @@ package com.javalab.contacts.service.command;
 
 
 import com.javalab.contacts.dto.ContactShortDTO;
-import com.javalab.contacts.repository.DtoRepository;
+import com.javalab.contacts.repository.ContactDtoRepository;
+import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
 import com.javalab.contacts.util.MailSender;
 
 import javax.mail.Address;
@@ -18,7 +19,7 @@ import java.util.Collection;
 public class MailCommand implements Command {
 
     private MailSender mailSender = new MailSender();
-    private DtoRepository repository = new DtoRepository();
+    private ContactDtoRepository repository = new ContactDtoRepositoryImpl();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -30,7 +31,7 @@ public class MailCommand implements Command {
                     contactShortDTOs.add(repository.getContactShortDTO(Integer.valueOf(id))));
             request.setAttribute("emailContacts", contactShortDTOs);
             request.setAttribute("path", "contact-email-form.jsp");
-        } else if (request.getParameterValues("mailTo") != null){
+        } else if (request.getParameterValues("mailTo") != null) {
             sendMail(request);
             try {
                 response.sendRedirect("list");
@@ -74,6 +75,4 @@ public class MailCommand implements Command {
         }
         return addresses;
     }
-
-
 }

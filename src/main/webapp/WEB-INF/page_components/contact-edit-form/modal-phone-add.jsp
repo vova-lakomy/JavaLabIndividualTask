@@ -1,11 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<div id="modal-phone-edit" class="jlab-modal-container jlab-fade">
-    <form id="phone-edit-form" class="jlab-modal jlab-phone-number-edit-form">
-        <h4>Edit phone</h4>
+<div id="modal-phone-add" class="jlab-modal-container jlab-fade">
+    <form id="phone-add-form" class="jlab-modal jlab-phone-number-edit-form">
+        <h4>Add phone</h4>
         <div class="jlab-form-item">
-            <input class="jlab-hidden" name="phoneNumberCounter" value="">
             <input class="jlab-hidden" name="phoneNumberId" value="">
             <label for="phone-number-country-code">Country code</label>
             <input id="phone-number-country-code" name="countryCode" type="text" value="" placeholder="country code">
@@ -40,8 +39,8 @@
         </div>
 
         <div class="jlab-pull-right jlab-button-block ">
-            <button id="button-save-phone-number" type="button" class="jlab-button">save</button>
-            <button id="button-cancel-phone-number-edit" type="button" class="jlab-button">cancel</button>
+            <button id="button-add-phone-number" type="button" class="jlab-button">add</button>
+            <button id="button-cancel-phone-number-add" type="button" class="jlab-button">cancel</button>
         </div>
 
     </form>

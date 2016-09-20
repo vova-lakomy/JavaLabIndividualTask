@@ -1,7 +1,7 @@
 package com.javalab.contacts.service.command;
 
-import com.javalab.contacts.dao.ContactDao;
-import com.javalab.contacts.dao.impl.jdbc.JdbcContactDao;
+import com.javalab.contacts.repository.ContactDtoRepository;
+import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class DeleteContactCommand implements Command {
 
-    private ContactDao contactDao = new JdbcContactDao();
+    private ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
@@ -19,7 +19,7 @@ public class DeleteContactCommand implements Command {
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
             Arrays.stream(selectedIds).forEach(id ->
-                    contactDao.delete(Integer.parseInt(id)));   // FIXME: 20.09.16 make via DTO
+                    contactRepository.delete(Integer.parseInt(id)));
         }
         try {
             response.sendRedirect("list");
