@@ -10,7 +10,12 @@ import com.javalab.contacts.model.enumerations.Sex;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +23,7 @@ import java.util.Collection;
 public class JdbcContactDao implements ContactDao {
 
     private static final Logger logger = LogManager.getLogger(JdbcContactDao.class);
+    private int rowsCount = 10;
 
     private ConnectionManager connectionManager = ConnectionManager.getInstance();
 
@@ -69,7 +75,7 @@ public class JdbcContactDao implements ContactDao {
     }
 
     @Override
-    public Collection<Contact> getContactList(){
+    public Collection<Contact> getContactList(int pageNumber){
         logger.debug("try to get contacts list");
         PreparedStatement statementGetContactList = null;
 
@@ -78,7 +84,10 @@ public class JdbcContactDao implements ContactDao {
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
-            statementGetContactList = connection.prepareStatement("SELECT * FROM contact ORDER BY last_name");
+            statementGetContactList = connection
+                    .prepareStatement("SELECT SQL_CALC_FOUND_ROWS * FROM contact ORDER BY last_name LIMIT ?,?");
+            statementGetContactList.setInt(1, rowsCount *pageNumber);
+            statementGetContactList.setInt(2, rowsCount);
             connection.commit();
             logger.debug("closed transaction");
             ResultSet resultSet = statementGetContactList.executeQuery();
@@ -110,7 +119,7 @@ public class JdbcContactDao implements ContactDao {
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
-            statementSaveContact = connection.prepareStatement(saveContactQuery,Statement.RETURN_GENERATED_KEYS);
+            statementSaveContact = connection.prepareStatement(saveContactQuery, Statement.RETURN_GENERATED_KEYS);
             setSaveStatementParams(statementSaveContact,contact);
             statementSaveContact.executeUpdate();
 
@@ -259,5 +268,13 @@ public class JdbcContactDao implements ContactDao {
                    "web_site=?, e_mail=?, current_job=?, photo_link=?, country=?, town=?, street=?, house_number=?, " +
                    "flat_number=?, zip_code=? WHERE id=" + contactId;
         }
+    }
+
+    public int getRowsCount() {
+        return rowsCount;
+    }
+
+    public void setRowsCount(int rowsCount) {
+        this.rowsCount = rowsCount;
     }
 }

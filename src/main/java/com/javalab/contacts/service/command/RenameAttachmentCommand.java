@@ -41,8 +41,6 @@ public class RenameAttachmentCommand implements Command {
                 File oldFile = new File(oldFullPath);
                 FileUtils.renameFile(oldFile,newFile);
             }
-
         });
-
     }
 }

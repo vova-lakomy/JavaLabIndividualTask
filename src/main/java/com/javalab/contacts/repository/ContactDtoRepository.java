@@ -12,7 +12,7 @@ public interface ContactDtoRepository {
 
     ContactFullDTO getContactFullInfo(Integer id);
 
-    Collection<ContactShortDTO> getContactsList();
+    Collection<ContactShortDTO> getContactsList(Integer pageNumber);
 
     Integer saveContact(ContactFullDTO contact);
 
@@ -22,5 +22,5 @@ public interface ContactDtoRepository {
 
     Collection<String> getMartialStatusList();
 
-    public Collection<String> getPhoneTypeList();
+    Collection<String> getPhoneTypeList();
 }

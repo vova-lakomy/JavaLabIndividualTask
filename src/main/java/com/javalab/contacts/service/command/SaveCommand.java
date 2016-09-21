@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 public class SaveCommand implements Command {
 
     private ContactDtoRepository repository = new ContactDtoRepositoryImpl();
@@ -24,7 +26,7 @@ public class SaveCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
         Integer contactId = null;
-        if (!request.getParameter("contactId").equals("")){
+        if (isNotBlank(request.getParameter("contactId"))){
             contactId = Integer.parseInt(request.getParameter("contactId"));
         }
 

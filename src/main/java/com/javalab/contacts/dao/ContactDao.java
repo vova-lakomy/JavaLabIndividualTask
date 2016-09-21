@@ -11,7 +11,7 @@ public interface ContactDao {
 
     Contact getContactShortInfo(Integer contactId);
 
-    Collection<Contact> getContactList();
+    Collection<Contact> getContactList(int pageNumber);
 
     void save(Contact contact);
 

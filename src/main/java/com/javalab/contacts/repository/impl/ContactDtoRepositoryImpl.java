@@ -62,9 +62,9 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
     }
 
     @Override
-    public Collection<ContactShortDTO> getContactsList() {
+    public Collection<ContactShortDTO> getContactsList(Integer pageNumber) {
         Collection<ContactShortDTO> contactDTOs = new ArrayList<>();
-        contactDao.getContactList().forEach(contact ->
+        contactDao.getContactList(pageNumber).forEach(contact ->
                 contactDTOs.add(createContactShortDTO(contact)));
         return contactDTOs;
     }
