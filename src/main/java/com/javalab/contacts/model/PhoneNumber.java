@@ -6,15 +6,10 @@ import com.javalab.contacts.model.enumerations.PhoneType;
 public class PhoneNumber {
 
     private Integer id;
-
     private int countryCode;
-
     private int operatorCode;
-
     private int phoneNumber;
-
     private PhoneType phoneType;
-
     private String phoneComment;
 
     public int getCountryCode() {

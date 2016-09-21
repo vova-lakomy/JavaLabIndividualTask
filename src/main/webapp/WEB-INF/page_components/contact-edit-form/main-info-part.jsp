@@ -41,13 +41,13 @@
                 <div class="jlab-form-item">
                     <label for="edit-form-sex">Sex</label>
                     <select id="edit-form-sex" name="sex">
-                        <c:forEach items="${sexList}" var="value">
+                        <c:forEach items="${sexList}" var="sexType">
                             <c:choose>
-                                <c:when test="${value eq fullContact.sex}">
-                                    <option selected value="${value}">${value}</option>
+                                <c:when test="${sexType eq fullContact.sex}">
+                                    <option selected value="${sexType}">${sexType}</option>
                                 </c:when>
                                 <c:otherwise>
-                                    <option value="${value}">${value}</option>
+                                    <option value="${sexType}">${sexType}</option>
                                 </c:otherwise>
                             </c:choose>
                         </c:forEach>
@@ -67,13 +67,13 @@
                 <div class="jlab-form-item">
                     <label for="edit-form-martial-status">Martial status</label>
                     <select id="edit-form-martial-status" name="martialStatus">
-                        <c:forEach items="${martialStatusList}" var="value">
+                        <c:forEach items="${martialStatusList}" var="martialStatusType">
                             <c:choose>
-                                <c:when test="${value eq fullContact.martialStatus}">
-                                    <option selected value="${value}">${value}</option>
+                                <c:when test="${martialStatusType eq fullContact.martialStatus}">
+                                    <option selected value="${martialStatusType}">${martialStatusType}</option>
                                 </c:when>
                                 <c:otherwise>
-                                    <option value="${value}">${value}</option>
+                                    <option value="${martialStatusType}">${martialStatusType}</option>
                                 </c:otherwise>
                             </c:choose>
                         </c:forEach>

@@ -4,7 +4,13 @@ package com.javalab.contacts.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.mail.*;
+import javax.mail.Address;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
@@ -13,9 +19,6 @@ public class MailSender {
     private static final Logger logger = LogManager.getLogger(MailSender.class);
 
     private Properties mailProps = PropertiesProvider.getInstance().getMailProperties();
-
-    public MailSender() {
-    }
 
     public void sendMail(Address[] addresses, String mailSubject, String messageText) {
 

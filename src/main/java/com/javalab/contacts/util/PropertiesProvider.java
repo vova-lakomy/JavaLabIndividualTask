@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.Properties;
 
-public class PropertiesProvider {
+public final class PropertiesProvider {
     private static final Logger logger = LogManager.getLogger(PropertiesProvider.class);
 
     private Properties connectionProperties = new Properties();
@@ -15,7 +15,7 @@ public class PropertiesProvider {
     private Properties fileUploadProperties = new Properties();
 
 
-    private static PropertiesProvider propInstance = new PropertiesProvider();
+    private static final PropertiesProvider propInstance = new PropertiesProvider();
 
     public static PropertiesProvider getInstance() {
         return propInstance;

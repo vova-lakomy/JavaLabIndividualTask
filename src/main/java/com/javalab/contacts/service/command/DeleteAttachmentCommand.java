@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class DeleteAttachmentCommand implements Command {
 
-    ContactAttachmentDao attachmentDao = new JdbcContactAttachmentDao();
+    private ContactAttachmentDao attachmentDao = new JdbcContactAttachmentDao();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {

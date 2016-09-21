@@ -25,6 +25,7 @@ public class AppController {
         commandMap.put("uploadPhoto", new UploadPhotoCommand());
         commandMap.put("uploadAttachment", new UploadAttachmentCommand());
         commandMap.put("deleteAttachment", new DeleteAttachmentCommand());
+        commandMap.put("renameAttachment", new RenameAttachmentCommand());
     }
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

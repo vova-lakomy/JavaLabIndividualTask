@@ -166,4 +166,15 @@ public class FileUtils {
         return file.exists() && file.delete();
     }
 
+    /**
+     * renames files
+     * @param oldFile
+     * @param newFile
+     * @return
+     */
+    public static boolean renameFile(File oldFile, File newFile){
+        logger.debug("trying to rename files " + oldFile + " >> " + newFile);
+        return oldFile.renameTo(newFile);
+    }
+
 }

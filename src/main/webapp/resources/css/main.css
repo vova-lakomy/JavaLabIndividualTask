@@ -243,7 +243,7 @@ select{
     z-index: 2;
 }
 .jlab-hidden{
-    display: none;
+    display: none !important;
 }
 
 .jlab-fade{

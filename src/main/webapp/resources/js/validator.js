@@ -16,8 +16,17 @@
         zip : function (node) {
             return new RegExp('^$|^[0-9]{5,6}$').test(node.value);
         },
+        countryCode : function (node) {
+            return new RegExp('^[0-9]{1,3}$').test(node.value);
+        },
+        operatorCode : function (node) {
+            return new RegExp('^[0-9]{1,3}$').test(node.value);
+        },
+        phoneNumber : function (node) {
+            return new RegExp('^[0-9]{4,9}$').test(node.value);
+        },
         numbers : function (node) {
-            return new RegExp('^$|^[0-9]+$').test(node.value);
+            return new RegExp('^[0-9]+$').test(node.value);
         },
         date : function (node) {
             return checkDate(getDateFieldData(node));
@@ -58,9 +67,9 @@
             }
         }
         if (!isFormValid){
-            $('[type="submit"]').setAttribute('disabled','disabled');
+            $('[data-form-name="' + formName +'"] [type="submit"]').setAttribute('disabled','disabled');
         } else {
-            $('[type="submit"]').removeAttribute('disabled');
+            $('[data-form-name="' + formName +'"] [type="submit"]').removeAttribute('disabled');
         }
     };
 

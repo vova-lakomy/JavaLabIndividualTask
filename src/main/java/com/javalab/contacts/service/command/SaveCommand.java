@@ -112,7 +112,7 @@ public class SaveCommand implements Command {
             String index = idName.substring(idName.lastIndexOf('-'));
             Integer id = (request.getParameter(idName).isEmpty())? null : Integer.valueOf(request.getParameter(idName));
             String fileName = request.getParameter("attachmentFileName"+index);
-            String uploadDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String uploadDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));   // FIXME: 21.09.16 
             String comment = request.getParameter("attachmentComment"+index);
             String attachmentLink;
             if (request.getAttribute("attachmentLink"+index) != null){

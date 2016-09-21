@@ -6,11 +6,8 @@ import java.time.LocalDate;
 public class ContactAttachment {
 
     private Integer id;
-
     private String attachmentLink;
-
     private String attachmentComment;
-
     private LocalDate dateOfUpload;
 
     public Integer getId() {

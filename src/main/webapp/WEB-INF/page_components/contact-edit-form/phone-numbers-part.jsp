@@ -52,7 +52,17 @@
     <c:otherwise>
         <div id="phone-numbers-empty-table" class="jlab-row jlab-vertical-padding-10">
             <div class="jlab-cell-12">
-                <i>nothing to display <a href="javascript:toggleClass($('#modal-phone-edit'),'jlab-fade')">add</a></i>
+                <i>nothing to display <a href="javascript:toggleClass($('#modal-phone-add'),'jlab-fade')">add</a></i>  <%// TODO: 21.09.16 add listener in js %>
+            </div>
+        </div>
+        <div id="inner-phone-number-table" class="jlab-inner-table-container jlab-hidden">
+            <ul class="jlab-row jlab-inner-table-column-caption">
+                <li class="jlab-cell-4">Phone number</li>
+                <li class="jlab-cell-2">Type</li>
+                <li class="jlab-cell-6">Comment</li>
+            </ul>
+            <div id="phone-number-rows">
+
             </div>
         </div>
     </c:otherwise>

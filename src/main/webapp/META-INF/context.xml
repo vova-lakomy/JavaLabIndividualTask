@@ -2,16 +2,29 @@
 
 <Context>
 
-    <Resource name="jdbc/contacts_vladimir_lakomy"
-              auth="Container"
-              type="javax.sql.DataSource"
-              connectionProperties="useUnicode=yes;characterEncoding=utf8;useSSL=false"
-              timeBetweenEvictionRunsMillis="30000"
-              minIdle="30"
-              maxWaitMillis="10000"
-              minEvictableIdleTimeMillis="30000"
-              username="vova_lakomy"
-              password="1234567"
-              driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/contacts_vladimir_lakomy"/>
+    <Resource
+            name="jdbc/contacts_vladimir_lakomy"
+            auth="Container"
+            type="javax.sql.DataSource"
+            factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+            username="vova_lakomy"
+            password="1234567"
+            driverClassName="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://localhost:3306/contacts_vladimir_lakomy"
+            defaultTransactionIsolation="READ_COMMITTED"
+            defaultAutoCommit="true"
+            defaultReadOnly="false"
+            initialSize="1"
+            maxActive="3"
+            minIdle="1"
+            maxIdle="1"
+            validationQuery="select 1"
+            testOnBorrow="true"
+            testOnReturn="true"
+            testWhileIdle="true"
+            removeAbandoned="true"
+            removeAbandonedTimeout="300"
+            logAbandoned="true"
+            connectionProperties="useUnicode=yes;characterEncoding=utf8;useSSL=false"
+              />
 </Context>

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ListCommand implements Command{
 
-    ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
+    private ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response){

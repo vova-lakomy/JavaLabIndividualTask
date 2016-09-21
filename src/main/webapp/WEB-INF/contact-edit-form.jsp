@@ -6,7 +6,8 @@
     <div class="jlab-main-content">
         <div class="jlab-form-container">
 
-            <form id="contact-edit-form" action="save" accept-charset="UTF-8" method="post" enctype="multipart/form-data">
+            <form id="contact-edit-form" action="save" accept-charset="UTF-8" method="post"
+                                                       enctype="multipart/form-data" data-form-name="contact-edit-form">
                 <div class="jlab-row">
                     <div class="jlab-cell-3">
                         <jsp:include page="page_components/contact-edit-form/contact-photo-part.jsp"/>

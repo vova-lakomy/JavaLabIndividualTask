@@ -10,35 +10,20 @@ import java.util.Collection;
 public class Contact {
 
     private Integer id;
-
     private String firstName;
-
     private String secondName;
-
     private String lastName;
-
     private LocalDate dateOfBirth;
-
     private Sex sex;
-
     private String nationality;
-
     private MartialStatus martialStatus;
-
     private String webSite;
-
     private String eMail;
-
     private String currentJob;
-
     private ContactAddress contactAddress;
-
     private Collection<ContactAttachment> attachments;
-
     private String photoLink;
-
     private Collection <PhoneNumber> phoneNumbers;
-
     public Integer getId() {
         return id;
     }

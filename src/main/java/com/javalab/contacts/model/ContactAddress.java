@@ -4,17 +4,11 @@ package com.javalab.contacts.model;
 public class ContactAddress {
 
     private Integer id;
-
     private String country;
-
     private String town;
-
     private String street;
-
     private int houseNumber;
-
     private int flatNumber;
-
     private int zipCode;
 
     public Integer getId() {
