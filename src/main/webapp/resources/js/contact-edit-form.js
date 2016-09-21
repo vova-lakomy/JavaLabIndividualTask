@@ -320,7 +320,6 @@
     }
 
     function saveEditedAttachment() {
-        debugger;
         addOptionalCommandToForm('#contact-edit-form', 'renameAttachment');
         data = getAttachmentEditData('#modal-attachment-edit-form');
         var record = generateAttachmentEditedRecord(data.counter, data);

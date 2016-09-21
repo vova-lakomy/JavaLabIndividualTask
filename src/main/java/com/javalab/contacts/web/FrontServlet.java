@@ -1,6 +1,7 @@
 package com.javalab.contacts.web;
 
 import com.javalab.contacts.service.AppController;
+import com.javalab.contacts.util.PropertiesProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,8 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Properties;
 
-import static com.javalab.contacts.util.SqlScriptLoader.*;
+import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
 
 @MultipartConfig
 @WebServlet(loadOnStartup = 1, urlPatterns = {"/contacts/*"})
@@ -22,13 +24,17 @@ public class FrontServlet extends HttpServlet {
 
     private static final Logger logger = LogManager.getLogger(FrontServlet.class);
     private AppController appController = new AppController();
+    Properties properties = PropertiesProvider.getInstance().getConnectionProperties();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         logger.debug("App servlet init");
         super.init(config);
-        loadScript(getServletContext().getRealPath("./WEB-INF/classes/initDB.sql"));
-        loadScript(getServletContext().getRealPath("./WEB-INF/classes/populateDB.sql"));
+        Boolean shouldLoadScript = Boolean.valueOf(properties.getProperty("load.scripts.at.start"));
+        if(shouldLoadScript){
+            loadScript(getServletContext().getRealPath("./WEB-INF/classes/initDB.sql"));
+            loadScript(getServletContext().getRealPath("./WEB-INF/classes/populateDB.sql"));
+        }
     }
 
     @Override

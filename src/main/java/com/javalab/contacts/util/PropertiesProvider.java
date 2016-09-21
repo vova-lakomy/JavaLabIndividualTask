@@ -24,7 +24,7 @@ public final class PropertiesProvider {
     private PropertiesProvider() {
         try {
             logger.debug("trying to get connection properties from configuration file");
-            connectionProperties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("mySqlConnection.properties"));
+            connectionProperties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("sqlLoader.properties"));
         } catch (IOException e) {
             logger.error("getting connection properties failed " + e.getMessage() + " " + e.getCause());
             e.printStackTrace();
