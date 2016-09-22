@@ -17,14 +17,14 @@ import java.util.Properties;
 
 import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
 
-@MultipartConfig
+@MultipartConfig  //TODO: set parameters
 @WebServlet(loadOnStartup = 1, urlPatterns = {"/contacts/*"})
 public class FrontServlet extends HttpServlet {
 
 
     private static final Logger logger = LogManager.getLogger(FrontServlet.class);
     private AppController appController = new AppController();
-    Properties properties = PropertiesProvider.getInstance().getConnectionProperties();
+    private Properties properties = PropertiesProvider.getInstance().getConnectionProperties();
 
     @Override
     public void init(ServletConfig config) throws ServletException {

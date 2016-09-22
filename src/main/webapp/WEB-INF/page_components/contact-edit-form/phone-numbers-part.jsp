@@ -6,7 +6,6 @@
         <span>Phone numbers:</span>
         <div class="jlab-pull-right jlab-button-block">
             <button id="button-show-phone-number-modal" type="button" class="jlab-button">add new</button>
-            <%--<button type="button" class="jlab-button" disabled>edit</button>--%>
             <button id="button-delete-phone-number" type="button" class="jlab-button" >delete</button>
         </div>
     </div>
