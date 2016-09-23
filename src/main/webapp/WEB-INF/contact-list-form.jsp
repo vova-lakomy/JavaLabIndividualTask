@@ -8,10 +8,28 @@
             <li>
                 <jsp:include page="page_components/contacts-list-form/contact-table-caption.jsp"/>
             </li>
-            <c:forEach items="${contacts}" var="contactItem">
-                <c:set var="contact" value="${contactItem}" scope="request"/>
-                <jsp:include page="page_components/contacts-list-form/contact-row.jsp"/>
-            </c:forEach>
+            <c:choose>
+                <c:when test="${!(searchResult eq null)}">
+                    <c:set var="contactItems" value="${searchResult}"/>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="contactItems" value="${contactsList}"/>
+                </c:otherwise>
+            </c:choose>
+            <c:choose>
+                <c:when test="${contactItems.size() > 0}">
+                    <c:forEach items="${contactItems}" var="contactItem">
+                        <c:set var="contact" value="${contactItem}" scope="request"/>
+                        <jsp:include page="page_components/contacts-list-form/contact-row.jsp"/>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <div id="no-contacts-to-display">
+                        no contacts to display
+                    </div>
+                </c:otherwise>
+            </c:choose>
+
             <li>
                 <jsp:include page="page_components/contacts-list-form/bottom-navigation-bar.jsp"/>
             </li>

@@ -3,6 +3,7 @@ package com.javalab.contacts.dao.impl.jdbc;
 import com.javalab.contacts.dao.ContactAttachmentDao;
 import com.javalab.contacts.dao.ContactDao;
 import com.javalab.contacts.dao.PhoneNumberDao;
+import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
 import com.javalab.contacts.model.enumerations.MartialStatus;
@@ -11,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +21,11 @@ import java.sql.Statement;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.splitByCharacterTypeCamelCase;
 
 public class JdbcContactDao implements ContactDao {
 
@@ -111,7 +118,41 @@ public class JdbcContactDao implements ContactDao {
     }
 
     @Override
-    public void save(Contact contact) {
+    public Collection<Contact> search(ContactSearchDTO searchObject, int pageNumber) {
+        PreparedStatement searchStatement = null;
+        String searchQueryString = defineSearchQueryString(searchObject);
+        Collection<Contact> resultCollection = new ArrayList<>();
+        Connection connection = connectionManager.receiveConnection();
+        try {
+            connection.setAutoCommit(false);
+            logger.debug("opened transaction");
+            searchStatement = connection.prepareStatement(searchQueryString);
+            searchStatement.setInt(1, rowsCount *pageNumber);
+            searchStatement.setInt(2, rowsCount);
+            connection.commit();
+            logger.debug("closed transaction");
+            ResultSet resultSet = searchStatement.executeQuery();
+            while (resultSet.next()){
+                resultCollection.add(createContactFromResultSet(resultSet,false));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (searchStatement != null) {
+                    searchStatement.close();
+                }
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            connectionManager.putBackConnection(connection);
+        }
+        return  resultCollection;
+    }
+
+    @Override
+    public Integer save(Contact contact) {
         logger.debug("saving contact with id= " + contact.getId());
         String saveContactQuery = defineSaveQueryString(contact.getId());
         PreparedStatement statementSaveContact = null;
@@ -150,6 +191,7 @@ public class JdbcContactDao implements ContactDao {
                 }
             connectionManager.putBackConnection(connection);
         }
+        return contact.getId();
     }
 
     @Override
@@ -270,11 +312,66 @@ public class JdbcContactDao implements ContactDao {
         }
     }
 
+    private static String defineSearchQueryString(ContactSearchDTO searchObject) {
+        Class contactClass = searchObject.getClass();
+        Field[] fields = contactClass.getDeclaredFields();
+        Map<String,Object> objectFieldValues = new HashMap<>();
+        for (Field field : fields){
+            field.setAccessible(true);
+            try {
+                objectFieldValues.put(field.getName(),field.get(searchObject));
+            } catch (IllegalAccessException e) {
+                logger.error(e.getMessage());
+            }
+        }
+
+        StringBuilder query = new StringBuilder("SELECT SQL_CALC_FOUND_ROWS * FROM contact WHERE TRUE ");
+        String orderBy = null;
+        for (Map.Entry<String, Object> mapEntry : objectFieldValues.entrySet()){
+            String fieldName = mapEntry.getKey();
+            Object fieldValue = mapEntry.getValue();
+            if (!fieldName.equals("orderBy")){
+                if (isNotBlank((String) fieldValue)){
+                    query.append(" AND ");
+                    query.append(convertFieldNameToTableName(fieldName));
+                    query.append(" LIKE '");
+                    query.append(fieldValue);
+                    query.append("%'");
+                }
+            } else {
+                if (fieldValue != null){
+                    orderBy = convertFieldNameToTableName((String) fieldValue);
+                }
+            }
+        }
+        if (orderBy != null){
+            query.append(" ORDER BY ");
+            query.append(orderBy);
+        }
+        query.append(" LIMIT ?, ?;");
+        return query.toString();
+    }
+
     public int getRowsCount() {
         return rowsCount;
     }
 
     public void setRowsCount(int rowsCount) {
         this.rowsCount = rowsCount;
+    }
+
+    private static String convertFieldNameToTableName(String fieldName){
+        String[] words = splitByCharacterTypeCamelCase(fieldName);
+        StringBuilder tableName = new StringBuilder();
+        if (words.length == 1){
+            tableName.append(words[0]);
+        } else {
+            for (String word : words){
+                tableName.append(word.toLowerCase());
+                tableName.append('_');
+            }
+            tableName.setLength(tableName.length()-1);
+        }
+        return tableName.toString();
     }
 }

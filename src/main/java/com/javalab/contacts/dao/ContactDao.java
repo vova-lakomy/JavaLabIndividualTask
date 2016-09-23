@@ -1,6 +1,7 @@
 package com.javalab.contacts.dao;
 
 
+import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.model.Contact;
 
 import java.util.Collection;
@@ -13,7 +14,9 @@ public interface ContactDao {
 
     Collection<Contact> getContactList(int pageNumber);
 
-    void save(Contact contact);
+    Collection<Contact> search(ContactSearchDTO searchObject, int pageNumber);
+
+    Integer save(Contact contact);
 
     void delete(Integer id);
 }

@@ -4,6 +4,7 @@ package com.javalab.contacts.repository.impl;
 import com.javalab.contacts.dao.ContactDao;
 import com.javalab.contacts.dao.impl.jdbc.JdbcContactDao;
 import com.javalab.contacts.dto.ContactFullDTO;
+import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
 import com.javalab.contacts.model.Contact;
@@ -22,7 +23,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class ContactDtoRepositoryImpl implements ContactDtoRepository {
-    ContactDao contactDao = new JdbcContactDao();
+    private ContactDao contactDao = new JdbcContactDao();
 
 
     @Override
@@ -70,12 +71,20 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
     }
 
     @Override
+    public Collection<ContactShortDTO> search(ContactSearchDTO searchObject, int pageNumber) {
+        Collection<ContactShortDTO> contactDTOs = new ArrayList<>();
+        contactDao.search(searchObject, pageNumber).forEach(contact ->
+                contactDTOs.add(createContactShortDTO(contact)));
+        return contactDTOs;
+    }
+
+    @Override
     public Integer saveContact(ContactFullDTO contact) {
         Collection<PhoneNumber> phoneNumbers = definePhoneNumbers(contact);
         Collection<ContactAttachment> attachments = defineContactAttachments(contact);
         ContactAddress address = defineContactsAddress(contact);
 
-        contactDao.save(new Contact(
+        return contactDao.save(new Contact(
                 contact.getId(),
                 contact.getFirstName(),
                 contact.getSecondName(),
@@ -92,7 +101,6 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
                 contact.getPhotoLink(),
                 phoneNumbers)
         );
-        return null;   // TODO: 21.09.16 return last generated index
     }
 
     @Override

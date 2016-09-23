@@ -26,12 +26,12 @@ public class SaveCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
         Integer contactId = null;
-        if (isNotBlank(request.getParameter("contactId"))){
+        if (isNotBlank(request.getParameter("contactId"))) {
             contactId = Integer.parseInt(request.getParameter("contactId"));
         }
 
-        repository.saveContact(
-                new ContactFullDTO(
+        Integer returnedId = repository.saveContact(
+                        new ContactFullDTO(
                         contactId,
                         request.getParameter("firstName"),
                         request.getParameter("secondName"),
@@ -56,15 +56,15 @@ public class SaveCommand implements Command {
                         defineAttachments(request))
         );
 
-        request.setAttribute("path","contact-list-form.jsp");
+//        request.setAttribute("path", "contact-list-form.jsp");
         try {
-            response.sendRedirect("list");
+            response.sendRedirect("edit?contactId=" + returnedId);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private Collection<PhoneNumberDTO> createPhoneNumbersFromRequest(HttpServletRequest request){
+    private Collection<PhoneNumberDTO> createPhoneNumbersFromRequest(HttpServletRequest request) {
         String[] phoneNumberIds = request.getParameterValues("phoneNumberId");
         String[] countryCodes = request.getParameterValues("countryCode");
         String[] operatorCodes = request.getParameterValues("operatorCode");
@@ -90,19 +90,19 @@ public class SaveCommand implements Command {
         return phoneNumbers;
     }
 
-    private String definePhotoLink(HttpServletRequest request){
-        if (request.getAttribute("photoLink") == null){
+    private String definePhotoLink(HttpServletRequest request) {
+        if (request.getAttribute("photoLink") == null) {
             return request.getParameter("photoLink").equals("") ? null : request.getParameter("photoLink");
         } else {
-            return  (String) request.getAttribute("photoLink");
+            return (String) request.getAttribute("photoLink");
         }
     }
 
-    private Collection<AttachmentDTO> defineAttachments(HttpServletRequest request){
+    private Collection<AttachmentDTO> defineAttachments(HttpServletRequest request) {
         List<String> idNames = new ArrayList<>();
         try {
             request.getParts().forEach(part -> {
-                if (part.getName().contains("attachmentId")){
+                if (part.getName().contains("attachmentId")) {
                     idNames.add(part.getName());
                 }
             });
@@ -112,17 +112,17 @@ public class SaveCommand implements Command {
         Collection<AttachmentDTO> attachmentDTOs = new ArrayList<>();
         idNames.forEach(idName -> {
             String index = idName.substring(idName.lastIndexOf('-'));
-            Integer id = (request.getParameter(idName).isEmpty())? null : Integer.valueOf(request.getParameter(idName));
-            String fileName = request.getParameter("attachmentFileName"+index);
+            Integer id = (request.getParameter(idName).isEmpty()) ? null : Integer.valueOf(request.getParameter(idName));
+            String fileName = request.getParameter("attachmentFileName" + index);
             String uploadDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));   // FIXME: 21.09.16 
-            String comment = request.getParameter("attachmentComment"+index);
+            String comment = request.getParameter("attachmentComment" + index);
             String attachmentLink;
-            if (request.getAttribute("attachmentLink"+index) != null){
-                attachmentLink = (String) request.getAttribute("attachmentLink"+index);
+            if (request.getAttribute("attachmentLink" + index) != null) {
+                attachmentLink = (String) request.getAttribute("attachmentLink" + index);
             } else {
-                attachmentLink = request.getParameter("attachmentLink"+index);
+                attachmentLink = request.getParameter("attachmentLink" + index);
             }
-            attachmentDTOs.add(new AttachmentDTO(id,fileName,uploadDate,comment,attachmentLink));
+            attachmentDTOs.add(new AttachmentDTO(id, fileName, uploadDate, comment, attachmentLink));
         });
         return attachmentDTOs;
     }

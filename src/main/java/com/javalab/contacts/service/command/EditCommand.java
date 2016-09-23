@@ -7,6 +7,7 @@ import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
 
 public class EditCommand implements Command {
 
@@ -23,9 +24,13 @@ public class EditCommand implements Command {
             request.setAttribute("attachments", attachmentRepository.getAttachments(contactId));
         }
 
-        request.setAttribute("sexList", contactRepository.getSexList());
-        request.setAttribute("martialStatusList", contactRepository.getMartialStatusList());
-        request.setAttribute("phoneTypeList", contactRepository.getPhoneTypeList());
+        Collection<String> sexList = contactRepository.getSexList();
+        Collection<String> martialStatusList = contactRepository.getMartialStatusList();
+        Collection<String> phoneTypeList = contactRepository.getPhoneTypeList();
+
+        request.setAttribute("sexList", sexList);
+        request.setAttribute("martialStatusList", martialStatusList);
+        request.setAttribute("phoneTypeList", phoneTypeList);
         request.setAttribute("path","contact-edit-form.jsp");
         try {
             request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request,response);

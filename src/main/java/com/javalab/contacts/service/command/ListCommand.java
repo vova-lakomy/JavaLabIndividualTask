@@ -27,7 +27,7 @@ public class ListCommand implements Command{
             }
         }
         Collection<ContactShortDTO> contactList = contactRepository.getContactsList(pageNumber-1);
-        request.setAttribute("contacts", contactList);
+        request.setAttribute("contactsList", contactList);
         request.setAttribute("currentPage",pageNumber);
         request.setAttribute("path","contact-list-form.jsp");
         try {

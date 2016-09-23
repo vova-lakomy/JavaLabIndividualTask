@@ -2,7 +2,9 @@ package com.javalab.contacts.repository;
 
 
 import com.javalab.contacts.dto.ContactFullDTO;
+import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
+import com.javalab.contacts.model.Contact;
 
 import java.util.Collection;
 
@@ -13,6 +15,8 @@ public interface ContactDtoRepository {
     ContactFullDTO getContactFullInfo(Integer id);
 
     Collection<ContactShortDTO> getContactsList(Integer pageNumber);
+
+    Collection<ContactShortDTO> search(ContactSearchDTO searchObject, int pageNumber);
 
     Integer saveContact(ContactFullDTO contact);
 

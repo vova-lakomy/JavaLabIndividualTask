@@ -22,8 +22,8 @@ VALUES
   (6,'Julia','Igorevna', 'Cherepanova', '1971-12-01', 'FEMALE','Russian','MARRIED','cherepan.com',
      'jul.cherep@gmail.com', 'Google', 'Belarus','Mogilev','Frunze st.',14,57,236674),
 
-  (7,'Victor','Robertovich', 'Joy', '1962-07-21', 'MALE','Russian','MARRIED','joy.com',
-     'joy.victor@gmail.com', 'StokeHold', 'Russia','St. Petersburg','Budapest st.',5,122,115321),
+  (7,'Victor','Robertovich', 'Brown', '1962-07-21', 'MALE','Russian','MARRIED','brown.com',
+     'brown.victor@gmail.com', 'Oracle', 'Russia','St. Petersburg','Budapest st.',5,122,115321),
 
   (8,'Kate','Ivanovna', 'Sokolova', '1985-03-15', 'FEMALE','BELARUSSIAN','WIDOWED','sokol.com',
      'katjusha85@gmail.com', 'Mail.Ru', 'Poland','Warsaw','Lenin ave.',322,99,112000),
@@ -32,7 +32,190 @@ VALUES
      'stepasha2001@gmail.com', 'Google', 'Ukraine','Kiev','Suvorov st.',98,76,133251),
 
   (10,'Dmitry','Anatoljevich', 'Mefnedev', '1965-09-14', 'MALE','Russian','MARRIED','mefned.com',
-      'mefned.dima@gmail.com', 'WhiteHouse','Russia','Rostov','Korolev st.',16,76,195123);
+      'mefned.dima@gmail.com', 'WhiteHouse','Russia','Rostov','Korolev st.',16,76,195123),
+
+  (11,'Ivan','Ivanovich', 'Gvozdev', '1992-9-16', 'MALE','Belarussian','MARRIED','stepa.com',
+      'i.gvozd@gmail.com', 'Google', 'Belarus','Brest','Suharevskaya st.',47,386,161823),
+
+  (12,'Mikhail','Alexandrovich', 'Mischenko', '1973-2-12', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'mish@gmail.com', 'Google', 'Belarus','Minsk','Sosnovaya st.',29,8,227557),
+
+  (13,'Fedor','Pavlovich', 'Ploscenko', '1971-1-15', 'MALE','Belarussian','WIDOWED','stepa.com',
+      'fedos@gmail.com', 'Google', 'Belarus','Pinsk','Malaya st.',126,341,221697),
+
+  (14,'Inna','Victorovna', 'Svetlova', '1961-5-19', 'FEMALE','Belarussian','DIVORCED','stepa.com',
+      'inno4ka@gmail.com', 'Google', 'Belarus','Minsk','Zaharova st.',107,308,217600),
+
+  (15,'Alexey','Grigoryevich', 'Svetlov', '1989-3-5', 'MALE','Belarussian','MARRIED','stepa.com',
+      'alex12@gmail.com', 'Google', 'Belarus','Minsk','Zaharova st.',119,182,221756),
+
+  (16,'Milana','Alfonsovna', 'Prigozhaya', '1981-1-3', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'milashka25@gmail.com', 'Google', 'Belarus','Minsk','Suvorov st.',26,329,192043),
+
+  (17,'Iosif','Vladimirovich', 'Sushkin', '1965-8-8', 'MALE','Belarussian','MARRIED','stepa.com',
+      'lyublyu.sushi@gmail.com', 'Google', 'Belarus','Minsk','Svezhaya st.',72,42,197535),
+
+  (18,'Irina','Iosifovna', 'Sushkina', '1982-3-11', 'FEMALE','Belarussian','SINGLE','stepa.com',
+      'irochka.sushkina@gmail.com', 'Google', 'Belarus','Gomel','Suvorov st.',20,110,206493),
+
+  (19,'Egor','Fedorovich', 'Vashkel', '1975-12-18', 'MALE','Belarussian','MARRIED','stepa.com',
+      'vash.egor@gmail.com', 'Google', 'Belarus','Vitebsk','Pushkina st.',32,310,184124),
+
+  (20,'Tatyana','Victorovna', 'Stepanova', '1963-10-15', 'FEMALE','Belarussian','SINGLE','stepa.com',
+      'tata.stepanova@gmail.com', 'Google', 'Belarus','Minsk','Pobedy st.',133,112,168690),
+
+  (21,'Artem','Vasilyevich', 'Nozhkin', '1986-5-11', 'MALE','Belarussian','DIVORCED','stepa.com',
+      'nozhArt@gmail.com', 'Google', 'Belarus','Orsha','Oktyabrya st.',24,187,188950),
+
+  (22,'Mihail','Ivanovich', 'Grib', '1993-4-11', 'MALE','Belarussian','MARRIED','stepa.com',
+      'mushroom@gmail.com', 'Google', 'Belarus','Polotsk','Molodyezhnaya st.',21,172,208579),
+
+  (23,'Igor','Petrovich', 'Grib', '1983-12-8', 'MALE','Belarussian','MARRIED','stepa.com',
+      'igor.grib@gmail.com', 'Google', 'Belarus','Polotsk','Stepnaya st.',95,350,157532),
+
+  (24,'Vladimir','Inanovich', 'Pleshko', '1961-10-27', 'MALE','Belarussian','WIDOWED','stepa.com',
+      'vova.pleshko@gmail.com', 'Google', 'Belarus','Senno','Sadovaya st.',121,387,192627),
+
+  (25,'Matvey','Vladislavovich', 'Arkanov', '1983-5-27', 'MALE','Belarussian','SINGLE','stepa.com',
+      'arkasha@gmail.com', 'Google', 'Belarus','Grodno','Semashko st.',97,181,211421),
+
+  (26,'Inga','Mikhailovna', 'Krasko', '1977-6-5', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'krasko.inga@gmail.com', 'Google', 'Belarus','Minsk','Stroitelnaya st.',94,74,165609),
+
+  (27,'Zakhar','Frantsevich', 'Verba', '1979-8-24', 'MALE','Belarussian','MARRIED','stepa.com',
+      'verbaZakhar@gmail.com', 'Google', 'Belarus','Brest','Sbornaya st.',134,76,164085),
+
+  (28,'Svetlana','Kazimirovna', 'Verba', '1977-8-1', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'svetlya4ok@gmail.com', 'Google', 'Belarus','Oshmyany','Pervomayskaya st.',104,185,194094),
+
+  (29,'Pavel','Zakharovich', 'Verba', '1994-9-20', 'MALE','Belarussian','MARRIED','stepa.com',
+      'igor.step@gmail.com', 'Google', 'Belarus','Brest','Sbornaya st.',119,196,211778),
+
+  (30,'Vasiliy','Konstantinovich', 'Vasilkov', '1999-2-27', 'MALE','Belarussian','MARRIED','stepa.com',
+      'vasya35@gmail.com', 'Google', 'Belarus','Voronovo','Masherov st.',144,359,166163),
+
+  (31,'Zinaida','Yuryevna', 'Gasparovich', '1998-12-21', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'gasparovich.zina@gmail.com', 'Google', 'Belarus','Novopolotsk','Lenina st.',4,309,218496),
+
+  (32,'Oksana','Petrovna', 'Stepanova', '1995-7-11', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'oxy@gmail.com', 'Google', 'Belarus','Mogilev','Zaslonova st.',85,169,224493),
+
+  (33,'Zhanna','Ivanovna', 'Supak', '1961-10-7', 'FEMALE','Belarussian','WIDOWED','stepa.com',
+      'supak@gmail.com', 'Google', 'Belarus','Minsk','Sverdlova st.',134,151,152003),
+
+  (34,'Arkadiy','Edvindovich', 'Gasyanets', '1964-12-17', 'MALE','Belarussian','MARRIED','stepa.com',
+      'gas1964@gmail.com', 'Google', 'Belarus','Shumilino','Oktyabrya st.',5,311,200816),
+
+  (35,'Nazar','Gennadyevich', 'Slyushko', '1966-7-15', 'MALE','Belarussian','MARRIED','stepa.com',
+      'nazar.slushko@gmail.com', 'Google', 'Belarus','Minsk','Zelenaya st.',13,227,179514),
+
+  (36,'Kristina','Egorovna', 'Gasyul', '1991-3-7', 'FEMALE','Belarussian','SINGLE','stepa.com',
+      'kristik@gmail.com', 'Google', 'Belarus','Minsk','Gagarina st.',147,282,210882),
+
+  (37,'Ilona','Stepanovna', 'Tesyul', '1982-1-27', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'tesla@gmail.com', 'Google', 'Belarus','Braslav','Sadovaya st.',102,121,154059),
+
+  (38,'Ivan','Stepanovich', 'Tesyul', '1984-4-15', 'MALE','Belarussian','MARRIED','stepa.com',
+      'ivan.tesyul@gmail.com', 'Google', 'Belarus','Braslav','Sadovaya st.',73,372,161537),
+
+  (39,'Albert','Konstantinovich', 'Pushkin', '1971-9-21', 'MALE','Belarussian','MARRIED','stepa.com',
+      'alba@gmail.com', 'Google', 'Belarus','Minsk','Kolasa st.',12,223,212751),
+
+  (40,'Cheslav','Valeryevich', 'Knyazev', '1963-4-11', 'MALE','Belarussian','MARRIED','stepa.com',
+      'knyaz@gmail.com', 'Google', 'Belarus','Braslav','Sholokhova st.',134,228,221185),
+
+  (41,'Viktor','Petrovich', 'Kuznetsov', '1976-11-10', 'MALE','Belarussian','DIVORCED','stepa.com',
+      'kuzne4ik@gmail.com', 'Google', 'Belarus','Gomel','Surazhskaya st.',17,354,172151),
+
+  (42,'German','Sergeyevich', 'Voloshin', '1964-9-13', 'MALE','Belarussian','MARRIED','stepa.com',
+      'gera@gmail.com', 'Google', 'Belarus','Minsk','Chaikovskogo st.',73,313,168954),
+
+  (43,'Ruslan','Alekseyevich', 'Cherniy', '1989-12-10', 'MALE','Belarussian','MARRIED','stepa.com',
+      'mr.black@gmail.com', 'Google', 'Belarus','Glubokoye','Lermontova st.',126,338,195690),
+
+  (44,'Varvara','Genrikhovna', 'Sergeyeva', '1962-5-9', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'varya@gmail.com', 'Google', 'Belarus','Postavy','Montazhnikov st.',1,124,188112),
+
+  (45,'Nina','Victorovna', 'Sergeyeva', '1983-2-18', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'igor.step@gmail.com', 'Google', 'Belarus','Postavy','Montazhnikov st.',104,347,179644),
+
+  (46,'Roza','Evgenyevna', 'Gernat', '1983-9-23', 'FEMALE','Belarussian','SINGLE','stepa.com',
+      'Roza.gernat@gmail.com', 'Google', 'Belarus','Minsk','Frunze st.',23,339,224871),
+
+  (47,'Elena','Kirillovna', 'Gaidel', '1991-9-3', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'leno4ka91@gmail.com', 'Google', 'Belarus','Borisov','Slobodskaya st.',26,372,207488),
+
+  (48,'Sergey','Ivanovich', 'Glinskiy', '1967-3-4', 'MALE','Belarussian','DIVORCED','stepa.com',
+      'moryak@gmail.com', 'Google', 'Belarus','Minsk',' Sovetskaya st.',75,365,192546),
+
+  (49,'Stepan','Stepanovich', 'Veter', '1965-9-23', 'MALE','Belarussian','WIDOWED','stepa.com',
+      'veterok@gmail.com', 'Google', 'Belarus','Borisov','Turistskaya st.',147,141,218561),
+
+  (50,'Kira','Konstantinovna', 'Prigozhaya', '1962-2-4', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'kira1962@gmail.com', 'Google', 'Belarus','Vitebsk','Smirnova st.',61,1,182146),
+
+  (51,'Vladislav','Sergeyevich', 'Glushakov', '1992-7-2', 'MALE','Belarussian','SINGLE','stepa.com',
+      'glukhar@gmail.com', 'Google', 'Belarus','Lida','Sadovaya st.',76,284,157845),
+
+  (52,'Marina','Vasilyevna', 'Pobyarzhina', '1975-7-5', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'marry.me@gmail.com', 'Google', 'Belarus','Minsk','Suvorov st.',81,246,214896),
+
+  (53,'Svyatoslav','Igorevich', 'Shimko', '1966-6-7', 'MALE','Belarussian','MARRIED','stepa.com',
+      'shimko@gmail.com', 'Google', 'Belarus','Dzerzhinsk','Lugovaya st.',62,308,153352),
+
+  (54,'Fedor','Gennadyevich', 'Usatov', '1971-5-11', 'MALE','Belarussian','MARRIED','stepa.com',
+      'usatij@gmail.com', 'Google', 'Belarus','Minsk','Novaya st.',25,314,174839),
+
+  (55,'Milana','Dmitriyevna', 'Gagarina', '1982-7-14', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'm.gagarina@gmail.com', 'Google', 'Belarus','Vitebsk','Nekrasova st.',143,398,184034),
+
+  (56,'Viktoriya','Sergeyevna', 'Klochko', '1985-11-13', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'vikulya@gmail.com', 'Google', 'Belarus','Minsk','Goristaya st.',121,146,178680),
+
+  (57,'Alexander','Victorovich', 'Dvoretskiy', '1960-9-23', 'MALE','Belarussian','MARRIED','stepa.com',
+      'alexxx@gmail.com', 'Google', 'Belarus','Minsk','Goretskogo st.',109,376,175387),
+
+  (58,'Arkadiy','Petrovich', 'Goroshko', '1972-7-2', 'MALE','Belarussian','MARRIED','stepa.com',
+      'goroshko@gmail.com', 'Google', 'Belarus','Minsk','Shkolnaya st.',117,168,170225),
+
+  (59,'Yana','Nikolaevna', 'Petukhova', '1964-10-11', 'FEMALE','Belarussian','WIDOWED','stepa.com',
+      'petukhova.yana@gmail.com', 'Google', 'Belarus','Polotsk','Engelsa st.',88,216,225904),
+
+  (60,'Leonid','Bronislavovich', 'Melnikov', '1994-11-3', 'MALE','Belarussian','MARRIED','stepa.com',
+      'melnik94@gmail.com', 'Google', 'Belarus','Minsk','Surganova st.',12,248,182332),
+
+  (61,'Dmitriy','Vladimirovich', 'Drozdov', '1967-10-18', 'MALE','Belarussian','MARRIED','stepa.com',
+      'd.drozdov@gmail.com', 'Google', 'Belarus','Myadzel','Leninskaya st.',96,360,201354),
+
+  (62,'Ulyana','Victorovna', 'Lutsenko', '1961-11-8', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'lutsenko@gmail.com', 'Google', 'Belarus','Minsk','Lenina st.',60,203,168085),
+
+  (63,'Nikita','Fokovich', 'Severniy', '1974-6-5', 'MALE','Belarussian','DIVORCED','stepa.com',
+      'nikki@gmail.com', 'Google', 'Belarus','Grodno','Bannaya st.',10,360,210408),
+
+  (64,'MIkhail','Igorevich', 'Grigoryev', '1998-9-27', 'MALE','Belarussian','MARRIED','stepa.com',
+      'mishunya@gmail.com', 'Google', 'Belarus','Minsk','Komsomolskya st.',94,8,202989),
+
+  (65,'Ekaterina','Igorevna', 'Molchanova', '1992-4-10', 'FEMALE','Belarussian','MARRIED','stepa.com',
+      'Kate.minsk@gmail.com', 'Google', 'Belarus','Minsk','Kuibysheva st.',59,166,199506),
+
+  (66,'Vladislav','Semenovich', 'Rakutin', '1989-7-1', 'MALE','Belarussian','SINGLE','stepa.com',
+      'vsr@gmail.com', 'Google', 'Belarus','Grodno','Ozyornaya st.',82,250,222368),
+
+  (67,'Ivan','Sergeyevich', 'Novij', '1967-9-25', 'MALE','Belarussian','MARRIED','stepa.com',
+      'newivan@gmail.com', 'Google', 'Belarus','Nesvizh','Lenina st.',32,247,163991),
+
+  (68,'Elena','Vladislavovna', 'Martynova', '1963-4-22', 'FEMALE','Belarussian','WIDOWED','stepa.com',
+      'marty@gmail.com', 'Google', 'Belarus','Minsk','Pobedy st.',125,308,155768),
+
+  (69,'Alexandra','Vilgelmovna', 'Yarotskaya', '1968-3-9', 'FEMALE','Belarussian','DIVORCED','stepa.com',
+      'sasha.ya@gmail.com', 'Google', 'Belarus','Pinsk','Sadovaya st.',62,111,179448),
+
+  (70,'Iosif','Victorovich', 'Krylov', '1992-10-4', 'MALE','Belarussian','MARRIED','stepa.com',
+      'krylova.net@gmail.com', 'Google', 'Belarus','Minsk','Pobedy st.',15,122,191142),
+
+  (71,'Roman','Vladimirovich', 'Zaplanov', '1994-5-27', 'MALE','Belarussian','MARRIED','stepa.com',
+      'romanVZ@gmail.com', 'Google', 'Belarus','Mogilev','Sverdlova st.',10,203,222892);
 
 INSERT INTO contacts_vladimir_lakomy.phone_number (id,country_code,operator_code,phone_number,phone_type, phone_comment, contact_id)
     VALUES (1, 375, 29, 7641640, 'MOBILE', 'comment1', 1),

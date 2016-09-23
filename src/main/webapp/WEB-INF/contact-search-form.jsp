@@ -27,22 +27,36 @@
                         </div>
 
                         <div class="jlab-form-item">
-                            <label for="edit-form-birth-day">Birth date</label>
+                            <label for="search-form-birth-day-from">Birth date from</label>
                             <div class="jlab-date-field">
-                                <input id="edit-form-birth-day" type="text" placeholder="day" title="day" name="dayOfBirth"
-                                       value="">
-                                <input id="edit-form-birth-month" type="text" placeholder="month" title="month" name="monthOfBirth"
-                                       value="">
-                                <input id="edit-form-birth-year" type="text" placeholder="year" title="year" name="yearOfBirth"
-                                       value="">
+                                <input id="search-form-birth-day-from" type="text" placeholder="day" title="day"
+                                       name="dayOfBirth" value="">
+                                <input id="search-form-birth-month-from" type="text" placeholder="month" title="month"
+                                       name="monthOfBirth" value="">
+                                <input id="search-form-birth-year-from" type="text" placeholder="year" title="year"
+                                       name="yearOfBirth" value="">
                             </div>
                         </div>
 
                         <div class="jlab-form-item">
-                            <label for="search-form-sex">Sex</label>
-                            <select id="search-form-sex" type="" name="sex">
-                                <option>Male</option>
-                                <option>Female</option>
+                            <label for="search-form-birth-day-till">Birth date till</label>
+                            <div class="jlab-date-field">
+                                <input id="search-form-birth-day-till" type="text" placeholder="day" title="day"
+                                       name="dayOfBirth" value="">
+                                <input id="search-form-birth-month-till" type="text" placeholder="month" title="month"
+                                       name="monthOfBirth" value="">
+                                <input id="search-form-birth-year-till" type="text" placeholder="year" title="year"
+                                       name="yearOfBirth" value="">
+                            </div>
+                        </div>
+
+                        <div class="jlab-form-item">
+                            <label for="edit-form-sex">Sex</label>
+                            <select id="edit-form-sex" name="sex">
+                                <option value="" selected>any</option>
+                                <c:forEach items="${sexList}" var="sexType">
+                                    <option value="${sexType}">${sexType}</option>
+                                </c:forEach>
                             </select>
                         </div>
 
@@ -52,14 +66,18 @@
                                    placeholder="nationality">
                         </div>
 
-
-                        <div class="jlab-form-item">
-                            <label for="search-form-martial-status">Martial status</label>
-                            <input id="search-form-martial-status" type="text" name="martialStatus" value=""
-                                   placeholder="martial status">
-                        </div>
                     </div>
                     <div class="jlab-cell-6">
+                        <div class="jlab-form-item">
+                            <label for="edit-form-martial-status">Martial status</label>
+                            <select id="edit-form-martial-status" name="martialStatus">
+                                <option value="" selected>any</option>
+                                <c:forEach items="${martialStatusList}" var="martialStatusType">
+                                    <option value="${martialStatusType}">${martialStatusType}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
                         <div class="jlab-form-item">
                             <label for="search-form-country">Country</label>
                             <input id="search-form-country" type="text" name="country" value="" placeholder="country">
@@ -99,7 +117,7 @@
                 </div>
                 <div class="jlab-row">
                     <div class="jlab-cell-12">
-                        <button type="submit" class="jlab-button jlab-pull-right" >search</button>
+                        <button type="submit" class="jlab-button jlab-pull-right">search</button>
                     </div>
                 </div>
             </form>
