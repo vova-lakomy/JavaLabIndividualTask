@@ -129,6 +129,21 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
         return typesList;
     }
 
+    @Override
+    public Integer getNumberOfRecordsFound() {
+        return contactDao.getNumberOfRecordsFound();
+    }
+
+    @Override
+    public Integer getRowsPePageCount(){
+        return contactDao.getRowsPerPageCount();
+    }
+
+    @Override
+    public void setRowsPePageCount(Integer rowsCount){
+        contactDao.setRowsPerPageCount(rowsCount);
+    }
+
     private ContactShortDTO createContactShortDTO(Contact contact) {
 
         Integer id = contact.getId();

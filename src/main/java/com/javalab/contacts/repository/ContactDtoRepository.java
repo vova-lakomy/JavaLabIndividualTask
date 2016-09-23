@@ -4,7 +4,6 @@ package com.javalab.contacts.repository;
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
-import com.javalab.contacts.model.Contact;
 
 import java.util.Collection;
 
@@ -27,4 +26,10 @@ public interface ContactDtoRepository {
     Collection<String> getMartialStatusList();
 
     Collection<String> getPhoneTypeList();
+
+    Integer getNumberOfRecordsFound();
+
+    Integer getRowsPePageCount();
+
+    void setRowsPePageCount(Integer rowsCount);
 }

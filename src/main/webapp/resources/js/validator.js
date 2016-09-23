@@ -20,7 +20,7 @@
             return new RegExp('^[0-9]{1,3}$').test(node.value);
         },
         operatorCode : function (node) {
-            return new RegExp('^[0-9]{1,3}$').test(node.value);
+            return new RegExp('^[0-9]{1,4}$').test(node.value);
         },
         phoneNumber : function (node) {
             return new RegExp('^[0-9]{4,9}$').test(node.value);

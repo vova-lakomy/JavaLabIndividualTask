@@ -30,10 +30,9 @@ import static org.apache.commons.lang3.StringUtils.splitByCharacterTypeCamelCase
 public class JdbcContactDao implements ContactDao {
 
     private static final Logger logger = LogManager.getLogger(JdbcContactDao.class);
-    private int rowsCount = 10;
-
+    private int rowsPerPageCount = 10;
+    private int numberOfRecordsFound = 0;
     private ConnectionManager connectionManager = ConnectionManager.getInstance();
-
     private PhoneNumberDao phoneNumberDao = new JdbcPhoneNumberDao();
     private ContactAttachmentDao attachmentDao = new JdbcContactAttachmentDao();
 
@@ -93,14 +92,16 @@ public class JdbcContactDao implements ContactDao {
             logger.debug("opened transaction");
             statementGetContactList = connection
                     .prepareStatement("SELECT SQL_CALC_FOUND_ROWS * FROM contact ORDER BY last_name LIMIT ?,?");
-            statementGetContactList.setInt(1, rowsCount *pageNumber);
-            statementGetContactList.setInt(2, rowsCount);
-            connection.commit();
-            logger.debug("closed transaction");
+            statementGetContactList.setInt(1, rowsPerPageCount *pageNumber);
+            statementGetContactList.setInt(2, rowsPerPageCount);
+
             ResultSet resultSet = statementGetContactList.executeQuery();
             while (resultSet.next()){
                 resultCollection.add(createContactFromResultSet(resultSet,false));
             }
+            connection.commit();
+            logger.debug("closed transaction");
+            numberOfRecordsFound = getNumberOfRecordsFound(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
@@ -127,14 +128,17 @@ public class JdbcContactDao implements ContactDao {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
             searchStatement = connection.prepareStatement(searchQueryString);
-            searchStatement.setInt(1, rowsCount *pageNumber);
-            searchStatement.setInt(2, rowsCount);
-            connection.commit();
-            logger.debug("closed transaction");
+            searchStatement.setInt(1, rowsPerPageCount *pageNumber);
+            searchStatement.setInt(2, rowsPerPageCount);
+
+
             ResultSet resultSet = searchStatement.executeQuery();
             while (resultSet.next()){
                 resultCollection.add(createContactFromResultSet(resultSet,false));
             }
+            connection.commit();
+            logger.debug("closed transaction");
+            numberOfRecordsFound = getNumberOfRecordsFound(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
@@ -297,6 +301,16 @@ public class JdbcContactDao implements ContactDao {
         return lastGeneratedValue;
     }
 
+    private Integer getNumberOfRecordsFound(Connection connection) throws SQLException {
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT FOUND_ROWS()");
+        Integer recordCount = null;
+        if(resultSet.next()){
+            recordCount = resultSet.getInt(1);
+        }
+        return recordCount;
+    }
+
     private String defineSaveQueryString(Integer contactId){
         logger.debug("defining save query string");
         if (contactId == null){
@@ -312,7 +326,7 @@ public class JdbcContactDao implements ContactDao {
         }
     }
 
-    private static String defineSearchQueryString(ContactSearchDTO searchObject) {
+    private String defineSearchQueryString(ContactSearchDTO searchObject) {
         Class contactClass = searchObject.getClass();
         Field[] fields = contactClass.getDeclaredFields();
         Map<String,Object> objectFieldValues = new HashMap<>();
@@ -352,15 +366,7 @@ public class JdbcContactDao implements ContactDao {
         return query.toString();
     }
 
-    public int getRowsCount() {
-        return rowsCount;
-    }
-
-    public void setRowsCount(int rowsCount) {
-        this.rowsCount = rowsCount;
-    }
-
-    private static String convertFieldNameToTableName(String fieldName){
+    private String convertFieldNameToTableName(String fieldName){
         String[] words = splitByCharacterTypeCamelCase(fieldName);
         StringBuilder tableName = new StringBuilder();
         if (words.length == 1){
@@ -374,4 +380,21 @@ public class JdbcContactDao implements ContactDao {
         }
         return tableName.toString();
     }
+
+    @Override
+    public int getRowsPerPageCount() {
+        return rowsPerPageCount;
+    }
+
+    @Override
+    public void setRowsPerPageCount(int rowsCount) {
+        this.rowsPerPageCount = rowsCount;
+    }
+
+    @Override
+    public int getNumberOfRecordsFound() {
+        return numberOfRecordsFound;
+    }
+
+
 }

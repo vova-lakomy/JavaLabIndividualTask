@@ -27,6 +27,10 @@ public class ListCommand implements Command{
             }
         }
         Collection<ContactShortDTO> contactList = contactRepository.getContactsList(pageNumber-1);
+        Integer recordsFound = contactRepository.getNumberOfRecordsFound();
+        Integer rowsPerPage = contactRepository.getRowsPePageCount();
+        int numberOfPages = (int) Math.ceil(recordsFound*1.00/rowsPerPage);
+        request.setAttribute("numberOfPages",numberOfPages);
         request.setAttribute("contactsList", contactList);
         request.setAttribute("currentPage",pageNumber);
         request.setAttribute("path","contact-list-form.jsp");

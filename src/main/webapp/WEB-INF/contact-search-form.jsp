@@ -5,25 +5,25 @@
     <div class="jlab-main-content">
         <div class="jlab-form-container">
             <h4>Advanced search</h4>
-            <form class="jlab-contact-search-form">
+            <form id="contact-search-form" class="jlab-contact-search-form" method="get" data-form-name="search-form">
                 <div class="jlab-row">
                     <div class="jlab-cell-6">
                         <div class="jlab-form-item">
-                            <label for="search-form-first-name">First name</label>
-                            <input id="search-form-first-name" type="text" name="firstName" value=""
-                                   placeholder="first name">
+                            <label for="search-form-last-name">Last name</label>
+                            <input id="search-form-last-name" type="text" name="lastName" value=""
+                                   placeholder="last name" data-validation-type="string">
                         </div>
 
                         <div class="jlab-form-item">
-                            <label for="search-form-last-name">Last name</label>
-                            <input id="search-form-last-name" type="text" name="lastName" value=""
-                                   placeholder="last name">
+                            <label for="search-form-first-name">First name</label>
+                            <input id="search-form-first-name" type="text" name="firstName" value=""
+                                   placeholder="first name" data-validation-type="string">
                         </div>
 
                         <div class="jlab-form-item">
                             <label for="search-form-second-name">Second name</label>
                             <input id="search-form-second-name" type="text" name="secondtName" value=""
-                                   placeholder="second name">
+                                   placeholder="second name" data-validation-type="string">
                         </div>
 
                         <div class="jlab-form-item">
@@ -124,3 +124,4 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="../resources/js/contact-search-form.js"></script>

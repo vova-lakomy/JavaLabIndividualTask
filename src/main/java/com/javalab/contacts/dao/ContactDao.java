@@ -19,4 +19,10 @@ public interface ContactDao {
     Integer save(Contact contact);
 
     void delete(Integer id);
+
+    int getRowsPerPageCount();
+
+    void setRowsPerPageCount(int rowsCount);
+
+    int getNumberOfRecordsFound();
 }
