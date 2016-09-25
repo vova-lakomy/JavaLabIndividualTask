@@ -95,7 +95,7 @@ public class SearchCommand implements Command {
         searchDTO.setFirstName(firstName);
         searchDTO.setSecondName(secondName);
         searchDTO.setLastName(lastName);
-        searchDTO.setBirthDate(birthDate);    // FIXME: 23.09.16 make this work
+//        searchDTO.setBirthDate(birthDate);    // FIXME: 23.09.16 make this work
         searchDTO.setSex(sex);
         searchDTO.setNationality(nationality);
         searchDTO.setMartialStatus(martialStatus);

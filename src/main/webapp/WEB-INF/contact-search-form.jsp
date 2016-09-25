@@ -27,26 +27,26 @@
                         </div>
 
                         <div class="jlab-form-item">
-                            <label for="search-form-birth-day-from">Birth date from</label>
+                            <label for="search-form-birth-day-after">Birth date after</label>
                             <div class="jlab-date-field">
-                                <input id="search-form-birth-day-from" type="text" placeholder="day" title="day"
-                                       name="dayOfBirth" value="">
-                                <input id="search-form-birth-month-from" type="text" placeholder="month" title="month"
-                                       name="monthOfBirth" value="">
-                                <input id="search-form-birth-year-from" type="text" placeholder="year" title="year"
-                                       name="yearOfBirth" value="">
+                                <input id="search-form-birth-day-after" type="text" placeholder="day" title="day"
+                                       name="dayOfBirthAfter" value="">
+                                <input id="search-form-birth-month-after" type="text" placeholder="month" title="month"
+                                       name="monthOfBirthAfter" value="">
+                                <input id="search-form-birth-year-after" type="text" placeholder="year" title="year"
+                                       name="yearOfBirthAfter" value="">
                             </div>
                         </div>
 
                         <div class="jlab-form-item">
-                            <label for="search-form-birth-day-till">Birth date till</label>
+                            <label for="search-form-birth-day-before">Birth date before</label>
                             <div class="jlab-date-field">
-                                <input id="search-form-birth-day-till" type="text" placeholder="day" title="day"
-                                       name="dayOfBirth" value="">
-                                <input id="search-form-birth-month-till" type="text" placeholder="month" title="month"
-                                       name="monthOfBirth" value="">
-                                <input id="search-form-birth-year-till" type="text" placeholder="year" title="year"
-                                       name="yearOfBirth" value="">
+                                <input id="search-form-birth-day-before" type="text" placeholder="day" title="day"
+                                       name="dayOfBirthBefore" value="">
+                                <input id="search-form-birth-month-before" type="text" placeholder="month" title="month"
+                                       name="monthOfBirthBefore" value="">
+                                <input id="search-form-birth-year-before" type="text" placeholder="year" title="year"
+                                       name="yearOfBirthBefore" value="">
                             </div>
                         </div>
 

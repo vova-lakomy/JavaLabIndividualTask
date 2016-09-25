@@ -8,11 +8,11 @@ import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
 import com.javalab.contacts.model.enumerations.MartialStatus;
 import com.javalab.contacts.model.enumerations.Sex;
+import com.javalab.contacts.util.CustomReflectionUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +21,6 @@ import java.sql.Statement;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -234,8 +233,7 @@ public class JdbcContactDao implements ContactDao {
     }
 
     private Contact createContactFromResultSet(ResultSet resultSet, Boolean loadAttachments) throws SQLException {
-
-        logger.debug("creating 'Contact' entity from " + resultSet);
+        logger.debug("creating 'Contact' entity from {}", resultSet.getClass());
 
         ContactAddress address = new ContactAddress();
         address.setCountry(resultSet.getString("country"));
@@ -268,7 +266,7 @@ public class JdbcContactDao implements ContactDao {
     }
 
     private void setSaveStatementParams(PreparedStatement statement, Contact contact) throws SQLException {
-        logger.debug("defining save statement params");
+        logger.debug("setting params to {} ", statement);
         ContactAddress address = contact.getContactAddress();
         statement.setString(1, contact.getFirstName());
         statement.setString(2, contact.getSecondName());
@@ -287,7 +285,7 @@ public class JdbcContactDao implements ContactDao {
         statement.setInt(15, address.getHouseNumber());
         statement.setInt(16, address.getFlatNumber());
         statement.setInt(17, address.getZipCode());
-        logger.debug("save statement params defined");
+        logger.debug("setting params to {} done",statement);
     }
 
     private Integer getLastGeneratedValue(PreparedStatement statement) throws SQLException {
@@ -297,7 +295,7 @@ public class JdbcContactDao implements ContactDao {
             lastGeneratedValue = generatedKeys.getInt(1);
         }
         generatedKeys.close();
-        logger.debug("got last generated value -" + lastGeneratedValue);
+        logger.debug("got last generated value - {}", lastGeneratedValue);
         return lastGeneratedValue;
     }
 
@@ -327,18 +325,7 @@ public class JdbcContactDao implements ContactDao {
     }
 
     private String defineSearchQueryString(ContactSearchDTO searchObject) {
-        Class contactClass = searchObject.getClass();
-        Field[] fields = contactClass.getDeclaredFields();
-        Map<String,Object> objectFieldValues = new HashMap<>();
-        for (Field field : fields){
-            field.setAccessible(true);
-            try {
-                objectFieldValues.put(field.getName(),field.get(searchObject));
-            } catch (IllegalAccessException e) {
-                logger.error(e.getMessage());
-            }
-        }
-
+        Map<String,Object> objectFieldValues = CustomReflectionUtil.getObjectFieldsWithValues(searchObject);
         StringBuilder query = new StringBuilder("SELECT SQL_CALC_FOUND_ROWS * FROM contact WHERE TRUE ");
         String orderBy = null;
         for (Map.Entry<String, Object> mapEntry : objectFieldValues.entrySet()){

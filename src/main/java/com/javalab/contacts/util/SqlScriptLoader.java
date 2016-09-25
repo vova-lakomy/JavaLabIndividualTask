@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-public class SqlScriptLoader {
+public final class SqlScriptLoader {
     private static final Logger logger = LogManager.getLogger(SqlScriptLoader.class);
 
     private static Properties properties = PropertiesProvider.getInstance().getConnectionProperties();
@@ -30,8 +30,7 @@ public class SqlScriptLoader {
             }
             sqlLines = fileBody.toString().split(";");
         } catch (Exception e) {
-            logger.error(e.getMessage());
-            e.printStackTrace();
+            logger.error("\n                  " +  e);
         }
         if (sqlLines.length > 0){
             logger.debug("successfully read script file " + path);
@@ -55,7 +54,7 @@ public class SqlScriptLoader {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("\n                  " +  e);
         } finally {
             if (connection != null) {
                 try {

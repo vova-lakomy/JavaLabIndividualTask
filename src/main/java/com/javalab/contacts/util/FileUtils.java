@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FileUtils {
+public final class FileUtils {
     private static final Logger logger = LogManager.getLogger(SqlScriptLoader.class);
     private static Map<String, Integer> filePrefixMap = new HashMap<String, Integer>();
 

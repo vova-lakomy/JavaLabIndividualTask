@@ -1,0 +1,15 @@
+delimiters "%", "%"
+happyBirthDayTemplate(name, age) ::= <<
+Hello, %firstName% %secondName%!!!
+Happy Birthday to you!
+>>
+happyNewYearTemplate(name) ::= <<
+Hello, %firstName%!!!
+Happy New Year! Best wishes!
+>>
+merryChristmasTemplate(name) ::= <<
+Merry Christmas, %firstName%!!!
+>>
+weekendTemplate(name) ::= <<
+Have a nice weekend, %firstName%!!!
+>>

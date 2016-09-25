@@ -1,10 +1,17 @@
 package com.javalab.contacts.service.command;
 
 
+import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.repository.ContactDtoRepository;
 import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
+import com.javalab.contacts.util.CustomReflectionUtil;
 import com.javalab.contacts.util.MailSender;
+import com.javalab.contacts.util.STemplates;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
 
 import javax.mail.Address;
 import javax.mail.internet.AddressException;
@@ -15,24 +22,37 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class MailCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(MailCommand.class);
 
     private MailSender mailSender = new MailSender();
     private ContactDtoRepository repository = new ContactDtoRepositoryImpl();
+    private STemplates stringTemplates = STemplates.getInstance();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, String> templates = stringTemplates.getTemplateMap();
+        request.setAttribute("templates", templates);
 
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
             Collection<ContactShortDTO> contactShortDTOs = new ArrayList<>();
             Arrays.stream(selectedIds).forEach(id ->
-                    contactShortDTOs.add(repository.getContactShortDTO(Integer.valueOf(id))));
+                    contactShortDTOs.add(repository.getContactShortDTO(Integer.valueOf(id)))
+            );
             request.setAttribute("emailContacts", contactShortDTOs);
             request.setAttribute("path", "contact-email-form.jsp");
         } else if (request.getParameterValues("mailTo") != null) {
-            sendMail(request);
+            sendMails(request);
             try {
                 response.sendRedirect("list");
                 return;
@@ -50,29 +70,96 @@ public class MailCommand implements Command {
         }
     }
 
-    private void sendMail(HttpServletRequest request) {
+    private void sendMails(HttpServletRequest request) {
         String mailSubject = request.getParameter("mailSubject");
-        if (mailSubject == null) {
+        if (isBlank(mailSubject)) {
             mailSubject = "(No subject)";
         }
-        String mailText = request.getParameter("mailText");
-        if (mailText == null) {
-            mailText = "";
+        Map<Address, String> messageMap = mapMessagesToAddresses(request);
+        for (Map.Entry<Address, String> entry : messageMap.entrySet()) {
+            mailSender.sendMail(entry.getKey(), mailSubject, entry.getValue());
         }
-        mailSender.sendMail(getAddressesFromRequest(request), mailSubject, mailText);
     }
 
-    private Address[] getAddressesFromRequest(HttpServletRequest request) {
-        String[] mailTo = request.getParameterValues("mailTo");
-        Address[] addresses = new Address[mailTo.length];
-        for (int i = 0; i < mailTo.length; i++) {
+    private Map<Address, String> mapMessagesToAddresses(HttpServletRequest request) {
+        Map<Address, String> resultMap = new HashMap<>();
+        Map<String, Integer> addressesMapFromRequest = getAddressesMapFromRequest(request);
+        for (Map.Entry<String, Integer> entry : addressesMapFromRequest.entrySet()) {
+            Address address = null;
             try {
-                addresses[i] = new InternetAddress(mailTo[i]);
+                address = new InternetAddress(entry.getKey());
             } catch (AddressException e) {
-                e.printStackTrace();
+                logger.error("{}", e);
             }
-
+            String message = defineMailMessage(request, entry.getValue());
+            resultMap.put(address, message);
         }
-        return addresses;
+        return resultMap;
+    }
+
+    private String defineMailMessage(HttpServletRequest request, Integer contactId) {
+        String message = request.getParameter("mailText");
+        if (isBlank(message)) {
+            message = "";
+        } else if (contactId != null) {
+            List<String> templateParams = defineTemplateParams(message);
+            if (templateParams.size() > 0){
+                ST template = createStringTemplate(message);
+                Map<String, Object> parameterMap = definePossibleParamValues(contactId);
+                templateParams.forEach(param -> {
+                    Object paramValue = parameterMap.get(param);
+                    if (paramValue != null) {
+                        template.add(param, paramValue);
+                    } else {
+                        logger.error("failed to find parameter {}",param);
+                    }
+                });
+                message = template.render();
+            }
+        }
+        return message;
+    }
+
+    private Map<String, Object> definePossibleParamValues(Integer contactId) {
+        ContactFullDTO contact = repository.getContactFullInfo(contactId);
+        return CustomReflectionUtil.getObjectFieldsWithValues(contact);
+    }
+
+    private ST createStringTemplate(String message) {
+        String templateName = "customTemplate";
+        STGroup stGroup = stringTemplates.getTemplatesGroup();
+        List<String> params = defineTemplateParams(message);
+        StringBuilder oneStringParams = new StringBuilder();
+        params.forEach(param -> {
+            oneStringParams.append(param);
+            oneStringParams.append(',');
+        });
+        stGroup.defineTemplate(templateName,oneStringParams.toString(),message);
+        return stGroup.getInstanceOf(templateName);
+    }
+
+    private List<String> defineTemplateParams(String message) {
+        List<String> params = new ArrayList<>();
+        Matcher matcher = Pattern.compile("%\\w+?%").matcher(message);
+        while (matcher.find()) {
+            params.add(matcher.group().replaceAll("%",""));
+        }
+        return params;
+    }
+
+    private Map<String, Integer> getAddressesMapFromRequest(HttpServletRequest request) {
+        Map<String, Integer> emailMap = new HashMap<>();
+        String[] mailTo = request.getParameterValues("mailTo");
+        String[] mailToIds = request.getParameterValues("mailToId");
+        for (int i = 0; i < mailTo.length; i++) {
+            Integer mailToId = null;
+            if (isNotBlank(mailToIds[i])) {
+                mailToId = Integer.parseInt(mailToIds[i]);
+            }
+            if (isNotBlank(mailTo[i])) {
+                emailMap.put(mailTo[i].trim(), mailToId);
+            }
+        }
+        return emailMap;
     }
 }

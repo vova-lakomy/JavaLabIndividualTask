@@ -51,7 +51,7 @@
             var validationMethod = validations[validationType];
             if (validationMethod){
                 var isValid = validationMethod(changedInput);
-                currentForm[changedInput.name] = isValid;
+                    currentForm[changedInput.name] = isValid;
                 if(!isValid){
                     addClass(changedInput, 'jlab-not-valid');
                 } else {
@@ -86,23 +86,25 @@
         var d = data.day;
         var m = data.month;
         var y = data.year;
-        var endY = new Date().getFullYear();
-        var startY = endY - 100;
-        if (y >= startY && y <= endY){
-            if (m >= 1 && m <= 12){
-                if (d >= 1 && d <= 28){
-                    return true;
-                } else if (d == 29 && ((y % 4) === 0)){
-                    return true;
-                } else if ((d == 29 || d == 30) && m != 2){
-                    return true;
-                } else if (d == 31 && (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12)){
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
+        if (d && m && y){
+            var endY = new Date().getFullYear();
+            var startY = endY - 100;
+            if (y >= startY && y <= endY){
+                if (m >= 1 && m <= 12){
+                    if (d >= 1 && d <= 28){
+                        return true;
+                    } else if (d == 29 && ((y % 4) === 0)){
+                        return true;
+                    } else if ((d == 29 || d == 30) && m != 2){
+                        return true;
+                    } else if (d == 31 && (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12)){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else return false;
+            } else return false;
+        } else return false;
     }
 
 })();

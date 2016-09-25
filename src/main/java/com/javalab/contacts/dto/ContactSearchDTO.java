@@ -5,7 +5,8 @@ public class ContactSearchDTO {
     private String firstName;
     private String lastName;
     private String secondName;
-    private String birthDate;
+    private String birthDateBefore;
+    private String birthDateAfter;
     private String sex;
     private String nationality;
     private String martialStatus;
@@ -41,12 +42,20 @@ public class ContactSearchDTO {
         this.secondName = secondName;
     }
 
-    public String getBirthDate() {
-        return birthDate;
+    public String getBirthDateBefore() {
+        return birthDateBefore;
     }
 
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthDateBefore(String birthDateBefore) {
+        this.birthDateBefore = birthDateBefore;
+    }
+
+    public String getBirthDateAfter() {
+        return birthDateAfter;
+    }
+
+    public void setBirthDateAfter(String birthDateAfter) {
+        this.birthDateAfter = birthDateAfter;
     }
 
     public String getSex() {

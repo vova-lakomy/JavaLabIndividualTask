@@ -15,22 +15,22 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-public class MailSender {
+public final class MailSender {
     private static final Logger logger = LogManager.getLogger(MailSender.class);
 
     private Properties mailProps = PropertiesProvider.getInstance().getMailProperties();
 
-    public void sendMail(Address[] addresses, String mailSubject, String messageText) {
+    public void sendMail(Address address, String mailSubject, String messageText) {
 
         try {
             Message message = new MimeMessage(getMailSession(getMailServerProperties()));
             message.setFrom(new InternetAddress(mailProps.getProperty("mail.from")));
             message.setReplyTo(InternetAddress.parse(mailProps.getProperty("mail.from")));
-            message.setRecipients(Message.RecipientType.TO, addresses);
+            message.setRecipient(Message.RecipientType.TO, address);
             message.setSubject(mailSubject);
             message.setContent(messageText,"text/html;charset=utf-8");
             Transport.send(message);
-            logger.info("sending e-mail to" + addresses + " done");
+            logger.info("sending e-mail to {} done" ,address);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
