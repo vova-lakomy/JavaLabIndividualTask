@@ -21,7 +21,7 @@ public class EditCommand implements Command {
         if (request.getParameter("contactId") != null) {
             contactId = Integer.valueOf(request.getParameter("contactId"));
             request.setAttribute("fullContactInfo", contactRepository.getContactFullInfo(contactId));
-            request.setAttribute("attachments", attachmentRepository.getAttachments(contactId));
+            request.setAttribute("attachments", attachmentRepository.getByContactId(contactId)); //// FIXME: 27.09.16
         }
 
         Collection<String> sexList = contactRepository.getSexList();

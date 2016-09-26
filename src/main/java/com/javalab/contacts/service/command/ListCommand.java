@@ -30,6 +30,7 @@ public class ListCommand implements Command{
         Integer recordsFound = contactRepository.getNumberOfRecordsFound();
         Integer rowsPerPage = contactRepository.getRowsPePageCount();
         int numberOfPages = (int) Math.ceil(recordsFound*1.00/rowsPerPage);
+
         request.setAttribute("numberOfPages",numberOfPages);
         request.setAttribute("contactsList", contactList);
         request.setAttribute("currentPage",pageNumber);

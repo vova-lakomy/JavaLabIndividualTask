@@ -9,6 +9,7 @@ public interface AttachmentDtoRepository {
 
     void delete(Integer id);
 
-    Collection<AttachmentDTO> getAttachments(Integer contactId);
+    Collection<AttachmentDTO> getByContactId(Integer contactId);
 
+    AttachmentDTO get(Integer id);
 }

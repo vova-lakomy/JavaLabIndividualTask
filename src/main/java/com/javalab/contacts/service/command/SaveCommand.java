@@ -31,7 +31,7 @@ public class SaveCommand implements Command {
         }
 
         Integer returnedId = repository.saveContact(
-                        new ContactFullDTO(
+                        new ContactFullDTO(    // TODO: 27.09.16 refactor
                         contactId,
                         request.getParameter("firstName"),
                         request.getParameter("secondName"),
@@ -122,7 +122,14 @@ public class SaveCommand implements Command {
             } else {
                 attachmentLink = request.getParameter("attachmentLink" + index);
             }
-            attachmentDTOs.add(new AttachmentDTO(id, fileName, uploadDate, comment, attachmentLink));
+
+            AttachmentDTO attachmentDTO = new AttachmentDTO();
+            attachmentDTO.setId(id);
+            attachmentDTO.setAttachmentLink(attachmentLink);
+            attachmentDTO.setFileName(fileName);
+            attachmentDTO.setUploadDate(uploadDate);
+            attachmentDTO.setComment(comment);
+            attachmentDTOs.add(attachmentDTO);
         });
         return attachmentDTOs;
     }

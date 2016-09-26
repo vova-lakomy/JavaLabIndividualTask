@@ -33,7 +33,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
     }
 
     @Override
-    public ContactFullDTO getContactFullInfo(Integer id) {
+    public ContactFullDTO getContactFullInfo(Integer id) { // TODO: 27.09.16 refactor
         Contact contact = contactDao.get(id);
         ContactAddress address = contact.getContactAddress();
         LocalDate dateOfBirth = contact.getDateOfBirth();
@@ -59,7 +59,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
                 address.getZipCode(),
                 contact.getPhotoLink(),
                 definePhoneNumberDTOs(contact.getPhoneNumbers()),
-                null);
+                null);   // FIXME: 27.09.16
     }
 
     @Override
@@ -84,7 +84,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
         Collection<ContactAttachment> attachments = defineContactAttachments(contact);
         ContactAddress address = defineContactsAddress(contact);
 
-        return contactDao.save(new Contact(
+        return contactDao.save(new Contact(      // TODO: 27.09.16 refactor
                 contact.getId(),
                 contact.getFirstName(),
                 contact.getSecondName(),
@@ -161,13 +161,13 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
                         + contactAddress.getZipCode();
         String company = contact.getCurrentJob();
         String eMail = contact.geteMail();
-        return new ContactShortDTO(id, fullName, dateOfBirth, stringAddress, company, eMail);
+        return new ContactShortDTO(id, fullName, dateOfBirth, stringAddress, company, eMail); // TODO: 27.09.16 refactor
     }
 
     private Collection<PhoneNumber> definePhoneNumbers(ContactFullDTO contact) {
         Collection<PhoneNumber> phoneNumbers = new ArrayList<>();
         contact.getPhoneNumbers().forEach(phoneNumber ->
-                phoneNumbers.add(new PhoneNumber(phoneNumber.getId(),
+                phoneNumbers.add(new PhoneNumber(phoneNumber.getId(),  // TODO: 27.09.16 refactor
                         phoneNumber.getCountryCode(),
                         phoneNumber.getOperatorCode(),
                         phoneNumber.getNumber(),
@@ -180,7 +180,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
     private Collection<ContactAttachment> defineContactAttachments(ContactFullDTO contact) {
         Collection<ContactAttachment> attachments = new ArrayList<>();
         contact.getAttachments().forEach(attachment ->
-                attachments.add(new ContactAttachment(attachment.getId(),
+                attachments.add(new ContactAttachment(attachment.getId(), // TODO: 27.09.16 refactor
                         attachment.getAttachmentLink(),
                         attachment.getComment(),
                         LocalDate.parse(attachment.getUploadDate())))
@@ -189,7 +189,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
     }
 
     private ContactAddress defineContactsAddress(ContactFullDTO contact) {
-        return new ContactAddress(contact.getId(),
+        return new ContactAddress(contact.getId(),      // TODO: 27.09.16 refactor
                 contact.getCountry(),
                 contact.getTown(),
                 contact.getStreet(),
@@ -213,9 +213,9 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
                 String phoneType = phone.getPhoneType().name().toLowerCase();
                 String comment = phone.getPhoneComment();
 
-                phoneNumberDTOs.add(new PhoneNumberDTO(id, countryCode, operatorCode, number, phoneType, comment, fullNumber));
+                phoneNumberDTOs.add(new PhoneNumberDTO(id, countryCode, operatorCode, number, phoneType, comment, fullNumber)); // TODO: 27.09.16 refactor
             });
-            return phoneNumberDTOs.size() > 0 ? phoneNumberDTOs : null;
+            return phoneNumberDTOs.size() > 0 ? phoneNumberDTOs : null;   // TODO: 27.09.16 refactor
         } else {
             return null;
         }

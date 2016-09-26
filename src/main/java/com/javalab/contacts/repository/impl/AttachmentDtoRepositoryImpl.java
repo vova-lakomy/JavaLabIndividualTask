@@ -1,7 +1,9 @@
 package com.javalab.contacts.repository.impl;
 
+import com.javalab.contacts.dao.ContactAttachmentDao;
 import com.javalab.contacts.dao.impl.jdbc.JdbcContactAttachmentDao;
 import com.javalab.contacts.dto.AttachmentDTO;
+import com.javalab.contacts.model.ContactAttachment;
 import com.javalab.contacts.repository.AttachmentDtoRepository;
 
 import java.time.format.DateTimeFormatter;
@@ -10,28 +12,48 @@ import java.util.Collection;
 
 
 public class AttachmentDtoRepositoryImpl implements AttachmentDtoRepository {
+
+    private ContactAttachmentDao attachmentDao = new JdbcContactAttachmentDao();
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
     @Override
     public void delete(Integer id) {
-
+        attachmentDao.delete(id);
     }
 
     @Override
-    public Collection<AttachmentDTO> getAttachments(Integer contactId) {
+    public Collection<AttachmentDTO> getByContactId(Integer contactId) {
         if (contactId != null) {
             Collection<AttachmentDTO> attachmentDTOs = new ArrayList<>();
-            new JdbcContactAttachmentDao().getByContactId(contactId).forEach(attachment -> {
-                Integer id = attachment.getId();
-                String fileName = attachment.getAttachmentLink()
-                        .substring(attachment.getAttachmentLink().lastIndexOf("/") + 1);
-                String uploadDate = attachment.getDateOfUpload().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-                String comment = attachment.getAttachmentComment();
-                String attachmentLink = attachment.getAttachmentLink();
-
-                attachmentDTOs.add(new AttachmentDTO(id, fileName, uploadDate, comment, attachmentLink));
+            Collection<ContactAttachment> attachments = attachmentDao.getByContactId(contactId);
+            attachments.forEach(attachment -> {
+                AttachmentDTO attachmentDTO = createDtoFromContactAttachment(attachment);
+                attachmentDTOs.add(attachmentDTO);
             });
-            return attachmentDTOs.size() > 0 ? attachmentDTOs : null;
-        } else {
-            return null;
-        }
+            if (attachmentDTOs.size() > 0) {
+                return attachmentDTOs;
+            } else return null;
+        } else return null;
+    }
+
+    @Override
+    public AttachmentDTO get(Integer id){
+        ContactAttachment attachment = attachmentDao.get(id);
+        return createDtoFromContactAttachment(attachment);
+    }
+
+    private AttachmentDTO createDtoFromContactAttachment(ContactAttachment attachment){
+        Integer id = attachment.getId();
+        String attachmentLink = attachment.getAttachmentLink();
+        String fileName = attachmentLink.substring(attachmentLink.lastIndexOf("/") + 1);
+        String uploadDate = attachment.getDateOfUpload().format(formatter);
+        String comment = attachment.getAttachmentComment();
+        AttachmentDTO attachmentDTO = new AttachmentDTO();
+        attachmentDTO.setId(id);
+        attachmentDTO.setAttachmentLink(attachmentLink);
+        attachmentDTO.setFileName(fileName);
+        attachmentDTO.setUploadDate(uploadDate);
+        attachmentDTO.setComment(comment);
+        return attachmentDTO;
     }
 }

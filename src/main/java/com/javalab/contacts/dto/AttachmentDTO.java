@@ -33,11 +33,23 @@ public class AttachmentDTO {
         return attachmentLink;
     }
 
-    public AttachmentDTO(Integer id, String fileName, String uploadDate, String comment, String attachmentLink) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public void setUploadDate(String uploadDate) {
         this.uploadDate = uploadDate;
+    }
+
+    public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public void setAttachmentLink(String attachmentLink) {
         this.attachmentLink = attachmentLink;
     }
 }

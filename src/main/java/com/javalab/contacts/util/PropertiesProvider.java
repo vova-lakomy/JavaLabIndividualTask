@@ -12,7 +12,7 @@ import java.util.Properties;
 public final class PropertiesProvider {
     private static final Logger logger = LoggerFactory.getLogger(PropertiesProvider.class);
 
-    private Properties connectionProperties = new Properties();
+    private Properties scriptLoaderProperties = new Properties();
     private Properties mailProperties = new Properties();
     private Properties fileUploadProperties = new Properties();
 
@@ -26,7 +26,7 @@ public final class PropertiesProvider {
     private PropertiesProvider() {
         try {
             logger.debug("trying to get connection properties from configuration file");
-            connectionProperties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("sqlLoader.properties"));
+            scriptLoaderProperties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("sqlLoader.properties"));
         } catch (IOException e) {
             logger.error("getting connection properties failed " + e.getMessage() + " " + e.getCause());
             e.printStackTrace();
@@ -47,8 +47,8 @@ public final class PropertiesProvider {
         }
     }
 
-    public Properties getConnectionProperties() {
-        return connectionProperties;
+    public Properties getScriptLoaderProperties() {
+        return scriptLoaderProperties;
     }
 
     public Properties getMailProperties() {

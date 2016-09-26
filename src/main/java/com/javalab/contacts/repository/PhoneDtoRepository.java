@@ -9,4 +9,6 @@ import java.util.Collection;
 public interface PhoneDtoRepository {
 
     Collection<PhoneNumberDTO> getPhoneNumberDTOs(Collection<PhoneNumber> phoneNumbers);
+
+    void delete(Integer id);
 }

@@ -31,14 +31,14 @@ public class UploadAttachmentCommand implements Command {
         }
 
         try {
-            logger.debug("looking for attached files in request " + request);
+            logger.debug("looking for attached files in request {}", request);
             for (Part part : request.getParts()) {
                 if (part.getName().contains("attachedFile")){
-                    logger.debug("found attached file " + part.getSubmittedFileName());
+                    logger.debug("found attached file {}", part.getSubmittedFileName());
                     String index = part.getName().substring(part.getName().lastIndexOf('-') + 1);
                     String fileName = request.getParameter("attachmentFileName-" + index);
                     part.write(uploadFilePath + File.separator + fileName);
-                    logger.debug(part.getSubmittedFileName() + " uploaded ");
+                    logger.debug("{} uploaded ", part.getSubmittedFileName());
                     request.setAttribute("attachmentLink-"+index,".." + File.separator + relativeUploadPath + File.separator + fileName);
                 }
             }

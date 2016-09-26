@@ -21,14 +21,14 @@ import java.util.Properties;
 
 import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
 
-@MultipartConfig  //TODO: set parameters
+@MultipartConfig(maxFileSize = 1024*1024*10)  //10mb
 @WebServlet(loadOnStartup = 1, urlPatterns = {"/contacts/*"})
 public class FrontServlet extends HttpServlet {
 
 
     private static final Logger logger = LoggerFactory.getLogger(FrontServlet.class);
     private AppController appController = new AppController();
-    private Properties properties = PropertiesProvider.getInstance().getConnectionProperties();
+    private Properties properties = PropertiesProvider.getInstance().getScriptLoaderProperties();
     private Scheduler scheduler;
 
     @Override

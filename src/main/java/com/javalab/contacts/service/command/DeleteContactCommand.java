@@ -6,7 +6,6 @@ import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
 
 public class DeleteContactCommand implements Command {
@@ -18,8 +17,10 @@ public class DeleteContactCommand implements Command {
 
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
-            Arrays.stream(selectedIds).forEach(id ->
-                    contactRepository.delete(Integer.parseInt(id)));
+            for (String stringId: selectedIds){
+                Integer id = Integer.parseInt(stringId);
+                contactRepository.delete(id);
+            }
         }
         try {
             response.sendRedirect("list");

@@ -40,8 +40,8 @@ class ConnectionManager {
         logger.debug("trying to get connection from pool");
         try {
             connection = dataSource.getConnection();
-            logger.debug("connection from pool got.. opened connections - " + ++openedConnectionCount);
-            logger.debug("total connections made - " + ++totalConnectionsMade);
+            logger.debug("connection from pool got.. opened connections - {}", ++openedConnectionCount);
+            logger.debug("total connections made - {}", ++totalConnectionsMade);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ class ConnectionManager {
     void putBackConnection(Connection connection) {
         try {
             connection.close();
-            logger.debug("db connection closed... opened connections - " + --openedConnectionCount);
+            logger.debug("db connection closed... opened connections - {}", --openedConnectionCount);
         } catch (SQLException e) {
             e.printStackTrace();
         }

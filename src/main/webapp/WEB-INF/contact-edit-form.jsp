@@ -10,18 +10,18 @@
                                                        enctype="multipart/form-data" data-form-name="contact-edit-form">
                 <div class="jlab-row">
                     <div class="jlab-cell-3">
-                        <jsp:include page="page_components/contact-edit-form/contact-photo-part.jsp"/>
+                        <jsp:include page="page-components/contact-edit-form/contact-photo-part.jsp"/>
                     </div>
                     <div class="jlab-cell-9">
-                        <jsp:include page="page_components/contact-edit-form/main-info-part.jsp"/>
+                        <jsp:include page="page-components/contact-edit-form/main-info-part.jsp"/>
                     </div>
                 </div>
 
-                <jsp:include page="page_components/contact-edit-form/address-part.jsp"/>
+                <jsp:include page="page-components/contact-edit-form/address-part.jsp"/>
 
-                <jsp:include page="page_components/contact-edit-form/phone-numbers-part.jsp"/>
+                <jsp:include page="page-components/contact-edit-form/phone-numbers-part.jsp"/>
 
-                <jsp:include page="page_components/contact-edit-form/attachments-part.jsp"/>
+                <jsp:include page="page-components/contact-edit-form/attachments-part.jsp"/>
 
                 <%--submit--%>
                 <div class="jlab-row jlab-vertical-padding-10">
@@ -37,10 +37,10 @@
     </div>
 </div>
 
-<jsp:include page="page_components/contact-edit-form/modal-phone-edit.jsp"/>
-<jsp:include page="page_components/contact-edit-form/modal-phone-add.jsp"/>
-<jsp:include page="page_components/contact-edit-form/modal-attachment-edit.jsp"/>
-<jsp:include page="page_components/contact-edit-form/modal-attachment-upload.jsp"/>
+<jsp:include page="page-components/contact-edit-form/modal-phone-edit.jsp"/>
+<jsp:include page="page-components/contact-edit-form/modal-phone-add.jsp"/>
+<jsp:include page="page-components/contact-edit-form/modal-attachment-edit.jsp"/>
+<jsp:include page="page-components/contact-edit-form/modal-attachment-upload.jsp"/>
 <script type="text/javascript" src="../resources/js/contact-edit-form.js"></script>
 
 

@@ -30,13 +30,13 @@ public class UploadPhotoCommand implements Command {
             fileSaveDir.mkdirs();
         }
 
-        logger.debug("looking for attached photo in request " + request);
+        logger.debug("looking for attached photo in request {}", request);
         try {
             Part part = request.getPart("attachedPhoto");
-            logger.debug("found attached photo " + part.getSubmittedFileName());
+            logger.debug("found attached photo {}", part.getSubmittedFileName());
             String fileName = request.getParameter("lastName") + "-photo";
             part.write(uploadFilePath + File.separator + fileName);
-            logger.debug(part.getSubmittedFileName() + " uploaded ");
+            logger.debug("{} uploaded ", part.getSubmittedFileName());
             request.setAttribute("photoLink", ".." + File.separator + relativeUploadPath + File.separator + fileName);
         } catch (IOException | ServletException e1) {
             e1.printStackTrace();

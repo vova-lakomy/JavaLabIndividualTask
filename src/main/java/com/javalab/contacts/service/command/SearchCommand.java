@@ -42,6 +42,7 @@ public class SearchCommand implements Command {
             Integer recordsFound = contactRepository.getNumberOfRecordsFound();
             Integer rowsPerPage = contactRepository.getRowsPePageCount();
             int numberOfPages = (int) Math.ceil(recordsFound*1.00/rowsPerPage);
+
             request.setAttribute("numberOfPages",numberOfPages);
             request.setAttribute("searchQueryString",searchQueryString);
             request.setAttribute("currentPage",pageNumber);
