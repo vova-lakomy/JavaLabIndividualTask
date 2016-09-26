@@ -23,10 +23,10 @@
             return new RegExp('^[0-9]{1,4}$').test(node.value);
         },
         phoneNumber : function (node) {
-            return new RegExp('^[0-9]{4,9}$').test(node.value);
+            return new RegExp('^[0-9]{3,9}$').test(node.value);
         },
         numbers : function (node) {
-            return new RegExp('^[0-9]+$').test(node.value);
+            return new RegExp('^$|^[0-9]{1,11}$').test(node.value);
         },
         date : function (node) {
             return checkDate(getDateFieldData(node));

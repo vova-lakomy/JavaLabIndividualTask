@@ -49,12 +49,12 @@ public class AppController {
         String[] optionalCommands = request.getParameterValues("optionalCommand");
         if (optionalCommands != null) {
             for (String commandKey : optionalCommands) {
-                logger.debug("adding " + commandKey + " to command keys");
+                logger.debug("adding {} to command keys", commandKey);
                 commandKeys.add(commandKey);
             }
         }
         String mainCommand = request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1);
-        logger.debug("adding " + mainCommand + " to command keys");
+        logger.debug("adding {} to command keys", mainCommand);
         commandKeys.add(mainCommand);
 
         response.setContentType("text/html; charset=UTF-8");
@@ -63,7 +63,7 @@ public class AppController {
         for (String key : commandKeys){
             Command command = commandMap.get(key);
             if (command != null) {
-                logger.debug("executing " + command.getClass().getSimpleName());
+                logger.debug("executing {}", command.getClass().getSimpleName());
                 command.execute(request,response);
             }else {
                 response.sendRedirect("../404.jsp");

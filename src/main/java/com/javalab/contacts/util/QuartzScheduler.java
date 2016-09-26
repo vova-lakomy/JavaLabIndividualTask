@@ -5,11 +5,8 @@ import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
-import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.TimeUnit;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
@@ -52,7 +49,7 @@ public final class QuartzScheduler {
             scheduler.scheduleJob(job, trigger);
 
         } catch (SchedulerException se) {
-            logger.error("{}",se);
+            logger.error("{}",se.getMessage());
         }
     }
 

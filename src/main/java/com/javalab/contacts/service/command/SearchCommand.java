@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 public class SearchCommand implements Command {
@@ -66,7 +67,8 @@ public class SearchCommand implements Command {
         String firstName = trim(request.getParameter("firstName"));
         String lastName = trim(request.getParameter("lastName"));
         String secondName = trim(request.getParameter("secondName"));
-        String birthDate = request.getParameter("birthDate");
+        String birthDateBefore = defineDateBefore(request);
+        String birthDateAfter = defineDateAfter(request);
         String sex = request.getParameter("sex").toUpperCase();
         String nationality = trim(request.getParameter("nationality"));
         String martialStatus = request.getParameter("martialStatus").toUpperCase();
@@ -95,7 +97,8 @@ public class SearchCommand implements Command {
         searchDTO.setFirstName(firstName);
         searchDTO.setSecondName(secondName);
         searchDTO.setLastName(lastName);
-//        searchDTO.setBirthDate(birthDate);    // FIXME: 23.09.16 make this work
+        searchDTO.setDateOfBirthGreaterThan(birthDateAfter);
+        searchDTO.setDateOfBirthLessThan(birthDateBefore);
         searchDTO.setSex(sex);
         searchDTO.setNationality(nationality);
         searchDTO.setMartialStatus(martialStatus);
@@ -107,5 +110,27 @@ public class SearchCommand implements Command {
         searchDTO.setFlatNumber(flatNumber);
         searchDTO.setOrderBy("lastName");
         return searchDTO;
+    }
+
+    private String defineDateAfter(HttpServletRequest request) {
+        String dayAfter = trim(request.getParameter("dayOfBirthAfter"));
+        String monthAfter = trim(request.getParameter("monthOfBirthAfter"));
+        String yearAfter =trim(request.getParameter("yearOfBirthAfter"));
+        if (!isNumeric(dayAfter) || !isNumeric(monthAfter) || !isNumeric(yearAfter)){
+            return null;
+        } else {
+            return yearAfter + "-" + monthAfter + "-" + dayAfter;
+        }
+    }
+
+    private String defineDateBefore(HttpServletRequest request) {
+        String dayBefore = trim(request.getParameter("dayOfBirthBefore"));
+        String monthBefore = trim(request.getParameter("monthOfBirthBefore"));
+        String yearBefore =trim(request.getParameter("yearOfBirthBefore"));
+        if (!isNumeric(dayBefore) || !isNumeric(monthBefore) || !isNumeric(yearBefore)){
+            return null;
+        } else {
+            return yearBefore + "-" + monthBefore + "-" + dayBefore;
+        }
     }
 }

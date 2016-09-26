@@ -5,8 +5,8 @@ public class ContactSearchDTO {
     private String firstName;
     private String lastName;
     private String secondName;
-    private String birthDateBefore;
-    private String birthDateAfter;
+    private String dateOfBirthLessThan;
+    private String dateOfBirthGreaterThan;
     private String sex;
     private String nationality;
     private String martialStatus;
@@ -42,20 +42,20 @@ public class ContactSearchDTO {
         this.secondName = secondName;
     }
 
-    public String getBirthDateBefore() {
-        return birthDateBefore;
+    public String getDateOfBirthLessThan() {
+        return dateOfBirthLessThan;
     }
 
-    public void setBirthDateBefore(String birthDateBefore) {
-        this.birthDateBefore = birthDateBefore;
+    public void setDateOfBirthLessThan(String dateOfBirthLessThan) {
+        this.dateOfBirthLessThan = dateOfBirthLessThan;
     }
 
-    public String getBirthDateAfter() {
-        return birthDateAfter;
+    public String getDateOfBirthGreaterThan() {
+        return dateOfBirthGreaterThan;
     }
 
-    public void setBirthDateAfter(String birthDateAfter) {
-        this.birthDateAfter = birthDateAfter;
+    public void setDateOfBirthGreaterThan(String dateOfBirthGreaterThan) {
+        this.dateOfBirthGreaterThan = dateOfBirthGreaterThan;
     }
 
     public String getSex() {

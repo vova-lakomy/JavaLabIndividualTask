@@ -28,25 +28,25 @@
 
                         <div class="jlab-form-item">
                             <label for="search-form-birth-day-after">Birth date after</label>
-                            <div class="jlab-date-field">
+                            <div class="jlab-date-field" data-date-block="true">
                                 <input id="search-form-birth-day-after" type="text" placeholder="day" title="day"
-                                       name="dayOfBirthAfter" value="">
+                                       name="dayOfBirthAfter" value="" data-date-part="day">
                                 <input id="search-form-birth-month-after" type="text" placeholder="month" title="month"
-                                       name="monthOfBirthAfter" value="">
+                                       name="monthOfBirthAfter" value="" data-date-part="month">
                                 <input id="search-form-birth-year-after" type="text" placeholder="year" title="year"
-                                       name="yearOfBirthAfter" value="">
+                                       name="yearOfBirthAfter" value="" data-date-part="year">
                             </div>
                         </div>
 
                         <div class="jlab-form-item">
                             <label for="search-form-birth-day-before">Birth date before</label>
-                            <div class="jlab-date-field">
+                            <div class="jlab-date-field" data-date-block="true">
                                 <input id="search-form-birth-day-before" type="text" placeholder="day" title="day"
-                                       name="dayOfBirthBefore" value="">
+                                       name="dayOfBirthBefore" value="" data-date-part="day">
                                 <input id="search-form-birth-month-before" type="text" placeholder="month" title="month"
-                                       name="monthOfBirthBefore" value="">
+                                       name="monthOfBirthBefore" value="" data-date-part="month">
                                 <input id="search-form-birth-year-before" type="text" placeholder="year" title="year"
-                                       name="yearOfBirthBefore" value="">
+                                       name="yearOfBirthBefore" value="" data-date-part="year">
                             </div>
                         </div>
 
@@ -63,7 +63,7 @@
                         <div class="jlab-form-item">
                             <label for="search-form-nationality">Nationality</label>
                             <input id="search-form-nationality" type="text" name="nationality"
-                                   placeholder="nationality">
+                                   placeholder="nationality" data-validation-type="string">
                         </div>
 
                     </div>
@@ -80,37 +80,39 @@
 
                         <div class="jlab-form-item">
                             <label for="search-form-country">Country</label>
-                            <input id="search-form-country" type="text" name="country" value="" placeholder="country">
+                            <input id="search-form-country" type="text" name="country" value="" placeholder="country"
+                                   data-validation-type="string">
                         </div>
 
                         <div class="jlab-form-item">
                             <label for="search-form-town">Town</label>
-                            <input id="search-form-town" type="text" name="town" value="" placeholder="town">
+                            <input id="search-form-town" type="text" name="town" value="" placeholder="town"
+                                   data-validation-type="string">
                         </div>
 
                         <div class="jlab-form-item">
                             <label for="search-form-zip-code">Zip</label>
                             <input id="search-form-zip-code" type="text" name="zipCode" value=""
-                                   placeholder="zipcode">
+                                   placeholder="zipcode" data-validation-type="zip">
                         </div>
 
 
                         <div class="jlab-form-item">
                             <label for="search-form-street">Street</label>
                             <input id="search-form-street" type="text" name="street" value=""
-                                   placeholder="street">
+                                   placeholder="street" data-validation-type="string">
                         </div>
 
                         <div class="jlab-form-item">
                             <label for="search-form-house-number">House number</label>
                             <input id="search-form-house-number" type="text" name="houseNumber" value=""
-                                   placeholder="house number">
+                                   placeholder="house number" data-validation-type="numbers">
                         </div>
 
                         <div class="jlab-form-item">
                             <label for="search-form-flat-number">Flat number</label>
                             <input id="search-form-flat-number" type="text" name="flatNumber" value=""
-                                   placeholder="house number">
+                                   placeholder="house number" data-validation-type="numbers">
                         </div>
 
                     </div>
