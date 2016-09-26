@@ -30,11 +30,13 @@
         <mysql.connector.version>5.1.39</mysql.connector.version>
         <servlet.version>3.1.0</servlet.version>
         <jstl.version>1.2</jstl.version>
-        <log4j.version>2.6.2</log4j.version>
+        <log4j.version>1.7.5</log4j.version>
         <junit.version>4.11</junit.version>
         <commons.fileupload.version>1.3</commons.fileupload.version>
         <commons.lang.version>3.0</commons.lang.version>
+        <javax.mail.version>1.4.5</javax.mail.version>
         <stringtemplate.version>4.0.7</stringtemplate.version>
+        <quartz.version>2.2.3</quartz.version>
     </properties>
 
     <dependencies>
@@ -61,13 +63,20 @@
         </dependency>
         <!--end string template-->
 
+        <!--scheduler-->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>${quartz.version}</version>
+        </dependency>
+        <!--end scheduler-->
+
         <!--mail-->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4.5</version>
+            <version>${javax.mail.version}</version>
         </dependency>
-
         <!--end mail-->
 
         <!--DB driver-->
@@ -95,14 +104,14 @@
 
         <!--logging-->
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.1</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.1</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
         <!--end logging-->
 

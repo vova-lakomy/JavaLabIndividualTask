@@ -2,8 +2,12 @@ package com.javalab.contacts.web;
 
 import com.javalab.contacts.service.AppController;
 import com.javalab.contacts.util.PropertiesProvider;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.javalab.contacts.util.QuartzScheduler;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.impl.StdSchedulerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -22,9 +26,10 @@ import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
 public class FrontServlet extends HttpServlet {
 
 
-    private static final Logger logger = LogManager.getLogger(FrontServlet.class);
+    private static final Logger logger = LoggerFactory.getLogger(FrontServlet.class);
     private AppController appController = new AppController();
     private Properties properties = PropertiesProvider.getInstance().getConnectionProperties();
+    private Scheduler scheduler;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -35,11 +40,19 @@ public class FrontServlet extends HttpServlet {
             loadScript(getServletContext().getRealPath("./WEB-INF/classes/initDB.sql"));
             loadScript(getServletContext().getRealPath("./WEB-INF/classes/populateDB.sql"));
         }
+        try {
+            scheduler =  StdSchedulerFactory.getDefaultScheduler();
+        } catch (SchedulerException e) {
+           logger.error("{}",e.getMessage());
+        }
+        QuartzScheduler.start(scheduler);
+
     }
 
     @Override
     public void destroy() {
         logger.debug("Destroying App servlet");
+        QuartzScheduler.stop(scheduler);
         super.destroy();
     }
 

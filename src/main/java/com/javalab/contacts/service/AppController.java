@@ -1,8 +1,19 @@
 package com.javalab.contacts.service;
 
-import com.javalab.contacts.service.command.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.javalab.contacts.service.command.Command;
+import com.javalab.contacts.service.command.DeleteAttachmentCommand;
+import com.javalab.contacts.service.command.DeleteContactCommand;
+import com.javalab.contacts.service.command.DeletePhoneCommand;
+import com.javalab.contacts.service.command.EditCommand;
+import com.javalab.contacts.service.command.ListCommand;
+import com.javalab.contacts.service.command.MailCommand;
+import com.javalab.contacts.service.command.RenameAttachmentCommand;
+import com.javalab.contacts.service.command.SaveCommand;
+import com.javalab.contacts.service.command.SearchCommand;
+import com.javalab.contacts.service.command.UploadAttachmentCommand;
+import com.javalab.contacts.service.command.UploadPhotoCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +26,7 @@ import java.util.Set;
 
 
 public class AppController {
-    private static final Logger logger = LogManager.getLogger(AppController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AppController.class);
     private Map<String,Command> commandMap = new HashMap<>();
 
     public AppController(){

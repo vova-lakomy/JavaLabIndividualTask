@@ -1,8 +1,8 @@
 package com.javalab.contacts.util;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class FileUtils {
-    private static final Logger logger = LogManager.getLogger(SqlScriptLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(SqlScriptLoader.class);
     private static Map<String, Integer> filePrefixMap = new HashMap<String, Integer>();
 
     private FileUtils() {

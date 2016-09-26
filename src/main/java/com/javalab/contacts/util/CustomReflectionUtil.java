@@ -1,8 +1,8 @@
 package com.javalab.contacts.util;
 
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.Map;
 
 public final class CustomReflectionUtil {
 
-    private static final Logger logger = LogManager.getLogger(CustomReflectionUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(CustomReflectionUtil.class);
 
     private CustomReflectionUtil(){
     }

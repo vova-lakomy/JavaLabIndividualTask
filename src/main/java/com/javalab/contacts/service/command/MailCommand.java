@@ -8,8 +8,8 @@ import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
 import com.javalab.contacts.util.CustomReflectionUtil;
 import com.javalab.contacts.util.MailSender;
 import com.javalab.contacts.util.STemplates;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 
@@ -32,7 +32,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class MailCommand implements Command {
-    private static final Logger logger = LogManager.getLogger(MailCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(MailCommand.class);
 
     private MailSender mailSender = new MailSender();
     private ContactDtoRepository repository = new ContactDtoRepositoryImpl();

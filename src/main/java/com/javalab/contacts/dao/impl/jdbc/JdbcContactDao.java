@@ -9,8 +9,8 @@ import com.javalab.contacts.model.ContactAddress;
 import com.javalab.contacts.model.enumerations.MartialStatus;
 import com.javalab.contacts.model.enumerations.Sex;
 import com.javalab.contacts.util.CustomReflectionUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import java.sql.Connection;
@@ -28,7 +28,7 @@ import static org.apache.commons.lang3.StringUtils.splitByCharacterTypeCamelCase
 
 public class JdbcContactDao implements ContactDao {
 
-    private static final Logger logger = LogManager.getLogger(JdbcContactDao.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdbcContactDao.class);
     private int rowsPerPageCount = 10;
     private int numberOfRecordsFound = 0;
     private ConnectionManager connectionManager = ConnectionManager.getInstance();

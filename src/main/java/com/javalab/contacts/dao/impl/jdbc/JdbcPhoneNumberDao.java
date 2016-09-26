@@ -3,17 +3,20 @@ package com.javalab.contacts.dao.impl.jdbc;
 import com.javalab.contacts.dao.PhoneNumberDao;
 import com.javalab.contacts.model.PhoneNumber;
 import com.javalab.contacts.model.enumerations.PhoneType;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class JdbcPhoneNumberDao implements PhoneNumberDao {
 
-    private static final Logger logger = LogManager.getLogger(JdbcPhoneNumberDao.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdbcPhoneNumberDao.class);
 
     private ConnectionManager connectionManager = ConnectionManager.getInstance();
 

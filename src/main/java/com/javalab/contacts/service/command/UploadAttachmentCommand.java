@@ -1,8 +1,8 @@
 package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.util.PropertiesProvider;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +14,7 @@ import java.util.Properties;
 
 
 public class UploadAttachmentCommand implements Command {
-    private static final Logger logger = LogManager.getLogger(UploadAttachmentCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(UploadAttachmentCommand.class);
     private static Properties properties = PropertiesProvider.getInstance().getFileUploadProperties();
 
 

@@ -1,8 +1,8 @@
 package com.javalab.contacts.util;
 
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.mail.Address;
 import javax.mail.Authenticator;
@@ -16,7 +16,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public final class MailSender {
-    private static final Logger logger = LogManager.getLogger(MailSender.class);
+    private static final Logger logger = LoggerFactory.getLogger(MailSender.class);
 
     private Properties mailProps = PropertiesProvider.getInstance().getMailProperties();
 

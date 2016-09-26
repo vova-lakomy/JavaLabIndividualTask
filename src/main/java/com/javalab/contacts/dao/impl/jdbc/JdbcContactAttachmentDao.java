@@ -2,18 +2,21 @@ package com.javalab.contacts.dao.impl.jdbc;
 
 import com.javalab.contacts.dao.ContactAttachmentDao;
 import com.javalab.contacts.model.ContactAttachment;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class JdbcContactAttachmentDao implements ContactAttachmentDao {
 
-    private static final Logger logger = LogManager.getLogger(JdbcContactAttachmentDao.class);
+    private static final Logger logger = LoggerFactory.getLogger(JdbcContactAttachmentDao.class);
 
     private ConnectionManager connectionManager = ConnectionManager.getInstance();
 
