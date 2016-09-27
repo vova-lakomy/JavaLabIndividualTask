@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
@@ -54,6 +55,16 @@ public final class MailSender {
         serverProperties.put("mail.smtp.auth", mailProps.getProperty("mail.smtp.auth"));
         serverProperties.put("mail.smtp.port", mailProps.getProperty("mail.smtp.port"));
         return serverProperties;
+    }
+
+    public void sendMailToAdministrator(String mailSubject, String messageText){
+        String administratorAddressString = mailProps.getProperty("administrator.mail");
+        try {
+            Address administratorAddress = new InternetAddress(administratorAddressString);
+            sendMail(administratorAddress, mailSubject, messageText);
+        } catch (AddressException e) {
+            logger.error("failed to create address from string {}", administratorAddressString);
+        }
     }
 }
 

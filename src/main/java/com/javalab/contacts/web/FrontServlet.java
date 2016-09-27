@@ -16,12 +16,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Properties;
 
 import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
 
-@MultipartConfig(maxFileSize = 1024*1024*10)  //10mb
+@MultipartConfig(maxFileSize = 1024*1024*10)     //15mb
 @WebServlet(loadOnStartup = 1, urlPatterns = {"/contacts/*"})
 public class FrontServlet extends HttpServlet {
 
@@ -58,7 +60,21 @@ public class FrontServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            checkForExceededSize(req);
+        } catch (Exception e) {
+            logger.error("{}",e);
+            resp.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE,"File size exceeds maximum allowed");
+            return;
+        }
         req.setCharacterEncoding("utf-8");
         appController.processRequest(req,resp);
+    }
+
+    private void checkForExceededSize(HttpServletRequest req) throws Exception{
+        String contentType = req.getContentType();
+        if (contentType!=null && contentType.toLowerCase().startsWith("multipart")){
+            req.getParts();
+        }
     }
 }

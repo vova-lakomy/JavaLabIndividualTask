@@ -71,6 +71,14 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
     }
 
     @Override
+    public Collection<ContactShortDTO> getByDayAndMonth(Integer day, Integer month){
+        Collection<ContactShortDTO> contactDTOs = new ArrayList<>();
+        contactDao.getByDayAndMonth(day, month).forEach(contact ->
+                contactDTOs.add(createContactShortDTO(contact)));
+        return contactDTOs;
+    }
+
+    @Override
     public Collection<ContactShortDTO> search(ContactSearchDTO searchObject, int pageNumber) {
         Collection<ContactShortDTO> contactDTOs = new ArrayList<>();
         contactDao.search(searchObject, pageNumber).forEach(contact ->

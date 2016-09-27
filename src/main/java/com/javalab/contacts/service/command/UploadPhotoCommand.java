@@ -27,6 +27,7 @@ public class UploadPhotoCommand implements Command {
         // creates upload directory if it does not exists
         File fileSaveDir = new File(uploadFilePath);
         if (!fileSaveDir.exists()) {
+            logger.debug("directory {} does not exist... creating one", fileSaveDir);
             fileSaveDir.mkdirs();
         }
 

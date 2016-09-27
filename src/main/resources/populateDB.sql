@@ -7,7 +7,7 @@ VALUES
   (1,'Alexandr','Sergeevich', 'Ivanov', '1990-02-27', 'MALE','Russian','SINGLE','alex.com',
      'alex.ivan@gmail.com', 'Google', 'Belarus','Minsk','Independence ave.',12,65,220000),
 
-  (2,'Grigory','Fedorovich', 'Smirnov', '1985-09-22', 'MALE','Belarussian','MARRIED','grigor.com',
+  (2,'Grigory','Fedorovich', 'Smirnov', '1985-09-26', 'MALE','Belarussian','MARRIED','grigor.com',
      'grig.fedor@gmail.com', 'Microsoft', 'Belarus','Gomel','Sovetskaya st.',34,2,246144),
 
   (3,'Helen','Petrovna', 'Sidorova', '1998-07-19', 'FEMALE','Ukrainian','SINGLE','sidorova.com',
@@ -16,7 +16,7 @@ VALUES
   (4,'Сергей','Сергеевич', 'Карпов', '1990-01-11', 'MALE','Belarussian','DIVORCED','karpov.com',
      'serega.karp@gmail.com', 'IBM', 'Ukraine','Kharkov','Revolution st.',56,256,199321),
 
-  (5,'Vladimir','Vladimirovich', 'Tootin', '1952-10-07', 'MALE','Russian','DIVORCED','tootin.com',
+  (5,'Vladimir','Vladimirovich', 'Tootin', '1952-09-11', 'MALE','Russian','DIVORCED','tootin.com',
      'tutin.vv@gmail.com', 'WhiteHouse', 'Russia', 'Moscow','Victory st.',111,8,124365),
 
   (6,'Julia','Igorevna', 'Cherepanova', '1971-12-01', 'FEMALE','Russian','MARRIED','cherepan.com',
@@ -193,7 +193,7 @@ VALUES
   (63,'Nikita','Fokovich', 'Severniy', '1974-6-5', 'MALE','Belarussian','DIVORCED','stepa.com',
       'nikki@gmail.com', 'Google', 'Belarus','Grodno','Bannaya st.',10,360,210408),
 
-  (64,'MIkhail','Igorevich', 'Grigoryev', '1998-9-27', 'MALE','Belarussian','MARRIED','stepa.com',
+  (64,'MIkhail','Igorevich', 'Grigoryev', '1998-8-27', 'MALE','Belarussian','MARRIED','stepa.com',
       'mishunya@gmail.com', 'Google', 'Belarus','Minsk','Komsomolskya st.',94,8,202989),
 
   (65,'Ekaterina','Igorevna', 'Molchanova', '1992-4-10', 'FEMALE','Belarussian','MARRIED','stepa.com',

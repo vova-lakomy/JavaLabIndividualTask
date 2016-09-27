@@ -15,6 +15,8 @@ public interface ContactDtoRepository {
 
     Collection<ContactShortDTO> getContactsList(Integer pageNumber);
 
+    Collection<ContactShortDTO> getByDayAndMonth(Integer day, Integer month);
+
     Collection<ContactShortDTO> search(ContactSearchDTO searchObject, int pageNumber);
 
     Integer saveContact(ContactFullDTO contact);

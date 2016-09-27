@@ -43,6 +43,43 @@ public class JdbcContactDao implements ContactDao {
     }
 
     @Override
+    public Collection<Contact> getByDayAndMonth(Integer day, Integer month){
+        logger.debug("try to get contacts by day - {} and month - {}",day,month);
+        PreparedStatement getByDayAndMonthStatement = null;
+
+        Collection<Contact> resultCollection = new ArrayList<>();
+        Connection connection = connectionManager.receiveConnection();
+        try {
+            connection.setAutoCommit(false);
+            logger.debug("opened transaction");
+            getByDayAndMonthStatement = connection
+                    .prepareStatement("SELECT * FROM contact WHERE MONTH(date_of_birth) = ? " +
+                                                              "AND DAY(date_of_birth) = ? ORDER BY last_name");
+            getByDayAndMonthStatement.setInt(1, month);
+            getByDayAndMonthStatement.setInt(2, day);
+            ResultSet resultSet = getByDayAndMonthStatement.executeQuery();
+            while (resultSet.next()) {
+                resultCollection.add(createContactFromResultSet(resultSet, JOIN_ATTACHMENTS_FALSE));
+            }
+            connection.commit();
+            logger.debug("closed transaction");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (getByDayAndMonthStatement != null) {
+                    getByDayAndMonthStatement.close();
+                }
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            connectionManager.putBackConnection(connection);
+        }
+        return resultCollection;
+    }
+
+    @Override
     public Contact getContactShortInfo(Integer contactId) {
         return getContactFromDB(contactId, JOIN_ATTACHMENTS_FALSE);
     }
@@ -122,16 +159,19 @@ public class JdbcContactDao implements ContactDao {
     public Collection<Contact> search(ContactSearchDTO searchObject, int pageNumber) {
         PreparedStatement searchStatement = null;
         String searchQueryString = defineSearchQueryString(searchObject);
+        if (pageNumber >= 0){
+            searchQueryString = searchQueryString + " LIMIT ?, ?;";
+        }
         Collection<Contact> resultCollection = new ArrayList<>();
         Connection connection = connectionManager.receiveConnection();
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
             searchStatement = connection.prepareStatement(searchQueryString);
-            searchStatement.setInt(1, rowsPerPageCount * pageNumber);
-            searchStatement.setInt(2, rowsPerPageCount);
-
-
+            if (pageNumber >= 0){
+                searchStatement.setInt(1, rowsPerPageCount * pageNumber);
+                searchStatement.setInt(2, rowsPerPageCount);
+            }
             ResultSet resultSet = searchStatement.executeQuery();
             while (resultSet.next()) {
                 resultCollection.add(createContactFromResultSet(resultSet, false));
@@ -365,7 +405,7 @@ public class JdbcContactDao implements ContactDao {
             query.append(" ORDER BY ");
             query.append(orderBy);
         }
-        query.append(" LIMIT ?, ?;");
+//        query.append(" LIMIT ?, ?;");
         return query.toString();
     }
 

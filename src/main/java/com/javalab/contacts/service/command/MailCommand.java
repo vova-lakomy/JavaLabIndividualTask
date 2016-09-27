@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -46,9 +45,11 @@ public class MailCommand implements Command {
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
             Collection<ContactShortDTO> contactShortDTOs = new ArrayList<>();
-            Arrays.stream(selectedIds).forEach(id ->
-                    contactShortDTOs.add(repository.getContactShortDTO(Integer.valueOf(id)))
-            );
+            for (String stringId : selectedIds){
+                Integer id = Integer.parseInt(stringId);
+                ContactShortDTO contactShortDTO = repository.getContactShortDTO(id);
+                contactShortDTOs.add(contactShortDTO);
+            }
             request.setAttribute("emailContacts", contactShortDTOs);
             request.setAttribute("path", "contact-email-form.jsp");
         } else if (request.getParameterValues("mailTo") != null) {
@@ -77,7 +78,9 @@ public class MailCommand implements Command {
         }
         Map<Address, String> messageMap = mapMessagesToAddresses(request);
         for (Map.Entry<Address, String> entry : messageMap.entrySet()) {
-            mailSender.sendMail(entry.getKey(), mailSubject, entry.getValue());
+            Address address = entry.getKey();
+            String messageText = entry.getValue();
+            mailSender.sendMail(address, mailSubject, messageText);
         }
     }
 
@@ -87,11 +90,13 @@ public class MailCommand implements Command {
         for (Map.Entry<String, Integer> entry : addressesMapFromRequest.entrySet()) {
             Address address = null;
             try {
-                address = new InternetAddress(entry.getKey());
+                String stringAddress = entry.getKey();
+                address = new InternetAddress(stringAddress);
             } catch (AddressException e) {
                 logger.error("{}", e);
             }
-            String message = defineMailMessage(request, entry.getValue());
+            Integer contactId = entry.getValue();
+            String message = defineMailMessage(request, contactId);
             resultMap.put(address, message);
         }
         return resultMap;
@@ -128,9 +133,9 @@ public class MailCommand implements Command {
     private ST createStringTemplate(String message) {
         String templateName = "customTemplate";
         STGroup stGroup = stringTemplates.getTemplatesGroup();
-        List<String> params = defineTemplateParams(message);
+        List<String> templateParams = defineTemplateParams(message);
         StringBuilder oneStringParams = new StringBuilder();
-        params.forEach(param -> {
+        templateParams.forEach(param -> {
             oneStringParams.append(param);
             oneStringParams.append(',');
         });
@@ -152,12 +157,13 @@ public class MailCommand implements Command {
         String[] mailTo = request.getParameterValues("mailTo");
         String[] mailToIds = request.getParameterValues("mailToId");
         for (int i = 0; i < mailTo.length; i++) {
-            Integer mailToId = null;
+            Integer contactIdMailTo = null;
             if (isNotBlank(mailToIds[i])) {
-                mailToId = Integer.parseInt(mailToIds[i]);
+                contactIdMailTo = Integer.parseInt(mailToIds[i]);
             }
             if (isNotBlank(mailTo[i])) {
-                emailMap.put(mailTo[i].trim(), mailToId);
+                String mailAddress = mailTo[i].trim();
+                emailMap.put(mailAddress, contactIdMailTo);
             }
         }
         return emailMap;

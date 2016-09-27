@@ -280,6 +280,14 @@ select{
     /*box-shadow: 1px 1px 15px #ed1c24;*/
 }
 
+.jlab-error-page{
+    padding-left: 50px;
+}
+
+.jlab-page-not-found{
+    padding-left: 50px;
+}
+
 .jlab-horizontal-padding-10 {
     word-wrap: break-word;
     padding-left: 10px;

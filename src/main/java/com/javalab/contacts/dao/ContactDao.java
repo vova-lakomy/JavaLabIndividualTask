@@ -10,6 +10,8 @@ public interface ContactDao {
 
     Contact get(Integer id);
 
+    Collection<Contact> getByDayAndMonth(Integer day, Integer month);
+
     Contact getContactShortInfo(Integer contactId);
 
     Collection<Contact> getContactList(int pageNumber);
