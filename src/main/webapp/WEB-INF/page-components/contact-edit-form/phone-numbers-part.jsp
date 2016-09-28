@@ -3,10 +3,10 @@
 
 <div id="phone-number-caption" class="jlab-row">
     <div class="jlab-cell-12 jlab-inner-table-caption">
-        <span>Phone numbers:</span>
+        <span>${labels.get('inner.caption.phone.numbers')}:</span>
         <div class="jlab-pull-right jlab-button-block">
-            <button id="button-show-phone-number-modal" type="button" class="jlab-button">add new</button>
-            <button id="button-delete-phone-number" type="button" class="jlab-button" >delete</button>
+            <button id="button-show-phone-number-modal" type="button" class="jlab-button">${labels.get('add.new')}</button>
+            <button id="button-delete-phone-number" type="button" class="jlab-button" >${labels.get('delete')}</button>
         </div>
     </div>
 
@@ -16,9 +16,9 @@
     <c:when test="${fullContact.phoneNumbers != null}">
         <div id="inner-phone-number-table" class="jlab-inner-table-container">
             <ul class="jlab-row jlab-inner-table-column-caption">
-                <li class="jlab-cell-4">Phone number</li>
-                <li class="jlab-cell-2">Type</li>
-                <li class="jlab-cell-6">Comment</li>
+                <li class="jlab-cell-4">${labels.get('inner.caption.phone.number')}</li>
+                <li class="jlab-cell-2">${labels.get('inner.caption.phone.type')}</li>
+                <li class="jlab-cell-6">${labels.get('comment')}</li>
             </ul>
             <div id="phone-number-rows">
                 <c:forEach var="phoneNumber" items="${fullContact.phoneNumbers}" varStatus="counter">
@@ -51,14 +51,14 @@
     <c:otherwise>
         <div id="phone-numbers-empty-table" class="jlab-row jlab-vertical-padding-10">
             <div class="jlab-cell-12">
-                <i>nothing to display <a href="javascript:toggleClass($('#modal-phone-add'),'jlab-fade')">add</a></i>  <%// TODO: 21.09.16 add listener in js %>
+                <i>${labels.get('nothing.to.display')}<a href="javascript:toggleClass($('#modal-phone-add'),'jlab-fade')">${labels.get('add')}</a></i>  <%// TODO: 21.09.16 add listener in js %>
             </div>
         </div>
         <div id="inner-phone-number-table" class="jlab-inner-table-container jlab-hidden">
             <ul class="jlab-row jlab-inner-table-column-caption">
-                <li class="jlab-cell-4">Phone number</li>
-                <li class="jlab-cell-2">Type</li>
-                <li class="jlab-cell-6">Comment</li>
+                <li class="jlab-cell-4">${labels.get('inner.caption.phone.number')}</li>
+                <li class="jlab-cell-2">${labels.get('inner.caption.phone.type')}</li>
+                <li class="jlab-cell-6">${labels.get('comment')}</li>
             </ul>
             <div id="phone-number-rows">
 

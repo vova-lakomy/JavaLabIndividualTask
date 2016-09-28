@@ -23,7 +23,7 @@ import java.util.Properties;
 
 import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
 
-@MultipartConfig(maxFileSize = 1024*1024*10)     //15mb
+@MultipartConfig(maxFileSize = 1024*1024*10)     //10mb
 @WebServlet(loadOnStartup = 1, urlPatterns = {"/contacts/*"})
 public class FrontServlet extends HttpServlet {
 
@@ -48,7 +48,6 @@ public class FrontServlet extends HttpServlet {
            logger.error("{}",e.getMessage());
         }
         QuartzScheduler.start(scheduler);
-
     }
 
     @Override
@@ -60,6 +59,7 @@ public class FrontServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("utf-8");
         try {
             checkForExceededSize(req);
         } catch (Exception e) {
@@ -67,7 +67,6 @@ public class FrontServlet extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE,"File size exceeds maximum allowed");
             return;
         }
-        req.setCharacterEncoding("utf-8");
         appController.processRequest(req,resp);
     }
 

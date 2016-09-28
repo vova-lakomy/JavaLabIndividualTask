@@ -1,19 +1,20 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<script type="application/javascript" src="${rootContext}/resources/js/validator.js"></script>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="jlab-main-content-container">
     <div class="jlab-main-content">
         <div class="jlab-form-container jlab-email-form">
-            <h4>Send email</h4>
+            <h4>${labels.get('caption.send.email')}</h4>
             <form id="email-form" action="mail" method="post" data-form-name="email-form">
 
                 <c:choose>
                     <c:when test="${emailContacts eq null}">
                         <div class="jlab-form-item jlab-row">
                             <label class="jlab-cell-1"
-                                   for="messageRecipient">To:</label>
+                                   for="messageRecipient">${labels.get('mail.to')}:</label>
                             <input class="jlab-cell-12" id="messageRecipient" type="text" name="mailTo"
-                                   value="" placeholder="message recipient" required data-validation-type="email"/>
+                                   value="" placeholder="${labels.get('mail.to.placeholder')}" required data-validation-type="email"/>
                             <input class="jlab-hidden" name="mailToId" value="${contact.id}">
                         </div>
                     </c:when>
@@ -21,9 +22,9 @@
                         <c:forEach var="contact" items="${emailContacts}" varStatus="counter">
                             <div class="jlab-form-item jlab-row">
                                 <label class="jlab-cell-1"
-                                       for="messageRecipient${counter.index}">To: </label>
+                                       for="messageRecipient${counter.index}">${labels.get('mail.to')}: </label>
                                 <input class="jlab-cell-12" id="messageRecipient${counter.index}" type="text"
-                                       name="mailTo" value="${contact.eMail}" placeholder="message recipient" required/>
+                                       name="mailTo" value="${contact.eMail}" placeholder="${labels.get('mail.to.placeholder')}" required/>
                                 <input class="jlab-hidden" name="mailToId" value="${contact.id}">
                             </div>
                         </c:forEach>
@@ -31,14 +32,14 @@
                 </c:choose>
 
                 <div class="jlab-form-item jlab-row">
-                    <label class="jlab-cell-1" for="mailSubject">Topic :</label>
-                    <input class="jlab-cell-12" id="mailSubject" type="text" placeholder="subject" name="mailSubject">
+                    <label class="jlab-cell-1" for="mailSubject">${labels.get('mail.subject')}:</label>
+                    <input class="jlab-cell-12" id="mailSubject" type="text" placeholder="${labels.get('mail.subject.placeholder')}" name="mailSubject">
                 </div>
 
                 <div class="jlab-form-item jlab-row">
-                    <label class="jlab-cell-1" for="templateSelect">Template :</label>
+                    <label class="jlab-cell-1" for="templateSelect">${labels.get('mail.template')} :</label>
                     <select class="jlab-cell-12" id="templateSelect" name="selectedTemplate">
-                        <option value="">none</option>
+                        <option value="">${labels.get('none')}</option>
                         <c:forEach var="template" items="${templates}">
                             <option value="${template.key}">${template.key}</option>
                         </c:forEach>
@@ -46,14 +47,14 @@
                 </div>
 
                 <div class="jlab-row">
-                    <label class="jlab-cell-1" for="mailText">message:</label>
+                    <label class="jlab-cell-1" for="mailText">${labels.get('mail.message')}:</label>
                     <textarea class="jlab-cell-11" id="mailText" name="mailText"
-                              placeholder="select template or type text here"></textarea>
+                              placeholder="${labels.get('mail.message.placeholder')}"></textarea>
                 </div>
 
                 <div class="jlab-button-block jlab-vertical-padding-10 jlab-pull-right">
-                    <button type="submit" class="jlab-button">send</button>
-                    <a type="submit" class="jlab-button" href="list">cancel</a>
+                    <button type="submit" class="jlab-button">${labels.get('mail.send')}</button>
+                    <a type="submit" class="jlab-button" href="list">${labels.get('cancel')}</a>
                 </div>
             </form>
         </div>
@@ -63,4 +64,4 @@
     </c:forEach>
 
 </div>
-<script type="text/javascript" src="../resources/js/contact-email-form.js"></script>
+<script type="text/javascript" src="${rootContext}/resources/js/contact-email-form.js"></script>

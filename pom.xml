@@ -36,7 +36,6 @@
         <javax.mail.version>1.4.5</javax.mail.version>
         <stringtemplate.version>4.0.7</stringtemplate.version>
         <quartz.version>2.2.3</quartz.version>
-        <lombok.version>1.16.10.0</lombok.version>
     </properties>
 
     <dependencies>
@@ -95,14 +94,6 @@
             <version>${jstl.version}</version>
         </dependency>
         <!--end servlets-->
-
-        <!--lombok-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok-maven</artifactId>
-            <version>${lombok.version}</version>
-        </dependency>
-        <!--lombok-->
 
         <!--logging-->
         <dependency>

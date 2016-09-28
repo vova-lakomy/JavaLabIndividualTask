@@ -1,7 +1,7 @@
 <div class="jlab-footer-panel-margin">
 </div>
-<div class="jlab-footer-panel">
+<footer class="jlab-footer-panel">
 
-</div>
+</footer>
 </body>
 </html>

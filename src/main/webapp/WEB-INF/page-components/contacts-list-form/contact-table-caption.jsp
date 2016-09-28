@@ -5,16 +5,16 @@
 
         </div>
         <div class="jlab-cell-3 jlab-horizontal-padding-10">
-            NAME
+            ${labels.get('caption.name')}
         </div>
         <div class="jlab-cell-2 jlab-horizontal-padding-10">
-            BIRTH DATE
+            ${labels.get('caption.birth.date')}
         </div>
         <div class="jlab-cell-4 jlab-horizontal-padding-10">
-            ADDRESS
+            ${labels.get('caption.address')}
         </div>
         <div class="jlab-cell-2 jlab-horizontal-padding-10">
-            COMPANY
+            ${labels.get('caption.company')}
         </div>
     </div>
 </div>

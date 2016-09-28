@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script type="application/javascript" src="${rootContext}/resources/js/validator.js"></script>
 <c:set var="fullContact" value="${fullContactInfo}" scope="request"/>
 
 <div class="jlab-main-content-container">
@@ -23,13 +24,11 @@
 
                 <jsp:include page="page-components/contact-edit-form/attachments-part.jsp"/>
 
-                <%--submit--%>
                 <div class="jlab-row jlab-vertical-padding-10">
                     <div class="jlab-cell-12">
-                        <button type="submit" class="jlab-button jlab-pull-right">submit</button>
+                        <button type="submit" class="jlab-button jlab-pull-right">${labels.get('submit')}</button>
                     </div>
                 </div>
-                <%--/submit--%>
 
             </form>
 
@@ -41,6 +40,7 @@
 <jsp:include page="page-components/contact-edit-form/modal-phone-add.jsp"/>
 <jsp:include page="page-components/contact-edit-form/modal-attachment-edit.jsp"/>
 <jsp:include page="page-components/contact-edit-form/modal-attachment-upload.jsp"/>
-<script type="text/javascript" src="../resources/js/contact-edit-form.js"></script>
+<script type="text/javascript" src="${rootContext}/resources/js/contact-edit-form.js"></script>
+
 
 

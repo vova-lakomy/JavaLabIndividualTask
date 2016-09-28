@@ -3,33 +3,33 @@
 
 <div id="modal-phone-add" class="jlab-modal-container jlab-fade">
     <form id="phone-add-form" class="jlab-modal jlab-phone-number-edit-form" data-form-name="addPhoneModal">
-        <h4>Add phone</h4>
+        <h4>${labels.get('caption.add.phone')}</h4>
         <div class="jlab-form-item">
             <input class="jlab-hidden" name="phoneNumberId" value="">
-            <label for="phone-number-country-code">Country code</label>
-            <input id="phone-number-country-code" name="countryCode" type="text" value="" placeholder="country code"
+            <label for="phone-number-country-code">${labels.get('country.code')}</label>
+            <input id="phone-number-country-code" name="countryCode" type="text" value="" placeholder="${labels.get('country.code.placeholder')}"
                    data-validation-type="countryCode">
         </div>
         <div class="jlab-form-item">
-            <label for="phone-number-operator-code">Operator code</label>
-            <input id="phone-number-operator-code" name="operatorCode" type="text" value="" placeholder="operator code"
+            <label for="phone-number-operator-code">${labels.get('operator.code')}</label>
+            <input id="phone-number-operator-code" name="operatorCode" type="text" value="" placeholder="${labels.get('operator.code.placeholder')}"
                    data-validation-type="operatorCode">
         </div>
         <div class="jlab-form-item">
-            <label for="phone-number">Phone number</label>
-            <input id="phone-number" name="phoneNumber" type="text" value="" placeholder="phone number"
+            <label for="phone-number">${labels.get('phone.number')}</label>
+            <input id="phone-number" name="phoneNumber" type="text" value="" placeholder="${labels.get('phone.number.placeholder')}"
                    data-validation-type="phoneNumber">
         </div>
         <div class="jlab-form-item">
-            <label for="phone-type-select">Phone type</label>
+            <label for="phone-type-select">${labels.get('phone.type')}</label>
             <select id="phone-type-select" name="phoneType">
-                <c:forEach items="${phoneTypeList}" var="value">
+                <c:forEach items="${phoneTypeList}" var="phoneType">
                     <c:choose>
                         <c:when test="${value eq null}">
-                            <option selected value="${value}">${value}</option>
+                            <option selected value="${phoneType}">${labels.get(phoneType)}</option>
                         </c:when>
                         <c:otherwise>
-                            <option value="${value}">${value}</option>
+                            <option value="${phoneType}">${labels.get(phoneType)}</option>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
@@ -37,13 +37,13 @@
         </div>
 
         <div class="jlab-form-item">
-            <label for="phone-number-comment">Comment</label>
-            <input id="phone-number-comment" name="phoneComment" type="text" value="" placeholder="comment">
+            <label for="phone-number-comment">${labels.get('comment')}</label>
+            <input id="phone-number-comment" name="phoneComment" type="text" value="" placeholder="${labels.get('comment.placeholder')}">
         </div>
 
         <div class="jlab-pull-right jlab-button-block ">
-            <button id="button-add-phone-number" type="submit" class="jlab-button">add</button>
-            <button id="button-cancel-phone-number-add" type="button" class="jlab-button">cancel</button>
+            <button id="button-add-phone-number" type="submit" class="jlab-button">${labels.get('save')}</button>
+            <button id="button-cancel-phone-number-add" type="button" class="jlab-button">${labels.get('cancel')}</button>
         </div>
 
     </form>

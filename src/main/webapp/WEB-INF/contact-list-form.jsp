@@ -25,7 +25,7 @@
                 </c:when>
                 <c:otherwise>
                     <div id="no-contacts-to-display">
-                        no contacts to display
+                            ${labels.get('no.contacts.to.display')}
                     </div>
                 </c:otherwise>
             </c:choose>

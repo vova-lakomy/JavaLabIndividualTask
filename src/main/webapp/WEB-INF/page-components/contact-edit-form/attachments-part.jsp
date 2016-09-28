@@ -3,10 +3,10 @@
 
 <div id="attachment-table-caption" class="jlab-row">
     <div class="jlab-cell-12 jlab-inner-table-caption">
-        <span>Attachments:</span>
+        <span>${labels.get('inner.caption.attachments')}:</span>
         <div class="jlab-pull-right jlab-button-block">
-            <button id="button-show-attachments-upload-modal" type="button" class="jlab-button">add new</button>
-            <button id="button-delete-attachment" type="button" class="jlab-button">delete</button>
+            <button id="button-show-attachments-upload-modal" type="button" class="jlab-button">${labels.get('add.new')}</button>
+            <button id="button-delete-attachment" type="button" class="jlab-button">${labels.get('delete')}</button>
         </div>
     </div>
 </div>
@@ -14,9 +14,9 @@
     <c:when test="${attachments != null}">
         <div id="inner-attachment-table" class="jlab-inner-table-container">
             <ul class="jlab-row jlab-inner-table-column-caption">
-                <li class="jlab-cell-4">File Name</li>
-                <li class="jlab-cell-2">Upload Date</li>
-                <li class="jlab-cell-6">Comment</li>
+                <li class="jlab-cell-4">${labels.get('file.name')}</li>
+                <li class="jlab-cell-2">${labels.get('upload.date')}</li>
+                <li class="jlab-cell-6">${labels.get('comment')}</li>
             </ul>
             <div id="attachment-rows">
                 <c:forEach var="attachment" items="${attachments}" varStatus="counter">
@@ -35,7 +35,7 @@
 
                             <input type="checkbox" id="attachment-${counter.index}" name="selectedId"
                                    value="${attachment.id}" data-action="deleteAttachment">
-                            <a href="${attachment.attachmentLink}" target="_blank"><label>${attachment.fileName}</label></a>&nbsp;&nbsp;
+                            <a href="${attachment.attachmentLink}" target="_blank" download><label>${attachment.fileName}</label></a>&nbsp;&nbsp;
                             <img class="jlab-edit-image" src="../resources/img/pencil_12x12.png" title="edit" data-action="edit">
 
                         </li>
@@ -55,15 +55,15 @@
     <c:otherwise>
         <div id="attachments-empty-table" class="jlab-row jlab-vertical-padding-10">
             <div class="jlab-cell-12">
-                <i>nothing to display <a
-                        href="javascript: toggleClass($('#modal-upload-attachment'),'jlab-fade')">add</a></i> <%// TODO: 21.09.16 hang listener in js %>
+                <i>${labels.get('nothing.to.display')} <a
+                        href="javascript: toggleClass($('#modal-upload-attachment'),'jlab-fade')">${labels.get('add')}</a></i> <%// TODO: 21.09.16 hang listener in js %>
             </div>
         </div>
         <div id="inner-attachment-table" class="jlab-inner-table-container jlab-hidden">
             <ul class="jlab-row jlab-inner-table-column-caption">
-                <li class="jlab-cell-4">File Name</li>
-                <li class="jlab-cell-2">Upload Date</li>
-                <li class="jlab-cell-6">Comment</li>
+                <li class="jlab-cell-4">${labels.get('file.name')}</li>
+                <li class="jlab-cell-2">${labels.get('upload.date')}</li>
+                <li class="jlab-cell-6">${labels.get('comment')}</li>
             </ul>
             <div id="attachment-rows"></div>
         </div>

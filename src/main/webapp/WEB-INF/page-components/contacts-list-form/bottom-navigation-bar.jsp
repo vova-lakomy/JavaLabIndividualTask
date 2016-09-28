@@ -20,7 +20,7 @@
                         <a class="jlab-button" href="${hrefString}${currentPage - 1}"> << </a>
                     </c:otherwise>
                 </c:choose>
-                <span class="jlab-button">page ${currentPage} of ${numberOfPages}</span>
+                <span class="jlab-button">${labels.get('page')} ${currentPage} ${labels.get('page.of')} ${numberOfPages}</span>
                 <c:choose>
                     <c:when test="${(currentPage + 1) > numberOfPages}">
                         <button class="jlab-button" disabled> >> </button>
