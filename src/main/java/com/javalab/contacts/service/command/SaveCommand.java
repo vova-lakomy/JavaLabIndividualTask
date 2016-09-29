@@ -130,6 +130,10 @@ public class SaveCommand implements Command {
         if (isBlank(photoLink)){
             photoLink = null;
         }
+        String personalLink = (String) request.getAttribute("personalLink");
+        if (isBlank(personalLink)){
+            personalLink = null;
+        }
         Collection<PhoneNumberDTO> phoneNumbers= getPhoneNumbersFromRequest(request);
         Collection<AttachmentDTO> attachments = getAttachmentsFromRequest(request);
 
@@ -154,6 +158,7 @@ public class SaveCommand implements Command {
         contact.setFlatNumber(flatNumber);
         contact.setZipCode(zipCode);
         contact.setPhotoLink(photoLink);
+        contact.setPersonalLink(personalLink);
         contact.setPhoneNumbers(phoneNumbers);
         contact.setAttachments(attachments);
         return contact;

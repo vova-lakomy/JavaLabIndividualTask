@@ -29,9 +29,13 @@ public interface ContactDtoRepository {
 
     Collection<String> getPhoneTypeList();
 
+    String getPersonalLink(Integer id);
+
+    void setPersonalLink(String personalLink, Integer id);
+
     Integer getNumberOfRecordsFound();
 
     Integer getRowsPePageCount();
 
-    void setRowsPePageCount(Integer rowsCount);
+    void setRowsPerPageCount(Integer rowsCount);
 }

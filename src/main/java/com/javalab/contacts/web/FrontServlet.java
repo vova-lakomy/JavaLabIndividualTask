@@ -16,9 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Properties;
 
 import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
@@ -39,7 +37,7 @@ public class FrontServlet extends HttpServlet {
         super.init(config);
         Boolean shouldLoadScript = Boolean.valueOf(properties.getProperty("load.scripts.at.start"));
         if(shouldLoadScript){
-            loadScript(getServletContext().getRealPath("./WEB-INF/classes/initDB.sql"));
+            loadScript(getServletContext().getRealPath("./WEB-INF/classes/initDB.sql"));    //// FIXME: 29.09.16
             loadScript(getServletContext().getRealPath("./WEB-INF/classes/populateDB.sql"));
         }
         try {

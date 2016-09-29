@@ -11,10 +11,10 @@
                             <img src="../resources/img/unknown_person.png">
                         </c:when>
                         <c:otherwise>
-                            <img src="${fullContact.photoLink}">
+                            <img src="${rootContext}/${fullContact.photoLink}">
                         </c:otherwise>
                     </c:choose>
-                <input class="jlab-hidden" type="text" name="photoLink" value="${fullContact.photoLink}">
+                <input class="jlab-hidden" type="text" name="photoLink" value="${rootContext}/${fullContact.photoLink}">
             </div>
         </div>
     </div>

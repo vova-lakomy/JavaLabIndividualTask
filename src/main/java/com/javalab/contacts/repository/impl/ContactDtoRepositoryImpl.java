@@ -16,6 +16,8 @@ import com.javalab.contacts.model.enumerations.MartialStatus;
 import com.javalab.contacts.model.enumerations.PhoneType;
 import com.javalab.contacts.model.enumerations.Sex;
 import com.javalab.contacts.repository.ContactDtoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -24,9 +26,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 public class ContactDtoRepositoryImpl implements ContactDtoRepository {
+    private static final Logger logger = LoggerFactory.getLogger(ContactDtoRepository.class);
     private ContactDao contactDao = new JdbcContactDao();
 
 
@@ -179,6 +181,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
         Collection<PhoneNumber> phoneNumbers = getPhoneNumbersFromContactDTO(contactDTO);
         Collection<ContactAttachment> attachments = getAttachmentsFromContactDTO(contactDTO);
         String photoLink = contactDTO.getPhotoLink();
+        String personalLink = contactDTO.getPersonalLink();
 
         Contact contact = new Contact();
         contact.setId(id);
@@ -195,6 +198,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
         contact.setContactAddress(address);
         contact.setAttachments(attachments);
         contact.setPhotoLink(photoLink);
+        contact.setPersonalLink(personalLink);
         contact.setPhoneNumbers(phoneNumbers);
         Integer generatedId = contactDao.save(contact);
         return generatedId;
@@ -227,6 +231,16 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
     }
 
     @Override
+    public String getPersonalLink(Integer id){
+        return contactDao.getPersonalLink(id);
+    }
+
+    @Override
+    public void setPersonalLink(String personalLink, Integer id){
+        contactDao.setPersonalLink(personalLink, id);
+    }
+
+    @Override
     public Integer getNumberOfRecordsFound() {
         return contactDao.getNumberOfRecordsFound();
     }
@@ -237,7 +251,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
     }
 
     @Override
-    public void setRowsPePageCount(Integer rowsCount) {
+    public void setRowsPerPageCount(Integer rowsCount) {
         contactDao.setRowsPerPageCount(rowsCount);
     }
 

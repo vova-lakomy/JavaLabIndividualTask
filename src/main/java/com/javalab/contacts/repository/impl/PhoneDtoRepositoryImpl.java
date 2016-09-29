@@ -5,11 +5,14 @@ import com.javalab.contacts.dao.impl.jdbc.JdbcPhoneNumberDao;
 import com.javalab.contacts.dto.PhoneNumberDTO;
 import com.javalab.contacts.model.PhoneNumber;
 import com.javalab.contacts.repository.PhoneDtoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
 
 public class PhoneDtoRepositoryImpl implements PhoneDtoRepository {
+    private static final Logger logger = LoggerFactory.getLogger(PhoneDtoRepositoryImpl.class);
     private PhoneNumberDao numberDao = new JdbcPhoneNumberDao();
 
     @Override

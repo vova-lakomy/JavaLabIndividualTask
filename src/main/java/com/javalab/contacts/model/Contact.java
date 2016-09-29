@@ -23,7 +23,9 @@ public class Contact {
     private ContactAddress contactAddress;
     private Collection<ContactAttachment> attachments;
     private String photoLink;
+    private String personalLink;
     private Collection <PhoneNumber> phoneNumbers;
+
     public Integer getId() {
         return id;
     }
@@ -144,28 +146,12 @@ public class Contact {
         this.phoneNumbers = phoneNumbers;
     }
 
-    public Contact(Integer id, String firstName, String secondName, String lastName, LocalDate dateOfBirth, Sex sex,
-                   String nationality, MartialStatus martialStatus, String webSite, String eMail, String currentJob,
-                   ContactAddress contactAddress, Collection<ContactAttachment> attachments,
-                   String photoLink, Collection<PhoneNumber> phoneNumbers) {
-        this.id = id;
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.sex = sex;
-        this.nationality = nationality;
-        this.martialStatus = martialStatus;
-        this.webSite = webSite;
-        this.eMail = eMail;
-        this.currentJob = currentJob;
-        this.contactAddress = contactAddress;
-        this.attachments = attachments;
-        this.photoLink = photoLink;
-        this.phoneNumbers = phoneNumbers;
+    public void setPersonalLink(String personalLink) {
+        this.personalLink = personalLink;
     }
 
-    public Contact() {
+    public String getPersonalLink() {
+        return personalLink;
     }
 
     @Override

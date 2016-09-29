@@ -46,9 +46,12 @@ public class MailerJob implements Job{
                 String fullName = person.getFullName();
                 String email = person.geteMail();
                 String dateOfBirth = person.getDateOfBirth();
-                Integer yearOfBirth = Integer.valueOf(dateOfBirth.substring(dateOfBirth.lastIndexOf(".") + 1));
-                Integer presentYear = LocalDate.now().getYear();
-                Integer age = presentYear - yearOfBirth;
+                Integer age = 0;
+                if (dateOfBirth != null) {
+                    Integer yearOfBirth = Integer.valueOf(dateOfBirth.substring(dateOfBirth.lastIndexOf(".") + 1));
+                    Integer presentYear = LocalDate.now().getYear();
+                    age = presentYear - yearOfBirth;
+                }
                 messageBody.append("<tr><td>");
                 messageBody.append(fullName);
                 messageBody.append("</td><td>");
@@ -66,8 +69,12 @@ public class MailerJob implements Job{
     }
 
     private Collection<ContactShortDTO> findBirthdayPeople(LocalDate todayDate) {
-        Integer day = todayDate.getDayOfMonth();
-        Integer month = todayDate.getMonthValue();
+        Integer day = 1;
+        Integer month = 1;
+        if (todayDate != null) {
+            day = todayDate.getDayOfMonth();
+            month = todayDate.getMonthValue();
+        }
         return repository.getByDayAndMonth(day, month);
     }
 }

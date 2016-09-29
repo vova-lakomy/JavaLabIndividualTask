@@ -25,6 +25,7 @@ public class ContactFullDTO {
     private Integer flatNumber;
     private Integer zipCode;
     private String photoLink;
+    private String personalLink;
     private Collection<PhoneNumberDTO> phoneNumbers;
     private Collection<AttachmentDTO> attachments;
 
@@ -205,5 +206,13 @@ public class ContactFullDTO {
 
     public void setAttachments(Collection<AttachmentDTO> attachments) {
         this.attachments = attachments;
+    }
+
+    public void setPersonalLink(String personalLink) {
+        this.personalLink = personalLink;
+    }
+
+    public String getPersonalLink() {
+        return personalLink;
     }
 }

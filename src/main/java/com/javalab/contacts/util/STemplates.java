@@ -1,6 +1,8 @@
 package com.javalab.contacts.util;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
@@ -11,6 +13,7 @@ import java.util.Set;
 
 public final class STemplates {
 
+    private static final Logger logger = LoggerFactory.getLogger(STemplates.class);
     private STGroup templates;
     private static STemplates instance = new STemplates();
     public static STemplates getInstance(){

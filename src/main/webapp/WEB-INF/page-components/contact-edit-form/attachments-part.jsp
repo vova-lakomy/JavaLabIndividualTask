@@ -54,14 +54,14 @@
     <c:otherwise>
         <div id="attachments-empty-table" class="jlab-row jlab-vertical-padding-10">
             <div class="jlab-cell-12">
-                <i>${labels.get('nothing.to.display')} <a
+                <i>${labels.get('nothing.to.display')} <a id=""
                         href="javascript: toggleClass($('#modal-upload-attachment'),'jlab-fade')">${labels.get('add')}</a></i> <%// TODO: 21.09.16 hang listener in js %>
             </div>
         </div>
         <div id="inner-attachment-table" class="jlab-inner-table-container jlab-hidden">
             <ul class="jlab-row jlab-inner-table-column-caption">
-                <li class="jlab-cell-4">${labels.get('file.name')}</li>
-                <li class="jlab-cell-2">${labels.get('upload.date')}</li>
+                <li class="jlab-cell-4">${labels.get('inner.caption.file.name')}</li>
+                <li class="jlab-cell-2">${labels.get('inner.caption.upload.date')}</li>
                 <li class="jlab-cell-6">${labels.get('comment')}</li>
             </ul>
             <div id="attachment-rows"></div>

@@ -1,10 +1,10 @@
 package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.ContactFullDTO;
-import com.javalab.contacts.repository.AttachmentDtoRepository;
 import com.javalab.contacts.repository.ContactDtoRepository;
-import com.javalab.contacts.repository.impl.AttachmentDtoRepositoryImpl;
 import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +14,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class EditCommand implements Command {
 
+    private static final Logger logger = LoggerFactory.getLogger(EditCommand.class);
     private ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
 
     @Override

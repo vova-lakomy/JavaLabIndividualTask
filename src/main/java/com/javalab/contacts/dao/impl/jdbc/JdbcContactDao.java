@@ -66,7 +66,7 @@ public class JdbcContactDao implements ContactDao {
             connection.commit();
             logger.debug("closed transaction");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         } finally {
             try {
                 if (getByDayAndMonthStatement != null) {
@@ -74,7 +74,7 @@ public class JdbcContactDao implements ContactDao {
                 }
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
             }
             connectionManager.putBackConnection(connection);
         }
@@ -104,7 +104,7 @@ public class JdbcContactDao implements ContactDao {
             connection.commit();
             logger.debug("closed transaction");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         } finally {
             try {
                 if (statementGetContact != null) {
@@ -112,7 +112,7 @@ public class JdbcContactDao implements ContactDao {
                 }
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
             }
             connectionManager.putBackConnection(connection);
         }
@@ -182,7 +182,7 @@ public class JdbcContactDao implements ContactDao {
             logger.debug("closed transaction");
             numberOfRecordsFound = getNumberOfRecordsFound(connection);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         } finally {
             try {
                 if (searchStatement != null) {
@@ -190,7 +190,7 @@ public class JdbcContactDao implements ContactDao {
                 }
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
             }
             connectionManager.putBackConnection(connection);
         }
@@ -225,7 +225,7 @@ public class JdbcContactDao implements ContactDao {
             connection.commit();
             logger.debug("closed transaction");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         } finally {
             try {
                 if (statementSaveContact != null) {
@@ -258,9 +258,9 @@ public class JdbcContactDao implements ContactDao {
                 logger.debug("transaction rolled back");
                 connection.rollback();
             } catch (SQLException e1) {
-                e1.printStackTrace();
+                logger.error("{}",e1);
             }
-            e.printStackTrace();
+            logger.error("{}",e);
         } finally {
             try {
                 if (statementDeleteContact != null) {
@@ -268,7 +268,81 @@ public class JdbcContactDao implements ContactDao {
                 }
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
+            }
+            connectionManager.putBackConnection(connection);
+        }
+    }
+
+    @Override
+    public String getPersonalLink(Integer id) {
+        logger.debug("looking for personal link for contact with id= " + id);
+        PreparedStatement statementGetPersonalLink = null;
+        Connection connection = connectionManager.receiveConnection();
+        String personalLink = null;
+        try {
+            connection.setAutoCommit(false);
+            logger.debug("opened transaction");
+            statementGetPersonalLink = connection.prepareStatement("SELECT personal_link FROM contact WHERE id= ?");
+            statementGetPersonalLink.setInt(1, id);
+            ResultSet resultSet = statementGetPersonalLink.executeQuery();
+            while (resultSet.next()) {
+                personalLink = resultSet.getString("personal_link");
+            }
+            connection.commit();
+            logger.debug("closed transaction");
+        } catch (SQLException e) {
+            try {
+                logger.debug("transaction rolled back");
+                connection.rollback();
+            } catch (SQLException e1) {
+                logger.error("{}",e1);
+            }
+            logger.error("{}",e);
+        } finally {
+            try {
+                if (statementGetPersonalLink != null) {
+                    statementGetPersonalLink.close();
+                }
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                logger.error("{}",e);
+            }
+            connectionManager.putBackConnection(connection);
+        }
+        return personalLink;
+    }
+
+    @Override
+    public void setPersonalLink(String personalLink, Integer id){
+        logger.debug("trying to set personal link for contact with id= " + id);
+        PreparedStatement statementSetPersonalLink = null;
+        Connection connection = connectionManager.receiveConnection();
+        try {
+            connection.setAutoCommit(false);
+            logger.debug("opened transaction");
+            statementSetPersonalLink = connection.prepareStatement("UPDATE contact SET personal_link = ? WHERE id= ?");
+            statementSetPersonalLink.setString(1, personalLink);
+            statementSetPersonalLink.setInt(2, id);
+            statementSetPersonalLink.executeUpdate();
+            connection.commit();
+            logger.debug("closed transaction");
+        } catch (SQLException e) {
+            try {
+                logger.debug("transaction rolled back");
+                connection.rollback();
+            } catch (SQLException e1) {
+                logger.error("{}",e1);
+            }
+            logger.error("{}",e);
+        } finally {
+            try {
+                if (statementSetPersonalLink != null) {
+                    statementSetPersonalLink.close();
+                }
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                logger.error("{}",e);
             }
             connectionManager.putBackConnection(connection);
         }
@@ -357,6 +431,7 @@ public class JdbcContactDao implements ContactDao {
         statement.setObject(15, address.getHouseNumber());
         statement.setObject(16, address.getFlatNumber());
         statement.setObject(17, address.getZipCode());
+        statement.setString(18, contact.getPersonalLink());
         logger.debug("setting params to {} done", statement);
     }
 
@@ -386,13 +461,13 @@ public class JdbcContactDao implements ContactDao {
         if (contactId == null) {
             return "INSERT INTO contact " +
                     "(first_name, second_name, last_name, date_of_birth, sex, nationality, martial_status, web_site, " +
-                    "e_mail, current_job, photo_link, country, town, street, house_number, flat_number, zip_code) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    "e_mail, current_job, photo_link, country, town, street, house_number, flat_number, zip_code, personal_link) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         } else {
             return "UPDATE contact SET " +
                     "first_name=?, second_name=?, last_name=?, date_of_birth=?, sex=?, nationality=?, martial_status=?, " +
                     "web_site=?, e_mail=?, current_job=?, photo_link=?, country=?, town=?, street=?, house_number=?, " +
-                    "flat_number=?, zip_code=? WHERE id=" + contactId;
+                    "flat_number=?, zip_code=?, personal_link=? WHERE id=" + contactId;
         }
     }
 
@@ -470,6 +545,4 @@ public class JdbcContactDao implements ContactDao {
     public int getNumberOfRecordsFound() {
         return numberOfRecordsFound;
     }
-
-
 }

@@ -32,8 +32,9 @@ public final class QuartzScheduler {
 
     public static void start(Scheduler scheduler){
         try {
+            logger.debug("starting scheduler");
             scheduler.start();
-            logger.debug("define the job and tie it to MailerJob.class");
+            logger.debug("creating job");
             JobDetail job = newJob(MailerJob.class)
                     .withIdentity("job1", "group1")
                     .build();
@@ -46,6 +47,7 @@ public final class QuartzScheduler {
                             .repeatForever())
                     .build();
 
+            logger.debug("adding job to scheduler");
             scheduler.scheduleJob(job, trigger);
 
         } catch (SchedulerException se) {

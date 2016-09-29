@@ -42,16 +42,6 @@ public class ContactAttachment {
         this.dateOfUpload = dateOfUpload;
     }
 
-    public ContactAttachment(Integer id, String attachmentLink, String attachmentComment, LocalDate dateOfUpload) {
-        this.id = id;
-        this.attachmentLink = attachmentLink;
-        this.attachmentComment = attachmentComment;
-        this.dateOfUpload = dateOfUpload;
-    }
-
-    public ContactAttachment() {
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

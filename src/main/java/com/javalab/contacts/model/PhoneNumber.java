@@ -60,18 +60,6 @@ public class PhoneNumber {
         this.phoneComment = phoneComment;
     }
 
-    public PhoneNumber() {
-    }
-
-    public PhoneNumber(Integer id, int countryCode, int operatorCode, int phoneNumber, PhoneType phoneType, String phoneComment) {
-        this.id = id;
-        this.countryCode = countryCode;
-        this.operatorCode = operatorCode;
-        this.phoneNumber = phoneNumber;
-        this.phoneType = phoneType;
-        this.phoneComment = phoneComment;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

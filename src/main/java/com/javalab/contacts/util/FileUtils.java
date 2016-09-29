@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Random;
 
 public final class FileUtils {
     private static final Logger logger = LoggerFactory.getLogger(SqlScriptLoader.class);
@@ -32,5 +33,20 @@ public final class FileUtils {
     public static boolean renameFile(File oldFile, File newFile){
         logger.debug("trying to rename files {} >> {}", oldFile, newFile);
         return oldFile.renameTo(newFile);
+    }
+
+    /**
+     * creates a string with random chars starting with '-'
+     * @param charsCount length of the string to create
+     * @return created string
+     */
+    public static String generateRandomString(int charsCount){
+        StringBuilder stringBuilder = new StringBuilder("-");
+        Random random = new Random();
+        for (int i = 0; i < charsCount; i++) {
+            char ch = (char) ((Math.abs(random.nextInt()) % 25) + 65);
+            stringBuilder.append(ch);
+        }
+        return stringBuilder.toString();
     }
 }

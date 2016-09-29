@@ -22,9 +22,13 @@ public interface ContactDao {
 
     void delete(Integer id);
 
+    void setPersonalLink(String personalLink, Integer id);
+
     int getRowsPerPageCount();
 
     void setRowsPerPageCount(int rowsCount);
 
     int getNumberOfRecordsFound();
+
+    String getPersonalLink(Integer id);
 }

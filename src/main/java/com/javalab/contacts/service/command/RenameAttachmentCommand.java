@@ -3,6 +3,8 @@ package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.util.FileUtils;
 import com.javalab.contacts.util.PropertiesProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Properties;
 
 public class RenameAttachmentCommand implements Command {
+    private static final Logger logger = LoggerFactory.getLogger(RenameAttachmentCommand.class);
     private static Properties properties = PropertiesProvider.getInstance().getFileUploadProperties();
 
     @Override

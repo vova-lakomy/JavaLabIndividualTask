@@ -5,6 +5,8 @@ import com.javalab.contacts.dao.impl.jdbc.JdbcContactAttachmentDao;
 import com.javalab.contacts.dto.AttachmentDTO;
 import com.javalab.contacts.model.ContactAttachment;
 import com.javalab.contacts.repository.AttachmentDtoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.Collection;
 
 public class AttachmentDtoRepositoryImpl implements AttachmentDtoRepository {
 
+    private static final Logger logger = LoggerFactory.getLogger(AttachmentDtoRepositoryImpl.class);
     private ContactAttachmentDao attachmentDao = new JdbcContactAttachmentDao();
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
