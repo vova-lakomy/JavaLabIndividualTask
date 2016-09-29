@@ -24,7 +24,6 @@ public class UploadPhotoCommand implements Command {
         String relativeUploadPath = properties.getProperty("photo.upload.relative.dir");
         String uploadFilePath = applicationPath + File.separator + relativeUploadPath;
 
-        // creates upload directory if it does not exists
         File fileSaveDir = new File(uploadFilePath);
         if (!fileSaveDir.exists()) {
             logger.debug("directory {} does not exist... creating one", fileSaveDir);

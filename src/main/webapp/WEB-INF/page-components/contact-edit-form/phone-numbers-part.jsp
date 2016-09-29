@@ -51,7 +51,7 @@
     <c:otherwise>
         <div id="phone-numbers-empty-table" class="jlab-row jlab-vertical-padding-10">
             <div class="jlab-cell-12">
-                <i>${labels.get('nothing.to.display')}<a href="javascript:toggleClass($('#modal-phone-add'),'jlab-fade')">${labels.get('add')}</a></i>  <%// TODO: 21.09.16 add listener in js %>
+                <i>${labels.get('nothing.to.display')} <a href="javascript:toggleClass($('#modal-phone-add'),'jlab-fade')">${labels.get('add')}</a></i>  <%// TODO: 21.09.16 add listener in js %>
             </div>
         </div>
         <div id="inner-phone-number-table" class="jlab-inner-table-container jlab-hidden">

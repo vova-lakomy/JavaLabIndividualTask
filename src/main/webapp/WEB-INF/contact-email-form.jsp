@@ -13,7 +13,7 @@
                         <div class="jlab-form-item jlab-row">
                             <label class="jlab-cell-1"
                                    for="messageRecipient">${labels.get('mail.to')}:</label>
-                            <input class="jlab-cell-12" id="messageRecipient" type="text" name="mailTo"
+                            <input class="jlab-cell-11" id="messageRecipient" type="text" name="mailTo"
                                    value="" placeholder="${labels.get('mail.to.placeholder')}" required data-validation-type="email"/>
                             <input class="jlab-hidden" name="mailToId" value="${contact.id}">
                         </div>
@@ -23,7 +23,7 @@
                             <div class="jlab-form-item jlab-row">
                                 <label class="jlab-cell-1"
                                        for="messageRecipient${counter.index}">${labels.get('mail.to')}: </label>
-                                <input class="jlab-cell-12" id="messageRecipient${counter.index}" type="text"
+                                <input class="jlab-cell-11" id="messageRecipient${counter.index}" type="text"
                                        name="mailTo" value="${contact.eMail}" placeholder="${labels.get('mail.to.placeholder')}" required/>
                                 <input class="jlab-hidden" name="mailToId" value="${contact.id}">
                             </div>
@@ -33,12 +33,12 @@
 
                 <div class="jlab-form-item jlab-row">
                     <label class="jlab-cell-1" for="mailSubject">${labels.get('mail.subject')}:</label>
-                    <input class="jlab-cell-12" id="mailSubject" type="text" placeholder="${labels.get('mail.subject.placeholder')}" name="mailSubject">
+                    <input class="jlab-cell-11" id="mailSubject" type="text" placeholder="${labels.get('mail.subject.placeholder')}" name="mailSubject">
                 </div>
 
                 <div class="jlab-form-item jlab-row">
                     <label class="jlab-cell-1" for="templateSelect">${labels.get('mail.template')} :</label>
-                    <select class="jlab-cell-12" id="templateSelect" name="selectedTemplate">
+                    <select class="jlab-cell-11" id="templateSelect" name="selectedTemplate">
                         <option value="">${labels.get('none')}</option>
                         <c:forEach var="template" items="${templates}">
                             <option value="${template.key}">${template.key}</option>

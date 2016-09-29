@@ -7,9 +7,9 @@ public class ContactAddress {
     private String country;
     private String town;
     private String street;
-    private int houseNumber;
-    private int flatNumber;
-    private int zipCode;
+    private Integer houseNumber;
+    private Integer flatNumber;
+    private Integer zipCode;
 
     public Integer getId() {
         return id;
@@ -43,41 +43,28 @@ public class ContactAddress {
         this.street = street;
     }
 
-    public int getHouseNumber() {
+    public Integer getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public void setHouseNumber(Integer houseNumber) {
         this.houseNumber = houseNumber;
     }
 
-    public int getFlatNumber() {
+    public Integer getFlatNumber() {
         return flatNumber;
     }
 
-    public void setFlatNumber(int flatNumber) {
+    public void setFlatNumber(Integer flatNumber) {
         this.flatNumber = flatNumber;
     }
 
-    public int getZipCode() {
+    public Integer getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode(int zipCode) {
+    public void setZipCode(Integer zipCode) {
         this.zipCode = zipCode;
-    }
-
-    public ContactAddress(Integer id, String country, String town, String street, int houseNumber, int flatNumber, int zipCode) {
-        this.id = id;
-        this.country = country;
-        this.town = town;
-        this.street = street;
-        this.houseNumber = houseNumber;
-        this.flatNumber = flatNumber;
-        this.zipCode = zipCode;
-    }
-
-    public ContactAddress() {
     }
 
     @Override

@@ -3,17 +3,11 @@ package com.javalab.contacts.dto;
 public class PhoneNumberDTO {
 
     private Integer id;
-
     private Integer countryCode;
-
     private Integer operatorCode;
-
     private Integer number;
-
     private String fullNumber;
-
     private String type;
-
     private String comment;
 
     public Integer getId() {
@@ -44,23 +38,31 @@ public class PhoneNumberDTO {
         return comment;
     }
 
-    public PhoneNumberDTO(Integer id, Integer countryCode, Integer operatorCode, Integer number,
-                          String type, String comment, String fullNumber) {
+    public void setId(Integer id) {
         this.id = id;
-        this.countryCode = countryCode;
-        this.operatorCode = operatorCode;
-        this.number = number;
-        this.fullNumber = fullNumber;
-        this.type = type;
-        this.comment = comment;
     }
 
-    public PhoneNumberDTO(Integer id, Integer countryCode, Integer operatorCode, Integer number, String type, String comment) {
-        this.id = id;
+    public void setCountryCode(Integer countryCode) {
         this.countryCode = countryCode;
+    }
+
+    public void setOperatorCode(Integer operatorCode) {
         this.operatorCode = operatorCode;
+    }
+
+    public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public void setFullNumber(String fullNumber) {
+        this.fullNumber = fullNumber;
+    }
+
+    public void setType(String type) {
         this.type = type;
+    }
+
+    public void setComment(String comment) {
         this.comment = comment;
     }
 }

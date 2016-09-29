@@ -2,15 +2,37 @@
 
 <div id="modal-upload-photo" class="jlab-modal-container jlab-fade">
     <div id="upload-form" class="jlab-modal jlab-phone-number-edit-form">
-        <h4>Ulpoad photo</h4>
-        <div class="jlab-form-item">
-            <label class="" for="photo-file-input">Select image</label>
-            <input id="photo-file-input" class="" type="file" name="attachedPhoto" accept="image/*">
+        <h4>${labels.get('download.or.upload.image')}</h4>
+        <ul>
+
+            <li class="jlab-row">
+                <div class="jlab-cell-12">
+                    <a href="${fullContact.photoLink}" class="jlab-button" download>${labels.get('download.image')}</a>
+                </div>
+            </li>
+
+
+            <li class="jlab-row">
+                <div class="jlab-cell-12">
+                    <label class="jlab-button" for="photo-file-input">${labels.get('upload.image')}</label>
+                    <input class="jlab-hidden" id="photo-file-input" type="file" name="attachedPhoto" accept="image/*">
+                </div>
+
+            </li>
+            <li class="jlab-row">
+                <div class="jlab-cell-12">
+                    <label id="input-file-name">${labels.get('no.image.selected')}</label>
+                </div>
+            </li>
+
+        </ul>
+
+
+        <div class="jlab-pull-right jlab-button-block">
+            <button id="button-upload-photo" type="button" class="jlab-button">${labels.get('save')}</button>
+            <button id="button-cancel-upload-photo" type="button" class="jlab-button">${labels.get('cancel')}</button>
         </div>
 
-        <div class="jlab-pull-right jlab-button-block ">
-            <button id="button-upload-photo" type="button" class="jlab-button">save</button>
-            <button id="button-cancel-upload-photo" type="button" class="jlab-button">cancel</button>
-        </div>
+
     </div>
 </div>

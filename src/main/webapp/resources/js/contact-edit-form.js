@@ -17,9 +17,10 @@
     }
 
     function getAttachmentData(formSelector) {
+        var fileInputNode = $('#attachment-file-input');
         var form = $(formSelector);
-        if (form.attachedFile.files.length) {
-            var originalFileName = form.attachedFile.files[0].name;
+        if (fileInputNode.files.length) {
+            var originalFileName = fileInputNode.files[0].name;
             var ext = originalFileName.lastIndexOf('.') ? originalFileName.substring(originalFileName.lastIndexOf('.')) : '';
             return {
                 counter: (form.attachmentCounter) ? form.attachmentCounter.value : '',
@@ -27,7 +28,7 @@
                 fileName: form.attachedFileName.value ? (form.attachedFileName.value + ext) : originalFileName,
                 uploadDate: new Date(),
                 attachmentComment: form.attachedFileComment.value,
-                attachedFileNode: form.attachedFile
+                attachedFileNode: fileInputNode,
             }
         } else {
             return false;
@@ -37,9 +38,9 @@
     function getAttachmentEditData(formSelector) {
         var form = $(formSelector);
         var link = form.attachmentLink.value;
-        var lastSeparatorIndex = link.lastIndexOf('/')+1;
+        var lastSeparatorIndex = link.lastIndexOf('/') + 1;
         var oldFileName = link.substring(lastSeparatorIndex);
-        var newFileLink = link.replace(oldFileName,form.attachmentName.value);
+        var newFileLink = link.replace(oldFileName, form.attachmentName.value);
         return {
             counter: (form.attachmentCounter) ? form.attachmentCounter.value : '',
             attachmentId: (form.attachmentId) ? form.attachmentId.value : '',
@@ -147,7 +148,7 @@
             '<input class="jlab-hidden" type="text" name="attachmentComment-' + counter + '" value="' + data.attachmentComment + '">' +
             '<input class="jlab-hidden" type="text" name="uploadDate-' + counter + '" value="' + data.uploadDate + '">' +
 
-            '<input type="checkbox" id="attachment-' + counter + '" data-action="deleteAttachment">' +
+            '<input type="checkbox" name="selectedId" value="" id="attachment-' + counter + '" data-action="deleteAttachment">' +
             '<label class="jlab-not-submited" for="attachedFileId-' + counter + '" title="submit to upload">' + data.fileName + '</label>' +
             '</li>' +
 
@@ -176,12 +177,12 @@
             '<input class="jlab-hidden" type="text" name="attachmentComment-' + counter + '" value="' + data.attachmentComment + '">' +
             '<input class="jlab-hidden" type="text" name="uploadDate-' + counter + '" value="' + data.uploadDate + '">' +
 
-            '<input type="checkbox" id="attachment-' + counter + '" data-action="deleteAttachment">' +
+            '<input type="checkbox" name="selectedId" value="" id="attachment-' + counter + '" data-action="deleteAttachment">' +
             '<label for="attachedFileId-' + counter + '" title="submit to upload">' + data.fileName + '</label>' +
             '</li>' +
 
             '<li class="jlab-cell-2">' +
-             data.uploadDate +
+            data.uploadDate +
             '</li>' +
 
             '<li class="jlab-cell-6">' +
@@ -234,16 +235,38 @@
         addOptionalCommandToForm('#contact-edit-form', 'deletePhone');
         var checkboxes = $all('[data-action="deletePhone"]:checked');
         for (var i = 0; i < checkboxes.length; i++) {
-            hide(checkboxes[i].parentNode.parentNode);
+            var checkedBox = checkboxes[i];
+            var checkedPhone = checkboxes[i].parentNode.parentNode;
+            var checkedPhoneParent = checkedPhone.parentNode;
+            if (checkedPhoneHasId(checkedBox)) {
+                hide(checkedBox.parentNode.parentNode);
+            } else {
+                checkedPhoneParent.removeChild(checkedPhone)
+            }
         }
+    }
+
+    function checkedPhoneHasId(checkboxNode) {
+        return checkboxNode.value;
     }
 
     function deleteCheckedAttachments() {
         addOptionalCommandToForm('#contact-edit-form', 'deleteAttachment');
         var checkboxes = $all('[data-action="deleteAttachment"]:checked');
         for (var i = 0; i < checkboxes.length; i++) {
-            hide(checkboxes[i].parentNode.parentNode);
+            var checkedBox = checkboxes[i];
+            var checkedAttachment = checkboxes[i].parentNode.parentNode;
+            var checkedAttachmentParent = checkedAttachment.parentNode;
+            if (checkedAttachmentHasId(checkedBox)) {
+                hide(checkboxes[i].parentNode.parentNode);
+            } else {
+                checkedAttachmentParent.removeChild(checkedAttachment);
+            }
         }
+    }
+
+    function checkedAttachmentHasId(checkboxNode) {
+        return checkboxNode.value;
     }
 
     function collectPhoneDataFromInputs(node) {
@@ -342,6 +365,69 @@
         }
     }
 
+    function processChosenImage() {
+        var fileInputNode = $('#photo-file-input');
+        if (fileInputNode.files.length) {
+            if(!isImageValid(fileInputNode.files[0])){
+                disableUpload('#button-upload-photo')
+            } else {
+                undisableUpload('#button-upload-photo')
+            }
+            var fileName = fileInputNode.files[0].name;
+            var fileSize = fileInputNode.files[0].size;
+
+            $('#input-file-name').innerHTML = fileName + ' ' + Math.ceil(fileSize/1000) + '&nbsp;kb';
+        } else {
+            $('#input-file-name').innerHTML = 'no file selected'
+        }
+    }
+
+    function isImageValid(file) {
+        var fileType = file.type.substring(0,file.type.indexOf('/'));
+        if (file.size > 0 && file.size < 10485759 && fileType === 'image'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function disableUpload(selector) {
+        $(selector).setAttribute('disabled','disabled');
+    }
+
+    function undisableUpload(selector) {
+        $(selector).removeAttribute('disabled');
+    }
+
+    function processChosenFile() {
+        var fileInputNode = $('#attachment-file-input');
+        if (fileInputNode.files.length) {
+            if(!isFileValid(fileInputNode.files[0])){
+                disableUpload('#button-upload-attachment')
+            } else {
+                undisableUpload('#button-upload-attachment')
+            }
+            var fileName = fileInputNode.files[0].name;
+            var fileSize = fileInputNode.files[0].size;
+
+            var labelText = fileName + ' ' + Math.ceil(fileSize/1000) + '&nbsp;kb';
+            if (labelText.length > 35) {
+                labelText = labelText.substring(0,12) + ' ... ' + labelText.substring((labelText.length)-24);
+            }
+            $('#label-attachment-upload').innerHTML = labelText;
+        } else {
+            $('#label-attachment-upload').innerHTML = 'no file selected'
+        }
+    }
+
+    function isFileValid(file) {
+        if (file.size > 0 && file.size < 10485759){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 // listeners
     $('#button-upload-photo').addEventListener('click', submitPhotoHandler, false);
@@ -362,6 +448,8 @@
     $('#button-save-attachment-edit-modal').addEventListener('click', saveEditedAttachment, false);
     $('#inner-phone-number-table').addEventListener('click', fillPhoneEditModalForm, false);
     $('#inner-attachment-table').addEventListener('click', fillAttachmentEditModalForm, false);
+    $('#photo-file-input').addEventListener('change', processChosenImage, false);
+    $('#attachment-file-input').addEventListener('change', processChosenFile, false);
 
 //validation listeners
     $('#contact-edit-form').addEventListener('keyup', formValidation, false);

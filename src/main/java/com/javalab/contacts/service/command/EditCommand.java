@@ -1,5 +1,6 @@
 package com.javalab.contacts.service.command;
 
+import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.repository.AttachmentDtoRepository;
 import com.javalab.contacts.repository.ContactDtoRepository;
 import com.javalab.contacts.repository.impl.AttachmentDtoRepositoryImpl;
@@ -9,19 +10,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 public class EditCommand implements Command {
 
     private ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
-    private AttachmentDtoRepository attachmentRepository = new AttachmentDtoRepositoryImpl();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
         Integer contactId;
-        if (request.getParameter("contactId") != null) {
-            contactId = Integer.valueOf(request.getParameter("contactId"));
-            request.setAttribute("fullContactInfo", contactRepository.getContactFullInfo(contactId));
-            request.setAttribute("attachments", attachmentRepository.getByContactId(contactId)); //// FIXME: 27.09.16
+        String contactIdStr = request.getParameter("contactId");
+        if (isNotBlank(contactIdStr)) {
+            contactId = Integer.valueOf(contactIdStr);
+            ContactFullDTO contactFullInfo = contactRepository.getContactFullInfo(contactId);
+            request.setAttribute("fullContactInfo", contactFullInfo);
         }
 
         Collection<String> sexList = contactRepository.getSexList();

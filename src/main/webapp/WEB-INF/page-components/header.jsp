@@ -17,6 +17,8 @@
         <span class="jlab-header-caption-red">J</span><span class="jlab-header-caption-black">avaLab2016</span>
         <span class="jlab-header-caption-red">ContactsList</span>
     </a>
+    <a href="setLocale?localeKey=en">EN</a>|
+    <a href="setLocale?localeKey=ru">RU</a>
 </header>
 <div class="jlab-margin-top-70">
 </div>

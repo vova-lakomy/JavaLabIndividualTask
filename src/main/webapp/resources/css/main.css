@@ -43,7 +43,7 @@ body{
     margin: 0;
     padding: 0;
     background-color: #f7f7f7;
-    font-family: Arial, Verdana, sans-serif;
+    font-family: "OpenSansRegular",FreeSans,Arimo,"Droid Sans",Helvetica,Arial,sans-serif;
     font-size: 15px;
 }
 
@@ -187,6 +187,10 @@ select{
     max-height: 200px;
     max-width: 200px;
 }
+
+.jlab-photo-buttons-container{
+    margin: 25px 0;
+}
 .jlab-contact-full-name{
     font-size: 18px;
     font-weight: 600;
@@ -257,9 +261,24 @@ select{
     background-color: #ffffff;
     max-width: 350px;
     z-index: 3;
-    padding: 35px 20px;
+    padding: 0px 20px 48px;
     margin: 140px auto auto;
     box-shadow: 6px 6px 10px 1px rgba(0, 0, 0, 0.71);
+}
+.jlab-modal li{
+    padding: 9px 23px;
+    margin-left: -50px;
+    margin-right: 0px;
+    width: 326px;
+}
+.jlab-modal li:nth-child(1){
+    border-bottom: 2px rgba(246, 246, 246, 0.47);
+    border-bottom-style: ridge;
+    padding-bottom: 28px;
+    margin-bottom: 22px;
+}
+.jlab-modal li:nth-child(3){
+    width: 300px;
 }
 .jlab-form-item{
     padding: 10px 0;
@@ -269,6 +288,7 @@ select{
 }
 .jlab-email-form{
     text-align: left;
+    padding: 0 15px 50px;
 }
 
 .jlab-edit-image{
@@ -311,6 +331,9 @@ select{
     color: #6b6b6b;
     font-style: italic;
 }
+.jlab-max-exceeded{
+
+}
 #mailText{
     width: 100%;
     height: 200px;
@@ -328,4 +351,17 @@ select{
     color: #ed1c24;
     font-size: 18px;
     font-style: italic;
+}
+#label-attachment-file-input{
+    text-align: center;
+    padding: 9px 0px;
+}
+#label-attachment-upload{
+    width: 68%;
+    margin-left: 7px;
+    height: 30px;
+    max-height: 30px;
+    overflow: hidden;
+    line-height: 26px;
+    text-align: left;
 }

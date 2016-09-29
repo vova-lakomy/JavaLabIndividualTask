@@ -41,6 +41,7 @@
                 <div class="jlab-form-item">
                     <label for="edit-form-sex">${labels.get('sex')}</label>
                     <select id="edit-form-sex" name="sex">
+                        <option value=""> </option>
                         <c:forEach items="${sexList}" var="sexType">
                             <c:choose>
                                 <c:when test="${sexType eq fullContact.sex}">
@@ -67,6 +68,7 @@
                 <div class="jlab-form-item">
                     <label for="edit-form-martial-status">${labels.get('martial.status')}</label>
                     <select id="edit-form-martial-status" name="martialStatus">
+                        <option value=""> </option>
                         <c:forEach items="${martialStatusList}" var="martialStatusType">
                             <c:choose>
                                 <c:when test="${martialStatusType eq fullContact.martialStatus}">

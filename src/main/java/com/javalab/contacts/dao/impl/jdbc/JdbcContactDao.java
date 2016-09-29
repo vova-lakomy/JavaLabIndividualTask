@@ -14,10 +14,12 @@ import org.slf4j.LoggerFactory;
 
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -114,7 +116,7 @@ public class JdbcContactDao implements ContactDao {
             }
             connectionManager.putBackConnection(connection);
         }
-        return resultObject.getId() != null ? resultObject : null;
+        return resultObject.getId() != null ? resultObject : null;      // FIXME: 29.09.16
     }
 
     @Override
@@ -148,7 +150,7 @@ public class JdbcContactDao implements ContactDao {
                 }
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
             }
             connectionManager.putBackConnection(connection);
         }
@@ -231,7 +233,7 @@ public class JdbcContactDao implements ContactDao {
                 }
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
             }
             connectionManager.putBackConnection(connection);
         }
@@ -274,24 +276,38 @@ public class JdbcContactDao implements ContactDao {
 
     private Contact createContactFromResultSet(ResultSet resultSet, boolean joinAttachments) throws SQLException {
         logger.debug("creating 'Contact' entity from {}", resultSet.getClass().getName());
-
+        Date date = resultSet.getDate("date_of_birth");
+        LocalDate dateOfBirth = null;
+        if (date != null) {
+            dateOfBirth = date.toLocalDate();
+        }
+        String sexString = resultSet.getString("sex");
+        Sex sex = null;
+        if (sexString != null) {
+            sex = Sex.valueOf(sexString);
+        }
+        String martialStatusString = resultSet.getString("martial_status");
+        MartialStatus martialStatus = null;
+        if (martialStatusString != null) {
+            martialStatus = MartialStatus.valueOf(martialStatusString);
+        }
         ContactAddress address = new ContactAddress();
         address.setCountry(resultSet.getString("country"));
         address.setTown(resultSet.getString("town"));
         address.setStreet(resultSet.getString("street"));
-        address.setHouseNumber(resultSet.getInt("house_number"));
-        address.setFlatNumber(resultSet.getInt("flat_number"));
-        address.setZipCode(resultSet.getInt("zip_code"));
+        address.setHouseNumber((Integer) resultSet.getObject("house_number"));
+        address.setFlatNumber((Integer) resultSet.getObject("flat_number"));
+        address.setZipCode((Integer) resultSet.getObject("zip_code"));
 
         Contact resultObject = new Contact();
         resultObject.setId(resultSet.getInt("id"));
         resultObject.setFirstName(resultSet.getString("first_name"));
         resultObject.setSecondName(resultSet.getString("second_name"));
         resultObject.setLastName(resultSet.getString("last_name"));
-        resultObject.setDateOfBirth(resultSet.getDate("date_of_birth").toLocalDate());
-        resultObject.setSex(Sex.valueOf(resultSet.getString("sex")));
+        resultObject.setDateOfBirth(dateOfBirth);
+        resultObject.setSex(sex);
         resultObject.setNationality(resultSet.getString("nationality"));
-        resultObject.setMartialStatus(MartialStatus.valueOf(resultSet.getString("martial_status")));
+        resultObject.setMartialStatus(martialStatus);
         resultObject.setWebSite(resultSet.getString("web_site"));
         resultObject.seteMail(resultSet.getString("e_mail"));
         resultObject.setCurrentJob(resultSet.getString("current_job"));
@@ -307,14 +323,30 @@ public class JdbcContactDao implements ContactDao {
 
     private void setSaveStatementParams(PreparedStatement statement, Contact contact) throws SQLException {
         logger.debug("setting params to {} ", statement);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dateOfBirth = contact.getDateOfBirth();
+        String dateOfBirthString = null;
+        if (dateOfBirth != null) {
+            dateOfBirthString = dateOfBirth.format(formatter);
+        }
+        Sex sex = contact.getSex();
+        String sexString = null;
+        if (sex != null) {
+            sexString = sex.name();
+        }
+        MartialStatus martialStatus = contact.getMartialStatus();
+        String martialStatusString = null;
+        if (martialStatus != null) {
+            martialStatusString = martialStatus.name();
+        }
         ContactAddress address = contact.getContactAddress();
         statement.setString(1, contact.getFirstName());
         statement.setString(2, contact.getSecondName());
         statement.setString(3, contact.getLastName());
-        statement.setString(4, contact.getDateOfBirth().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        statement.setString(5, contact.getSex().name());
+        statement.setString(4, dateOfBirthString);
+        statement.setString(5, sexString);
         statement.setString(6, contact.getNationality());
-        statement.setString(7, contact.getMartialStatus().name());
+        statement.setString(7, martialStatusString);
         statement.setString(8, contact.getWebSite());
         statement.setString(9, contact.geteMail());
         statement.setString(10, contact.getCurrentJob());
@@ -322,9 +354,9 @@ public class JdbcContactDao implements ContactDao {
         statement.setString(12, address.getCountry());
         statement.setString(13, address.getTown());
         statement.setString(14, address.getStreet());
-        statement.setInt(15, address.getHouseNumber());
-        statement.setInt(16, address.getFlatNumber());
-        statement.setInt(17, address.getZipCode());
+        statement.setObject(15, address.getHouseNumber());
+        statement.setObject(16, address.getFlatNumber());
+        statement.setObject(17, address.getZipCode());
         logger.debug("setting params to {} done", statement);
     }
 

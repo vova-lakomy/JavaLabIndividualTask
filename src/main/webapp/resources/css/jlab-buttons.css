@@ -1,7 +1,7 @@
 .jlab-button {
     border: 1px solid gray;
     border-radius: 3px;
-    padding: 4px 18px;
+    padding: 8px 30px;
     background-color: rgb(245, 245, 245);
     color: black;
     font-size: 12px;
@@ -9,6 +9,10 @@
     transition: background-color,color 500ms;
     cursor: pointer;
     text-decoration: none;
+    box-sizing: border-box;
+    height: 30px;
+    font-family: "OpenSansRegular",FreeSans,Arimo,"Droid Sans",Helvetica,Arial,sans-serif;
+    line-height: 12px;
 }
 
 .jlab-button:disabled{

@@ -6,47 +6,26 @@ import java.util.Collection;
 public class ContactFullDTO {
 
     private Integer id;
-
     private String firstName;
-
     private String secondName;
-
     private String lastName;
-
     private Integer dayOfBirth;
-
     private Integer monthOfBirth;
-
     private Integer yearOfBirth;
-
     private String sex;
-
     private String nationality;
-
     private String martialStatus;
-
     private String webSite;
-
     private String eMail;
-
     private String currentJob;
-
     private String country;
-
     private String town;
-
     private String street;
-
-    private int houseNumber;
-
-    private int flatNumber;
-
-    private int zipCode;
-
+    private Integer houseNumber;
+    private Integer flatNumber;
+    private Integer zipCode;
     private String photoLink;
-
     private Collection<PhoneNumberDTO> phoneNumbers;
-
     private Collection<AttachmentDTO> attachments;
 
     public Integer getId() {
@@ -113,15 +92,15 @@ public class ContactFullDTO {
         return street;
     }
 
-    public int getHouseNumber() {
+    public Integer getHouseNumber() {
         return houseNumber;
     }
 
-    public int getFlatNumber() {
+    public Integer getFlatNumber() {
         return flatNumber;
     }
 
-    public int getZipCode() {
+    public Integer getZipCode() {
         return zipCode;
     }
 
@@ -137,32 +116,94 @@ public class ContactFullDTO {
         return attachments;
     }
 
-    public ContactFullDTO(Integer id, String firstName, String secondName, String lastName, Integer dayOfBirth,
-                          Integer monthOfBirth, Integer yearOfBirth, String sex, String nationality,
-                          String martialStatus, String webSite, String eMail, String currentJob, String country,
-                          String town, String street, int houseNumber, int flatNumber, int zipCode, String photoLink,
-                          Collection<PhoneNumberDTO> phoneNumbers, Collection<AttachmentDTO> attachments) {
+    public ContactFullDTO() {
+    }
+
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public void setSecondName(String secondName) {
         this.secondName = secondName;
+    }
+
+    public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public void setDayOfBirth(Integer dayOfBirth) {
         this.dayOfBirth = dayOfBirth;
+    }
+
+    public void setMonthOfBirth(Integer monthOfBirth) {
         this.monthOfBirth = monthOfBirth;
+    }
+
+    public void setYearOfBirth(Integer yearOfBirth) {
         this.yearOfBirth = yearOfBirth;
+    }
+
+    public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public void setNationality(String nationality) {
         this.nationality = nationality;
+    }
+
+    public void setMartialStatus(String martialStatus) {
         this.martialStatus = martialStatus;
+    }
+
+    public void setWebSite(String webSite) {
         this.webSite = webSite;
+    }
+
+    public void seteMail(String eMail) {
         this.eMail = eMail;
+    }
+
+    public void setCurrentJob(String currentJob) {
         this.currentJob = currentJob;
+    }
+
+    public void setCountry(String country) {
         this.country = country;
+    }
+
+    public void setTown(String town) {
         this.town = town;
+    }
+
+    public void setStreet(String street) {
         this.street = street;
+    }
+
+    public void setHouseNumber(Integer houseNumber) {
         this.houseNumber = houseNumber;
+    }
+
+    public void setFlatNumber(Integer flatNumber) {
         this.flatNumber = flatNumber;
+    }
+
+    public void setZipCode(Integer zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public void setPhotoLink(String photoLink) {
         this.photoLink = photoLink;
+    }
+
+    public void setPhoneNumbers(Collection<PhoneNumberDTO> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
+    }
+
+    public void setAttachments(Collection<AttachmentDTO> attachments) {
         this.attachments = attachments;
     }
 }
