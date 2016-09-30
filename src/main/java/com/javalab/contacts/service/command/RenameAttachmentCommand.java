@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import static com.javalab.contacts.util.CustomFileUtils.definePersonalDirectory;
+
 public class RenameAttachmentCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(RenameAttachmentCommand.class);
     private static Properties properties = PropertiesProvider.getInstance().getFileUploadProperties();
@@ -22,6 +24,20 @@ public class RenameAttachmentCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String applicationPath = request.getServletContext().getRealPath("");
+        Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
+        if (shouldUploadToSpecificDir){
+            applicationPath = properties.getProperty("specific.upload.dir");
+        }
+        String relativeUploadPath = properties.getProperty("upload.relative.dir");
+        String personalDirectory = definePersonalDirectory(request);
+        String attachmentsFolder = properties.getProperty("attachments.folder.name");
+        String personalAttachmentPath = personalDirectory + File.separator + attachmentsFolder + File.separator;
+        String uploadFilePath = applicationPath
+                + File.separator
+                + relativeUploadPath
+                + File.separator
+                + personalAttachmentPath;
+
         List<String> fileNames = new ArrayList<>();
         try {
             request.getParts().forEach(part -> {
@@ -30,16 +46,15 @@ public class RenameAttachmentCommand implements Command {
                 }
             });
         } catch (IOException | ServletException e) {
-            e.printStackTrace();
+            logger.error("",e);
         }
         fileNames.forEach(fileName -> {
-            String index = fileName.substring(fileName.lastIndexOf('-'));
-            String newFileName = request.getParameter("attachmentFileName"+index);
-            String oldFileName = request.getParameter("attachmentOldFileName"+index);
+            String attachmentIndex = fileName.substring(fileName.lastIndexOf('-'));
+            String newFileName = request.getParameter("attachmentFileName"+attachmentIndex);
+            String oldFileName = request.getParameter("attachmentOldFileName"+attachmentIndex);
             if (!newFileName.equals(oldFileName)){
-                String relativePath = properties.getProperty("attachment.upload.relative.dir");
-                String newFullPath = applicationPath + relativePath + File.separator + newFileName;
-                String oldFullPath = applicationPath + relativePath + File.separator + oldFileName;
+                String newFullPath = uploadFilePath + newFileName;
+                String oldFullPath = uploadFilePath + oldFileName;
                 File newFile = new File(newFullPath);
                 File oldFile = new File(oldFullPath);
                 CustomFileUtils.renameFile(oldFile,newFile);

@@ -28,15 +28,20 @@ public class UploadPhotoCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String applicationPath = request.getServletContext().getRealPath("");
+        Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
+        if (shouldUploadToSpecificDir){
+            applicationPath = properties.getProperty("specific.upload.dir");
+        }
         String relativeUploadPath = properties.getProperty("upload.relative.dir");
         String personalLink = definePersonalDirectory(request);
-        String personalPath = personalLink + File.separator + "img" + File.separator;
+        String imagesFolder = properties.getProperty("contact.photo.folder.name");
+        String personalImagePath = personalLink + File.separator + imagesFolder + File.separator;
 
         String uploadImagePath = applicationPath
                 + File.separator
                 + relativeUploadPath
                 + File.separator
-                + personalPath;
+                + personalImagePath;
 
         File fileSaveDir = new File(uploadImagePath);
         try{
@@ -56,7 +61,7 @@ public class UploadPhotoCommand implements Command {
             String fileName = defineFileName(part,fileSaveDir);
             part.write(uploadImagePath + File.separator + fileName);
             logger.debug("{} uploaded ", part.getSubmittedFileName());
-            request.setAttribute("photoLink", relativeUploadPath + personalPath + File.separator + fileName);
+            request.setAttribute("photoLink", relativeUploadPath + personalImagePath + File.separator + fileName);
         } catch (IOException | ServletException e) {
            logger.error("{}",e);
         }

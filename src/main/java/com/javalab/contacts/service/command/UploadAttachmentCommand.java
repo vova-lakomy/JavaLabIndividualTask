@@ -23,17 +23,21 @@ public class UploadAttachmentCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
         String applicationPath = request.getServletContext().getRealPath("");
+        Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
+        if (shouldUploadToSpecificDir){
+            applicationPath = properties.getProperty("specific.upload.dir");
+        }
         String relativeUploadPath = properties.getProperty("upload.relative.dir");
-        String personalLink = definePersonalDirectory(request);
-        String personalPath = personalLink + File.separator + "att" + File.separator;
+        String personalDirectory = definePersonalDirectory(request);
+        String attachmentsFolder = properties.getProperty("attachments.folder.name");
+        String personalAttachmentPath = personalDirectory + File.separator + attachmentsFolder + File.separator;
 
         String uploadFilePath = applicationPath
                 + File.separator
                 + relativeUploadPath
                 + File.separator
-                + personalPath;
+                + personalAttachmentPath;
 
         File fileSaveDir = new File(uploadFilePath);
         try{
@@ -54,7 +58,7 @@ public class UploadAttachmentCommand implements Command {
                     part.write(uploadFilePath + File.separator + fileName);
                     logger.debug("{} uploaded ", part.getSubmittedFileName());
                     request.setAttribute("attachmentLink-"+index,
-                            relativeUploadPath + personalPath + File.separator + fileName);
+                            relativeUploadPath + personalAttachmentPath + File.separator + fileName);
                 }
             }
         } catch (IOException | ServletException e1) {
