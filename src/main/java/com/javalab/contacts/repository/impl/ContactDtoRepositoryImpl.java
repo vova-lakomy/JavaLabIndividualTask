@@ -237,7 +237,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
 
     @Override
     public void setPersonalLink(String personalLink, Integer id){
-        contactDao.setPersonalLink(personalLink, id);
+//        contactDao.setPersonalLink(personalLink, id);
     }
 
     @Override
@@ -263,8 +263,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
             secondName = "";
         }
         String fullName = contact.getLastName() + "<br/>"
-                + contact.getFirstName() + " "
-                + secondName;
+                + contact.getFirstName() + " "                + secondName;
 
         LocalDate dateOfBirth = contact.getDateOfBirth();
         String dateOfBirthString = "-";

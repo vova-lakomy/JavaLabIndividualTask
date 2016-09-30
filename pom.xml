@@ -33,6 +33,7 @@
         <log4j.version>1.7.5</log4j.version>
         <junit.version>4.11</junit.version>
         <commons.lang.version>3.0</commons.lang.version>
+        <commons.io.version>2.5</commons.io.version>
         <javax.mail.version>1.4.5</javax.mail.version>
         <stringtemplate.version>4.0.7</stringtemplate.version>
         <quartz.version>2.2.3</quartz.version>
@@ -45,6 +46,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons.lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
         </dependency>
         <!--end apache-commons-->
 

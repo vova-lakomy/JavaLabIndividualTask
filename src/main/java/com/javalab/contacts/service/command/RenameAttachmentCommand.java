@@ -1,7 +1,7 @@
 package com.javalab.contacts.service.command;
 
 
-import com.javalab.contacts.util.FileUtils;
+import com.javalab.contacts.util.CustomFileUtils;
 import com.javalab.contacts.util.PropertiesProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class RenameAttachmentCommand implements Command {
                 String oldFullPath = applicationPath + relativePath + File.separator + oldFileName;
                 File newFile = new File(newFullPath);
                 File oldFile = new File(oldFullPath);
-                FileUtils.renameFile(oldFile,newFile);
+                CustomFileUtils.renameFile(oldFile,newFile);
             }
         });
     }

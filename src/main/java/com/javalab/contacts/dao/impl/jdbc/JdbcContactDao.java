@@ -116,7 +116,10 @@ public class JdbcContactDao implements ContactDao {
             }
             connectionManager.putBackConnection(connection);
         }
-        return resultObject.getId() != null ? resultObject : null;      // FIXME: 29.09.16
+        if (resultObject.getId() != null) {
+            return resultObject;
+        }
+        else return null;
     }
 
     @Override
@@ -222,10 +225,13 @@ public class JdbcContactDao implements ContactDao {
                 contact.getAttachments().forEach(attachment ->
                         attachmentDao.save(attachment, contact.getId(), connection));
             }
+            if (contact.getPersonalLink() != null){
+                setPersonalLink(contact.getPersonalLink(),contact.getId(), connection);
+            }
             connection.commit();
             logger.debug("closed transaction");
         } catch (SQLException e) {
-            logger.error("{}",e);
+            logger.error("error",e);
         } finally {
             try {
                 if (statementSaveContact != null) {
@@ -233,7 +239,7 @@ public class JdbcContactDao implements ContactDao {
                 }
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                logger.error("{}",e);
+                logger.error("error",e);
             }
             connectionManager.putBackConnection(connection);
         }
@@ -314,37 +320,24 @@ public class JdbcContactDao implements ContactDao {
     }
 
     @Override
-    public void setPersonalLink(String personalLink, Integer id){
+    public void setPersonalLink(String personalLink, Integer id, Connection connection){
         logger.debug("trying to set personal link for contact with id= " + id);
         PreparedStatement statementSetPersonalLink = null;
-        Connection connection = connectionManager.receiveConnection();
         try {
-            connection.setAutoCommit(false);
-            logger.debug("opened transaction");
             statementSetPersonalLink = connection.prepareStatement("UPDATE contact SET personal_link = ? WHERE id= ?");
             statementSetPersonalLink.setString(1, personalLink);
             statementSetPersonalLink.setInt(2, id);
             statementSetPersonalLink.executeUpdate();
-            connection.commit();
-            logger.debug("closed transaction");
         } catch (SQLException e) {
-            try {
-                logger.debug("transaction rolled back");
-                connection.rollback();
-            } catch (SQLException e1) {
-                logger.error("{}",e1);
-            }
             logger.error("{}",e);
         } finally {
             try {
                 if (statementSetPersonalLink != null) {
                     statementSetPersonalLink.close();
                 }
-                connection.setAutoCommit(true);
             } catch (SQLException e) {
                 logger.error("{}",e);
             }
-            connectionManager.putBackConnection(connection);
         }
     }
 
@@ -431,7 +424,6 @@ public class JdbcContactDao implements ContactDao {
         statement.setObject(15, address.getHouseNumber());
         statement.setObject(16, address.getFlatNumber());
         statement.setObject(17, address.getZipCode());
-        statement.setString(18, contact.getPersonalLink());
         logger.debug("setting params to {} done", statement);
     }
 
@@ -461,13 +453,13 @@ public class JdbcContactDao implements ContactDao {
         if (contactId == null) {
             return "INSERT INTO contact " +
                     "(first_name, second_name, last_name, date_of_birth, sex, nationality, martial_status, web_site, " +
-                    "e_mail, current_job, photo_link, country, town, street, house_number, flat_number, zip_code, personal_link) " +
-                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    "e_mail, current_job, photo_link, country, town, street, house_number, flat_number, zip_code) " +
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         } else {
             return "UPDATE contact SET " +
                     "first_name=?, second_name=?, last_name=?, date_of_birth=?, sex=?, nationality=?, martial_status=?, " +
                     "web_site=?, e_mail=?, current_job=?, photo_link=?, country=?, town=?, street=?, house_number=?, " +
-                    "flat_number=?, zip_code=?, personal_link=? WHERE id=" + contactId;
+                    "flat_number=?, zip_code=? WHERE id=" + contactId;
         }
     }
 

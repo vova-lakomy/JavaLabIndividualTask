@@ -3,7 +3,7 @@ package com.javalab.contacts.service.command;
 import com.javalab.contacts.dto.AttachmentDTO;
 import com.javalab.contacts.repository.AttachmentDtoRepository;
 import com.javalab.contacts.repository.impl.AttachmentDtoRepositoryImpl;
-import com.javalab.contacts.util.FileUtils;
+import com.javalab.contacts.util.CustomFileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ public class DeleteAttachmentCommand implements Command {
                 String relativePath = attachmentDTO.getAttachmentLink();
                 relativePath = relativePath.substring(relativePath.indexOf("..") + 3);  //trim ".." from the beginning
                 String fullPath = applicationPath + relativePath;
-                FileUtils.deleteFile(fullPath);
+                CustomFileUtils.deleteFile(fullPath);
                 repository.delete(id);
             }
         }
