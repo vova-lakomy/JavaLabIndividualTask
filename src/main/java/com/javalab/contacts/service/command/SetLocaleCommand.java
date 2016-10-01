@@ -29,13 +29,14 @@ public class SetLocaleCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String localeKey = request.getParameter("localeKey");
-        String redirectUrl = request.getParameter("currentUrl");
+        String redirectUrl = (String) request.getSession().getAttribute("currentURL");
         if (isNotBlank(localeKey)){
             labels = locales.get(localeKey);
         }
         if (labels != null) {
             HttpSession session = request.getSession();
             session.setAttribute("labels",labels);
+            session.setAttribute("localeKey",localeKey);
         }
         if (redirectUrl == null) {
             redirectUrl = "list";

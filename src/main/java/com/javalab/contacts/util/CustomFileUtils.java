@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Random;
 
@@ -18,37 +19,20 @@ public final class CustomFileUtils {
     private static ContactDtoRepository repository = new ContactDtoRepositoryImpl();
     private static final int RANDOM_STRING_CHARS_COUNT = 6;
 
-
     private CustomFileUtils() {
     }
 
-    /**
-     * deletes file by specified path
-     * @param path file pat to delete
-     * @return
-     */
     public static boolean deleteFile(String path) {
         logger.debug("trying to delete file with path " + path);
         File file = new File(path);
         return file.exists() && file.delete();
     }
 
-    /**
-     * renames files
-     * @param oldFile file to rename
-     * @param newFile new file name
-     * @return
-     */
     public static boolean renameFile(File oldFile, File newFile){
         logger.debug("trying to rename files {} >> {}", oldFile, newFile);
         return oldFile.renameTo(newFile);
     }
 
-    /**
-     * creates a string with random chars starting with '-'
-     * @param charsCount length of the string to create
-     * @return created string
-     */
     public static String generateRandomString(int charsCount){
         logger.debug("generating random string with {} chars",charsCount);
         StringBuilder stringBuilder = new StringBuilder("-");
@@ -88,4 +72,17 @@ public final class CustomFileUtils {
             return "no-name";
         }
     }
+
+    public static String defineAttachmentFileName(HttpServletRequest request, String attachmentIndex) {
+        return request.getParameter("attachmentFileName-" + attachmentIndex);
+    }
+
+    public static void writePartToDisk(Part part, String fullUploadPath) {
+        try {
+            part.write(fullUploadPath);
+        } catch (IOException e) {
+            logger.error("",e);
+        }
+    }
+
 }

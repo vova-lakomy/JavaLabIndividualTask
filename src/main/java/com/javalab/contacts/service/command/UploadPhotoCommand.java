@@ -23,8 +23,6 @@ public class UploadPhotoCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(UploadPhotoCommand.class);
     private static Properties properties = PropertiesProvider.getInstance().getFileUploadProperties();
 
-
-
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String applicationPath = request.getServletContext().getRealPath("");

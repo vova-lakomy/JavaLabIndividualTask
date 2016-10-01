@@ -110,6 +110,17 @@ select{
     border-bottom: 5px solid #f0f0f0;
     box-shadow: 6px 1px 10px 1px rgba(0, 0, 0, 0.71);
 }
+
+.jlab-locale-select{
+    margin-left: 25px;
+}
+.jlab-locale-select a{
+    color: #383838;
+    font-weight: 600;
+}
+.jlab-locale-select .jlab-selected-locale{
+    color: #ed1c24;
+}
 .jlab-header-panel a{
     text-decoration: none;
 }
@@ -299,7 +310,31 @@ select{
     -webkit-filter: brightness(250%);
     /*box-shadow: 1px 1px 15px #ed1c24;*/
 }
+.jlab-page-select{
 
+}
+.jlab-page-select.jlab-button{
+    width: 100px;
+    margin: 0;
+    cursor: default;
+    border-color: grey;
+    text-align: center;
+    font-size: 12px;
+    font-style: italic;
+    background-color: white;
+    font-weight: 500;
+}
+.jlab-page-select.jlab-button:hover{
+    color: inherit !important;
+}
+.jlab-page-select-go.jlab-button{
+    width: 30px;
+    padding: 9px 0;
+    text-align: center;
+}
+.jlab-page-select.jlab-button button{
+
+}
 .jlab-error-page{
     padding-left: 50px;
 }

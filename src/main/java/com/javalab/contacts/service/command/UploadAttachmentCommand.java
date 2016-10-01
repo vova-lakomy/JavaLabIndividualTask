@@ -13,7 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
+import static com.javalab.contacts.util.CustomFileUtils.defineAttachmentFileName;
 import static com.javalab.contacts.util.CustomFileUtils.definePersonalDirectory;
+import static com.javalab.contacts.util.CustomFileUtils.writePartToDisk;
 
 
 public class UploadAttachmentCommand implements Command {
@@ -25,7 +27,7 @@ public class UploadAttachmentCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String applicationPath = request.getServletContext().getRealPath("");
         Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
-        if (shouldUploadToSpecificDir){
+        if (shouldUploadToSpecificDir) {
             applicationPath = properties.getProperty("specific.upload.dir");
         }
         String relativeUploadPath = properties.getProperty("upload.relative.dir");
@@ -40,8 +42,8 @@ public class UploadAttachmentCommand implements Command {
                 + personalAttachmentPath;
 
         File fileSaveDir = new File(uploadFilePath);
-        try{
-            if (!fileSaveDir.exists()){
+        try {
+            if (!fileSaveDir.exists()) {
                 FileUtils.forceMkdir(fileSaveDir);
             }
         } catch (IOException e) {
@@ -51,20 +53,20 @@ public class UploadAttachmentCommand implements Command {
         try {
             logger.debug("looking for attached files in request {}", request);
             for (Part part : request.getParts()) {
-                if (part.getName().contains("attachedFile")){
+                if (part.getName().contains("attachedFile")) {
                     logger.debug("found attached file {}", part.getSubmittedFileName());
-                    String index = part.getName().substring(part.getName().lastIndexOf('-') + 1);
-                    String fileName = request.getParameter("attachmentFileName-" + index);
-                    part.write(uploadFilePath + File.separator + fileName);
+                    String attachmentIndex = part.getName().substring(part.getName().lastIndexOf('-') + 1);
+                    String fileName = defineAttachmentFileName(request, attachmentIndex);
+                    String fullUploadPath = uploadFilePath + File.separator + fileName;
+                    writePartToDisk(part, fullUploadPath);
                     logger.debug("{} uploaded ", part.getSubmittedFileName());
-                    request.setAttribute("attachmentLink-"+index,
-                            relativeUploadPath + personalAttachmentPath + File.separator + fileName);
+                    String attachmentLink = relativeUploadPath + personalAttachmentPath + File.separator + fileName;
+                    request.setAttribute("attachmentLink-" + attachmentIndex, attachmentLink);
                 }
             }
         } catch (IOException | ServletException e1) {
-           logger.error("{}",e1);
+            logger.error("{}", e1);
         }
 
     }
-
 }

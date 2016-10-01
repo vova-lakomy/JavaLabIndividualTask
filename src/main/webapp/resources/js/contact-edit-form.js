@@ -451,6 +451,7 @@
     $('#photo-file-input').addEventListener('change', processChosenImage, false);
     $('#attachment-file-input').addEventListener('change', processChosenFile, false);
 
+
 //validation listeners
     $('#contact-edit-form').addEventListener('keyup', formValidation, false);
     $('#contact-edit-form').addEventListener('input', formValidation, false);

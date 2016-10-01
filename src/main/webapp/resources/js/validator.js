@@ -2,16 +2,16 @@
 
     var validations = {
         stringRequired : function (node) {
-              return (new RegExp('^[а-яА-ЯёЁa-zA-Z0-9]+$').test(node.value));
+              return (new RegExp('^[^\x01-\x1F\x21-\x26\x28-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+$').test(node.value));
         },
         string : function (node) {
-            return (new RegExp('^$|^[а-яА-ЯёЁa-zA-Z0-9\'-\\s\.]+$').test(node.value));
+            return (new RegExp('^$|^[^\x01-\x1F\x21-\x26\x28-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+$').test(node.value));
         },
         email : function (node) {
             return new RegExp('^$|^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$').test(node.value);
         },
         url : function (node) {
-            return new RegExp('^$|^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$').test(node.value);
+            return new RegExp('^$|([\/\w \.-]*)*').test(node.value);
         },
         zip : function (node) {
             return new RegExp('^$|^[0-9]{5,6}$').test(node.value);

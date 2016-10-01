@@ -20,7 +20,9 @@
                         <a class="jlab-button" href="${hrefString}${currentPage - 1}"> << </a>
                     </c:otherwise>
                 </c:choose>
-                <span class="jlab-button">${labels.get('page')} ${currentPage} ${labels.get('page.of')} ${numberOfPages}</span>
+                <span id="jlab-page-selector" class="jlab-button">${labels.get('page')} ${currentPage} ${labels.get('page.of')} ${numberOfPages}</span>
+                <input id="page-selector-input" class="jlab-button jlab-page-select jlab-hidden" type="text" placeholder="${labels.get('page')}">
+                <a id="page-selector-go-button" class="jlab-button jlab-page-select-go jlab-hidden" type="button" href="${hrefString}${currentPage}">OK</a>
                 <c:choose>
                     <c:when test="${(currentPage + 1) > numberOfPages}">
                         <button class="jlab-button" disabled> >> </button>

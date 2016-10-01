@@ -36,4 +36,5 @@
         </ul>
     </form>
 </div>
+<script type="text/javascript" src="${rootContext}/resources/js/paginator.js"></script>
 
