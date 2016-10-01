@@ -8,13 +8,13 @@
             <div id="contact-photo-container" class="jlab-main-photo-container">
                     <c:choose>
                         <c:when test="${(fullContact.photoLink == null) || (fullContact.photoLink eq 'null')}">
-                            <img src="${rootContext}/resources/img/unknown_person.png">
+                            <img src="${rootContext}resources/img/unknown_person.png">
                         </c:when>
                         <c:otherwise>
-                            <img src="${rootContext}/${fullContact.photoLink}">
+                            <img src="${rootContext}${fullContact.photoLink}">
                         </c:otherwise>
                     </c:choose>
-                <input class="jlab-hidden" type="text" name="photoLink" value="${rootContext}${fullContact.photoLink}">
+                <input class="jlab-hidden" type="text" name="photoLink" value="${fullContact.photoLink}">
             </div>
         </div>
     </div>

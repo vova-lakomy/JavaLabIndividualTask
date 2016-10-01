@@ -7,7 +7,7 @@
 
             <li class="jlab-row">
                 <div class="jlab-cell-12">
-                    <a href="${rootContext}/${fullContact.photoLink}" class="jlab-button" download>${labels.get('download.image')}</a>
+                    <a href="${rootContext}${fullContact.photoLink}" class="jlab-button" download>${labels.get('download.image')}</a>
                 </div>
             </li>
 

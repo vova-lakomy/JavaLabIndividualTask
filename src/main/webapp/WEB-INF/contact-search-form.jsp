@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<script type="application/javascript" src="${rootContext}/resources/js/validator.js"></script>
+<script type="application/javascript" src="${rootContext}resources/js/validator.js"></script>
 
 <div class="jlab-main-content-container">
     <div class="jlab-main-content">
@@ -127,4 +127,4 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="${rootContext}/resources/js/contact-search-form.js"></script>
+<script type="text/javascript" src="${rootContext}resources/js/contact-search-form.js"></script>

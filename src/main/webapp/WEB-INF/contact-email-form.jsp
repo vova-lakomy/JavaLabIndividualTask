@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<script type="application/javascript" src="${rootContext}/resources/js/validator.js"></script>
+<script type="application/javascript" src="${rootContext}resources/js/validator.js"></script>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="jlab-main-content-container">
@@ -64,4 +64,4 @@
     </c:forEach>
 
 </div>
-<script type="text/javascript" src="${rootContext}/resources/js/contact-email-form.js"></script>
+<script type="text/javascript" src="${rootContext}resources/js/contact-email-form.js"></script>

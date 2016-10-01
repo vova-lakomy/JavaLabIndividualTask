@@ -9,6 +9,7 @@
             <input class="jlab-hidden" type="text" name="attachmentLink" value="">
             <input class="jlab-hidden" type="text" name="attachmentCounter" value="">
             <input class="jlab-hidden" type="text" name="uploadDate" value="">
+            <input class="jlab-hidden" type="text" name="attachmentOldName" value="">
             <label for="attachment-name">${labels.get('attachment.name')}</label>
             <input id="attachment-name" name="attachmentName" type="text" value="" placeholder="${labels.get('attachment.name.placeholder')}">
         </div>

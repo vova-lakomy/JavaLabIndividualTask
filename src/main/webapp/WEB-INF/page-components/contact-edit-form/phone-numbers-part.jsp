@@ -33,7 +33,7 @@
 
                             <input type="checkbox" name="selectedId" value="${phoneNumber.id}" id="phoneNumberId-${counter.index}" data-action="deletePhone" >
                             <label for="phoneNumberId-${counter.index}">${phoneNumber.fullNumber}&nbsp;&nbsp;</label>
-                            <img class="jlab-edit-image" src="../resources/img/pencil_12x12.png" title="edit" data-action="edit">
+                            <img class="jlab-edit-image" src="${rootContext}resources/img/pencil_12x12.png" title="edit" data-action="edit">
                         </li>
 
                         <li class="jlab-cell-2">

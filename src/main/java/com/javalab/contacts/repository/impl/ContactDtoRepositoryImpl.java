@@ -19,6 +19,7 @@ import com.javalab.contacts.repository.ContactDtoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -111,7 +112,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
         attachments.forEach(attachment -> {
             Integer id = attachment.getId();
             String attachmentLink = attachment.getAttachmentLink();
-            String fileName = attachmentLink.substring(attachmentLink.lastIndexOf("/") + 1);
+            String fileName = attachmentLink.substring(attachmentLink.lastIndexOf(File.separator) + 1);
             String uploadDate = attachment.getDateOfUpload().format(formatter);
             String comment = attachment.getAttachmentComment();
 

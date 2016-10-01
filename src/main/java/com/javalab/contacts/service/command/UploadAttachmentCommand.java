@@ -36,7 +36,6 @@ public class UploadAttachmentCommand implements Command {
         String personalAttachmentPath = personalDirectory + File.separator + attachmentsFolder + File.separator;
 
         String uploadFilePath = applicationPath
-                + File.separator
                 + relativeUploadPath
                 + File.separator
                 + personalAttachmentPath;

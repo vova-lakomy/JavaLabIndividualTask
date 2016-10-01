@@ -38,8 +38,7 @@
     function getAttachmentEditData(formSelector) {
         var form = $(formSelector);
         var link = form.attachmentLink.value;
-        var lastSeparatorIndex = link.lastIndexOf('/') + 1;
-        var oldFileName = link.substring(lastSeparatorIndex);
+        var oldFileName = form.attachmentOldName.value;
         var newFileLink = link.replace(oldFileName, form.attachmentName.value);
         return {
             counter: (form.attachmentCounter) ? form.attachmentCounter.value : '',
@@ -305,6 +304,7 @@
         for (var i = 0; i < node.children.length; i++) {
             if (node.children[i].name.indexOf('attachmentFileName') !== -1) {
                 data.attachmentName = node.children[i].value;
+                data.attachmentOldName = data.attachmentName;
                 var counter = node.children[i].name;
                 data.counter = counter.substring(counter.indexOf('-') + 1);
             } else if (node.children[i].name.indexOf('attachmentComment') !== -1) {
@@ -361,6 +361,7 @@
             form['attachmentLink'].value = data.attachmentLink;
             form['attachmentId'].value = data.attachmentId;
             form['uploadDate'].value = data.uploadDate;
+            form['attachmentOldName'].value = data.attachmentOldName;
             toggleAttachmentsEditModal();
         }
     }
