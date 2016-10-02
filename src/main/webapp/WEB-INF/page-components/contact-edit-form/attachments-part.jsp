@@ -54,9 +54,8 @@
         <div id="attachments-empty-table" class="jlab-row jlab-vertical-padding-10">
             <div class="jlab-cell-12">
                 <i>${labels.get('nothing.to.display')}
-                    <a id="" href="javascript: toggleClass($('#modal-upload-attachment'),'jlab-fade')">
-                            ${labels.get('add')}
-                    </a></i>                            <%// TODO: 21.09.16 hang listener in js %>
+                    <a id="hrefAddAttachment" href=""> ${labels.get('add')} </a>
+                </i>
             </div>
         </div>
         <div id="inner-attachment-table" class="jlab-inner-table-container jlab-hidden">

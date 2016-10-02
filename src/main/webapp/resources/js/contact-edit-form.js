@@ -17,25 +17,6 @@
     }
 
     function getAttachmentData(formSelector) {
-        var fileInputNode = $('#attachment-file-input');
-        var form = $(formSelector);
-        if (fileInputNode.files.length) {
-            var originalFileName = fileInputNode.files[0].name;
-            var ext = originalFileName.lastIndexOf('.') ? originalFileName.substring(originalFileName.lastIndexOf('.')) : '';
-            return {
-                counter: (form.attachmentCounter) ? form.attachmentCounter.value : '',
-                attachmentId: (form.attachmentId) ? form.attachmentId.value : '',
-                fileName: form.attachedFileName.value ? (form.attachedFileName.value + ext) : originalFileName,
-                uploadDate: new Date(),
-                attachmentComment: form.attachedFileComment.value,
-                attachedFileNode: fileInputNode,
-            }
-        } else {
-            return false;
-        }
-    }
-
-    function getAttachmentData2(formSelector) {
         var counter = attachmentCounter - 1;
         var fileInputNodeSelector = '#attachedFileId-' + counter;
         var fileInputNode = $(fileInputNodeSelector);
@@ -76,6 +57,12 @@
         e.preventDefault();
         addOptionalCommandToForm('#contact-edit-form', 'uploadPhoto');
         toggleUploadPhotoModal();
+        var fileInputNode = $('#photo-file-input');
+        if (fileInputNode.files.length){
+            var image = fileInputNode.files[0];
+            showImageThumbnail(image);
+            toggleClass($('#main-photo-blind'), 'jlab-fade');
+        }
     }
 
     function addPhoneNumberHandler(e) {
@@ -91,20 +78,9 @@
         toggleAddPhoneNumberModal();
     }
 
+
     function addAttachmentHandler() {
         var data = getAttachmentData('#upload-attachment-form');
-        if (data) {
-            addOptionalCommandToForm('#contact-edit-form', 'uploadAttachment');
-            if (hasClass($('#inner-attachment-table'), 'jlab-hidden')) {
-                addClass($('#attachments-empty-table'), 'jlab-hidden');
-                removeClass($('#inner-attachment-table'), 'jlab-hidden');
-            }
-            $('#attachment-rows').appendChild(generateAttachmentRecord(attachmentCounter++, data));
-        }
-        toggleAttachmentsUploadModal();
-    }
-    function addAttachmentHandler2() {
-        var data = getAttachmentData2('#upload-attachment-form');
         var rowId = "#attachment-row-" + (attachmentCounter - 1);
         if (data) {
             if (hasClass($('#inner-attachment-table'), 'jlab-hidden')) {
@@ -135,7 +111,6 @@
         var uploadDateInput = $('#attachment-row-input-uploadDate-' + counter);
         var fileNameLabel = $('#attachment-row-label-filename-' + counter);
         var commentSpan = $('#attachment-row-span-comment-' + counter);
-
         idInput.value = null;
         fileNameInput.value = data.fileName;
         commentInput.value = data.attachmentComment;
@@ -157,16 +132,17 @@
         toggleClass($('#modal-attachment-edit'), 'jlab-fade');
     }
 
-    function showAttachmentsUploadModal() {
+    function openAttachmentsUploadModal(e) {
+        e.preventDefault();
         var counter = attachmentCounter++;
-        var ulNode = generateAttachmentRecord2(counter);
+        var ulNode = generateAttachmentRecord(counter);
         $('#attachment-rows').appendChild(ulNode);
-        $('#attachedFileId-' + counter).addEventListener('change', processChosenFile, false);
+        $('#attachedFileId-' + counter).addEventListener('change', handleChosenFile, false);
         $('#label-attachment-file-input').setAttribute('for','attachedFileId-'+counter);
         toggleClass($('#modal-upload-attachment'), 'jlab-fade');
     }
 
-    function cancelAttachmentsUploadModal() {
+    function closeAttachmentsUploadModal() {
         var rowId = "#attachment-row-" + (attachmentCounter - 1);
         if (rowId) {
             var row = $(rowId);
@@ -209,41 +185,7 @@
         return ul;
     }
 
-    function generateAttachmentRecord(counter, data) {
-        if (data.attachedFileNode) {
-            var fileNode = data.attachedFileNode.cloneNode(true);
-            fileNode.files = data.attachedFileNode.files;
-            fileNode.id = 'attachedFileId-' + counter;
-            fileNode.className = 'jlab-hidden';
-            fileNode.name = 'attachedFile-' + counter;
-        }
-        var ul = document.createElement('ul');
-        ul.className = 'jlab-row';
-        ul.innerHTML =
-            '<li class="jlab-cell-4">' +
-            '<input class="jlab-hidden" type="text" name="attachmentId-' + counter + '" value="' + data.attachmentId + '">' +
-            '<input class="jlab-hidden" type="text" name="attachmentFileName-' + counter + '" value="' + data.fileName + '"/>' +
-            '<input class="jlab-hidden" type="text" name="attachmentComment-' + counter + '" value="' + data.attachmentComment + '">' +
-            '<input class="jlab-hidden" type="text" name="uploadDate-' + counter + '" value="' + data.uploadDate + '">' +
-
-            '<input type="checkbox" name="selectedId" value="" id="attachment-' + counter + '" data-action="deleteAttachment">' +
-            '<label class="jlab-not-submited" for="attachedFileId-' + counter + '" title="submit to upload">' + data.fileName + '</label>' +
-            '</li>' +
-
-            '<li class="jlab-cell-2">' +
-            '<span class="jlab-not-submited">not submited</span> ' +
-            '</li>' +
-
-            '<li class="jlab-cell-6">' +
-            '<span class="jlab-not-submited">' + data.attachmentComment + '</span> ' +
-            '</li>';
-        if (fileNode) {
-            ul.appendChild(fileNode);
-        }
-        return ul;
-    }
-
-    function generateAttachmentRecord2(counter) {
+    function generateAttachmentRecord(counter) {
         var ul = document.createElement('ul');
         ul.id = 'attachment-row-' + counter;
         ul.className = 'jlab-row jlab-hidden';
@@ -439,7 +381,8 @@
         }
     }
 
-    function saveEditedPhoneNumber() {
+    function saveEditedPhoneNumber(e) {
+        e.preventDefault();
         var data = getPhoneNumberData('#phone-edit-form');
         editableInput.parentNode.replaceChild(generatePhoneRecord(data.counter, data), editableInput);
         toggleEditPhoneNumberModal();
@@ -469,17 +412,17 @@
         }
     }
 
-    function processChosenImage() {
+    function handleChosenImage() {
         var fileInputNode = $('#photo-file-input');
         if (fileInputNode.files.length) {
-            if(!isImageValid(fileInputNode.files[0])){
+            var image = fileInputNode.files[0];
+            if(!isImageValid(image)){
                 disableUpload('#button-upload-photo')
             } else {
-                undisableUpload('#button-upload-photo')
+                enableUpload('#button-upload-photo')
             }
-            var fileName = fileInputNode.files[0].name;
-            var fileSize = fileInputNode.files[0].size;
-
+            var fileName = image.name;
+            var fileSize = image.size;
             $('#input-file-name').innerHTML = fileName + ' ' + Math.ceil(fileSize/1000) + '&nbsp;kb';
         } else {
             $('#input-file-name').innerHTML = 'no file selected'
@@ -495,23 +438,35 @@
         }
     }
 
+    function showImageThumbnail(image) {
+        if (isImageValid(image)){
+            var imageNode = $('#contact-image');
+            imageNode.file = image;
+            var reader = new FileReader();
+            reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(imageNode);
+            reader.readAsDataURL(image);
+        }
+
+
+    }
+
     function disableUpload(selector) {
         $(selector).setAttribute('disabled','disabled');
     }
 
-    function undisableUpload(selector) {
+    function enableUpload(selector) {
         $(selector).removeAttribute('disabled');
     }
 
-    function processChosenFile() {
-        counter = attachmentCounter - 1;
+    function handleChosenFile() {
+        var counter = attachmentCounter - 1;
         var attachmentSelector = '#attachedFileId-' + counter;
         var fileInputNode = $(attachmentSelector);
         if (fileInputNode.files.length) {
             if(!isFileValid(fileInputNode.files[0])){
                 disableUpload('#button-upload-attachment')
             } else {
-                undisableUpload('#button-upload-attachment')
+                enableUpload('#button-upload-attachment')
             }
             var fileName = fileInputNode.files[0].name;
             var fileSize = fileInputNode.files[0].size;
@@ -534,7 +489,6 @@
         }
     }
 
-
 // listeners
     $('#button-upload-photo').addEventListener('click', submitPhotoHandler, false);
     $('#contact-photo-container').addEventListener('click', toggleUploadPhotoModal, false);
@@ -546,25 +500,25 @@
     $('#button-cancel-phone-number-edit').addEventListener('click', toggleEditPhoneNumberModal, false);
     // $('#button-show-attachments-edit-modal').addEventListener('click', toggleAttachmentsEditModal, false);
     $('#button-cancel-attachments-edit-modal').addEventListener('click', toggleAttachmentsEditModal, false);
-    $('#button-show-attachments-upload-modal').addEventListener('click', showAttachmentsUploadModal, false);
-    // $('#button-cancel-upload-attachment').addEventListener('click', toggleAttachmentsUploadModal, false);
-    $('#button-cancel-upload-attachment').addEventListener('click', cancelAttachmentsUploadModal, false);
-    // $('#button-upload-attachment').addEventListener('click', addAttachmentHandler, false);
-    $('#button-upload-attachment').addEventListener('click', addAttachmentHandler2, false);
+    $('#button-show-attachments-upload-modal').addEventListener('click', openAttachmentsUploadModal, false);
+    $('#hrefAddAttachment').addEventListener('click', openAttachmentsUploadModal, false);
+    $('#button-cancel-upload-attachment').addEventListener('click', closeAttachmentsUploadModal, false);
+    $('#button-upload-attachment').addEventListener('click', addAttachmentHandler, false);
     $('#button-delete-phone-number').addEventListener('click', deleteCheckedPhoneNumbers, false);
     $('#button-delete-attachment').addEventListener('click', deleteCheckedAttachments, false);
     $('#button-save-attachment-edit-modal').addEventListener('click', saveEditedAttachment, false);
     $('#inner-phone-number-table').addEventListener('click', fillPhoneEditModalForm, false);
     $('#inner-attachment-table').addEventListener('click', fillAttachmentEditModalForm, false);
-    $('#photo-file-input').addEventListener('change', processChosenImage, false);
-    $('#attachment-file-input').addEventListener('change', processChosenFile, false);
-
+    $('#photo-file-input').addEventListener('change', handleChosenImage, false);
+    $('#attachment-file-input').addEventListener('change', handleChosenFile, false);
 
 //validation listeners
     $('#contact-edit-form').addEventListener('keyup', formValidation, false);
     $('#contact-edit-form').addEventListener('input', formValidation, false);
+    $('#phone-add-form').addEventListener('keyup', formValidation, false);
     $('#phone-add-form').addEventListener('input', formValidation, false);
-    $('#phone-add-form').addEventListener('input', formValidation, false);
+    $('#phone-edit-form').addEventListener('keyup', formValidation, false);
+    $('#phone-edit-form').addEventListener('input', formValidation, false);
 
 //counters
     var phoneNumberCounter = (isElementExist('#phone-number-rows')) ? $('#phone-number-rows').childElementCount : 0;

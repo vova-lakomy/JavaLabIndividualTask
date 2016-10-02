@@ -86,7 +86,6 @@ select{
     outline-color: #ed1c24;
 }
 
-
 .jlab-header-caption-black{
     font-size: 20px;
     font-weight: 900;
@@ -185,6 +184,18 @@ select{
     border-width: 1px;
     padding: 1px;
     margin: 1px;
+}
+.jlab-main-photo-blind{
+    min-height: 200px;
+    background: rgba(255, 255, 255, 0.5);
+    min-width: 200px;
+    position: absolute;
+    z-index: 0;
+    color: rgba(255, 255, 255, 0);
+    font-style: italic;
+    font-size: 14px;
+    text-align: center;
+    text-shadow: 0 0 1px #383838;
 }
 .jlab-main-photo-container{
     height: 200px;
@@ -400,4 +411,7 @@ select{
     overflow: hidden;
     line-height: 26px;
     text-align: left;
+}
+#not-submitted-caption{
+    margin-top: 220px;
 }
