@@ -108,6 +108,7 @@ select{
     height: 30px;
     background-color: #ffffff;
     border-bottom: 5px solid #f0f0f0;
+    border-top: 1px solid #383838;
     box-shadow: 6px 1px 10px 1px rgba(0, 0, 0, 0.71);
 }
 

@@ -145,7 +145,7 @@ public class JdbcContactDao implements ContactDao {
             logger.debug("closed transaction");
             numberOfRecordsFound = getNumberOfRecordsFound(connection);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         } finally {
             try {
                 if (statementGetContactList != null) {

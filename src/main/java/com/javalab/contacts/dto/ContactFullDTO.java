@@ -117,9 +117,6 @@ public class ContactFullDTO {
         return attachments;
     }
 
-    public ContactFullDTO() {
-    }
-
     public void setId(Integer id) {
         this.id = id;
     }

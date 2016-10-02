@@ -112,7 +112,11 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
         attachments.forEach(attachment -> {
             Integer id = attachment.getId();
             String attachmentLink = attachment.getAttachmentLink();
-            String fileName = attachmentLink.substring(attachmentLink.lastIndexOf(File.separator) + 1);
+            String fileName;
+            if (attachmentLink != null) {
+                fileName = attachmentLink.substring(attachmentLink.lastIndexOf(File.separator) + 1);
+            } else fileName = "no-name";
+
             String uploadDate = attachment.getDateOfUpload().format(formatter);
             String comment = attachment.getAttachmentComment();
 

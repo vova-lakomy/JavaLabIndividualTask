@@ -39,7 +39,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             connection.commit();
             logger.debug("closed transaction");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         } finally {
             try {
                 if (statementGetAttachment != null) {
@@ -47,7 +47,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
                 }
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
             }
             connectionManager.putBackConnection(connection);
         }
@@ -73,7 +73,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             connection.commit();
             logger.debug("closed transaction");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         } finally {
             try {
                 if (statementGetByContactId != null) {
@@ -81,7 +81,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
                 }
                 connection.setAutoCommit(false);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
             }
             connectionManager.putBackConnection(connection);
         }
@@ -102,14 +102,14 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             try {
                 connection.rollback();
             } catch (SQLException e1) {
-                e1.printStackTrace();
+                logger.error("{}",e1);
             }
-            e.printStackTrace();
+            logger.error("{}",e);
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
             }
             connectionManager.putBackConnection(connection);
         }
@@ -125,14 +125,14 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             setSaveStatementParams(statementSaveAttachment,contactAttachment,contactId);
             statementSaveAttachment.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         } finally {
             try {
                 if (statementSaveAttachment != null) {
                     statementSaveAttachment.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
             }
         }
     }
@@ -151,7 +151,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             connection.commit();
             logger.debug("closed transaction");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         }
         finally {
             try {
@@ -160,7 +160,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
                 }
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
             }
             connectionManager.putBackConnection(connection);
         }

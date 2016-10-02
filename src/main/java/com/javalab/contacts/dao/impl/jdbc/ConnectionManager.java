@@ -31,7 +31,7 @@ class ConnectionManager {
             InitialContext initialContext = new InitialContext();
             dataSource = (DataSource) initialContext.lookup("java:comp/env/jdbc/contacts_vladimir_lakomy");
         } catch (NamingException e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         }
     }
 
@@ -43,7 +43,7 @@ class ConnectionManager {
             logger.debug("connection from pool got.. opened connections - {}", ++openedConnectionCount);
             logger.debug("total connections made - {}", ++totalConnectionsMade);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         }
         return connection;
     }
@@ -53,7 +53,7 @@ class ConnectionManager {
             connection.close();
             logger.debug("db connection closed... opened connections - {}", --openedConnectionCount);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         }
     }
 }

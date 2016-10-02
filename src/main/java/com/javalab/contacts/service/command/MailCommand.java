@@ -58,7 +58,7 @@ public class MailCommand implements Command {
                 response.sendRedirect("list");
                 return;
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
             }
         } else {
             request.setAttribute("path", "contact-email-form.jsp");
@@ -67,7 +67,7 @@ public class MailCommand implements Command {
         try {
             request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         }
     }
 

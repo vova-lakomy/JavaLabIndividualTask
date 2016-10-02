@@ -58,7 +58,7 @@ public final class SqlScriptLoader {
                     connection.close();
                     logger.debug("script loaded!!");
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    logger.error("{}",e);
                 }
             }
         }

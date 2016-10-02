@@ -28,35 +28,35 @@ public final class PropertiesProvider {
             scriptLoaderProperties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("sqlLoader.properties"));
         } catch (IOException e) {
             logger.error("getting connection properties failed {}",e);
-            e.printStackTrace();
+            logger.error("{}",e);
         }
         try {
             logger.debug("trying to get mail properties from configuration file");
             mailProperties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("mail-credentials.properties"));
         } catch (IOException e) {
             logger.error("getting mail properties failed {}",e);
-            e.printStackTrace();
+            logger.error("{}",e);
         }
         try {
             logger.debug("trying to get file upload properties from configuration file");
             fileUploadProperties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("file-upload.properties"));
         } catch (IOException e) {
             logger.error("getting file upload properties failed {}",e);
-            e.printStackTrace();
+            logger.error("{}",e);
         }
         try {
             logger.debug("trying to get eng labels ");
             labelEngProperties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("labels_en.properties"));
         } catch (IOException e) {
             logger.error("getting eng labels failed {}",e);
-            e.printStackTrace();
+            logger.error("{}",e);
         }
         try {
             logger.debug("trying to get ru labels ");
             labelRusProperties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("labels_ru.properties"));
         } catch (IOException e) {
             logger.error("getting ru labels failed {}",e);
-            e.printStackTrace();
+            logger.error("{}",e);
         }
     }
 

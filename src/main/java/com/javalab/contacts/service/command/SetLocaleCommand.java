@@ -57,7 +57,7 @@ public class SetLocaleCommand implements Command {
                 String value = new String(labelRusProperties.getProperty(key).getBytes("ISO-8859-1"),"UTF-8" );
                 labelsRu.put(key,value);
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                logger.error("{}",e);
             }
         }
         for (String labelName : labelEngProperties.stringPropertyNames()){

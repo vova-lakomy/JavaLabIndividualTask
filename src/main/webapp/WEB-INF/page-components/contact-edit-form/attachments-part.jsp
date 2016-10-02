@@ -4,7 +4,8 @@
     <div class="jlab-cell-12 jlab-inner-table-caption">
         <span>${labels.get('inner.caption.attachments')}:</span>
         <div class="jlab-pull-right jlab-button-block">
-            <button id="button-show-attachments-upload-modal" type="button" class="jlab-button">${labels.get('add.new')}</button>
+            <button id="button-show-attachments-upload-modal" type="button"
+                    class="jlab-button">${labels.get('add.new')}</button>
             <button id="button-delete-attachment" type="button" class="jlab-button">${labels.get('delete')}</button>
         </div>
     </div>
@@ -34,18 +35,16 @@
 
                             <input type="checkbox" id="attachment-${counter.index}" name="selectedId"
                                    value="${attachment.id}" data-action="deleteAttachment">
-                            <a href="${rootContext}${attachment.attachmentLink}" target="_blank" download><label>${attachment.fileName}</label></a>&nbsp;&nbsp;
-                            <img class="jlab-edit-image" src="${rootContext}resources/img/pencil_12x12.png" title="edit" data-action="edit">
-
+                            <a href="${rootContext}${attachment.attachmentLink}" target="_blank" download>
+                                <label>${attachment.fileName}</label>
+                            </a>&nbsp;&nbsp;
+                            <img class="jlab-edit-image"
+                                 src="${rootContext}resources/img/pencil_12x12.png" title="edit" data-action="edit">
                         </li>
 
-                        <li class="jlab-cell-2">
-                                ${attachment.uploadDate}
-                        </li>
+                        <li class="jlab-cell-2"> ${attachment.uploadDate}</li>
 
-                        <li class="jlab-cell-6">
-                                ${attachment.comment}
-                        </li>
+                        <li class="jlab-cell-6"> ${attachment.comment} </li>
                     </ul>
                 </c:forEach>
             </div>
@@ -54,8 +53,10 @@
     <c:otherwise>
         <div id="attachments-empty-table" class="jlab-row jlab-vertical-padding-10">
             <div class="jlab-cell-12">
-                <i>${labels.get('nothing.to.display')} <a id=""
-                        href="javascript: toggleClass($('#modal-upload-attachment'),'jlab-fade')">${labels.get('add')}</a></i> <%// TODO: 21.09.16 hang listener in js %>
+                <i>${labels.get('nothing.to.display')}
+                    <a id="" href="javascript: toggleClass($('#modal-upload-attachment'),'jlab-fade')">
+                            ${labels.get('add')}
+                    </a></i>                            <%// TODO: 21.09.16 hang listener in js %>
             </div>
         </div>
         <div id="inner-attachment-table" class="jlab-inner-table-container jlab-hidden">

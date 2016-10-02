@@ -36,13 +36,6 @@
         <a id="localeSelectRu" class="${ruClass}" href="setLocale?localeKey=ru">RU</a>
     </span>
 
-    <%--debug--%>
-    <span style="color:darkblue; padding-left: 20px">
-        <span style="color: grey; font-style: italic">debug:</span>
-        <span>root context - {${rootContext}}</span>
-    <span>currentUrl - {${currentURL}}</span>
-    </span>
-    <%--/debug--%>
 </header>
 <div class="jlab-margin-top-70">
 </div>

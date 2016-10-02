@@ -63,7 +63,7 @@ public class SearchCommand implements Command {
         try {
             request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request,response);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("{}",e);
         }
     }
 
