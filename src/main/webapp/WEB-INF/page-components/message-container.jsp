@@ -8,7 +8,7 @@
             ${labels.get(messageKey)}
         </div>
         <div>
-            <button id="close-message" class="jlab-close-message-button" type="button">close</button>
+            <button id="close-message" class="jlab-close-message-button" type="button">${labels.get('close')}</button>
         </div>
     </div>
 </div>

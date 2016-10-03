@@ -196,6 +196,7 @@ select{
     font-size: 12px;
     font-weight: 900;
     margin-bottom: -15px;
+    white-space: nowrap;
 }
 
 .jlab-selected-contact {
@@ -426,6 +427,9 @@ select{
 }
 .jlab-left-padding-15{
     padding-left: 15px;
+}
+.jlab-left-padding-30{
+    padding-left: 30px;
 }
 .jlab-pull-right{
     float: right;

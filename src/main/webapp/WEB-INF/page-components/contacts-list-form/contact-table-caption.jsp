@@ -10,7 +10,7 @@
         <div class="jlab-cell-2 jlab-horizontal-padding-10">
             ${labels.get('caption.birth.date')}
         </div>
-        <div class="jlab-cell-4 jlab-horizontal-padding-10">
+        <div class="jlab-cell-4 jlab-left-padding-30">
             ${labels.get('caption.address')}
         </div>
         <div class="jlab-cell-2 jlab-horizontal-padding-10">

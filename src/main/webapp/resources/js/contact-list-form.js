@@ -10,25 +10,51 @@
     }
 
     function handleContactRowClick(e){
-        var contactRow = e.target.parentNode.parentNode;
-        if (contactRow.getAttribute('data-contact-row') === 'true'){
-            toggleCheckedState(contactRow.children[0]);
+        var clickedElement = e.target;
+        if (isElementCheckBox(clickedElement)){
+            if (clickedElement.checked){
+                setBackGroundChecked(clickedElement);
+            } else {
+                removeBackGroundChecked(clickedElement);
+            }
+        } else {
+            var contactRow = e.target.parentNode.parentNode;
+            if (contactRow.getAttribute('data-contact-row') === 'true'){
+                toggleCheckedState(contactRow.children[0]);
+            }
         }
     }
 
     function toggleCheckedState(element) {
-        var elementType = element.getAttribute('type').toLowerCase();
-        if (elementType === 'checkbox'){
+        if (isElementCheckBox(element)){
             if (element.checked){
-                element.parentNode.parentNode.style.removeProperty('background-color');
-                element.parentNode.parentNode.style.removeProperty('outline');
+                removeBackGroundChecked(element);
                 element.checked = false;
             } else {
-                setCSS(element.parentNode.parentNode,'background-color','#c1c1c1');
-                setCSS(element.parentNode.parentNode,'outline','1px solid grey');
+                setBackGroundChecked(element);
                 element.checked = true;
             }
         }
+    }
+
+    function isElementCheckBox(element) {
+        var elementType = element.getAttribute('type');
+        if (elementType){
+            elementType = elementType.toLowerCase();
+            return elementType === 'checkbox';
+        } else {
+            return false;
+        }
+    }
+
+    function setBackGroundChecked(element){
+        setCSS(element.parentNode.parentNode,'background-color','#c1c1c1');
+        setCSS(element.parentNode.parentNode,'outline','1px solid grey');
+    }
+
+    function removeBackGroundChecked(element) {
+        element.parentNode.parentNode.style.removeProperty('background-color');
+        element.parentNode.parentNode.style.removeProperty('outline')
     }
 
     function disableMenuButtons() {
