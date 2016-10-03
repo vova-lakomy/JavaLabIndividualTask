@@ -6,12 +6,12 @@
 
             <a class="jlab-button" href="search" target="_self">${labels.get('search')}</a>
 
-            <button id="delete-contact" class="jlab-button" type="submit" formaction="deleteContact" disabled>
-                ${labels.get('delete')}
+            <button id="send-email" class="jlab-button" type="submit" formaction="mail">
+                ${labels.get('send.email')}
             </button>
 
-            <button id="send-email" class="jlab-button" type="submit" formaction="mail" disabled>
-                ${labels.get('send.email')}
+            <button id="delete-contact" class="jlab-button" type="submit" formaction="deleteContact" disabled>
+                ${labels.get('delete')}
             </button>
         </div>
     </div>

@@ -17,8 +17,6 @@
     <script type="application/javascript" src="${rootContext}resources/js/dom-utils.js"></script>
 </head>
 <body>
-
-<div>${currentPage}</div>
 <header class="jlab-header-panel">
     <a href="${rootContext}index.jsp">
         <span class="jlab-header-caption-red">J</span><span class="jlab-header-caption-black">avaLab2016</span>

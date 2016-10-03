@@ -10,11 +10,12 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 class ConnectionManager {
 
-    private int openedConnectionCount;
-    private int totalConnectionsMade;
+    private AtomicInteger openedConnectionCount = new AtomicInteger(0);
+    private AtomicInteger totalConnectionsMade = new AtomicInteger(0);
 
     private static final Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
 
@@ -40,8 +41,8 @@ class ConnectionManager {
         logger.debug("trying to get connection from pool");
         try {
             connection = dataSource.getConnection();
-            logger.debug("connection from pool got.. opened connections - {}", ++openedConnectionCount);
-            logger.debug("total connections made - {}", ++totalConnectionsMade);
+            logger.debug("connection from pool got.. opened connections - {}", openedConnectionCount.incrementAndGet());
+            logger.debug("total connections made - {}", totalConnectionsMade.incrementAndGet());
         } catch (SQLException e) {
             logger.error("{}",e);
         }
@@ -51,7 +52,7 @@ class ConnectionManager {
     void putBackConnection(Connection connection) {
         try {
             connection.close();
-            logger.debug("db connection closed... opened connections - {}", --openedConnectionCount);
+            logger.debug("db connection closed... opened connections - {}", openedConnectionCount.decrementAndGet());
         } catch (SQLException e) {
             logger.error("{}",e);
         }

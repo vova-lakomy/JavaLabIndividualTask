@@ -4,6 +4,7 @@ import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.repository.ContactDtoRepository;
 import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
+import com.javalab.contacts.util.LabelsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,9 +20,11 @@ public class SearchCommand implements Command {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchCommand.class);
     private ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
+    private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+        labelsManager.setLocaleLabelsToSession(request.getSession());
 
         if (request.getParameterMap().size() > 0){
             String query = request.getQueryString();

@@ -21,7 +21,7 @@
             <div id="attachment-rows">
                 <c:forEach var="attachment" items="${fullContact.attachments}" varStatus="counter">
                     <ul class="jlab-row">
-                        <li class="jlab-cell-4">
+                        <li class="jlab-cell-4 jlab-attachment-file-name">
                             <input class="jlab-hidden" type="text" name="attachmentId-${counter.index}"
                                    value="${attachment.id}">
                             <input class="jlab-hidden" type="text" name="attachmentLink-${counter.index}"
@@ -42,7 +42,7 @@
                                  src="${rootContext}resources/img/pencil_12x12.png" title="edit" data-action="edit">
                         </li>
 
-                        <li class="jlab-cell-2"> ${attachment.uploadDate}</li>
+                        <li class="jlab-cell-2 jlab-attachment-upload-date"> ${attachment.uploadDate}</li>
 
                         <li class="jlab-cell-6"> ${attachment.comment} </li>
                     </ul>

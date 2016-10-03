@@ -3,6 +3,7 @@ package com.javalab.contacts.service.command;
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.repository.ContactDtoRepository;
 import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
+import com.javalab.contacts.util.LabelsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,10 +17,11 @@ public class EditCommand implements Command {
 
     private static final Logger logger = LoggerFactory.getLogger(EditCommand.class);
     private ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
+    LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
+        labelsManager.setLocaleLabelsToSession(request.getSession());
         Integer contactId;
         String contactIdStr = request.getParameter("contactId");
         if (isNotBlank(contactIdStr)) {
@@ -27,15 +29,14 @@ public class EditCommand implements Command {
             ContactFullDTO contactFullInfo = contactRepository.getContactFullInfo(contactId);
             request.setAttribute("fullContactInfo", contactFullInfo);
         }
-
         Collection<String> sexList = contactRepository.getSexList();
         Collection<String> martialStatusList = contactRepository.getMartialStatusList();
         Collection<String> phoneTypeList = contactRepository.getPhoneTypeList();
-
         request.setAttribute("sexList", sexList);
         request.setAttribute("martialStatusList", martialStatusList);
         request.setAttribute("phoneTypeList", phoneTypeList);
         request.setAttribute("path","contact-edit-form.jsp");
+
         try {
             request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request,response);
         } catch (Exception e) {

@@ -1,3 +1,6 @@
+body a{
+    color: #000;
+}
 a label {
     color: #000;
     cursor: pointer;
@@ -11,14 +14,21 @@ a label {
     border: none;
     /*background-image: url("../img/sheet5.png");*/
 }
+
 .jlab-main-list ul li {
     padding: 8px 16px;
     border-bottom: 1px solid #c3c3c3;
 }
+
 .jlab-main-list ul li:first-child{
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
+
+.jlab-main-list ul li:nth-child(even) {
+    background-color: rgba(247, 247, 247, 0.9);
+}
+
 .jlab-main-list ul li:last-child {
     border-bottom: none;
     border-bottom-left-radius: 3px;
@@ -36,6 +46,8 @@ a label {
 }
 
 .jlab-inner-table-container a{
+    word-wrap: break-word;
+    max-width: 86%;
     text-decoration: none;
 }
 
@@ -191,7 +203,7 @@ select{
     transition: background-color 250ms;
 }
 .jlab-selected-contact:hover{
-    background-color:#f0f0f0;
+    background-color:#c1c1c1 !important;
     transition: 130ms;
 }
 
@@ -291,14 +303,14 @@ select{
 }
 
 .jlab-message-overlay {
-    transition: opacity, 700ms;
+    transition: opacity, 600ms;
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     background-color: rgba(179, 179, 179, 0.15);
-    /*z-index: 1;*/
+    z-index: 1;
 }
 
 .jlab-message-container{
@@ -315,7 +327,6 @@ select{
     font-weight: 900;
     text-shadow: 0 0 1px black;
     width: 100%;
-
 }
 
 .jlab-hidden{
@@ -430,6 +441,16 @@ select{
 .jlab-max-exceeded{
 
 }
+
+.jlab-attachment-file-name{
+    display: flex;
+    align-items: center;
+}
+
+.jlab-attachment-upload-date{
+    padding-left: 15px;
+}
+
 #mailText{
     width: 100%;
     height: 200px;

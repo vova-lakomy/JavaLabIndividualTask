@@ -19,6 +19,17 @@
         toggleClass($('#message-overlay'), 'jlab-hidden');
     }
 
+    function handleMouseEnter(e){
+        e.target.parentNode.style.transition = 'opacity, 20s';
+    }
+    function handleMouseLeave(e){
+        e.target.parentNode.style.removeProperty('transition');
+    }
+
+//listeners
     $('#close-message').addEventListener('click', closeMessagePopup, false);
     document.addEventListener("DOMContentLoaded", handleMessageShow);
+
+    $('#message-container').addEventListener('mouseenter', handleMouseEnter, false);
+    $('#message-container').addEventListener('mouseleave', handleMouseLeave, false);
 })();

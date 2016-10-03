@@ -192,7 +192,7 @@
         ul.id = 'attachment-row-' + counter;
         ul.className = 'jlab-row jlab-hidden';
         ul.innerHTML =
-            '<li class="jlab-cell-4">' +
+            '<li class="jlab-cell-4 jlab-attachment-file-name">' +
             '<input id="attachment-row-input-id-' + counter + '" class="jlab-hidden" type="text" name="attachmentId-' + counter + '" value="">' +
             '<input id="attachment-row-input-fileName-' + counter + '"class="jlab-hidden" type="text" name="attachmentFileName-' + counter + '" value=""/>' +
             '<input id="attachment-row-input-comment-' + counter + '" class="jlab-hidden" type="text" name="attachmentComment-' + counter + '" value="">' +
@@ -201,7 +201,7 @@
             // '<label class="jlab-not-submited" for="attachedFileId-' + counter + '" title="submit to upload"></label>' +
             '<label id="attachment-row-label-fileName-' + counter + '" class="jlab-not-submited" title="submit to upload"></label>' +
             '</li>' +
-            '<li class="jlab-cell-2">' +
+            '<li class="jlab-cell-2 jlab-attachment-upload-date">' +
             '<span class="jlab-not-submited">not submited</span> ' +
             '</li>' +
             '<li class="jlab-cell-6">' +
@@ -215,7 +215,7 @@
         var ul = document.createElement('ul');
         ul.className = 'jlab-row';
         ul.innerHTML =
-            '<li class="jlab-cell-4">' +
+            '<li class="jlab-cell-4 jlab-attachment-file-name">' +
             '<input class="jlab-hidden" type="text" name="attachmentId-' + counter + '" value="' + data.attachmentId + '">' +
             '<input class="jlab-hidden" type="text" name="attachmentLink-' + counter + '" value="' + data.attachmentLink + '"/>' +
             '<input class="jlab-hidden" type="text" name="attachmentFileName-' + counter + '" value="' + data.fileName + '"/>' +
@@ -224,10 +224,12 @@
             '<input class="jlab-hidden" type="text" name="uploadDate-' + counter + '" value="' + data.uploadDate + '">' +
 
             '<input type="checkbox" name="selectedId" value="" id="attachment-' + counter + '" data-action="deleteAttachment">' +
-            '<label for="attachedFileId-' + counter + '" title="submit to upload">' + data.fileName + '</label>' +
+            '<a href="#">' +
+            '<label for="attachedFileId-' + counter + '" title="submit to save changes">' + data.fileName + '</label>' +
+            '</a>' +
             '</li>' +
 
-            '<li class="jlab-cell-2">' +
+            '<li class="jlab-cell-2 jlab-attachment-upload-date">' +
             data.uploadDate +
             '</li>' +
 
@@ -503,7 +505,6 @@
     // $('#button-show-attachments-edit-modal').addEventListener('click', toggleAttachmentsEditModal, false);
     $('#button-cancel-attachments-edit-modal').addEventListener('click', toggleAttachmentsEditModal, false);
     $('#button-show-attachments-upload-modal').addEventListener('click', openAttachmentsUploadModal, false);
-    $('#hrefAddAttachment').addEventListener('click', openAttachmentsUploadModal, false);
     $('#button-cancel-upload-attachment').addEventListener('click', closeAttachmentsUploadModal, false);
     $('#button-upload-attachment').addEventListener('click', addAttachmentHandler, false);
     $('#button-delete-phone-number').addEventListener('click', deleteCheckedPhoneNumbers, false);
@@ -513,6 +514,9 @@
     $('#inner-attachment-table').addEventListener('click', fillAttachmentEditModalForm, false);
     $('#photo-file-input').addEventListener('change', handleChosenImage, false);
     $('#attachment-file-input').addEventListener('change', handleChosenFile, false);
+    if ($('#hrefAddAttachment') !== null){
+        $('#hrefAddAttachment').addEventListener('click', openAttachmentsUploadModal, false);
+    }
 
 //validation listeners
     $('#contact-edit-form').addEventListener('keyup', formValidation, false);

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <li class="jlab-selected-contact">
-    <div class="jlab-row">
+    <div class="jlab-row" data-contact-row="true">
         <input type="checkbox" name="selectedId" value="${contact.id}" data-is-checkbox="true">
 
         <div class="jlab-cell-4 ">

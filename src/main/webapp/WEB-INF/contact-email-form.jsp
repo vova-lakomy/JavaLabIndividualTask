@@ -12,7 +12,7 @@
                     <c:when test="${emailContacts eq null}">
                         <div class="jlab-form-item jlab-row">
                             <label class="jlab-cell-1"
-                                   for="messageRecipient">${labels.get('mail.to')}:</label>
+                                   for="messageRecipient">${labels.get('mail.to')}:<span class="jlab-required">*</span></label>
                             <input class="jlab-cell-11" id="messageRecipient" type="text" name="mailTo"
                                    value="" placeholder="${labels.get('mail.to.placeholder')}" required data-validation-type="email"/>
                             <input class="jlab-hidden" name="mailToId" value="${contact.id}">
@@ -22,7 +22,7 @@
                         <c:forEach var="contact" items="${emailContacts}" varStatus="counter">
                             <div class="jlab-form-item jlab-row">
                                 <label class="jlab-cell-1"
-                                       for="messageRecipient${counter.index}">${labels.get('mail.to')}: </label>
+                                       for="messageRecipient${counter.index}">${labels.get('mail.to')}:<span class="jlab-required">*</span></label>
                                 <input class="jlab-cell-11" id="messageRecipient${counter.index}" type="text"
                                        name="mailTo" value="${contact.eMail}" placeholder="${labels.get('mail.to.placeholder')}" required/>
                                 <input class="jlab-hidden" name="mailToId" value="${contact.id}">

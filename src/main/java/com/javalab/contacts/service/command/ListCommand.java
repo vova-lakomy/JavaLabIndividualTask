@@ -4,6 +4,7 @@ package com.javalab.contacts.service.command;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.repository.ContactDtoRepository;
 import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
+import com.javalab.contacts.util.LabelsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +18,11 @@ import static org.apache.commons.lang3.StringUtils.trim;
 public class ListCommand implements Command{
     private static final Logger logger = LoggerFactory.getLogger(ListCommand.class);
     private ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
+    private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response){
+        labelsManager.setLocaleLabelsToSession(request.getSession());
         String page = request.getParameter("page");
         if (page == null){
             page = (String) request.getSession().getAttribute("currentPage");
@@ -40,7 +43,6 @@ public class ListCommand implements Command{
             pageNumber = numberOfPages;
             contactList = contactRepository.getContactsList(pageNumber-1);
         }
-
         request.setAttribute("numberOfPages",numberOfPages);
         request.setAttribute("contactsList", contactList);
         request.setAttribute("currentPage",pageNumber);

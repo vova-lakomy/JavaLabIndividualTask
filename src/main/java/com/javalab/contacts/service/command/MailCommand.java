@@ -6,6 +6,7 @@ import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.repository.ContactDtoRepository;
 import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
 import com.javalab.contacts.util.CustomReflectionUtil;
+import com.javalab.contacts.util.LabelsManager;
 import com.javalab.contacts.util.MailSender;
 import com.javalab.contacts.util.STemplates;
 import org.slf4j.Logger;
@@ -38,9 +39,11 @@ public class MailCommand implements Command {
     private MailSender mailSender = new MailSender();
     private ContactDtoRepository repository = new ContactDtoRepositoryImpl();
     private STemplates stringTemplates = STemplates.getInstance();
+    private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+        labelsManager.setLocaleLabelsToSession(request.getSession());
         Map<String, String> templates = stringTemplates.getTemplateMap();
         request.setAttribute("templates", templates);
 
