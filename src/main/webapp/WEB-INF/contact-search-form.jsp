@@ -96,11 +96,11 @@
                     </div>
                     <div class="jlab-cell-6">
                         <div class="jlab-form-item">
-                            <label for="edit-form-martial-status">${labels.get('martial.status')}</label>
-                            <select id="edit-form-martial-status" name="martialStatus">
-                                <option value="" selected>${labels.get('martial.status.any')}</option>
-                                <c:forEach items="${martialStatusList}" var="martialStatusType">
-                                    <option value="${martialStatusType}">${labels.get(martialStatusType)}</option>
+                            <label for="edit-form-marital-status">${labels.get('marital.status')}</label>
+                            <select id="edit-form-marital-status" name="maritalStatus">
+                                <option value="" selected>${labels.get('marital.status.any')}</option>
+                                <c:forEach items="${maritalStatusList}" var="maritalStatusType">
+                                    <option value="${maritalStatusType}">${labels.get(maritalStatusType)}</option>
                                 </c:forEach>
                             </select>
                         </div>

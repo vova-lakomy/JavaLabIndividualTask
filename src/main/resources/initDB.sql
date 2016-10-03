@@ -12,11 +12,11 @@ CREATE TABLE contacts_vladimir_lakomy.contact
   date_of_birth       DATE,
   sex                 VARCHAR(6),
   nationality         VARCHAR(20),
-  martial_status      VARCHAR(17),
+  marital_status      VARCHAR(17),
   web_site            VARCHAR(100),
   e_mail              VARCHAR(50),
-  current_job         VARCHAR(50),
-  photo_link          VARCHAR(150),
+  current_job         VARCHAR(30),
+  photo_link          VARCHAR(200),
   country             VARCHAR(30),
   town                VARCHAR(30),
   street              VARCHAR(30),
@@ -30,8 +30,8 @@ CREATE TABLE contacts_vladimir_lakomy.contact
 CREATE TABLE contacts_vladimir_lakomy.contact_attachment
 (
   id                  INT PRIMARY KEY  NOT NULL AUTO_INCREMENT,
-  attachment_link     VARCHAR(150),
-  attachment_comment  VARCHAR(255),
+  attachment_link     VARCHAR(200),
+  attachment_comment  VARCHAR(100),
   date_of_upload      DATE,
   contact_id          INT,
   FOREIGN KEY (contact_id)

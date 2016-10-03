@@ -30,10 +30,10 @@ public class EditCommand implements Command {
             request.setAttribute("fullContactInfo", contactFullInfo);
         }
         Collection<String> sexList = contactRepository.getSexList();
-        Collection<String> martialStatusList = contactRepository.getMartialStatusList();
+        Collection<String> maritalStatusList = contactRepository.getMaritalStatusList();
         Collection<String> phoneTypeList = contactRepository.getPhoneTypeList();
         request.setAttribute("sexList", sexList);
-        request.setAttribute("martialStatusList", martialStatusList);
+        request.setAttribute("maritalStatusList", maritalStatusList);
         request.setAttribute("phoneTypeList", phoneTypeList);
         request.setAttribute("path","contact-edit-form.jsp");
 

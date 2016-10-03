@@ -7,9 +7,11 @@ import org.slf4j.LoggerFactory;
 
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -172,7 +174,12 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
         resultObject.setId(resultSet.getInt("id"));
         resultObject.setAttachmentLink(resultSet.getString("attachment_link"));
         resultObject.setAttachmentComment(resultSet.getString("attachment_comment"));
-        resultObject.setDateOfUpload(resultSet.getDate("date_of_upload").toLocalDate());
+        Date date_of_upload = resultSet.getDate("date_of_upload");
+        LocalDate dateOfUpload = null;
+        if (date_of_upload != null) {
+            dateOfUpload = date_of_upload.toLocalDate();
+        }
+        resultObject.setDateOfUpload(dateOfUpload);
         return resultObject;
     }
 
@@ -193,7 +200,11 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
         logger.debug("setting save attachment statement params");
         statement.setString(1,attachment.getAttachmentLink());
         statement.setString(2,attachment.getAttachmentComment());
-        statement.setString(3,attachment.getDateOfUpload().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        String strDate = null;
+        if (attachment.getDateOfUpload() != null) {
+            strDate = attachment.getDateOfUpload().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        }
+        statement.setString(3, strDate);
         statement.setInt(4,contactId);
     }
 }

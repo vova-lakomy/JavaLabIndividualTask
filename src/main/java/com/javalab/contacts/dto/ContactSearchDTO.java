@@ -9,7 +9,7 @@ public class ContactSearchDTO {
     private String dateOfBirthGreaterThan;
     private String sex;
     private String nationality;
-    private String martialStatus;
+    private String maritalStatus;
     private String country;
     private String town;
     private Integer zipCode;
@@ -74,12 +74,12 @@ public class ContactSearchDTO {
         this.nationality = nationality;
     }
 
-    public String getMartialStatus() {
-        return martialStatus;
+    public String getMaritalStatus() {
+        return maritalStatus;
     }
 
-    public void setMartialStatus(String martialStatus) {
-        this.martialStatus = martialStatus;
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
     }
 
     public String getCountry() {

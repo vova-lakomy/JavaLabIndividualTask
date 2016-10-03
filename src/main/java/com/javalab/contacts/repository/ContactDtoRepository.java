@@ -25,7 +25,7 @@ public interface ContactDtoRepository {
 
     Collection<String> getSexList();
 
-    Collection<String> getMartialStatusList();
+    Collection<String> getMaritalStatusList();
 
     Collection<String> getPhoneTypeList();
 

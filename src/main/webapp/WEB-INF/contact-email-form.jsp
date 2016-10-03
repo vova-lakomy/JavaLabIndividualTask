@@ -53,8 +53,8 @@
                 </div>
 
                 <div class="jlab-button-block jlab-vertical-padding-10 jlab-pull-right">
-                    <button type="submit" class="jlab-button">${labels.get('mail.send')}</button>
                     <a type="submit" class="jlab-button" href="list">${labels.get('cancel')}</a>
+                    <button type="submit" class="jlab-button">${labels.get('mail.send')}</button>
                 </div>
             </form>
         </div>

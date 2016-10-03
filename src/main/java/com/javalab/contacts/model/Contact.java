@@ -1,7 +1,7 @@
 package com.javalab.contacts.model;
 
 
-import com.javalab.contacts.model.enumerations.MartialStatus;
+import com.javalab.contacts.model.enumerations.MaritalStatus;
 import com.javalab.contacts.model.enumerations.Sex;
 
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ public class Contact {
     private LocalDate dateOfBirth;
     private Sex sex;
     private String nationality;
-    private MartialStatus martialStatus;
+    private MaritalStatus maritalStatus;
     private String webSite;
     private String eMail;
     private String currentJob;
@@ -82,12 +82,12 @@ public class Contact {
         this.nationality = nationality;
     }
 
-    public MartialStatus getMartialStatus() {
-        return martialStatus;
+    public MaritalStatus getMaritalStatus() {
+        return maritalStatus;
     }
 
-    public void setMartialStatus(MartialStatus martialStatus) {
-        this.martialStatus = martialStatus;
+    public void setMaritalStatus(MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
     }
 
     public String getWebSite() {
@@ -167,7 +167,7 @@ public class Contact {
         if (dateOfBirth != null ? !dateOfBirth.equals(contact.dateOfBirth) : contact.dateOfBirth != null) return false;
         if (sex != contact.sex) return false;
         if (nationality != null ? !nationality.equals(contact.nationality) : contact.nationality != null) return false;
-        if (martialStatus != contact.martialStatus) return false;
+        if (maritalStatus != contact.maritalStatus) return false;
         if (webSite != null ? !webSite.equals(contact.webSite) : contact.webSite != null) return false;
         if (eMail != null ? !eMail.equals(contact.eMail) : contact.eMail != null) return false;
         if (currentJob != null ? !currentJob.equals(contact.currentJob) : contact.currentJob != null) return false;
@@ -194,7 +194,7 @@ public class Contact {
                 ", dateOfBirth=" + dateOfBirth +
                 ", sex=" + sex +
                 ", nationality='" + nationality + '\'' +
-                ", martialStatus=" + martialStatus +
+                ", maritalStatus=" + maritalStatus +
                 ", webSite='" + webSite + '\'' +
                 ", eMail='" + eMail + '\'' +
                 ", currentJob='" + currentJob + '\'' +

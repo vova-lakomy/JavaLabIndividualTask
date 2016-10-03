@@ -6,7 +6,7 @@ import com.javalab.contacts.dao.PhoneNumberDao;
 import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
-import com.javalab.contacts.model.enumerations.MartialStatus;
+import com.javalab.contacts.model.enumerations.MaritalStatus;
 import com.javalab.contacts.model.enumerations.Sex;
 import com.javalab.contacts.util.CustomReflectionUtil;
 import org.slf4j.Logger;
@@ -353,10 +353,10 @@ public class JdbcContactDao implements ContactDao {
         if (sexString != null) {
             sex = Sex.valueOf(sexString);
         }
-        String martialStatusString = resultSet.getString("martial_status");
-        MartialStatus martialStatus = null;
-        if (martialStatusString != null) {
-            martialStatus = MartialStatus.valueOf(martialStatusString);
+        String maritalStatusString = resultSet.getString("marital_status");
+        MaritalStatus maritalStatus = null;
+        if (maritalStatusString != null) {
+            maritalStatus = MaritalStatus.valueOf(maritalStatusString);
         }
         ContactAddress address = new ContactAddress();
         address.setCountry(resultSet.getString("country"));
@@ -374,7 +374,7 @@ public class JdbcContactDao implements ContactDao {
         resultObject.setDateOfBirth(dateOfBirth);
         resultObject.setSex(sex);
         resultObject.setNationality(resultSet.getString("nationality"));
-        resultObject.setMartialStatus(martialStatus);
+        resultObject.setMaritalStatus(maritalStatus);
         resultObject.setWebSite(resultSet.getString("web_site"));
         resultObject.seteMail(resultSet.getString("e_mail"));
         resultObject.setCurrentJob(resultSet.getString("current_job"));
@@ -401,10 +401,10 @@ public class JdbcContactDao implements ContactDao {
         if (sex != null) {
             sexString = sex.name();
         }
-        MartialStatus martialStatus = contact.getMartialStatus();
-        String martialStatusString = null;
-        if (martialStatus != null) {
-            martialStatusString = martialStatus.name();
+        MaritalStatus maritalStatus = contact.getMaritalStatus();
+        String maritalStatusString = null;
+        if (maritalStatus != null) {
+            maritalStatusString = maritalStatus.name();
         }
         ContactAddress address = contact.getContactAddress();
         statement.setString(1, contact.getFirstName());
@@ -413,7 +413,7 @@ public class JdbcContactDao implements ContactDao {
         statement.setString(4, dateOfBirthString);
         statement.setString(5, sexString);
         statement.setString(6, contact.getNationality());
-        statement.setString(7, martialStatusString);
+        statement.setString(7, maritalStatusString);
         statement.setString(8, contact.getWebSite());
         statement.setString(9, contact.geteMail());
         statement.setString(10, contact.getCurrentJob());
@@ -452,12 +452,12 @@ public class JdbcContactDao implements ContactDao {
         logger.debug("defining save query string");
         if (contactId == null) {
             return "INSERT INTO contact " +
-                    "(first_name, second_name, last_name, date_of_birth, sex, nationality, martial_status, web_site, " +
+                    "(first_name, second_name, last_name, date_of_birth, sex, nationality, marital_status, web_site, " +
                     "e_mail, current_job, photo_link, country, town, street, house_number, flat_number, zip_code) " +
                     "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         } else {
             return "UPDATE contact SET " +
-                    "first_name=?, second_name=?, last_name=?, date_of_birth=?, sex=?, nationality=?, martial_status=?, " +
+                    "first_name=?, second_name=?, last_name=?, date_of_birth=?, sex=?, nationality=?, marital_status=?, " +
                     "web_site=?, e_mail=?, current_job=?, photo_link=?, country=?, town=?, street=?, house_number=?, " +
                     "flat_number=?, zip_code=? WHERE id=" + contactId;
         }

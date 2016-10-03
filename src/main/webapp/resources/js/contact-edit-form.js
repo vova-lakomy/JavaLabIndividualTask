@@ -24,11 +24,16 @@
         if (fileInputNode.files.length) {
             var originalFileName = fileInputNode.files[0].name;
             var ext = originalFileName.lastIndexOf('.') ? originalFileName.substring(originalFileName.lastIndexOf('.')) : '';
+            var isoDate = new Date().toISOString().split('-');
+            var day = isoDate[2].split('T')[0];
+            var month = isoDate[1];
+            var year = isoDate[0];
+            var uploadDate = day + '.' + month + '.'  + year;
             return {
                 counter: (form.attachmentCounter) ? form.attachmentCounter.value : '',
                 attachmentId: (form.attachmentId) ? form.attachmentId.value : '',
                 fileName: form.attachedFileName.value ? (form.attachedFileName.value + ext) : originalFileName,
-                uploadDate: new Date(),
+                uploadDate: uploadDate,
                 attachmentComment: form.attachedFileComment.value,
                 attachedFileNode: fileInputNode,
             }
@@ -421,9 +426,9 @@
         if (fileInputNode.files.length) {
             var image = fileInputNode.files[0];
             if(!isImageValid(image)){
-                disableUpload('#button-upload-photo')
+                disableButton('#button-upload-photo')
             } else {
-                enableUpload('#button-upload-photo')
+                enableButton('#button-upload-photo')
             }
             var fileName = image.name;
             var fileSize = image.size;
@@ -454,11 +459,11 @@
 
     }
 
-    function disableUpload(selector) {
+    function disableButton(selector) {
         $(selector).setAttribute('disabled','disabled');
     }
 
-    function enableUpload(selector) {
+    function enableButton(selector) {
         $(selector).removeAttribute('disabled');
     }
 
@@ -468,9 +473,9 @@
         var fileInputNode = $(attachmentSelector);
         if (fileInputNode.files.length) {
             if(!isFileValid(fileInputNode.files[0])){
-                disableUpload('#button-upload-attachment')
+                disableButton('#button-upload-attachment')
             } else {
-                enableUpload('#button-upload-attachment')
+                enableButton('#button-upload-attachment')
             }
             var fileName = fileInputNode.files[0].name;
             var fileSize = fileInputNode.files[0].size;
@@ -490,6 +495,46 @@
             return true;
         } else {
             return false;
+        }
+    }
+
+    function handleUploadFileNameChange(e) {
+        if (e.target.value.length > 50){
+         disableButton('#button-upload-attachment');
+         disableButton('#button-save-attachment-edit-modal');
+        } else {
+            enableButton('#button-upload-attachment');
+            enableButton('#button-save-attachment-edit-modal');
+        }
+    }
+
+    function handleUploadCommentChange(e){
+        if (e.target.value.length > 100){
+            disableButton('#button-upload-attachment');
+            disableButton('#button-save-attachment-edit-modal');
+        } else {
+            enableButton('#button-upload-attachment');
+            enableButton('#button-save-attachment-edit-modal');
+        }
+    }
+
+    function handleEditFileNameChange(e) {
+        if (e.target.value.length > 50){
+            disableButton('#button-upload-attachment');
+            disableButton('#button-save-attachment-edit-modal');
+        } else {
+            enableButton('#button-upload-attachment');
+            enableButton('#button-save-attachment-edit-modal');
+        }
+    }
+
+    function handleEditCommentChange(e){
+        if (e.target.value.length > 100){
+            disableButton('#button-upload-attachment');
+            disableButton('#button-save-attachment-edit-modal');
+        } else {
+            enableButton('#button-upload-attachment');
+            enableButton('#button-save-attachment-edit-modal');
         }
     }
 
@@ -514,6 +559,14 @@
     $('#inner-attachment-table').addEventListener('click', fillAttachmentEditModalForm, false);
     $('#photo-file-input').addEventListener('change', handleChosenImage, false);
     $('#attachment-file-input').addEventListener('change', handleChosenFile, false);
+    $('#attachment-file-name').addEventListener('keyup', handleUploadFileNameChange, false);
+    $('#attachment-file-name').addEventListener('input', handleUploadFileNameChange, false);
+    $('#attachment-file-comment').addEventListener('keyup', handleUploadCommentChange, false);
+    $('#attachment-file-comment').addEventListener('input', handleUploadCommentChange, false);
+    $('#attachment-name').addEventListener('input', handleEditFileNameChange, false);
+    $('#attachment-name').addEventListener('keyup', handleEditFileNameChange, false);
+    $('#attachment-comment').addEventListener('input', handleEditCommentChange, false);
+    $('#attachment-comment').addEventListener('keyup', handleEditCommentChange, false);
     if ($('#hrefAddAttachment') !== null){
         $('#hrefAddAttachment').addEventListener('click', openAttachmentsUploadModal, false);
     }

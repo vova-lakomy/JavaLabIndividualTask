@@ -14,7 +14,7 @@ public class ContactFullDTO {
     private Integer yearOfBirth;
     private String sex;
     private String nationality;
-    private String martialStatus;
+    private String maritalStatus;
     private String webSite;
     private String eMail;
     private String currentJob;
@@ -65,8 +65,8 @@ public class ContactFullDTO {
         return nationality;
     }
 
-    public String getMartialStatus() {
-        return martialStatus;
+    public String getMaritalStatus() {
+        return maritalStatus;
     }
 
     public String getWebSite() {
@@ -153,8 +153,8 @@ public class ContactFullDTO {
         this.nationality = nationality;
     }
 
-    public void setMartialStatus(String martialStatus) {
-        this.martialStatus = martialStatus;
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
     }
 
     public void setWebSite(String webSite) {

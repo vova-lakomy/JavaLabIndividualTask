@@ -25,8 +25,11 @@
                 <jsp:include page="page-components/contact-edit-form/attachments-part.jsp"/>
 
                 <div class="jlab-row jlab-vertical-padding-10">
-                    <div class="jlab-cell-12">
-                        <button type="submit" class="jlab-button jlab-pull-right">${labels.get('submit')}</button>
+                    <div class="jlab-cell-12 ">
+                        <div class="jlab-button-block jlab-vertical-padding-10 jlab-pull-right">
+                            <a type="submit" class="jlab-button" href="list">${labels.get('cancel')}</a>
+                            <button type="submit" class="jlab-button">${labels.get('submit')}</button>
+                        </div>
                     </div>
                 </div>
 

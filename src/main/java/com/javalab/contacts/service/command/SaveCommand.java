@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 public class SaveCommand implements Command {
@@ -85,9 +86,9 @@ public class SaveCommand implements Command {
         if (isBlank(nationality)){
             nationality = null;
         }
-        String martialStatus = request.getParameter("martialStatus");
-        if (isBlank(martialStatus)){
-            martialStatus = null;
+        String maritalStatus = request.getParameter("maritalStatus");
+        if (isBlank(maritalStatus)){
+            maritalStatus = null;
         }
         String webSite = request.getParameter("webSite");
         if (isBlank(webSite)){
@@ -149,7 +150,7 @@ public class SaveCommand implements Command {
         contact.setYearOfBirth(yearOfBirth);
         contact.setSex(sex);
         contact.setNationality(nationality);
-        contact.setMartialStatus(martialStatus);
+        contact.setMaritalStatus(maritalStatus);
         contact.setWebSite(webSite);
         contact.seteMail(eMail);
         contact.setCurrentJob(currentJob);
@@ -239,7 +240,12 @@ public class SaveCommand implements Command {
                id = Integer.valueOf(idNameStr);
             }
             String fileName = request.getParameter("attachmentFileName" + index);
-            String uploadDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));   // FIXME: 21.09.16 
+            String uploadDateStr = request.getParameter("uploadDate" + index);
+            String uploadDate = null;
+            if (isNotBlank(uploadDateStr)){
+                String[] dateParsed = uploadDateStr.split("\\.");
+                    uploadDate = dateParsed[2] + "-" + dateParsed[1] + "-" + dateParsed[0];
+                }
             String comment = request.getParameter("attachmentComment" + index);
             String attachmentLink;
             if (request.getAttribute("attachmentLink" + index) != null) {

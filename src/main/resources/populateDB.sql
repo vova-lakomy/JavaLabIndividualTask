@@ -1,7 +1,7 @@
 USE contacts_vladimir_lakomy;
 
 INSERT INTO contacts_vladimir_lakomy.contact
-(id, first_name, second_name, last_name, date_of_birth, sex, nationality, martial_status, web_site,
+(id, first_name, second_name, last_name, date_of_birth, sex, nationality, marital_status, web_site,
  e_mail, current_job, country, town, street, house_number, flat_number, zip_code)
 VALUES
   (1,'Alexandr','Sergeevich', 'Ivanov', '1990-02-27', 'MALE','Russian','SINGLE','alex.com',

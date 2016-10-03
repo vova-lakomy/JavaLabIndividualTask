@@ -11,19 +11,19 @@
                     <input class="jlab-hidden" name="contactId" value="${fullContact.id}">
                     <label for="edit-form-first-name">${labels.get('first.name')}<span class="jlab-required">*</span></label>
                     <input id="edit-form-first-name" type="text" name="firstName" value="${fullContact.firstName}"
-                        placeholder="${labels.get('first.name.placeholder')}" data-validation-type="stringRequired" required/>
+                        placeholder="${labels.get('first.name.placeholder')}" data-validation-type="stringRequired20Chars" required/>
                 </div>
 
                 <div class="jlab-form-item">
                     <label for="edit-form-last-name">${labels.get('last.name')}<span class="jlab-required">*</span></label>
                     <input id="edit-form-last-name" type="text" name="lastName" value="${fullContact.lastName}"
-                           placeholder="${labels.get('last.name.placeholder')}" data-validation-type="stringRequired" required>
+                           placeholder="${labels.get('last.name.placeholder')}" data-validation-type="stringRequired20Chars" required>
                 </div>
 
                 <div class="jlab-form-item">
                     <label for="edit-form-second-name">${labels.get('second.name')}</label>
                     <input id="edit-form-second-name" type="text" name="secondName" value="${fullContact.secondName}"
-                           placeholder="${labels.get('second.name.placeholder')}" data-validation-type="string">
+                           placeholder="${labels.get('second.name.placeholder')}" data-validation-type="string20Chars">
                 </div>
 
                 <div class="jlab-form-item">
@@ -96,20 +96,20 @@
                 <div class="jlab-form-item">
                     <label for="edit-form-nationality">${labels.get('nationality')}</label>
                     <input id="edit-form-nationality" type="text" name="nationality" value="${fullContact.nationality}"
-                           placeholder="${labels.get('nationality.placeholder')}" data-validation-type="string">
+                           placeholder="${labels.get('nationality.placeholder')}" data-validation-type="string20Chars">
                 </div>
 
                 <div class="jlab-form-item">
-                    <label for="edit-form-martial-status">${labels.get('martial.status')}</label>
-                    <select id="edit-form-martial-status" name="martialStatus">
+                    <label for="edit-form-marital-status">${labels.get('marital.status')}</label>
+                    <select id="edit-form-marital-status" name="maritalStatus">
                         <option value=""> </option>
-                        <c:forEach items="${martialStatusList}" var="martialStatusType">
+                        <c:forEach items="${maritalStatusList}" var="maritalStatusType">
                             <c:choose>
-                                <c:when test="${martialStatusType eq fullContact.martialStatus}">
-                                    <option selected value="${martialStatusType}">${labels.get(martialStatusType)}</option>
+                                <c:when test="${maritalStatusType eq fullContact.maritalStatus}">
+                                    <option selected value="${maritalStatusType}">${labels.get(maritalStatusType)}</option>
                                 </c:when>
                                 <c:otherwise>
-                                    <option value="${martialStatusType}">${labels.get(martialStatusType)}</option>
+                                    <option value="${maritalStatusType}">${labels.get(maritalStatusType)}</option>
                                 </c:otherwise>
                             </c:choose>
                         </c:forEach>
@@ -131,7 +131,7 @@
                 <div class="jlab-form-item">
                     <label for="edit-form-company">${labels.get('company')}</label>
                     <input id="edit-form-company" type="text" name="currentJob" value="${fullContact.currentJob}"
-                           placeholder="${labels.get('company.placeholder')}" data-validation-type="string">
+                           placeholder="${labels.get('company.placeholder')}" data-validation-type="string30Chars">
                 </div>
 
 

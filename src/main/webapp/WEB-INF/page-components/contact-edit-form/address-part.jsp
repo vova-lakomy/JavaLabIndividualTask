@@ -12,13 +12,13 @@
         <div class="jlab-form-item">
             <label for="edit-form-country">${labels.get('country')}</label>
             <input id="edit-form-country" type="text" name="country" value="${fullContact.country}"
-                   placeholder="${labels.get('country.placeholder')}" data-validation-type="string">
+                   placeholder="${labels.get('country.placeholder')}" data-validation-type="string30Chars">
         </div>
 
         <div class="jlab-form-item">
             <label for="edit-form-town">${labels.get('town')}</label>
             <input id="edit-form-town" type="text" name="town" value="${fullContact.town}"
-                   placeholder="${labels.get('town.placeholder')}" data-validation-type="string">
+                   placeholder="${labels.get('town.placeholder')}" data-validation-type="string30Chars">
         </div>
 
         <div class="jlab-form-item">
@@ -31,7 +31,7 @@
         <div class="jlab-form-item">
             <label for="edit-form-street">${labels.get('street')}</label>
             <input id="edit-form-street" type="text" name="street" value="${fullContact.street}"
-                   placeholder="${labels.get('street.placeholder')}" data-validation-type="string">
+                   placeholder="${labels.get('street.placeholder')}" data-validation-type="string30Chars">
         </div>
 
         <div class="jlab-form-item">

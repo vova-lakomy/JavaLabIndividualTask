@@ -56,10 +56,10 @@ public class SearchCommand implements Command {
             request.setAttribute("path","contact-list-form.jsp");
         } else {
             Collection<String> sexList = contactRepository.getSexList();
-            Collection<String> martialStatusList = contactRepository.getMartialStatusList();
+            Collection<String> maritalStatusList = contactRepository.getMaritalStatusList();
 
             request.setAttribute("sexList", sexList);
-            request.setAttribute("martialStatusList", martialStatusList);
+            request.setAttribute("maritalStatusList", maritalStatusList);
             request.setAttribute("path","contact-search-form.jsp");
         }
 
@@ -78,7 +78,7 @@ public class SearchCommand implements Command {
         String birthDateAfter = defineDateAfter(request);
         String sex = request.getParameter("sex").toUpperCase();
         String nationality = trim(request.getParameter("nationality"));
-        String martialStatus = request.getParameter("martialStatus").toUpperCase();
+        String maritalStatus = request.getParameter("maritalStatus").toUpperCase();
         String country = trim(request.getParameter("country"));
         String town = trim(request.getParameter("town"));
         String street = trim(request.getParameter("street"));
@@ -108,7 +108,7 @@ public class SearchCommand implements Command {
         searchDTO.setDateOfBirthLessThan(birthDateBefore);
         searchDTO.setSex(sex);
         searchDTO.setNationality(nationality);
-        searchDTO.setMartialStatus(martialStatus);
+        searchDTO.setMaritalStatus(maritalStatus);
         searchDTO.setCountry(country);
         searchDTO.setTown(town);
         searchDTO.setStreet(street);

@@ -1,17 +1,32 @@
 (function () {
 
     var validations = {
-        stringRequired : function (node) {
-              return (new RegExp('^[^\x01-\x1F\x21-\x26\x28-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+$').test(node.value));
+        stringRequired20Chars : function (node) {
+              return (new RegExp('^[^\x01-\x1F\x21-\x26\x28-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]{1,20}$').test(node.value));
         },
-        string : function (node) {
-            return (new RegExp('^$|^[^\x01-\x1F\x21-\x26\x28-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+$').test(node.value));
+        string20Chars : function (node) {
+            return (new RegExp('^$|^[^\x01-\x1F\x21-\x26\x28-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]{1,20}$').test(node.value));
+        },
+        string30Chars : function (node) {
+            return (new RegExp('^$|^[^\x01-\x1F\x21-\x26\x28-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]{1,30}$').test(node.value));
+        },
+        string50Chars : function (node) {
+            return (new RegExp('^$|^[^\x01-\x1F\x21-\x26\x28-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]{1,50}$').test(node.value));
+        },
+        string100Chars : function (node) {
+            return (new RegExp('^$|^[^\x01-\x1F\x21-\x26\x28-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]{1,100}$').test(node.value));
+        },
+        string150Chars : function (node) {
+            return (new RegExp('^$|^[^\x01-\x1F\x21-\x26\x28-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]{1,150}$').test(node.value));
+        },
+        string200Chars : function (node) {
+            return (new RegExp('^$|^[^\x01-\x1F\x21-\x26\x28-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]{1,200}$').test(node.value));
         },
         email : function (node) {
             return new RegExp('^$|^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$').test(node.value);
         },
         url : function (node) {
-            return new RegExp('^$|([\/\w \.-]*)*').test(node.value);
+            return new RegExp('^$|^[\/\\w\.-:&=]{1,100}$').test(node.value);
         },
         zip : function (node) {
             return new RegExp('^$|^[0-9]{5,6}$').test(node.value);

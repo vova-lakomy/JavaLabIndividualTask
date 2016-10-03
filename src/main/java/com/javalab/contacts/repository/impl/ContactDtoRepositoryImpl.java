@@ -12,7 +12,7 @@ import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
 import com.javalab.contacts.model.ContactAttachment;
 import com.javalab.contacts.model.PhoneNumber;
-import com.javalab.contacts.model.enumerations.MartialStatus;
+import com.javalab.contacts.model.enumerations.MaritalStatus;
 import com.javalab.contacts.model.enumerations.PhoneType;
 import com.javalab.contacts.model.enumerations.Sex;
 import com.javalab.contacts.repository.ContactDtoRepository;
@@ -62,10 +62,10 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
             sexString = sex.name().toLowerCase();
         }
         String nationality = contact.getNationality();
-        MartialStatus martialStatus = contact.getMartialStatus();
-        String martialStatusString = null;
-        if (martialStatus != null) {
-            martialStatusString = martialStatus.name().toLowerCase();
+        MaritalStatus maritalStatus = contact.getMaritalStatus();
+        String maritalStatusString = null;
+        if (maritalStatus != null) {
+            maritalStatusString = maritalStatus.name().toLowerCase();
         }
         String webSite = contact.getWebSite();
         String eMail = contact.geteMail();
@@ -90,7 +90,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
         contactDTO.setYearOfBirth(year);
         contactDTO.setSex(sexString);
         contactDTO.setNationality(nationality);
-        contactDTO.setMartialStatus(martialStatusString);
+        contactDTO.setMaritalStatus(maritalStatusString);
         contactDTO.setWebSite(webSite);
         contactDTO.seteMail(eMail);
         contactDTO.setCurrentJob(currentJob);
@@ -117,7 +117,11 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
                 fileName = attachmentLink.substring(attachmentLink.lastIndexOf(File.separator) + 1);
             } else fileName = "no-name";
 
-            String uploadDate = attachment.getDateOfUpload().format(formatter);
+            String uploadDate = null;
+            LocalDate dateOfUpload = attachment.getDateOfUpload();
+            if (dateOfUpload != null) {
+                uploadDate = dateOfUpload.format(formatter);
+            }
             String comment = attachment.getAttachmentComment();
 
             AttachmentDTO attachmentDTO = new AttachmentDTO();
@@ -172,14 +176,14 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
         }
         String sexStr = contactDTO.getSex();
         Sex sex = null;
-        if (isNotBlank(sexStr)){
+        if (isNotBlank(sexStr)) {
             sex = Sex.valueOf(sexStr.toUpperCase());
         }
         String nationality = contactDTO.getNationality();
-        String martialStatusStr = contactDTO.getMartialStatus();
-        MartialStatus martialStatus = null;
-        if (isNotBlank(martialStatusStr)){
-            martialStatus = MartialStatus.valueOf(martialStatusStr.toUpperCase());
+        String maritalStatusStr = contactDTO.getMaritalStatus();
+        MaritalStatus maritalStatus = null;
+        if (isNotBlank(maritalStatusStr)) {
+            maritalStatus = MaritalStatus.valueOf(maritalStatusStr.toUpperCase());
         }
         String webSite = contactDTO.getWebSite();
         String eMail = contactDTO.geteMail();
@@ -198,7 +202,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
         contact.setDateOfBirth(dateOfBirth);
         contact.setSex(sex);
         contact.setNationality(nationality);
-        contact.setMartialStatus(martialStatus);
+        contact.setMaritalStatus(maritalStatus);
         contact.setWebSite(webSite);
         contact.seteMail(eMail);
         contact.setCurrentJob(currentJob);
@@ -224,9 +228,9 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
     }
 
     @Override
-    public Collection<String> getMartialStatusList() {
+    public Collection<String> getMaritalStatusList() {
         Collection<String> statusList = new ArrayList<>();
-        Arrays.stream(MartialStatus.values()).forEach(value -> statusList.add(value.name().toLowerCase()));
+        Arrays.stream(MaritalStatus.values()).forEach(value -> statusList.add(value.name().toLowerCase()));
         return statusList;
     }
 
@@ -238,12 +242,12 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
     }
 
     @Override
-    public String getPersonalLink(Integer id){
+    public String getPersonalLink(Integer id) {
         return contactDao.getPersonalLink(id);
     }
 
     @Override
-    public void setPersonalLink(String personalLink, Integer id){
+    public void setPersonalLink(String personalLink, Integer id) {
 //        contactDao.setPersonalLink(personalLink, id);
     }
 
@@ -270,7 +274,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
             secondName = "";
         }
         String fullName = contact.getLastName() + "<br/>"
-                + contact.getFirstName() + " "                + secondName;
+                + contact.getFirstName() + " " + secondName;
 
         LocalDate dateOfBirth = contact.getDateOfBirth();
         String dateOfBirthString = "-";
@@ -281,7 +285,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
         String stringAddress = "";
         if (contactAddress != null) {
             String street = contactAddress.getStreet();
-            if (street == null){
+            if (street == null) {
                 street = "";
             }
             Integer houseNumber = contactAddress.getHouseNumber();
@@ -313,12 +317,12 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
                     + town + ", "
                     + country + "<br/>"
                     + zipCodeString;
-            if (stringAddress.equals(", -<br/>, <br/>")){
+            if (stringAddress.equals(", -<br/>, <br/>")) {
                 stringAddress = "-";
             }
         }
         String company = contact.getCurrentJob();
-        if (company == null){
+        if (company == null) {
             company = "-";
         }
         String eMail = contact.geteMail();
@@ -360,7 +364,10 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
                     Integer id = attachment.getId();
                     String attachmentLink = attachment.getAttachmentLink();
                     String comment = attachment.getComment();
-                    LocalDate dateOfUpload = LocalDate.parse(attachment.getUploadDate());
+                    LocalDate dateOfUpload = null;
+                    if (attachment.getUploadDate() != null) {
+                        dateOfUpload = LocalDate.parse(attachment.getUploadDate());
+                    }
                     ContactAttachment contactAttachment = new ContactAttachment();
                     contactAttachment.setId(id);
                     contactAttachment.setAttachmentLink(attachmentLink);
