@@ -190,11 +190,11 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
 
     private void setSaveStatementParams(PreparedStatement statement, PhoneNumber phoneNumber, Integer contactId) throws SQLException {
         logger.debug("setting params to " + statement);
-        statement.setInt(1, phoneNumber.getCountryCode());
-        statement.setInt(2, phoneNumber.getOperatorCode());
-        statement.setInt(3, phoneNumber.getPhoneNumber());
+        statement.setObject(1, phoneNumber.getCountryCode());
+        statement.setObject(2, phoneNumber.getOperatorCode());
+        statement.setObject(3, phoneNumber.getPhoneNumber());
         statement.setString(4, phoneNumber.getPhoneType().name());
         statement.setString(5, phoneNumber.getPhoneComment());
-        statement.setInt(6, contactId);
+        statement.setObject(6, contactId);
     }
 }

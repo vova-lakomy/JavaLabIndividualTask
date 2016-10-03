@@ -104,6 +104,10 @@
                     }
                 } else return false;
             } else return false;
+        } else if (!d && !m && !y){
+            return true;
+        } else if (!d && !m && y){
+            return  true;
         } else return false;
     }
 

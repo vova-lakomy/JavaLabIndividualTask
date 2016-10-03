@@ -26,14 +26,14 @@ public class SearchCommand implements Command {
         if (request.getParameterMap().size() > 0){
             String query = request.getQueryString();
             String queryNoPage;
-            if (query.contains("pageNumber=")){
-                queryNoPage = query.substring(0, query.lastIndexOf("pageNumber=")-1);
+            if (query.contains("page=")){
+                queryNoPage = query.substring(0, query.lastIndexOf("page=")-1);
             } else {
                 queryNoPage = query;
             }
-            String searchQueryString = "search?" + queryNoPage + "&pageNumber=";
+            String searchQueryString = "search?" + queryNoPage + "&page=";
             int pageNumber = 1;
-            String strPageNumber = (trim(request.getParameter("pageNumber")));
+            String strPageNumber = (trim(request.getParameter("page")));
             if (isNotBlank(strPageNumber)){
                 pageNumber = Integer.valueOf(strPageNumber);
                 if (pageNumber < 1){
@@ -120,10 +120,12 @@ public class SearchCommand implements Command {
         String dayAfter = trim(request.getParameter("dayOfBirthAfter"));
         String monthAfter = trim(request.getParameter("monthOfBirthAfter"));
         String yearAfter =trim(request.getParameter("yearOfBirthAfter"));
-        if (!isNumeric(dayAfter) || !isNumeric(monthAfter) || !isNumeric(yearAfter)){
-            return null;
-        } else {
+        if (isNumeric(dayAfter) && isNumeric(monthAfter) && isNumeric(yearAfter)){
             return yearAfter + "-" + monthAfter + "-" + dayAfter;
+        } else if (!isNumeric(dayAfter) && !isNumeric(monthAfter) && isNumeric(yearAfter)){
+            return yearAfter + "-01-01";
+        } else {
+            return null;
         }
     }
 
@@ -131,10 +133,12 @@ public class SearchCommand implements Command {
         String dayBefore = trim(request.getParameter("dayOfBirthBefore"));
         String monthBefore = trim(request.getParameter("monthOfBirthBefore"));
         String yearBefore =trim(request.getParameter("yearOfBirthBefore"));
-        if (!isNumeric(dayBefore) || !isNumeric(monthBefore) || !isNumeric(yearBefore)){
-            return null;
-        } else {
+        if (isNumeric(dayBefore) && isNumeric(monthBefore) && isNumeric(yearBefore)){
             return yearBefore + "-" + monthBefore + "-" + dayBefore;
+        } else if (!isNumeric(dayBefore) && !isNumeric(monthBefore) && isNumeric(yearBefore)){
+            return yearBefore + "-01-01";
+        } else {
+            return null;
         }
     }
 }

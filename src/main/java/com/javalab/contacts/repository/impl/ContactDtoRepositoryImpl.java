@@ -167,6 +167,8 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
         LocalDate dateOfBirth = null;
         if (yearOfBirth != null && monthOfBirth != null && dayOfBirth != null) {
             dateOfBirth = LocalDate.of(yearOfBirth, monthOfBirth, dayOfBirth);
+        } else if (yearOfBirth != null && monthOfBirth == null && dayOfBirth == null) {
+            dateOfBirth = LocalDate.of(yearOfBirth, 1, 1);
         }
         String sexStr = contactDTO.getSex();
         Sex sex = null;

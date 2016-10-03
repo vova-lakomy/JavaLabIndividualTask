@@ -10,6 +10,3 @@ Happy New Year! Best wishes!
 merryChristmasTemplate(name) ::= <<
 Merry Christmas, %firstName%!!!
 >>
-weekendTemplate(name) ::= <<
-Have a nice weekend, %firstName%!!!
->>

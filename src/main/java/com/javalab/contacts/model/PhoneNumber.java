@@ -6,13 +6,13 @@ import com.javalab.contacts.model.enumerations.PhoneType;
 public class PhoneNumber {
 
     private Integer id;
-    private int countryCode;
-    private int operatorCode;
-    private int phoneNumber;
+    private Integer countryCode;
+    private Integer operatorCode;
+    private Integer phoneNumber;
     private PhoneType phoneType;
     private String phoneComment;
 
-    public int getCountryCode() {
+    public Integer getCountryCode() {
         return countryCode;
     }
 
@@ -24,23 +24,23 @@ public class PhoneNumber {
         this.id = id;
     }
 
-    public void setCountryCode(int countryCode) {
+    public void setCountryCode(Integer countryCode) {
         this.countryCode = countryCode;
     }
 
-    public int getOperatorCode() {
+    public Integer getOperatorCode() {
         return operatorCode;
     }
 
-    public void setOperatorCode(int operatorCode) {
+    public void setOperatorCode(Integer operatorCode) {
         this.operatorCode = operatorCode;
     }
 
-    public int getPhoneNumber() {
+    public Integer getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(Integer phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

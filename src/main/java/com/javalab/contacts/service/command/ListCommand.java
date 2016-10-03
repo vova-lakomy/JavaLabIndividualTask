@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
 import static org.apache.commons.lang3.StringUtils.isNumeric;
+import static org.apache.commons.lang3.StringUtils.trim;
 
 public class ListCommand implements Command{
     private static final Logger logger = LoggerFactory.getLogger(ListCommand.class);
@@ -20,6 +21,10 @@ public class ListCommand implements Command{
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response){
         String page = request.getParameter("page");
+        if (page == null){
+            page = (String) request.getSession().getAttribute("currentPage");
+        }
+        page = trim(page);
         int pageNumber = 1;
         if (isNumeric(page)){
             pageNumber = Integer.parseInt(page);

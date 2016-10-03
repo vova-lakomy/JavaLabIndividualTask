@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import static org.apache.commons.lang3.StringUtils.isNumeric;
+import static org.apache.commons.lang3.StringUtils.trim;
 
 
 public class DeleteContactCommand implements Command {
@@ -35,22 +36,30 @@ public class DeleteContactCommand implements Command {
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
             for (String stringId: selectedIds){
+                stringId = trim(stringId);
                 Integer id = null;
                 if(isNumeric(stringId)){
                     id = Integer.parseInt(stringId);
                 }
-                String personalDir = contactRepository.getPersonalLink(id);
-                if (personalDir != null) {
-                    File personalDirFullPath = new File(uploadsFullPath + personalDir);
-                    try {
-                        FileUtils.deleteDirectory(personalDirFullPath);
-                    } catch (IOException e) {
-                        logger.error("{}",e);
+                if (id != null) {
+                    String personalDir = contactRepository.getPersonalLink(id);
+                    if (personalDir != null) {
+                        File personalDirFullPath = new File(uploadsFullPath + personalDir);
+                        try {
+                            FileUtils.deleteDirectory(personalDirFullPath);
+                        } catch (IOException e) {
+                            logger.error("{}",e);
+                        }
                     }
+                    contactRepository.delete(id);
+                } else {
+                    logger.debug("selected id is 'null' can not perform delete");
                 }
-                contactRepository.delete(id);
             }
         }
+        request.getSession().setAttribute("messageKey","message.contact.delete");
+        request.getSession().setAttribute("showMessage","true");
+        request.getSession().setAttribute("currentPage",request.getParameter("currentPage"));
         try {
             response.sendRedirect("list");
         } catch (IOException e) {

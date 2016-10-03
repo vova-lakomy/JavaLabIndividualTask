@@ -29,6 +29,8 @@ import java.util.regex.Pattern;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
+import static org.apache.commons.lang3.StringUtils.trim;
 
 public class MailCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(MailCommand.class);
@@ -46,14 +48,20 @@ public class MailCommand implements Command {
         if (selectedIds != null) {
             Collection<ContactShortDTO> contactShortDTOs = new ArrayList<>();
             for (String stringId : selectedIds){
-                Integer id = Integer.parseInt(stringId);
-                ContactShortDTO contactShortDTO = repository.getContactShortDTO(id);
-                contactShortDTOs.add(contactShortDTO);
+                stringId = trim(stringId);
+                Integer id;
+                if(isNumeric(stringId)){
+                    id = Integer.parseInt(stringId);
+                    ContactShortDTO contactShortDTO = repository.getContactShortDTO(id);
+                    contactShortDTOs.add(contactShortDTO);
+                }
             }
             request.setAttribute("emailContacts", contactShortDTOs);
             request.setAttribute("path", "contact-email-form.jsp");
         } else if (request.getParameterValues("mailTo") != null) {
             sendMails(request);
+            request.getSession().setAttribute("messageKey","message.email.sent");
+            request.getSession().setAttribute("showMessage","true");
             try {
                 response.sendRedirect("list");
                 return;

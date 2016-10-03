@@ -65,23 +65,28 @@ select{
     width: 70%;
     margin-left: 10px;
 }
-.jlab-date-field input[type="text"]{
+.jlab-date-field select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 4px;
     border-radius: 0;
-    width: 33%;
+    width: 30%;
     margin: 0;
     float: left;
 }
-.jlab-date-field input[type="text"]:first-child{
+.jlab-date-field select:first-child{
     border-right-style: none;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
+    width: 30%;
 }
-.jlab-date-field input[type="text"]:last-child{
+.jlab-date-field select:last-child{
+    width: 40%;
     border-left-style: none;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
-.jlab-date-field.jlab-not-valid input[type="text"]{
+.jlab-date-field.jlab-not-valid select{
     border-color: #ed1c24 !important;
     outline-color: #ed1c24;
 }
@@ -94,6 +99,10 @@ select{
 .jlab-header-caption-red{
     font-size: 20px;
     font-weight: 900;
+    color: #ed1c24;
+}
+
+.jlab-required{
     color: #ed1c24;
 }
 
@@ -115,15 +124,26 @@ select{
     margin-left: 25px;
 }
 .jlab-locale-select a{
-    color: #383838;
+    color: black;
     font-weight: 600;
 }
 .jlab-locale-select .jlab-selected-locale{
     color: #ed1c24;
 }
+
+.jlab-home-page-link{
+    color: black;
+    padding-left: 30px;
+    font-weight: 900;
+}
+.jlab-home-page-link:active{
+    color: #ed1c24;
+}
+
 .jlab-header-panel a{
     text-decoration: none;
 }
+
 .jlab-margin-top-70{
     margin-top: 70px;
 }
@@ -269,6 +289,35 @@ select{
     background-color: rgba(0, 0, 0, 0.37);
     z-index: 2;
 }
+
+.jlab-message-overlay {
+    transition: opacity, 700ms;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(179, 179, 179, 0.15);
+    /*z-index: 1;*/
+}
+
+.jlab-message-container{
+    min-height: 180px;
+    background-color: rgba(56, 56, 56, 0.12);
+    text-align: center;
+    max-width: 470px;
+    margin: 97px auto auto;
+    padding: 70px 30px 10px;
+    border-radius: 3px;
+    border: 1px solid grey;
+    font-size: 40px;
+    color: white;
+    font-weight: 900;
+    text-shadow: 0 0 1px black;
+    width: 100%;
+
+}
+
 .jlab-hidden{
     display: none !important;
 }
@@ -413,5 +462,5 @@ select{
     text-align: left;
 }
 #not-submitted-caption{
-    margin-top: 220px;
+    margin-top: 180px;
 }

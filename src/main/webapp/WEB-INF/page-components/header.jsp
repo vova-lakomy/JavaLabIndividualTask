@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <c:set var="rootContext" value="${pageContext.request.contextPath}/" scope="session"/>
 <c:set var="labels" value="${labels}" scope="session"/>
 <c:set var="locale" value="${localeKey}"/>
@@ -16,11 +17,14 @@
     <script type="application/javascript" src="${rootContext}resources/js/dom-utils.js"></script>
 </head>
 <body>
+
+<div>${currentPage}</div>
 <header class="jlab-header-panel">
     <a href="${rootContext}index.jsp">
         <span class="jlab-header-caption-red">J</span><span class="jlab-header-caption-black">avaLab2016</span>
         <span class="jlab-header-caption-red">ContactsList</span>
     </a>
+
 
     <span class="jlab-locale-select">
            <c:choose>
@@ -36,7 +40,10 @@
         <a id="localeSelectRu" class="${ruClass}" href="setLocale?localeKey=ru">RU</a>
     </span>
 
+    <a class="jlab-home-page-link" href="${rootContext}index.jsp">${labels.get('go.home')}</a>
+
 </header>
 <div class="jlab-margin-top-70">
 </div>
+<jsp:include page="message-container.jsp"/>
 

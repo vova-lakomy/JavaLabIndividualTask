@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div id="modal-upload-photo" class="jlab-modal-container jlab-fade">
@@ -7,7 +8,14 @@
 
             <li class="jlab-row">
                 <div class="jlab-cell-12">
-                    <a href="${rootContext}${fullContact.photoLink}" class="jlab-button" download>${labels.get('download.image')}</a>
+                    <c:choose>
+                        <c:when test="${fullContact.photoLink eq null}">
+                            <button class="jlab-button" disabled>${labels.get('download.image')}</button>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${rootContext}${fullContact.photoLink}" class="jlab-button" download>${labels.get('download.image')}</a>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </li>
 
@@ -29,7 +37,7 @@
 
 
         <div class="jlab-pull-right jlab-button-block">
-            <button id="button-upload-photo" type="button" class="jlab-button">${labels.get('save')}</button>
+            <button id="button-upload-photo" type="button" class="jlab-button">${labels.get('ok')}</button>
             <button id="button-cancel-upload-photo" type="button" class="jlab-button">${labels.get('cancel')}</button>
         </div>
 

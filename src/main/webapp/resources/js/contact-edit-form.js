@@ -61,7 +61,9 @@
         if (fileInputNode.files.length){
             var image = fileInputNode.files[0];
             showImageThumbnail(image);
-            toggleClass($('#main-photo-blind'), 'jlab-fade');
+            if (hasClass($('#main-photo-blind'),'jlab-fade')){
+                removeClass($('#main-photo-blind'),'jlab-fade');
+            }
         }
     }
 

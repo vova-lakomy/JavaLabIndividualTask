@@ -9,13 +9,13 @@
             <div class="jlab-cell-6">
                 <div class="jlab-form-item">
                     <input class="jlab-hidden" name="contactId" value="${fullContact.id}">
-                    <label for="edit-form-first-name">${labels.get('first.name')}</label>
+                    <label for="edit-form-first-name">${labels.get('first.name')}<span class="jlab-required">*</span></label>
                     <input id="edit-form-first-name" type="text" name="firstName" value="${fullContact.firstName}"
                         placeholder="${labels.get('first.name.placeholder')}" data-validation-type="stringRequired" required/>
                 </div>
 
                 <div class="jlab-form-item">
-                    <label for="edit-form-last-name">${labels.get('last.name')}</label>
+                    <label for="edit-form-last-name">${labels.get('last.name')}<span class="jlab-required">*</span></label>
                     <input id="edit-form-last-name" type="text" name="lastName" value="${fullContact.lastName}"
                            placeholder="${labels.get('last.name.placeholder')}" data-validation-type="stringRequired" required>
                 </div>
@@ -29,12 +29,46 @@
                 <div class="jlab-form-item">
                     <label for="edit-form-birth-day">${labels.get('birth.date')}</label>
                     <div id="date-field" class="jlab-date-field" data-date-block="true">
-                        <input id="edit-form-birth-day" type="text" placeholder="${labels.get('day')}" title="${labels.get('day')}y" name="dayOfBirth"
-                               value="${fullContact.dayOfBirth}" data-date-part="day">
-                        <input id="edit-form-birth-month" type="text" placeholder="${labels.get('month')}" title="${labels.get('month')}" name="monthOfBirth"
-                               value="${fullContact.monthOfBirth}" data-date-part="month">
-                        <input id="edit-form-birth-year" type="text" placeholder="${labels.get('year')}" title="${labels.get('year')}" name="yearOfBirth"
-                               value="${fullContact.yearOfBirth}" data-date-part="year">
+                        <select class="jlab-date-field-item" id="edit-form-birth-day" title="${labels.get('day')}" name="dayOfBirth" data-date-part="day">
+                            <option value="">${labels.get('day')}</option>
+                          <c:forEach var="dayOfMonth" begin="1" end="31">
+                              <c:choose>
+                                  <c:when test="${dayOfMonth == fullContact.dayOfBirth}">
+                                      <option selected value="${dayOfMonth}">${dayOfMonth}</option>
+                                  </c:when>
+                                  <c:otherwise>
+                                      <option value="${dayOfMonth}">${dayOfMonth}</option>
+                                  </c:otherwise>
+                              </c:choose>
+                          </c:forEach>
+                        </select>
+                        <select class="jlab-date-field-item" id="edit-form-birth-month" title="${labels.get('month')}" name="monthOfBirth" data-date-part="month">
+                            <option value="">${labels.get('month')}</option>
+                            <c:forEach var="monthNumber" begin="1" end="12">
+                                <c:choose>
+                                    <c:when test="${monthNumber == fullContact.monthOfBirth}">
+                                        <option selected value="${monthNumber}">${monthNumber}</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="${monthNumber}">${monthNumber}</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </select>
+                        <select class="jlab-date-field-item" id="edit-form-birth-year" title="${labels.get('year')}" name="yearOfBirth" data-date-part="year">
+                            <option value="">${labels.get('year')}</option>
+                            <c:forEach var="i" begin="1936" end="2016">
+                                <c:set var="year" value="${2016 - i + 1936}"/>
+                                <c:choose>
+                                    <c:when test="${year == fullContact.yearOfBirth}">
+                                        <option selected value="${year}">${year}</option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="${year}">${year}</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </select>
                     </div>
                 </div>
 

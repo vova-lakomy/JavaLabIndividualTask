@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="jlab-main-content-container">
-    <form class="jlab-main-content jlab-main-list" method="post" data-form-name="contactForm">
+    <form id="contact-list-form" class="jlab-main-content jlab-main-list" method="post" data-form-name="contactForm">
         <jsp:include page="page-components/contacts-list-form/top-navigation-bar.jsp"/>
         <ul>
             <li>
@@ -34,7 +34,9 @@
                 <jsp:include page="page-components/contacts-list-form/bottom-navigation-bar.jsp"/>
             </li>
         </ul>
+        <input class="jlab-hidden" value="${currentPage}" name="currentPage">
     </form>
 </div>
 <script type="text/javascript" src="${rootContext}resources/js/paginator.js"></script>
+<script type="text/javascript" src="${rootContext}resources/js/contact-list-form.js"></script>
 

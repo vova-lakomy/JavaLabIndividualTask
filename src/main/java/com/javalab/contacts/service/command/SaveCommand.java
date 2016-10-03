@@ -33,6 +33,8 @@ public class SaveCommand implements Command {
 
         ContactFullDTO contact = getContactDtoFromRequest(request,response);
         Integer returnedId = repository.saveContact(contact);
+        request.getSession().setAttribute("messageKey","message.contact.saved");
+        request.getSession().setAttribute("showMessage","true");
 
         try {
             response.sendRedirect("edit?contactId=" + returnedId);

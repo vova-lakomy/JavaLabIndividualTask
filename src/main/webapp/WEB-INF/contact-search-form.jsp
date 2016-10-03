@@ -23,31 +23,57 @@
 
                         <div class="jlab-form-item">
                             <label for="search-form-second-name">${labels.get('second.name')}</label>
-                            <input id="search-form-second-name" type="text" name="secondtName" value=""
+                            <input id="search-form-second-name" type="text" name="secondName" value=""
                                    placeholder="${labels.get('second.name.placeholder')}" data-validation-type="string">
                         </div>
 
                         <div class="jlab-form-item">
                             <label for="search-form-birth-day-after">${labels.get('birth.date.after')}</label>
                             <div class="jlab-date-field" data-date-block="true">
-                                <input id="search-form-birth-day-after" type="text" placeholder="${labels.get('day')}" title="${labels.get('day')}"
-                                       name="dayOfBirthAfter" value="" data-date-part="day">
-                                <input id="search-form-birth-month-after" type="text" placeholder="${labels.get('month')}" title="${labels.get('month')}"
-                                       name="monthOfBirthAfter" value="" data-date-part="month">
-                                <input id="search-form-birth-year-after" type="text" placeholder="${labels.get('year')}" title="${labels.get('year')}"
-                                       name="yearOfBirthAfter" value="" data-date-part="year">
+                                <select class="jlab-date-field-item" id="search-form-birth-day-after" title="${labels.get('day')}" name="dayOfBirthAfter" data-date-part="day">
+                                    <option value="">${labels.get('day')}</option>
+                                    <c:forEach var="dayOfMonth" begin="1" end="31">
+                                            <option value="${dayOfMonth}">${dayOfMonth}</option>
+                                    </c:forEach>
+                                </select>
+                                <select class="jlab-date-field-item" id="search-form-birth-month-after" title="${labels.get('month')}" name="monthOfBirthAfter" data-date-part="month">
+                                    <option value="">${labels.get('month')}</option>
+                                    <c:forEach var="monthNumber" begin="1" end="12">
+                                            <option value="${monthNumber}">${monthNumber}</option>
+                                    </c:forEach>
+                                </select>
+                                <select class="jlab-date-field-item" id="search-form-birth-year-after" title="${labels.get('year')}" name="yearOfBirthAfter" data-date-part="year">
+                                    <option value="">${labels.get('year')}</option>
+                                    <c:forEach var="i" begin="1936" end="2016">
+                                        <c:set var="year" value="${2016 - i + 1936}"/>
+                                            <option value="${year}">${year}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
                         </div>
 
                         <div class="jlab-form-item">
                             <label for="search-form-birth-day-before">${labels.get('birth.date.before')}</label>
                             <div class="jlab-date-field" data-date-block="true">
-                                <input id="search-form-birth-day-before" type="text" placeholder="${labels.get('day')}" title="${labels.get('day')}"
-                                       name="dayOfBirthBefore" value="" data-date-part="day">
-                                <input id="search-form-birth-month-before" type="text" placeholder="${labels.get('month')}" title="${labels.get('month')}"
-                                       name="monthOfBirthBefore" value="" data-date-part="month">
-                                <input id="search-form-birth-year-before" type="text" placeholder="${labels.get('year')}" title="${labels.get('year')}"
-                                       name="yearOfBirthBefore" value="" data-date-part="year">
+                                <select class="jlab-date-field-item" id="search-form-birth-day-before" title="${labels.get('day')}" name="dayOfBirthBefore" data-date-part="day">
+                                    <option value="">${labels.get('day')}</option>
+                                    <c:forEach var="dayOfMonth" begin="1" end="31">
+                                        <option value="${dayOfMonth}">${dayOfMonth}</option>
+                                    </c:forEach>
+                                </select>
+                                <select class="jlab-date-field-item" id="search-form-birth-month-before" title="${labels.get('month')}" name="monthOfBirthBefore" data-date-part="month">
+                                    <option value="">${labels.get('month')}</option>
+                                    <c:forEach var="monthNumber" begin="1" end="12">
+                                        <option value="${monthNumber}">${monthNumber}</option>
+                                    </c:forEach>
+                                </select>
+                                <select class="jlab-date-field-item" id="search-form-birth-year-before" title="${labels.get('year')}" name="yearOfBirthBefore" data-date-part="year">
+                                    <option value="">${labels.get('year')}</option>
+                                    <c:forEach var="i" begin="1936" end="2016">
+                                        <c:set var="year" value="${2016 - i + 1936}"/>
+                                        <option value="${year}">${year}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
                         </div>
 
