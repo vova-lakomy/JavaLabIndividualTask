@@ -22,23 +22,12 @@ public class ListCommand implements Command{
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response){
+        logger.debug("executing List command");
         labelsManager.setLocaleLabelsToSession(request.getSession());
-        String page = request.getParameter("page");
-        if (page == null){
-            page = (String) request.getSession().getAttribute("currentPage");
-        }
-        page = trim(page);
-        int pageNumber = 1;
-        if (isNumeric(page)){
-            pageNumber = Integer.parseInt(page);
-            if (pageNumber < 1){
-                pageNumber = 1;
-            }
-        }
+        Integer pageNumber = definePageNumber(request);
+        logger.debug("defined page - {}", pageNumber);
         Collection<ContactShortDTO> contactList = contactRepository.getContactsList(pageNumber-1);
-        Integer recordsFound = contactRepository.getNumberOfRecordsFound();
-        Integer rowsPerPage = contactRepository.getRowsPePageCount();
-        int numberOfPages = (int) Math.ceil(recordsFound*1.00/rowsPerPage);
+        Integer numberOfPages =  calculateNumberOfPages();
         if (pageNumber > numberOfPages){
             pageNumber = numberOfPages;
             contactList = contactRepository.getContactsList(pageNumber-1);
@@ -52,5 +41,33 @@ public class ListCommand implements Command{
         } catch (Exception e) {
             logger.error("{}",e);
         }
+    }
+
+    private Integer definePageNumber(HttpServletRequest request){
+        String page = request.getParameter("page");
+        if (page == null){
+            page = (String) request.getSession().getAttribute("currentPage");
+        }
+        page = trim(page);
+        int pageNumber = 1;
+        if (isNumeric(page)){
+            try {
+                pageNumber = Integer.parseInt(page);
+            } catch (NumberFormatException e){
+                pageNumber = 1;
+            }
+            if (pageNumber < 1){
+                pageNumber = 1;
+            }
+        }
+        return pageNumber;
+    }
+
+    private Integer calculateNumberOfPages(){
+        logger.debug("calculating total number of pages");
+        Integer recordsFound = contactRepository.getNumberOfRecordsFound();
+        Integer rowsPerPage = contactRepository.getRowsPePageCount();
+        int numberOfPages = (int) Math.ceil(recordsFound*1.00/rowsPerPage);
+        return numberOfPages;
     }
 }

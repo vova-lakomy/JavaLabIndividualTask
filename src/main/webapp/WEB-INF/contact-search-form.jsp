@@ -12,19 +12,19 @@
                         <div class="jlab-form-item">
                             <label for="search-form-last-name">${labels.get('last.name')}</label>
                             <input id="search-form-last-name" type="text" name="lastName" value=""
-                                   placeholder="${labels.get('last.name.placeholder')}" data-validation-type="string">
+                                   placeholder="${labels.get('last.name.placeholder')}" data-validation-type="string20Chars">
                         </div>
 
                         <div class="jlab-form-item">
                             <label for="search-form-first-name">${labels.get('first.name')}</label>
                             <input id="search-form-first-name" type="text" name="firstName" value=""
-                                   placeholder="${labels.get('first.name.placeholder')}" data-validation-type="string">
+                                   placeholder="${labels.get('first.name.placeholder')}" data-validation-type="string20Chars">
                         </div>
 
                         <div class="jlab-form-item">
                             <label for="search-form-second-name">${labels.get('second.name')}</label>
                             <input id="search-form-second-name" type="text" name="secondName" value=""
-                                   placeholder="${labels.get('second.name.placeholder')}" data-validation-type="string">
+                                   placeholder="${labels.get('second.name.placeholder')}" data-validation-type="string20Chars">
                         </div>
 
                         <div class="jlab-form-item">
@@ -90,7 +90,7 @@
                         <div class="jlab-form-item">
                             <label for="search-form-nationality">${labels.get('nationality')}</label>
                             <input id="search-form-nationality" type="text" name="nationality"
-                                   placeholder="${labels.get('nationality.placeholder')}" data-validation-type="string">
+                                   placeholder="${labels.get('nationality.placeholder')}" data-validation-type="string30Chars">
                         </div>
 
                     </div>
@@ -108,13 +108,13 @@
                         <div class="jlab-form-item">
                             <label for="search-form-country">${labels.get('country')}</label>
                             <input id="search-form-country" type="text" name="country" value=""
-                                   placeholder="${labels.get('country.placeholder')}" data-validation-type="string">
+                                   placeholder="${labels.get('country.placeholder')}" data-validation-type="string30Chars">
                         </div>
 
                         <div class="jlab-form-item">
                             <label for="search-form-town">${labels.get('town')}</label>
                             <input id="search-form-town" type="text" name="town" value=""
-                                   placeholder="${labels.get('town.placeholder')}" data-validation-type="string">
+                                   placeholder="${labels.get('town.placeholder')}" data-validation-type="string30Chars">
                         </div>
 
                         <div class="jlab-form-item">
@@ -127,7 +127,7 @@
                         <div class="jlab-form-item">
                             <label for="search-form-street">${labels.get('street')}</label>
                             <input id="search-form-street" type="text" name="street" value=""
-                                   placeholder="${labels.get('street.placeholder')}" data-validation-type="string">
+                                   placeholder="${labels.get('street.placeholder')}" data-validation-type="string30Chars">
                         </div>
 
                         <div class="jlab-form-item">

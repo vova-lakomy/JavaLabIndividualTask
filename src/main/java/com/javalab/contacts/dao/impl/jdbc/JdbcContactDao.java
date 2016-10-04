@@ -492,7 +492,7 @@ public class JdbcContactDao implements ContactDao {
                     query.append(fieldValue);
                     query.append("' ");
                 }
-            } else if (isNotBlank((String) fieldValue)) {
+            } else if (isNotBlank(String.valueOf(fieldValue)) && !String.valueOf(fieldValue).equals("null")) {
                 query.append(" AND ");
                 query.append(convertFieldNameToTableName(fieldName));
                 query.append(" LIKE '");

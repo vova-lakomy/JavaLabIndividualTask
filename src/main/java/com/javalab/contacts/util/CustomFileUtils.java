@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Random;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public final class CustomFileUtils {
@@ -28,13 +29,13 @@ public final class CustomFileUtils {
         return file.exists() && file.delete();
     }
 
-    public static boolean renameFile(File oldFile, File newFile){
+    public static boolean renameFile(File oldFile, File newFile) {
         logger.debug("trying to rename files {} >> {}", oldFile, newFile);
         return oldFile.renameTo(newFile);
     }
 
-    public static String generateRandomString(int charsCount){
-        logger.debug("generating random string with {} chars",charsCount);
+    public static String generateRandomString(int charsCount) {
+        logger.debug("generating random string with {} chars", charsCount);
         StringBuilder stringBuilder = new StringBuilder("-");
         Random random = new Random();
         for (int i = 0; i < charsCount; i++) {
@@ -48,17 +49,17 @@ public final class CustomFileUtils {
         String contactIdString = request.getParameter("contactId");
         logger.debug("defining personal directory for contact with id");
         String personalLink = null;
-        if (isNotBlank(contactIdString)){
+        if (isNotBlank(contactIdString)) {
             Integer contactId = Integer.parseInt(contactIdString);
             personalLink = repository.getPersonalLink(contactId);
         }
-        if (personalLink == null){
+        if (personalLink == null) {
             personalLink = (String) request.getAttribute("personalLink");
         }
-        if (personalLink == null){
+        if (personalLink == null) {
             personalLink = request.getParameter("lastName")
                     + generateRandomString(RANDOM_STRING_CHARS_COUNT);
-            request.setAttribute("personalLink",personalLink);
+            request.setAttribute("personalLink", personalLink);
         }
         return personalLink;
     }
@@ -73,15 +74,33 @@ public final class CustomFileUtils {
         }
     }
 
-    public static String defineAttachmentFileName(HttpServletRequest request, String attachmentIndex) {
-        return request.getParameter("attachmentFileName-" + attachmentIndex);
+    public static String defineAttachmentUploadPath(HttpServletRequest request, String attachmentIndex, String saveDir) {
+        String fileNameFromRequest = request.getParameter("attachmentFileName-" + attachmentIndex);
+        if (isBlank(fileNameFromRequest)) {
+            fileNameFromRequest = "no-name";
+        }
+        File resultFile = new File(saveDir + fileNameFromRequest);
+        while (resultFile.exists()) {
+            String ext = "";
+            String fileNameWithoutExt;
+            if (fileNameFromRequest.lastIndexOf(".") > 0) {
+                ext = fileNameFromRequest.substring(fileNameFromRequest.lastIndexOf('.'));
+                fileNameWithoutExt = fileNameFromRequest.substring(0, fileNameFromRequest.lastIndexOf('.'));
+            } else {
+                fileNameWithoutExt = fileNameFromRequest;
+            }
+            fileNameFromRequest = fileNameWithoutExt + "(1)" + ext;
+            resultFile = new File(saveDir + fileNameFromRequest);
+        }
+
+        return fileNameFromRequest;
     }
 
     public static void writePartToDisk(Part part, String fullUploadPath) {
         try {
             part.write(fullUploadPath);
         } catch (IOException e) {
-            logger.error("",e);
+            logger.error("", e);
         }
     }
 

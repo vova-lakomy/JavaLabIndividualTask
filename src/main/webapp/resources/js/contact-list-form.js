@@ -1,33 +1,33 @@
 (function () {
 
-    function handleListFormClick(e){
+    function handleListFormClick(e) {
         var checkboxes = $all('[data-is-checkbox="true"]:checked');
-        if (checkboxes.length > 0){
+        if (checkboxes.length > 0) {
             enableMenuButtons();
         } else {
             disableMenuButtons();
         }
     }
 
-    function handleContactRowClick(e){
+    function handleContactRowClick(e) {
         var clickedElement = e.target;
-        if (isElementCheckBox(clickedElement)){
-            if (clickedElement.checked){
+        if (isElementCheckBox(clickedElement)) {
+            if (clickedElement.checked) {
                 setBackGroundChecked(clickedElement);
             } else {
                 removeBackGroundChecked(clickedElement);
             }
         } else {
             var contactRow = e.target.parentNode.parentNode;
-            if (contactRow.getAttribute('data-contact-row') === 'true'){
+            if (contactRow.getAttribute('data-contact-row') === 'true') {
                 toggleCheckedState(contactRow.children[0]);
             }
         }
     }
 
     function toggleCheckedState(element) {
-        if (isElementCheckBox(element)){
-            if (element.checked){
+        if (isElementCheckBox(element)) {
+            if (element.checked) {
                 removeBackGroundChecked(element);
                 element.checked = false;
             } else {
@@ -39,7 +39,7 @@
 
     function isElementCheckBox(element) {
         var elementType = element.getAttribute('type');
-        if (elementType){
+        if (elementType) {
             elementType = elementType.toLowerCase();
             return elementType === 'checkbox';
         } else {
@@ -47,9 +47,9 @@
         }
     }
 
-    function setBackGroundChecked(element){
-        setCSS(element.parentNode.parentNode,'background-color','#c1c1c1');
-        setCSS(element.parentNode.parentNode,'outline','1px solid grey');
+    function setBackGroundChecked(element) {
+        setCSS(element.parentNode.parentNode, 'background-color', '#c1c1c1');
+        setCSS(element.parentNode.parentNode, 'outline', '1px solid grey');
     }
 
     function removeBackGroundChecked(element) {
@@ -67,10 +67,18 @@
         $('#delete-contact').removeAttribute('disabled');
     }
 
+    function handleKeyDown(e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $('#page-selector-go-button').click();
+        }
+    }
+
 // listeners
+    $('#contact-list-form').addEventListener('keydown', handleKeyDown, false);
     $('#contact-list-form').addEventListener('click', handleListFormClick, false);
     var contactRows = $all('[data-contact-row="true"]');
-    for (var i = 0; i < contactRows.length; i++){
+    for (var i = 0; i < contactRows.length; i++) {
         contactRows[i].addEventListener('click', handleContactRowClick, false);
     }
 })();

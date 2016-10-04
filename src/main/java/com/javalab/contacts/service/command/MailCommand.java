@@ -43,13 +43,17 @@ public class MailCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+        logger.debug("executing Mail Command");
         labelsManager.setLocaleLabelsToSession(request.getSession());
         Map<String, String> templates = stringTemplates.getTemplateMap();
         request.setAttribute("templates", templates);
 
+        logger.debug("searching for selected checkboxes");
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
+            logger.debug("found {} checkboxes",selectedIds.length);
             Collection<ContactShortDTO> contactShortDTOs = new ArrayList<>();
+            logger.debug("retrieving info abot checked contacts");
             for (String stringId : selectedIds){
                 stringId = trim(stringId);
                 Integer id;
@@ -62,6 +66,7 @@ public class MailCommand implements Command {
             request.setAttribute("emailContacts", contactShortDTOs);
             request.setAttribute("path", "contact-email-form.jsp");
         } else if (request.getParameterValues("mailTo") != null) {
+            logger.debug("trying to send emails");
             sendMails(request);
             request.getSession().setAttribute("messageKey","message.email.sent");
             request.getSession().setAttribute("showMessage","true");
@@ -83,10 +88,12 @@ public class MailCommand implements Command {
     }
 
     private void sendMails(HttpServletRequest request) {
+        logger.debug("defining letter fields");
         String mailSubject = request.getParameter("mailSubject");
         if (isBlank(mailSubject)) {
             mailSubject = "(No subject)";
         }
+        logger.debug("creating map recipient -> message");
         Map<Address, String> messageMap = mapMessagesToAddresses(request);
         for (Map.Entry<Address, String> entry : messageMap.entrySet()) {
             Address address = entry.getKey();
@@ -103,6 +110,7 @@ public class MailCommand implements Command {
             try {
                 String stringAddress = entry.getKey();
                 address = new InternetAddress(stringAddress);
+                logger.debug("created internet address {}",address);
             } catch (AddressException e) {
                 logger.error("{}", e);
             }
@@ -114,12 +122,14 @@ public class MailCommand implements Command {
     }
 
     private String defineMailMessage(HttpServletRequest request, Integer contactId) {
+        logger.debug("creating letter body");
         String message = request.getParameter("mailText");
         if (isBlank(message)) {
             message = "";
         } else if (contactId != null) {
             List<String> templateParams = defineTemplateParams(message);
             if (templateParams.size() > 0){
+                logger.debug("creating text template");
                 ST template = createStringTemplate(message);
                 Map<String, Object> parameterMap = definePossibleParamValues(contactId);
                 templateParams.forEach(param -> {
@@ -164,6 +174,7 @@ public class MailCommand implements Command {
     }
 
     private Map<String, Integer> getAddressesMapFromRequest(HttpServletRequest request) {
+        logger.debug("retrieving addresses from request");
         Map<String, Integer> emailMap = new HashMap<>();
         String[] mailTo = request.getParameterValues("mailTo");
         String[] mailToIds = request.getParameterValues("mailToId");

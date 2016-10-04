@@ -1,6 +1,7 @@
 package com.javalab.contacts.web;
 
-import com.javalab.contacts.service.AppController;
+import com.javalab.contacts.service.CommandHelper;
+import com.javalab.contacts.service.command.Command;
 import com.javalab.contacts.util.PropertiesProvider;
 import com.javalab.contacts.util.QuartzScheduler;
 import org.quartz.Scheduler;
@@ -17,7 +18,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.LinkedHashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
 
@@ -27,7 +30,7 @@ public class FrontServlet extends HttpServlet {
 
 
     private static final Logger logger = LoggerFactory.getLogger(FrontServlet.class);
-    private AppController appController = new AppController();
+    private CommandHelper commandHelper = new CommandHelper();
     private Properties properties = PropertiesProvider.getInstance().getScriptLoaderProperties();
     private Scheduler scheduler;
 
@@ -37,7 +40,7 @@ public class FrontServlet extends HttpServlet {
         super.init(config);
         Boolean shouldLoadScript = Boolean.valueOf(properties.getProperty("load.scripts.at.start"));
         if(shouldLoadScript){
-            loadScript(getServletContext().getRealPath("./WEB-INF/classes/initDB.sql"));    //// FIXME: 29.09.16
+            loadScript(getServletContext().getRealPath("./WEB-INF/classes/initDB.sql"));
             loadScript(getServletContext().getRealPath("./WEB-INF/classes/populateDB.sql"));
         }
         try {
@@ -56,16 +59,51 @@ public class FrontServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("utf-8");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("received request method get");
+        processRequest(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("received request method post");
+        processRequest(req, resp);
+    }
+
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        request.setCharacterEncoding("utf-8");
         try {
-            checkForExceededSize(req);
+            checkForExceededSize(request);
         } catch (Exception e) {
             logger.error("{}",e);
-            resp.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE,"File size exceeds maximum allowed");
+            response.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE,"File size exceeds maximum allowed");
             return;
         }
-        appController.processRequest(req,resp);
+
+        Set<String> commandKeys = new LinkedHashSet<>();
+        String[] optionalCommands = request.getParameterValues("optionalCommand");
+        if (optionalCommands != null) {
+            for (String commandKey : optionalCommands) {
+                logger.debug("adding {} to command keys", commandKey);
+                commandKeys.add(commandKey);
+            }
+        }
+        String mainCommand = request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1);
+        logger.debug("adding {} to command keys", mainCommand);
+        commandKeys.add(mainCommand);
+
+        response.setContentType("text/html; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
+        for (String key : commandKeys){
+            Command command = commandHelper.getCommand(key);
+            if (command != null) {
+                logger.debug("executing {}", command.getClass().getSimpleName());
+                command.execute(request,response);
+            }else {
+                response.sendRedirect("../404.jsp");
+            }
+        }
     }
 
     private void checkForExceededSize(HttpServletRequest req) throws Exception{

@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import static com.javalab.contacts.util.CustomFileUtils.defineAttachmentFileName;
+import static com.javalab.contacts.util.CustomFileUtils.defineAttachmentUploadPath;
 import static com.javalab.contacts.util.CustomFileUtils.definePersonalDirectory;
 import static com.javalab.contacts.util.CustomFileUtils.writePartToDisk;
 
@@ -55,7 +55,7 @@ public class UploadAttachmentCommand implements Command {
                 if (part.getName().contains("attachedFile")) {
                     logger.debug("found attached file {}", part.getSubmittedFileName());
                     String attachmentIndex = part.getName().substring(part.getName().lastIndexOf('-') + 1);
-                    String fileName = defineAttachmentFileName(request, attachmentIndex);
+                    String fileName = defineAttachmentUploadPath(request, attachmentIndex, uploadFilePath);
                     String fullUploadPath = uploadFilePath + File.separator + fileName;
                     writePartToDisk(part, fullUploadPath);
                     logger.debug("{} uploaded ", part.getSubmittedFileName());

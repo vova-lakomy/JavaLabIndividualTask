@@ -31,7 +31,7 @@ public class SaveCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
+        logger.debug("executing Save Command");
         ContactFullDTO contact = getContactDtoFromRequest(request,response);
         Integer returnedId = repository.saveContact(contact);
         request.getSession().setAttribute("messageKey","message.contact.saved");
@@ -45,6 +45,7 @@ public class SaveCommand implements Command {
     }
 
     private ContactFullDTO getContactDtoFromRequest(HttpServletRequest request, HttpServletResponse response) {
+        logger.debug("creating DTO contact from request");
         Integer contactId = null;
         if (isNumeric(request.getParameter("contactId"))) {
             contactId = Integer.parseInt(request.getParameter("contactId"));

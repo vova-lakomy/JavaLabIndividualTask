@@ -6,13 +6,16 @@ a label {
     cursor: pointer;
 }
 
+.jlab-contact-full-name a{
+    color: #000058;
+}
+
 .jlab-main-list ul {
     margin-top: 0;
     margin-bottom: 0;
     list-style-type: none;
     padding: 0;
     border: none;
-    /*background-image: url("../img/sheet5.png");*/
 }
 
 .jlab-main-list ul li {
@@ -34,10 +37,7 @@ a label {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
 }
-.jlab-main-list li a{
-    color: black;
-    text-decoration: none;
-}
+
 .jlab-inner-table-container ul{
     list-style-type: none;
     padding-left: 10px;
@@ -144,12 +144,20 @@ select{
 }
 
 .jlab-home-page-link{
-    color: black;
-    padding-left: 30px;
-    font-weight: 900;
+    background-color: #ed1c24;
+    padding: 5px 10px;
+    font-weight: 100;
+    font-size: 12px;
+    color: white;
+    float: right;
+    margin-right: 50px;
+    border-top-left-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 12px;
 }
 .jlab-home-page-link:active{
-    color: #ed1c24;
+    color: #cacaca;
 }
 
 .jlab-header-panel a{
@@ -260,7 +268,7 @@ select{
 }
 
 .jlab-footer-panel{
-    background-color: #383838;
+    /*background-color: #383838;*/
     position: fixed;
     min-width: 100%;
     height: 30px;
@@ -310,13 +318,13 @@ select{
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(179, 179, 179, 0.15);
+    background-color: rgba(0, 0, 0, 0.35);
     z-index: 1;
 }
 
 .jlab-message-container{
     min-height: 180px;
-    background-color: rgba(56, 56, 56, 0.12);
+    background-color: rgba(245, 245, 245, 1);
     text-align: center;
     max-width: 470px;
     margin: 97px auto auto;
@@ -324,9 +332,8 @@ select{
     border-radius: 3px;
     border: 1px solid grey;
     font-size: 40px;
-    color: white;
+    color: black;
     font-weight: 900;
-    text-shadow: 0 0 1px black;
     width: 100%;
 }
 

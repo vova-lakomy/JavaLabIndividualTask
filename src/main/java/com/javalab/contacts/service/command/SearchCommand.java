@@ -38,16 +38,25 @@ public class SearchCommand implements Command {
             int pageNumber = 1;
             String strPageNumber = (trim(request.getParameter("page")));
             if (isNotBlank(strPageNumber)){
-                pageNumber = Integer.valueOf(strPageNumber);
-                if (pageNumber < 1){
+                try{
+                    pageNumber = Integer.valueOf(strPageNumber);
+                    if (pageNumber < 1){
+                        pageNumber = 1;
+                    }
+                } catch (NumberFormatException e){
                     pageNumber = 1;
                 }
+
             }
             ContactSearchDTO searchObject = createSearchDTO(request);
             Collection<ContactShortDTO> searchResult = contactRepository.search(searchObject, pageNumber-1);
             Integer recordsFound = contactRepository.getNumberOfRecordsFound();
             Integer rowsPerPage = contactRepository.getRowsPePageCount();
             int numberOfPages = (int) Math.ceil(recordsFound*1.00/rowsPerPage);
+            if (pageNumber > numberOfPages){
+                pageNumber = numberOfPages;
+                searchResult = contactRepository.search(searchObject, pageNumber-1);
+            }
 
             request.setAttribute("numberOfPages",numberOfPages);
             request.setAttribute("searchQueryString",searchQueryString);
