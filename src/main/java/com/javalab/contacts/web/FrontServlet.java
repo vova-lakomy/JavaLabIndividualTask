@@ -80,13 +80,8 @@ public class FrontServlet extends HttpServlet {
             return;
         }
 
-        String contextRelativePath = request.getRequestURI().substring(
-                request.getContextPath().length()).toLowerCase().trim();
-        String queryString = request.getQueryString();
-        if(queryString != null){
-            contextRelativePath = contextRelativePath + "?" + queryString;
-        }
-        request.setAttribute("currentUrl", contextRelativePath);
+        String currentUrl = defineCurrentUrl(request);
+        request.setAttribute("currentUrl", currentUrl);
 
         Set<String> commandKeys = new LinkedHashSet<>();
         String[] optionalCommands = request.getParameterValues("optionalCommand");
@@ -112,6 +107,18 @@ public class FrontServlet extends HttpServlet {
                 response.sendRedirect("../404.jsp");
             }
         }
+    }
+
+    private String defineCurrentUrl(HttpServletRequest request) {
+        String rootContext = request.getContextPath();
+        String contextRelativePath = request.getRequestURI().substring(
+                request.getContextPath().length()).toLowerCase().trim();
+        String currentUrl = rootContext + contextRelativePath;
+        String queryString = request.getQueryString();
+        if(queryString != null){
+            currentUrl = contextRelativePath + "?" + queryString;
+        }
+        return currentUrl;
     }
 
     private void checkForExceededSize(HttpServletRequest req) throws Exception{
