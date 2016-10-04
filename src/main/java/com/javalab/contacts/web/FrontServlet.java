@@ -80,6 +80,14 @@ public class FrontServlet extends HttpServlet {
             return;
         }
 
+        String contextRelativePath = request.getRequestURI().substring(
+                request.getContextPath().length()).toLowerCase().trim();
+        String queryString = request.getQueryString();
+        if(queryString != null){
+            contextRelativePath = contextRelativePath + "?" + queryString;
+        }
+        request.setAttribute("currentUrl", contextRelativePath);
+
         Set<String> commandKeys = new LinkedHashSet<>();
         String[] optionalCommands = request.getParameterValues("optionalCommand");
         if (optionalCommands != null) {
