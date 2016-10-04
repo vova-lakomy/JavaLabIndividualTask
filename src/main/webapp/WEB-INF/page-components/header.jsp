@@ -4,11 +4,11 @@
 <c:set var="rootContext" value="${pageContext.request.contextPath}/" scope="session"/>
 <c:set var="labels" value="${labels}" scope="session"/>
 <c:set var="locale" value="${localeKey}"/>
-<c:set var="currentURL" value="${currentUrl}" scope="session"/>
-<%--<c:set var="currentURL"--%>
-       <%--value="${requestScope['javax.servlet.forward.servlet_path']}"--%>
-       <%--scope="session"/>--%>
-<%--value="${requestScope['javax.servlet.forward.request_uri']}?${requestScope['javax.servlet.forward.query_string']}"--%>
+<%--<c:set var="currentURL" value="${currentUrl}" scope="session"/>--%>
+<c:set var="currentURL"
+       value="${requestScope['javax.servlet.forward.request_uri']}?${requestScope['javax.servlet.forward.query_string']}"
+       scope="session"/>
+
 <html>
 <head>
     <title>${labels.get('title')}</title>

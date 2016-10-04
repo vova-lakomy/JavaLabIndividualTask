@@ -80,8 +80,8 @@ public class FrontServlet extends HttpServlet {
             return;
         }
 
-        String currentUrl = defineCurrentUrl(request);
-        request.setAttribute("currentUrl", currentUrl);
+//        String currentUrl = defineCurrentUrl(request);
+//        request.setAttribute("currentUrl", currentUrl);
 
         Set<String> commandKeys = new LinkedHashSet<>();
         String[] optionalCommands = request.getParameterValues("optionalCommand");
