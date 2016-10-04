@@ -29,7 +29,7 @@ public class SetLocaleCommand implements Command {
             session.setAttribute("labels",labels);
             session.setAttribute("localeKey",localeKey);
         }
-        if (redirectUrl == null) {
+        if (redirectUrl == null || redirectUrl.equals("?")) {
             redirectUrl = "list";
         }
         try {
