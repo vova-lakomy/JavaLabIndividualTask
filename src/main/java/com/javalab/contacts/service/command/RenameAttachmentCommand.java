@@ -45,7 +45,7 @@ public class RenameAttachmentCommand implements Command {
                 }
             });
         } catch (IOException | ServletException e) {
-            logger.error("",e);
+            logger.error("{}",e);
         }
         fileNames.forEach(fileName -> {
             String attachmentIndex = fileName.substring(fileName.lastIndexOf('-'));

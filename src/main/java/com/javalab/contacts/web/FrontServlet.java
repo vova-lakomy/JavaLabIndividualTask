@@ -98,7 +98,7 @@ public class FrontServlet extends HttpServlet {
         for (String key : commandKeys){
             Command command = commandHelper.getCommand(key);
             if (command != null) {
-                logger.debug("executing {}", command.getClass().getSimpleName());
+                logger.debug("executing {}", command);
                 command.execute(request,response);
             }else {
                 response.sendRedirect("../404.jsp");

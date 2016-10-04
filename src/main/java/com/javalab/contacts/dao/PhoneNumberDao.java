@@ -4,7 +4,6 @@ package com.javalab.contacts.dao;
 import com.javalab.contacts.model.PhoneNumber;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Collection;
 
 public interface PhoneNumberDao {

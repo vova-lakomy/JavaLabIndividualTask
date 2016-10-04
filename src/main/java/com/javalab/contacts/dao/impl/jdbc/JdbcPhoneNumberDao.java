@@ -17,7 +17,6 @@ import java.util.Collection;
 public class JdbcPhoneNumberDao implements PhoneNumberDao {
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcPhoneNumberDao.class);
-
     private ConnectionManager connectionManager = ConnectionManager.getInstance();
 
     public PhoneNumber get(Integer id) {
@@ -38,7 +37,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
             connection.commit();
             logger.debug("closed transaction");
         } catch (SQLException e) {
-            logger.error("{}",e);
+            logger.error("{}", e);
         } finally {
             try {
                 if (statementGetPhoneNumber != null) {
@@ -46,11 +45,16 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
                 }
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                logger.error("{}",e);
+                logger.error("{}", e);
             }
             connectionManager.putBackConnection(connection);
         }
-        return resultObject.getId() != null ? resultObject : null;
+        if (resultObject.getId() != null){
+            return resultObject;
+        }
+        else {
+            return null;
+        }
     }
 
     @Override
@@ -72,7 +76,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
             connection.commit();
             logger.debug("closed transaction");
         } catch (SQLException e) {
-            logger.error("{}",e);
+            logger.error("{}", e);
         } finally {
             try {
                 if (statementGetByContactId != null) {
@@ -80,7 +84,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
                 }
                 connection.setAutoCommit(false);
             } catch (SQLException e) {
-                logger.error("{}",e);
+                logger.error("{}", e);
             }
             connectionManager.putBackConnection(connection);
         }
@@ -97,18 +101,18 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
             connection.commit();
             logger.debug("closed transaction");
         } catch (SQLException e) {
-            logger.error("{}",e);
+            logger.error("{}", e);
             try {
                 logger.debug("transaction rolled back");
                 connection.rollback();
             } catch (SQLException ex) {
-                logger.error("{}",ex);
+                logger.error("{}", ex);
             }
         } finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                logger.error("{}",e);
+                logger.error("{}", e);
             }
             connectionManager.putBackConnection(connection);
         }
@@ -124,14 +128,14 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
             setSaveStatementParams(statementSavePhoneNumber, phoneNumber, contactId);
             statementSavePhoneNumber.executeUpdate();
         } catch (SQLException e) {
-            logger.error("{}",e);
+            logger.error("{}", e);
         } finally {
             try {
                 if (statementSavePhoneNumber != null) {
                     statementSavePhoneNumber.close();
                 }
             } catch (Exception e) {
-                logger.error("{}",e);
+                logger.error("{}", e);
             }
         }
     }
@@ -149,7 +153,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
             connection.commit();
             logger.debug("closed transaction");
         } catch (SQLException e) {
-            logger.error("{}",e);
+            logger.error("{}", e);
         } finally {
             try {
                 if (statementDeletePhoneNumber != null) {
@@ -157,14 +161,14 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
                 }
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                logger.error("{}",e);
+                logger.error("{}", e);
             }
             connectionManager.putBackConnection(connection);
         }
     }
 
     private PhoneNumber createPhoneNumberFromResultSet(ResultSet resultSet) throws SQLException {
-        logger.debug("creating 'PhoneNumber' entity from " + resultSet);
+        logger.debug("creating 'PhoneNumber' entity from resultSet");
         PhoneNumber resultObject = new PhoneNumber();
         resultObject.setId(resultSet.getInt("id"));
         resultObject.setCountryCode(resultSet.getInt("country_code"));
@@ -172,6 +176,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
         resultObject.setPhoneNumber(resultSet.getInt("phone_number"));
         resultObject.setPhoneType(PhoneType.valueOf(resultSet.getString("phone_type")));
         resultObject.setPhoneComment(resultSet.getString("phone_comment"));
+        logger.debug("created {}", resultObject);
         return resultObject;
     }
 
@@ -189,11 +194,15 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
     }
 
     private void setSaveStatementParams(PreparedStatement statement, PhoneNumber phoneNumber, Integer contactId) throws SQLException {
-        logger.debug("setting params to " + statement);
+        logger.debug("setting params to {}", statement);
         statement.setObject(1, phoneNumber.getCountryCode());
         statement.setObject(2, phoneNumber.getOperatorCode());
         statement.setObject(3, phoneNumber.getPhoneNumber());
-        statement.setString(4, phoneNumber.getPhoneType().name());
+        String phoneType = null;
+        if (phoneNumber.getPhoneType() != null) {
+            phoneType = phoneNumber.getPhoneType().name();
+        }
+        statement.setString(4, phoneType);
         statement.setString(5, phoneNumber.getPhoneComment());
         statement.setObject(6, contactId);
     }

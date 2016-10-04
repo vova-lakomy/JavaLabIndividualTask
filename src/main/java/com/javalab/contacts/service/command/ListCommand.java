@@ -25,11 +25,13 @@ public class ListCommand implements Command{
         logger.debug("executing List command");
         labelsManager.setLocaleLabelsToSession(request.getSession());
         Integer pageNumber = definePageNumber(request);
-        logger.debug("defined page - {}", pageNumber);
+        logger.debug("defined page number as - {}", pageNumber);
         Collection<ContactShortDTO> contactList = contactRepository.getContactsList(pageNumber-1);
         Integer numberOfPages =  calculateNumberOfPages();
+        logger.debug("total number of pages - {}", numberOfPages);
         if (pageNumber > numberOfPages){
             pageNumber = numberOfPages;
+            logger.debug("requested number of page is greater then max page number ... querying last page");
             contactList = contactRepository.getContactsList(pageNumber-1);
         }
         request.setAttribute("numberOfPages",numberOfPages);

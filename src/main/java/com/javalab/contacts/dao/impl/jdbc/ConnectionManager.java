@@ -1,7 +1,6 @@
 package com.javalab.contacts.dao.impl.jdbc;
 
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,22 +12,18 @@ import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class ConnectionManager {
-
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
     private AtomicInteger openedConnectionCount = new AtomicInteger(0);
     private AtomicInteger totalConnectionsMade = new AtomicInteger(0);
 
-    private static final Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
-
+    private DataSource dataSource;
     private static ConnectionManager instance = new ConnectionManager();
-
     static ConnectionManager getInstance() {
         return instance;
     }
-
-    private DataSource dataSource;
-
     private ConnectionManager() {
         try {
+            logger.debug("creating instance of connection manager, getting initial context");
             InitialContext initialContext = new InitialContext();
             dataSource = (DataSource) initialContext.lookup("java:comp/env/jdbc/contacts_vladimir_lakomy");
         } catch (NamingException e) {
@@ -44,7 +39,7 @@ class ConnectionManager {
             logger.debug("connection from pool got.. opened connections - {}", openedConnectionCount.incrementAndGet());
             logger.debug("total connections made - {}", totalConnectionsMade.incrementAndGet());
         } catch (SQLException e) {
-            logger.error("{}",e);
+            logger.error("{}", e);
         }
         return connection;
     }
@@ -54,7 +49,7 @@ class ConnectionManager {
             connection.close();
             logger.debug("db connection closed... opened connections - {}", openedConnectionCount.decrementAndGet());
         } catch (SQLException e) {
-            logger.error("{}",e);
+            logger.error("{}", e);
         }
     }
 }

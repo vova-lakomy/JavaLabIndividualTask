@@ -24,7 +24,7 @@ public class Contact {
     private Collection<ContactAttachment> attachments;
     private String photoLink;
     private String personalLink;
-    private Collection <PhoneNumber> phoneNumbers;
+    private Collection<PhoneNumber> phoneNumbers;
 
     public Integer getId() {
         return id;
