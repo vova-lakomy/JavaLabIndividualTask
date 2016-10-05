@@ -17,7 +17,7 @@ public class DeletePhoneCommand implements Command{
     private PhoneDtoRepository repository = new PhoneDtoRepositoryImpl();
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
             for (String stringId: selectedIds){
@@ -27,5 +27,6 @@ public class DeletePhoneCommand implements Command{
                 }
             }
         }
+        return "";
     }
 }

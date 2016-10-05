@@ -24,6 +24,8 @@ import java.util.Properties;
 import java.util.Set;
 
 import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @MultipartConfig(maxFileSize = 1024*1024*10)     //10mb
 @WebServlet(loadOnStartup = 1, urlPatterns = {"/contacts/*"})
@@ -72,15 +74,14 @@ public class FrontServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        request.setCharacterEncoding("utf-8");
         try {
-            checkForExceededSize(request);
+            checkForExceededSize(request, response);
         } catch (Exception e) {
             logger.error("{}",e);
-            response.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE,"File size exceeds maximum allowed");
             return;
         }
 
+        request.setCharacterEncoding("utf-8");
         Set<String> commandKeys = new LinkedHashSet<>();
         logger.debug("searching for command keys....");
         String[] optionalCommands = request.getParameterValues("optionalCommand");
@@ -97,27 +98,46 @@ public class FrontServlet extends HttpServlet {
 
         response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-
+        String path = "";
         for (String key : commandKeys){
             Command command = commandHelper.getCommand(key);
             if (command != null) {
                 logger.debug("executing {}", command);
-                command.execute(request,response);
-            }else {
-                response.sendRedirect("../404.jsp");
+                path = command.execute(request,response);
+                logger.debug("command execution returned '{}'", path);
             }
         }
+        dispatch(request, response, path);
     }
 
-    private void checkForExceededSize(HttpServletRequest req) throws Exception{
-        String contentType = req.getContentType();
-        if (contentType!=null && contentType.toLowerCase().startsWith("multipart")){
-            req.getParts();
+    private void dispatch(HttpServletRequest request, HttpServletResponse response, String path)
+                                                         throws  javax.servlet.ServletException, java.io.IOException {
+        if (isBlank(path)){
+            logger.debug("forward path is not defined, defining redirect URL...");
+            String redirectURL = (String) request.getAttribute("redirectURL");
+            if (isNotBlank(redirectURL)){
+                response.sendRedirect(redirectURL);
+            } else {
+                response.sendRedirect("list");
+            }
+        } else {
+            logger.debug("defined forward path as '{}'", path);
+            request.setAttribute("path",path);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/app.jsp");
+            dispatcher.forward(request, response);
         }
     }
 
-    protected void dispatch(HttpServletRequest request, HttpServletResponse response) throws  javax.servlet.ServletException, java.io.IOException {
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/app.jsp");
-        dispatcher.forward(request, response);
+    private void checkForExceededSize(HttpServletRequest req, HttpServletResponse response) throws Exception {
+        try {
+            String contentType = req.getContentType();
+            if (contentType!=null && contentType.toLowerCase().startsWith("multipart")){
+                req.getParts();
+            }
+        } catch (Exception e){
+            response.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE,"File size exceeds maximum allowed");
+            throw new Exception("File size exceeds maximum allowed");
+        }
+
     }
 }

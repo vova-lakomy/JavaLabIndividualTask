@@ -20,7 +20,7 @@ public class EditCommand implements Command {
     private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         labelsManager.setLocaleLabelsToSession(request.getSession());
         Integer contactId;
         String contactIdStr = request.getParameter("contactId");
@@ -35,13 +35,6 @@ public class EditCommand implements Command {
         request.setAttribute("sexList", sexList);
         request.setAttribute("maritalStatusList", maritalStatusList);
         request.setAttribute("phoneTypeList", phoneTypeList);
-        request.setAttribute("path","contact-edit-form.jsp");
-
-        try {
-            request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request,response);
-        } catch (Exception e) {
-            logger.error("{}",e);
-        }
-
+        return "contact-edit-form.jsp";
     }
 }

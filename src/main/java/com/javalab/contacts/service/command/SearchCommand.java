@@ -23,7 +23,7 @@ public class SearchCommand implements Command {
     private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         labelsManager.setLocaleLabelsToSession(request.getSession());
 
         if (request.getParameterMap().size() > 0){
@@ -46,7 +46,6 @@ public class SearchCommand implements Command {
                 } catch (NumberFormatException e){
                     pageNumber = 1;
                 }
-
             }
             ContactSearchDTO searchObject = createSearchDTO(request);
             Collection<ContactShortDTO> searchResult = contactRepository.search(searchObject, pageNumber-1);
@@ -57,25 +56,18 @@ public class SearchCommand implements Command {
                 pageNumber = numberOfPages;
                 searchResult = contactRepository.search(searchObject, pageNumber-1);
             }
-
             request.setAttribute("numberOfPages",numberOfPages);
             request.setAttribute("searchQueryString",searchQueryString);
             request.setAttribute("currentPage",pageNumber);
             request.setAttribute("searchResult", searchResult);
             request.setAttribute("path","contact-list-form.jsp");
+            return "contact-list-form.jsp";
         } else {
             Collection<String> sexList = contactRepository.getSexList();
             Collection<String> maritalStatusList = contactRepository.getMaritalStatusList();
-
             request.setAttribute("sexList", sexList);
             request.setAttribute("maritalStatusList", maritalStatusList);
-            request.setAttribute("path","contact-search-form.jsp");
-        }
-
-        try {
-            request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request,response);
-        } catch (Exception e) {
-            logger.error("{}",e);
+            return "contact-search-form.jsp";
         }
     }
 

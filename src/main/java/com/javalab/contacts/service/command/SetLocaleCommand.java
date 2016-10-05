@@ -14,12 +14,12 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class SetLocaleCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(SetLocaleCommand.class);
-    LabelsManager labelsManager = LabelsManager.getInstance();
+    private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         String localeKey = request.getParameter("localeKey");
-        String redirectUrl = (String) request.getSession().getAttribute("currentURL");
+        String urlRedirectTo = (String) request.getSession().getAttribute("currentURL");
         Map<String, String> labels = null;
         if (isNotBlank(localeKey)){
             labels = labelsManager.getLabels(localeKey);
@@ -29,13 +29,10 @@ public class SetLocaleCommand implements Command {
             session.setAttribute("labels",labels);
             session.setAttribute("localeKey",localeKey);
         }
-        if (redirectUrl == null) {
-            redirectUrl = "list";
+        if (urlRedirectTo == null) {
+            urlRedirectTo = "list";
         }
-        try {
-            response.sendRedirect(redirectUrl);
-        } catch (IOException e) {
-            logger.error("{}",e);
-        }
+        request.setAttribute("redirectURL", urlRedirectTo);
+        return "";
     }
 }

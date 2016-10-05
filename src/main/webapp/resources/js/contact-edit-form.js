@@ -493,7 +493,7 @@
     }
 
     function isFileValid(file) {
-        if (file.size > 0 && file.size < 10485759){
+        if (file.size > 0 && file.size < 110485759){
             return true;
         } else {
             return false;

@@ -19,7 +19,7 @@ public class DeleteAttachmentCommand implements Command {
     private static Properties properties = PropertiesProvider.getInstance().getFileUploadProperties();
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         String applicationPath = request.getServletContext().getRealPath("");
         Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
         if (shouldUploadToSpecificDir){
@@ -37,5 +37,6 @@ public class DeleteAttachmentCommand implements Command {
                 repository.delete(id);
             }
         }
+        return "";
     }
 }

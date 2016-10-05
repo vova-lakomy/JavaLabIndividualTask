@@ -42,7 +42,7 @@ public class MailCommand implements Command {
     private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("executing Mail Command");
         labelsManager.setLocaleLabelsToSession(request.getSession());
         Map<String, String> templates = stringTemplates.getTemplateMap();
@@ -64,7 +64,7 @@ public class MailCommand implements Command {
                 }
             }
             request.setAttribute("emailContacts", contactShortDTOs);
-            request.setAttribute("path", "contact-email-form.jsp");
+            return "contact-email-form.jsp";
         } else if (request.getParameterValues("mailTo") != null) {
             logger.debug("trying to send emails");
             sendMails(request);
@@ -72,18 +72,12 @@ public class MailCommand implements Command {
             request.getSession().setAttribute("showMessage","true");
             try {
                 response.sendRedirect("list");
-                return;
             } catch (IOException e) {
                 logger.error("{}",e);
             }
+            return "";
         } else {
-            request.setAttribute("path", "contact-email-form.jsp");
-        }
-
-        try {
-            request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request, response);
-        } catch (Exception e) {
-            logger.error("{}",e);
+            return "contact-email-form.jsp";
         }
     }
 

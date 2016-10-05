@@ -22,7 +22,7 @@ public class RenameAttachmentCommand implements Command {
     private static Properties properties = PropertiesProvider.getInstance().getFileUploadProperties();
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         String applicationPath = request.getServletContext().getRealPath("");
         Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
         if (shouldUploadToSpecificDir){
@@ -59,5 +59,6 @@ public class RenameAttachmentCommand implements Command {
                 CustomFileUtils.renameFile(oldFile,newFile);
             }
         });
+        return "";
     }
 }

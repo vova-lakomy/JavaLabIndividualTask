@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -30,18 +28,15 @@ public class SaveCommand implements Command {
     private ContactDtoRepository repository = new ContactDtoRepositoryImpl();
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("executing Save Command");
         ContactFullDTO contact = getContactDtoFromRequest(request,response);
         Integer returnedId = repository.saveContact(contact);
         request.getSession().setAttribute("messageKey","message.contact.saved");
         request.getSession().setAttribute("showMessage","true");
-
-        try {
-            response.sendRedirect("edit?contactId=" + returnedId);
-        } catch (Exception e) {
-            logger.error("{}",e);
-        }
+        String urlRedirectTo = "edit?contactId=" + returnedId;
+        request.setAttribute("redirectURL", urlRedirectTo);
+        return "";
     }
 
     private ContactFullDTO getContactDtoFromRequest(HttpServletRequest request, HttpServletResponse response) {

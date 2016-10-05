@@ -21,7 +21,7 @@ public class ListCommand implements Command{
     private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response){
+    public String execute(HttpServletRequest request, HttpServletResponse response){
         logger.debug("executing List command");
         labelsManager.setLocaleLabelsToSession(request.getSession());
         Integer pageNumber = definePageNumber(request);
@@ -36,19 +36,14 @@ public class ListCommand implements Command{
         }
         request.setAttribute("numberOfPages",numberOfPages);
         request.setAttribute("contactsList", contactList);
-        request.setAttribute("currentPage",pageNumber);
-        request.setAttribute("path","contact-list-form.jsp");
-        try {
-            request.getRequestDispatcher("/WEB-INF/app.jsp").forward(request,response);
-        } catch (Exception e) {
-            logger.error("{}",e);
-        }
+        request.getSession().setAttribute("currentPage",pageNumber);
+        return "contact-list-form.jsp";
     }
 
     private Integer definePageNumber(HttpServletRequest request){
         String page = request.getParameter("page");
         if (page == null){
-            page = (String) request.getSession().getAttribute("currentPage");
+            page = String.valueOf(request.getSession().getAttribute("currentPage"));
         }
         page = trim(page);
         int pageNumber = 1;
