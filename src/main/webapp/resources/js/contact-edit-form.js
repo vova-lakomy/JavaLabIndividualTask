@@ -117,13 +117,13 @@
         var commentInput = $('#attachment-row-input-comment-' + counter);
         var uploadDateInput = $('#attachment-row-input-uploadDate-' + counter);
         var fileNameLabel = $('#attachment-row-label-filename-' + counter);
-        var commentSpan = $('#attachment-row-span-comment-' + counter);
+        var commentTextarea = $('#attachment-row-textarea-' + counter);
         idInput.value = null;
         fileNameInput.value = data.fileName;
         commentInput.value = data.attachmentComment;
         uploadDateInput.value = data.uploadDate;
         fileNameLabel.innerHTML = data.fileName;
-        commentSpan.innerHTML = data.attachmentComment;
+        commentTextarea.value = data.attachmentComment;
     }
 
     function toggleAddPhoneNumberModal() {
@@ -189,8 +189,8 @@
             '<li class="jlab-cell-2">' + data.phoneType + '</li>' +
 
             '<li class="jlab-cell-6">' +
-            '<textarea readonly class="jlab-textarea-read-only">' + data.phoneComment + '' +
-            '</textarea></li>';
+            '<textarea readonly class="jlab-textarea-read-only">' + data.phoneComment + '</textarea>' +
+            '</li>';
         return ul;
     }
 
@@ -201,18 +201,20 @@
         ul.innerHTML =
             '<li class="jlab-cell-4 jlab-attachment-file-name">' +
             '<input id="attachment-row-input-id-' + counter + '" class="jlab-hidden" type="text" name="attachmentId-' + counter + '" value="">' +
-            '<input id="attachment-row-input-fileName-' + counter + '"class="jlab-hidden" type="text" name="attachmentFileName-' + counter + '" value=""/>' +
-            '<input id="attachment-row-input-comment-' + counter + '" class="jlab-hidden" type="text" name="attachmentComment-' + counter + '" value="">' +
+            '<input id="attachment-row-input-fileName-' + counter + '" class="jlab-hidden" type="text" name="attachmentFileName-' + counter + '" value=""/>' +
+            '<textarea id="attachment-row-input-comment-' + counter + '" class="jlab-hidden" ' +
+            ' name="attachmentComment-' + counter + '"></textarea>' +
             '<input id="attachment-row-input-uploadDate-' + counter + '" class="jlab-hidden" type="text" name="uploadDate-' + counter + '" value="">' +
             '<input type="checkbox" name="selectedId" value="" id="attachment-' + counter + '" data-action="deleteAttachment">' +
-            // '<label class="jlab-not-submited" for="attachedFileId-' + counter + '" title="submit to upload"></label>' +
+            '<a href="#" ' +
             '<label id="attachment-row-label-fileName-' + counter + '" class="jlab-not-submited" title="submit to upload"></label>' +
+            '</a>' +
             '</li>' +
             '<li class="jlab-cell-2 jlab-attachment-upload-date">' +
             '<span class="jlab-not-submited">not submited</span> ' +
             '</li>' +
             '<li class="jlab-cell-6">' +
-            '<span id="attachment-row-span-comment-' + counter + '" class="jlab-not-submited"></span> ' +
+            '<textarea readonly id="attachment-row-textarea-' + counter + '" class="jlab-textarea-read-only jlab-not-submited"></textarea> ' +
             '</li>' +
             '<input type="file" id="attachedFileId-' + counter + '" class="jlab-hidden" name="attachedFile-' + counter + '">';
         return ul;
@@ -227,7 +229,7 @@
             '<input class="jlab-hidden" type="text" name="attachmentLink-' + counter + '" value="' + data.attachmentLink + '"/>' +
             '<input class="jlab-hidden" type="text" name="attachmentFileName-' + counter + '" value="' + data.fileName + '"/>' +
             '<input class="jlab-hidden" type="text" name="attachmentOldFileName-' + counter + '" value="' + data.oldFileName + '"/>' +
-            '<input class="jlab-hidden" type="text" name="attachmentComment-' + counter + '" value="' + data.attachmentComment + '">' +
+            '<textarea class="jlab-hidden" name="attachmentComment-' + counter + '">' + data.attachmentComment + '</textarea>' +
             '<input class="jlab-hidden" type="text" name="uploadDate-' + counter + '" value="' + data.uploadDate + '">' +
 
             '<input type="checkbox" name="selectedId" value="" id="attachment-' + counter + '" data-action="deleteAttachment">' +
@@ -241,7 +243,7 @@
             '</li>' +
 
             '<li class="jlab-cell-6">' +
-            '<span >' + data.attachmentComment + '</span> ' +
+            '<textarea readonly class="jlab-textarea-read-only">' + data.attachmentComment + '</textarea> ' +
             '</li>';
         return ul;
     }
@@ -493,7 +495,7 @@
     }
 
     function isFileValid(file) {
-        if (file.size > 0 && file.size < 110485759){
+        if (file.size > 0 && file.size < 10485759){
             return true;
         } else {
             return false;

@@ -28,8 +28,7 @@
                                    value="${attachment.attachmentLink}">
                             <input class="jlab-hidden" type="text" name="attachmentFileName-${counter.index}"
                                    value="${attachment.fileName}">
-                            <input class="jlab-hidden" type="text" name="attachmentComment-${counter.index}"
-                                   value="${attachment.comment}">
+                            <textarea class="jlab-hidden" name="attachmentComment-${counter.index}">${attachment.comment}</textarea>
                             <input class="jlab-hidden" type="text" name="uploadDate-${counter.index}"
                                    value="${attachment.uploadDate}">
 
@@ -44,7 +43,8 @@
 
                         <li class="jlab-cell-2 jlab-attachment-upload-date"> ${attachment.uploadDate}</li>
 
-                        <li class="jlab-cell-6"> ${attachment.comment} </li>
+                        <li class="jlab-cell-6">
+                         <textarea readonly class="jlab-textarea-read-only">${attachment.comment}</textarea> </li>
                     </ul>
                 </c:forEach>
             </div>
