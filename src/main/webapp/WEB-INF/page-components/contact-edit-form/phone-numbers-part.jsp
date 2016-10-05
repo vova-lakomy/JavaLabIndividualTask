@@ -22,14 +22,14 @@
             </ul>
             <div id="phone-number-rows">
                 <c:forEach var="phoneNumber" items="${fullContact.phoneNumbers}" varStatus="counter">
-                    <ul class="jlab-row">
+                    <ul class="jlab-row jlab-vertical-align-top">
                         <li class="jlab-cell-4">
                             <input class="jlab-hidden" type="text" name="phoneNumberId" value="${phoneNumber.id}">
                             <input class="jlab-hidden" type="text" name="countryCode" value="${phoneNumber.countryCode}">
                             <input class="jlab-hidden" type="text" name="operatorCode" value="${phoneNumber.operatorCode}">
                             <input class="jlab-hidden" type="text" name="number" value="${phoneNumber.number}">
                             <input class="jlab-hidden" type="text" name="phoneType"  value="${phoneNumber.type}">
-                            <input class="jlab-hidden" type="text" name="comment" value="${phoneNumber.comment}">
+                            <textarea class="jlab-hidden" name="comment">${phoneNumber.comment}</textarea>
 
                             <input type="checkbox" name="selectedId" value="${phoneNumber.id}" id="phoneNumberId-${counter.index}" data-action="deletePhone" >
                             <label for="phoneNumberId-${counter.index}">${phoneNumber.fullNumber}&nbsp;&nbsp;</label>
@@ -41,7 +41,7 @@
 
                         </li>
                         <li class="jlab-cell-6">
-                                ${phoneNumber.comment}
+                            <textarea readonly class="jlab-textarea-read-only"> ${phoneNumber.comment}</textarea>
                         </li>
                     </ul>
                 </c:forEach>

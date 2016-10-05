@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS contacts_vladimir_lakomy;
-CREATE DATABASE contacts_vladimir_lakomy  CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ;
+CREATE DATABASE contacts_vladimir_lakomy  CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 USE contacts_vladimir_lakomy;
 
@@ -31,7 +31,7 @@ CREATE TABLE contacts_vladimir_lakomy.contact_attachment
 (
   id                  INT PRIMARY KEY  NOT NULL AUTO_INCREMENT,
   attachment_link     VARCHAR(200),
-  attachment_comment  VARCHAR(100),
+  attachment_comment  TEXT,
   date_of_upload      DATE,
   contact_id          INT,
   FOREIGN KEY (contact_id)

@@ -16,7 +16,8 @@
 
         <div class="jlab-form-item">
             <label for="attachment-comment">${labels.get('comment')}</label>
-            <input id="attachment-comment" name="attachmentComment" type="text" value="" placeholder="${labels.get('comment.placeholder')}">
+            <textarea id="attachment-comment" class="jlab-comment-textarea" name="attachmentComment"
+                      placeholder="${labels.get('comment.placeholder')}"></textarea>
         </div>
         <div class="jlab-pull-right jlab-button-block ">
             <button id="button-save-attachment-edit-modal" type="button" class="jlab-button">${labels.get('save')}</button>

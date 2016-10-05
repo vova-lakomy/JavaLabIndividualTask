@@ -17,7 +17,7 @@ public class EditCommand implements Command {
 
     private static final Logger logger = LoggerFactory.getLogger(EditCommand.class);
     private ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
-    LabelsManager labelsManager = LabelsManager.getInstance();
+    private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {

@@ -170,7 +170,7 @@
 
     function generatePhoneRecord(counter, data) {
         var ul = document.createElement('ul');
-        ul.className = 'jlab-row';
+        ul.className = 'jlab-row jlab-vertical-align-top';
         ul.innerHTML =
             '<li class="jlab-cell-4">' +
             '<input class="jlab-hidden" type="text" name="phoneNumberId" value="' + data.phoneNumberId + '">' +
@@ -178,7 +178,7 @@
             '<input class="jlab-hidden" type="text" name="operatorCode" value="' + data.operatorCode + '">' +
             '<input class="jlab-hidden" type="text" name="number" value="' + data.phoneNumber + '"> ' +
             '<input class="jlab-hidden" type="text" name="phoneType" value="' + data.phoneType + '">' +
-            '<input class="jlab-hidden" type="text" name="comment" value="' + data.phoneComment + '">' +
+            '<textarea class="jlab-hidden" name="comment">' + data.phoneComment + '</textarea>' +
 
             '<input type="checkbox" name="selectedId" value="" id="PhoneNumberId-' + counter + '" data-action="deletePhone">' +
             '<label for="PhoneNumberId-' + counter + '"> +' + data.countryCode + ' (' + data.operatorCode + ') '
@@ -188,7 +188,9 @@
 
             '<li class="jlab-cell-2">' + data.phoneType + '</li>' +
 
-            '<li class="jlab-cell-6">' + data.phoneComment + '</li>';
+            '<li class="jlab-cell-6">' +
+            '<textarea readonly class="jlab-textarea-read-only">' + data.phoneComment + '' +
+            '</textarea></li>';
         return ul;
     }
 

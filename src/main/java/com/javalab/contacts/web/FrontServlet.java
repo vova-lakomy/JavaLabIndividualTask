@@ -10,6 +10,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -81,6 +82,7 @@ public class FrontServlet extends HttpServlet {
         }
 
         Set<String> commandKeys = new LinkedHashSet<>();
+        logger.debug("searching for command keys....");
         String[] optionalCommands = request.getParameterValues("optionalCommand");
         if (optionalCommands != null) {
             for (String commandKey : optionalCommands) {
@@ -91,6 +93,7 @@ public class FrontServlet extends HttpServlet {
         String mainCommand = request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1);
         logger.debug("adding {} to command keys", mainCommand);
         commandKeys.add(mainCommand);
+        logger.debug("commands to execute: {}", commandKeys);
 
         response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -111,5 +114,10 @@ public class FrontServlet extends HttpServlet {
         if (contentType!=null && contentType.toLowerCase().startsWith("multipart")){
             req.getParts();
         }
+    }
+
+    protected void dispatch(HttpServletRequest request, HttpServletResponse response) throws  javax.servlet.ServletException, java.io.IOException {
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/app.jsp");
+        dispatcher.forward(request, response);
     }
 }

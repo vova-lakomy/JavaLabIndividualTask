@@ -39,8 +39,9 @@
 
         <div class="jlab-form-item">
             <label for="phone-number-comment">${labels.get('comment')}</label>
-            <input id="phone-number-comment" name="phoneComment" type="text"
-                   value="" placeholder="${labels.get('comment.placeholder')}" data-validation-type="string100Chars ">
+            <textarea id="phone-number-comment" name="phoneComment" class="jlab-comment-textarea"
+                   placeholder="${labels.get('comment.placeholder')}" data-validation-type="comment">
+            </textarea>
         </div>
 
         <div class="jlab-pull-right jlab-button-block ">

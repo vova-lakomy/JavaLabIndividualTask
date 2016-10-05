@@ -7,17 +7,20 @@
         <div class="jlab-form-item">
             <input class="jlab-hidden" name="phoneNumberId" value="">
             <label for="phone-number-country-code">${labels.get('country.code')}</label>
-            <input id="phone-number-country-code" name="countryCode" type="text" value="" placeholder="${labels.get('country.code.placeholder')}"
+            <input id="phone-number-country-code" name="countryCode" type="text" value=""
+                   placeholder="${labels.get('country.code.placeholder')}"
                    data-validation-type="countryCode">
         </div>
         <div class="jlab-form-item">
             <label for="phone-number-operator-code">${labels.get('operator.code')}</label>
-            <input id="phone-number-operator-code" name="operatorCode" type="text" value="" placeholder="${labels.get('operator.code.placeholder')}"
+            <input id="phone-number-operator-code" name="operatorCode" type="text" value=""
+                   placeholder="${labels.get('operator.code.placeholder')}"
                    data-validation-type="operatorCode">
         </div>
         <div class="jlab-form-item">
             <label for="phone-number">${labels.get('phone.number')}</label>
-            <input id="phone-number" name="phoneNumber" type="text" value="" placeholder="${labels.get('phone.number.placeholder')}"
+            <input id="phone-number" name="phoneNumber" type="text" value=""
+                   placeholder="${labels.get('phone.number.placeholder')}"
                    data-validation-type="phoneNumber">
         </div>
         <div class="jlab-form-item">
@@ -38,13 +41,15 @@
 
         <div class="jlab-form-item">
             <label for="phone-number-comment">${labels.get('comment')}</label>
-            <input id="phone-number-comment" name="phoneComment" type="text" value=""
-                   placeholder="${labels.get('comment.placeholder')}" data-validation-type="string100Chars">
+            <textarea id="phone-number-comment" class="jlab-comment-textarea" name="phoneComment"
+                      placeholder="${labels.get('comment.placeholder')}" data-validation-type="comment">
+            </textarea>
         </div>
 
         <div class="jlab-pull-right jlab-button-block ">
             <button id="button-add-phone-number" type="submit" class="jlab-button">${labels.get('save')}</button>
-            <button id="button-cancel-phone-number-add" type="button" class="jlab-button">${labels.get('cancel')}</button>
+            <button id="button-cancel-phone-number-add" type="button"
+                    class="jlab-button">${labels.get('cancel')}</button>
         </div>
 
     </form>
