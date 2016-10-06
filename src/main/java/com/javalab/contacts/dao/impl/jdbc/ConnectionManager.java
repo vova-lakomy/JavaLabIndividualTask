@@ -9,14 +9,15 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class ConnectionManager {
     private static final Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
-    private AtomicInteger openedConnectionCount = new AtomicInteger(0);
-    private AtomicInteger totalConnectionsMade = new AtomicInteger(0);
+    private static AtomicInteger openedConnectionCount = new AtomicInteger(0);
+    private static AtomicInteger totalConnectionsMade = new AtomicInteger(0);
 
-    private DataSource dataSource;
+    private static DataSource dataSource;
     private static ConnectionManager instance = new ConnectionManager();
     static ConnectionManager getInstance() {
         return instance;
@@ -31,7 +32,7 @@ class ConnectionManager {
         }
     }
 
-    Connection receiveConnection() {
+    static Connection receiveConnection() {
         Connection connection = null;
         logger.debug("trying to get connection from pool");
         try {
@@ -44,12 +45,25 @@ class ConnectionManager {
         return connection;
     }
 
-    void putBackConnection(Connection connection) {
+    static void putBackConnection(Connection connection) {
         try {
             connection.close();
             logger.debug("db connection closed... opened connections - {}", openedConnectionCount.decrementAndGet());
         } catch (SQLException e) {
             logger.error("{}", e);
+        }
+    }
+
+    static void closeResources(Connection connection, Statement statement){
+        try {
+            if (statement != null) {
+                statement.close();
+            }
+        } catch (SQLException e) {
+            logger.error("error {}", e);
+        }
+        if (connection != null) {
+            putBackConnection(connection);
         }
     }
 }

@@ -6,6 +6,8 @@ import com.javalab.contacts.dao.PhoneNumberDao;
 import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
+import com.javalab.contacts.model.ContactAttachment;
+import com.javalab.contacts.model.PhoneNumber;
 import com.javalab.contacts.model.enumerations.MaritalStatus;
 import com.javalab.contacts.model.enumerations.Sex;
 import com.javalab.contacts.util.CustomReflectionUtil;
@@ -25,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.closeResources;
+import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.receiveConnection;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.splitByCharacterTypeCamelCase;
 
@@ -33,7 +37,6 @@ public class JdbcContactDao implements ContactDao {
     private static final Logger logger = LoggerFactory.getLogger(JdbcContactDao.class);
     private int rowsPerPageCount = 10;
     private int numberOfRecordsFound = 0;
-    private ConnectionManager connectionManager = ConnectionManager.getInstance();
     private PhoneNumberDao phoneNumberDao = new JdbcPhoneNumberDao();
     private ContactAttachmentDao attachmentDao = new JdbcContactAttachmentDao();
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -50,7 +53,7 @@ public class JdbcContactDao implements ContactDao {
         logger.debug("try to get contacts by day - {} and month - {}", day, month);
         PreparedStatement getByDayAndMonthStatement = null;
         Collection<Contact> resultCollection = new ArrayList<>();
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = receiveConnection();
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
@@ -69,15 +72,7 @@ public class JdbcContactDao implements ContactDao {
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-            try {
-                if (getByDayAndMonthStatement != null) {
-                    getByDayAndMonthStatement.close();
-                }
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
-            connectionManager.putBackConnection(connection);
+            closeResources(connection, getByDayAndMonthStatement);
         }
         return resultCollection;
     }
@@ -91,7 +86,7 @@ public class JdbcContactDao implements ContactDao {
         logger.debug("search for contact with id - {}", id);
         PreparedStatement statementGetContact = null;
         Contact resultObject = new Contact();
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = receiveConnection();
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
@@ -107,15 +102,7 @@ public class JdbcContactDao implements ContactDao {
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-            try {
-                if (statementGetContact != null) {
-                    statementGetContact.close();
-                }
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
-            connectionManager.putBackConnection(connection);
+            closeResources(connection, statementGetContact);
         }
         if (resultObject.getId() != null){
             return resultObject;
@@ -130,7 +117,7 @@ public class JdbcContactDao implements ContactDao {
         PreparedStatement statementGetContactList = null;
 
         Collection<Contact> resultCollection = new ArrayList<>();
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = receiveConnection();
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
@@ -149,15 +136,7 @@ public class JdbcContactDao implements ContactDao {
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-            try {
-                if (statementGetContactList != null) {
-                    statementGetContactList.close();
-                }
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
-            connectionManager.putBackConnection(connection);
+            closeResources(connection, statementGetContactList);
         }
         return resultCollection;
     }
@@ -170,7 +149,7 @@ public class JdbcContactDao implements ContactDao {
             searchQueryString = searchQueryString + " LIMIT ?, ?;";
         }
         Collection<Contact> resultCollection = new ArrayList<>();
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = receiveConnection();
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
@@ -189,15 +168,7 @@ public class JdbcContactDao implements ContactDao {
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-            try {
-                if (searchStatement != null) {
-                    searchStatement.close();
-                }
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
-            connectionManager.putBackConnection(connection);
+            closeResources(connection, searchStatement);
         }
         return resultCollection;
     }
@@ -207,7 +178,7 @@ public class JdbcContactDao implements ContactDao {
         logger.debug("saving contact with id= {}", contact.getId());
         String saveContactQuery = defineSaveQueryString(contact.getId());
         PreparedStatement statementSaveContact = null;
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = receiveConnection();
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
@@ -218,12 +189,14 @@ public class JdbcContactDao implements ContactDao {
                 contact.setId(getLastGeneratedValue(statementSaveContact));
             }
             if (contact.getPhoneNumbers() != null) {
-                contact.getPhoneNumbers().forEach(phoneNumber ->
-                        phoneNumberDao.save(phoneNumber, contact.getId(), connection));
+                for (PhoneNumber phoneNumber : contact.getPhoneNumbers()){
+                    phoneNumberDao.save(phoneNumber, contact.getId(), connection);
+                }
             }
             if (contact.getAttachments() != null) {
-                contact.getAttachments().forEach(attachment ->
-                        attachmentDao.save(attachment, contact.getId(), connection));
+                for (ContactAttachment attachment : contact.getAttachments()){
+                    attachmentDao.save(attachment, contact.getId(), connection);
+                }
             }
             if (contact.getPersonalLink() != null) {
                 setPersonalLink(contact.getPersonalLink(), contact.getId(), connection);
@@ -231,17 +204,16 @@ public class JdbcContactDao implements ContactDao {
             connection.commit();
             logger.debug("closed transaction");
         } catch (SQLException e) {
-            logger.error("error {}", e);
-        } finally {
+            logger.error("", e);
             try {
-                if (statementSaveContact != null) {
-                    statementSaveContact.close();
-                }
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("error {}", e);
+                logger.debug("trying to rollback transaction...");
+                connection.rollback();
+                logger.debug("transaction rolled back");
+            } catch (SQLException e1) {
+                logger.error("error while rollback transaction",e1);
             }
-            connectionManager.putBackConnection(connection);
+        } finally {
+            closeResources(connection, statementSaveContact);
         }
         return contact.getId();
     }
@@ -250,7 +222,7 @@ public class JdbcContactDao implements ContactDao {
     public void delete(Integer id) {
         logger.debug("deleting contact with id= {}", id);
         PreparedStatement statementDeleteContact = null;
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = receiveConnection();
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
@@ -268,15 +240,7 @@ public class JdbcContactDao implements ContactDao {
             }
             logger.error("{}", e);
         } finally {
-            try {
-                if (statementDeleteContact != null) {
-                    statementDeleteContact.close();
-                }
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("{}",e);
-            }
-            connectionManager.putBackConnection(connection);
+            closeResources(connection, statementDeleteContact);
         }
     }
 
@@ -284,7 +248,7 @@ public class JdbcContactDao implements ContactDao {
     public String getPersonalLink(Integer id) {
         logger.debug("looking for personal link for contact with id= {}", id);
         PreparedStatement statementGetPersonalLink = null;
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = receiveConnection();
         String personalLink = null;
         try {
             connection.setAutoCommit(false);
@@ -299,28 +263,21 @@ public class JdbcContactDao implements ContactDao {
             logger.debug("closed transaction");
         } catch (SQLException e) {
             try {
-                logger.debug("transaction rolled back");
+                logger.debug("trying to rollback transaction...");
                 connection.rollback();
+                logger.debug("transaction rolled back");
             } catch (SQLException e1) {
                 logger.error("{}", e1);
             }
             logger.error("{}", e);
         } finally {
-            try {
-                if (statementGetPersonalLink != null) {
-                    statementGetPersonalLink.close();
-                }
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("{}",e);
-            }
-            connectionManager.putBackConnection(connection);
+            closeResources(connection, statementGetPersonalLink);
         }
         return personalLink;
     }
 
     @Override
-    public void setPersonalLink(String personalLink, Integer id, Connection connection){
+    public void setPersonalLink(String personalLink, Integer id, Connection connection) throws SQLException {
         logger.debug("trying to set personal link for contact with id= {}", id);
         PreparedStatement statementSetPersonalLink = null;
         try {
@@ -328,16 +285,8 @@ public class JdbcContactDao implements ContactDao {
             statementSetPersonalLink.setString(1, personalLink);
             statementSetPersonalLink.setInt(2, id);
             statementSetPersonalLink.executeUpdate();
-        } catch (SQLException e) {
-            logger.error("{}", e);
         } finally {
-            try {
-                if (statementSetPersonalLink != null) {
-                    statementSetPersonalLink.close();
-                }
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
+            closeResources(null, statementSetPersonalLink);
         }
     }
 
@@ -472,14 +421,14 @@ public class JdbcContactDao implements ContactDao {
             Object fieldValue = mapEntry.getValue();
             if (fieldName.equals("orderBy")) {
                 if (isNotBlank((String) fieldValue)) {
-                    orderBy = convertFieldNameToTableName((String) fieldValue);
+                    orderBy = convertFieldNameToColumnName((String) fieldValue);
                     logger.debug("defined search result order by '{}'", orderBy);
                 }
             } else if (fieldName.contains("GreaterThan")) {
                 fieldName = fieldName.replace("GreaterThan", "");
                 if (isNotBlank((String) fieldValue)) {
                     query.append(" AND ");
-                    query.append(convertFieldNameToTableName(fieldName));
+                    query.append(convertFieldNameToColumnName(fieldName));
                     query.append(" > '");
                     query.append(fieldValue);
                     query.append("' ");
@@ -489,7 +438,7 @@ public class JdbcContactDao implements ContactDao {
                 fieldName = fieldName.replace("LessThan", "");
                 if (isNotBlank((String) fieldValue)) {
                     query.append(" AND ");
-                    query.append(convertFieldNameToTableName(fieldName));
+                    query.append(convertFieldNameToColumnName(fieldName));
                     query.append(" < '");
                     query.append(fieldValue);
                     query.append("' ");
@@ -497,7 +446,7 @@ public class JdbcContactDao implements ContactDao {
                 }
             } else if (isNotBlank(String.valueOf(fieldValue)) && !String.valueOf(fieldValue).equals("null")) {
                 query.append(" AND UPPER(");
-                query.append(convertFieldNameToTableName(fieldName));
+                query.append(convertFieldNameToColumnName(fieldName));
                 query.append(") LIKE '");
                 query.append(fieldValue.toString().toUpperCase());
                 query.append("%'");
@@ -512,7 +461,7 @@ public class JdbcContactDao implements ContactDao {
         return query.toString();
     }
 
-    private String convertFieldNameToTableName(String fieldName) {
+    private String convertFieldNameToColumnName(String fieldName) {
         logger.debug("converting field name {} to name of table", fieldName);
         String[] words = splitByCharacterTypeCamelCase(fieldName);
         StringBuilder tableName = new StringBuilder();

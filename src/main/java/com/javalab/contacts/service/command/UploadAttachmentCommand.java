@@ -35,23 +35,6 @@ public class UploadAttachmentCommand implements Command {
         String personalDirectory = definePersonalDirectory(request);
         String attachmentsFolder = properties.getProperty("attachments.folder.name");
         String personalAttachmentPath = personalDirectory + File.separator + attachmentsFolder + File.separator;
-        String randomFileDir =  getFileRandomDir();
-
-        String uploadFilePath = applicationPath
-                + relativeUploadPath
-                + File.separator
-                + personalAttachmentPath
-                + File.separator
-                + randomFileDir;
-
-        File fileSaveDir = new File(uploadFilePath);
-        try {
-            if (!fileSaveDir.exists()) {
-                FileUtils.forceMkdir(fileSaveDir);
-            }
-        } catch (IOException e) {
-            logger.error("error creating directory {} {}", uploadFilePath, e);
-        }
 
         try {
             logger.debug("looking for attached files in request {}", request);
@@ -59,6 +42,21 @@ public class UploadAttachmentCommand implements Command {
                 if (part.getName().contains("attachedFile")) {
                     logger.debug("found attached file {}", part.getSubmittedFileName());
                     String attachmentIndex = part.getName().substring(part.getName().lastIndexOf('-') + 1);
+                    String randomFileDir =  getFileRandomDir();
+                    String uploadFilePath = applicationPath
+                            + relativeUploadPath
+                            + File.separator
+                            + personalAttachmentPath
+                            + File.separator
+                            + randomFileDir;
+                    File fileSaveDir = new File(uploadFilePath);
+                    try {
+                        if (!fileSaveDir.exists()) {
+                            FileUtils.forceMkdir(fileSaveDir);
+                        }
+                    } catch (IOException e) {
+                        logger.error("error creating directory {} {}", uploadFilePath, e);
+                    }
                     String fileName = defineAttachmentFileName(request, attachmentIndex, uploadFilePath);
                     String fullUploadPath = uploadFilePath
                             + File.separator

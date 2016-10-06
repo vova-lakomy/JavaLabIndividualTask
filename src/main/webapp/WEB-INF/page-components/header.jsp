@@ -10,6 +10,7 @@
 
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>${labels.get('title')}</title>
     <link type="text/css" rel="stylesheet" href="${rootContext}resources/css/main.css"/>
     <link type="text/css" rel="stylesheet" href="${rootContext}resources/css/custom-grid.css"/>
@@ -33,20 +34,10 @@
                    <c:set var="enClass" value="jlab-selected-locale"/>
                </c:otherwise>
            </c:choose>
-        <a id="localeSelectEn" class="${enClass}" href="setLocale?localeKey=en">EN</a>
+        <a id="localeSelectEn" class="${enClass}" href="${rootContext}contacts/setLocale?localeKey=en">EN</a>
         <span>|</span>
-        <a id="localeSelectRu" class="${ruClass}" href="setLocale?localeKey=ru">RU</a>
+        <a id="localeSelectRu" class="${ruClass}" href="${rootContext}contacts/setLocale?localeKey=ru">RU</a>
     </span>
-
-    <%--debug--%>
-    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
-    <jsp:useBean id="now" class="java.util.Date"/>
-    <c:set var="year" value="${now.year +1900}"/>
-    <span class="jlab-required">${year}</span>
-    <%--<fmt:formatDate value="${now}" dateStyle="long"/>--%>
-    <%--<fmt:formatDate value="${now}" pattern="dd-MM-yyyy HH:mm:ss a z" />--%>
-    <%--debug--%>
 
     <a class="jlab-home-page-link" href="${rootContext}index.jsp">${labels.get('go.home')}</a>
 

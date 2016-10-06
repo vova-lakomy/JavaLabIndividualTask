@@ -5,6 +5,7 @@ import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.model.Contact;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Collection;
 
 public interface ContactDao {
@@ -23,7 +24,7 @@ public interface ContactDao {
 
     void delete(Integer id);
 
-    void setPersonalLink(String personalLink, Integer id, Connection connection);
+    void setPersonalLink(String personalLink, Integer id, Connection connection) throws SQLException;
 
     int getRowsPerPageCount();
 

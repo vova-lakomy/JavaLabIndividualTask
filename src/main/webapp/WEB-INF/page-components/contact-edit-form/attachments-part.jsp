@@ -34,7 +34,7 @@
 
                             <input type="checkbox" id="attachment-${counter.index}" name="selectedId"
                                    value="${attachment.id}" data-action="deleteAttachment">
-                            <a href="${rootContext}${attachment.attachmentLink}" target="_blank" download>
+                            <a href="${rootContext}contacts/${attachment.attachmentLink}" target="_blank" download>
                                 <label>${attachment.fileName}</label>
                             </a>&nbsp;&nbsp;
                             <img class="jlab-edit-image"

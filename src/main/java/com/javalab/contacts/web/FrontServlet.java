@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -26,8 +27,9 @@ import java.util.Set;
 import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.replace;
 
-@MultipartConfig(maxFileSize = 1024*1024*10)     //10mb
+@MultipartConfig(maxFileSize = 1024 * 1024 * 10)     //10mb
 @WebServlet(loadOnStartup = 1, urlPatterns = {"/contacts/*"})
 public class FrontServlet extends HttpServlet {
 
@@ -42,14 +44,14 @@ public class FrontServlet extends HttpServlet {
         logger.debug("App servlet init");
         super.init(config);
         Boolean shouldLoadScript = Boolean.valueOf(properties.getProperty("load.scripts.at.start"));
-        if(shouldLoadScript){
+        if (shouldLoadScript) {
             loadScript(getServletContext().getRealPath("./WEB-INF/classes/initDB.sql"));
             loadScript(getServletContext().getRealPath("./WEB-INF/classes/populateDB.sql"));
         }
         try {
-            scheduler =  StdSchedulerFactory.getDefaultScheduler();
+            scheduler = StdSchedulerFactory.getDefaultScheduler();
         } catch (SchedulerException e) {
-           logger.error("{}",e.getMessage());
+            logger.error("{}", e.getMessage());
         }
         QuartzScheduler.start(scheduler);
     }
@@ -73,12 +75,12 @@ public class FrontServlet extends HttpServlet {
         processRequest(req, resp);
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
         try {
             checkForExceededSize(request, response);
         } catch (Exception e) {
-            logger.error("{}",e);
+            logger.error("{}", e);
             return;
         }
         Set<String> commandKeys = new LinkedHashSet<>();
@@ -90,18 +92,24 @@ public class FrontServlet extends HttpServlet {
                 commandKeys.add(commandKey);
             }
         }
-        String mainCommand = request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1);
+        String[] uriPathInfo = request.getPathInfo().split("/",3);
+        String mainCommand = uriPathInfo[1];
+        if (uriPathInfo.length > 2){
+            String uriParams = uriPathInfo[uriPathInfo.length-1];
+            logger.debug("found uriParameters in request path {}", uriParams);
+            request.setAttribute("uriParams", uriParams);
+        }
         logger.debug("adding {} to command keys", mainCommand);
         commandKeys.add(mainCommand);
         logger.debug("commands to execute: {}", commandKeys);
 
         response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        String path = "";
-        for (String key : commandKeys){
+        String path = null;
+        for (String key : commandKeys) {
             Command command = commandHelper.getCommand(key);
             if (command != null) {
-                path = command.execute(request,response);
+                path = command.execute(request, response);
                 logger.debug("{} command execution returned '{}'", key, path);
             }
         }
@@ -109,34 +117,43 @@ public class FrontServlet extends HttpServlet {
     }
 
     private void dispatch(HttpServletRequest request, HttpServletResponse response, String path)
-                                                         throws  javax.servlet.ServletException, java.io.IOException {
-        if (isBlank(path)){
+            throws javax.servlet.ServletException, java.io.IOException {
+        if (path == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            logger.debug("redirected to 404 page");
+        } else if (isBlank(path) && !response.isCommitted()) {
             logger.debug("forward path is not defined, defining redirect URL...");
             String redirectURL = (String) request.getAttribute("redirectURL");
-            if (isNotBlank(redirectURL)){
+            if (isNotBlank(redirectURL)) {
                 response.sendRedirect(redirectURL);
                 logger.debug("redirected to {}", redirectURL);
             } else {
-                response.sendRedirect("list");
+                response.sendRedirect(getRootUri() + "contacts/list");
                 logger.debug("redirected to main view");
             }
-        } else {
+        } else if (!response.isCommitted()) {
             logger.debug("defined forward path as '{}'", path);
-            request.setAttribute("path",path);
+            request.setAttribute("path", path);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/app.jsp");
             dispatcher.forward(request, response);
             logger.debug("forwarded to app.jsp with path {}", path);
+        } else {
+            logger.debug("response is already committed, doing nothing");
         }
+    }
+
+    private String getRootUri(){
+        return getServletContext().getContextPath() + "/";
     }
 
     private void checkForExceededSize(HttpServletRequest req, HttpServletResponse response) throws Exception {
         try {
             String contentType = req.getContentType();
-            if (contentType!=null && contentType.toLowerCase().startsWith("multipart")){
+            if (contentType != null && contentType.toLowerCase().startsWith("multipart")) {
                 req.getParts();
             }
-        } catch (Exception e){
-            response.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE,"File size exceeds maximum allowed");
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE, "File size exceeds maximum allowed");
             throw new Exception("File size exceeds maximum allowed");
         }
 

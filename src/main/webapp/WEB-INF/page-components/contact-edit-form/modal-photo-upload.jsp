@@ -13,7 +13,7 @@
                             <button class="jlab-button" disabled>${labels.get('download.image')}</button>
                         </c:when>
                         <c:otherwise>
-                            <a href="${rootContext}${fullContact.photoLink}" class="jlab-button" download>${labels.get('download.image')}</a>
+                            <a href="${rootContext}contacts/${fullContact.photoLink}" class="jlab-button" download>${labels.get('download.image')}</a>
                         </c:otherwise>
                     </c:choose>
                 </div>

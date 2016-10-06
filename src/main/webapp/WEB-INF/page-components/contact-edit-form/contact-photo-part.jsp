@@ -16,7 +16,7 @@
                             <img id="contact-image" src="${rootContext}resources/img/unknown_person.png">
                         </c:when>
                         <c:otherwise>
-                            <img id="contact-image" src="${rootContext}${fullContact.photoLink}">
+                            <img id="contact-image" src="${rootContext}contacts/${fullContact.photoLink}">
                         </c:otherwise>
                     </c:choose>
                 <input class="jlab-hidden" type="text" name="photoLink" value="${fullContact.photoLink}">

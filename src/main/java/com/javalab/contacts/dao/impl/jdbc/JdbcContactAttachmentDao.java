@@ -19,14 +19,13 @@ import java.util.Collection;
 public class JdbcContactAttachmentDao implements ContactAttachmentDao {
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcContactAttachmentDao.class);
-    private ConnectionManager connectionManager = ConnectionManager.getInstance();
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     public ContactAttachment get(Integer id) {
         logger.debug("try to get attachment by id= {}", id);
         PreparedStatement statementGetAttachment = null;
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = ConnectionManager.receiveConnection();
         ContactAttachment resultObject = new ContactAttachment();
         try {
             connection.setAutoCommit(false);
@@ -43,15 +42,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-            try {
-                if (statementGetAttachment != null) {
-                    statementGetAttachment.close();
-                }
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
-            connectionManager.putBackConnection(connection);
+            ConnectionManager.closeResources(connection, statementGetAttachment);
         }
         if (resultObject.getId() != null) {
             return resultObject;
@@ -63,7 +54,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
     @Override
     public Collection<ContactAttachment> getByContactId(Integer contactId) {
         logger.debug("try to get contacts by contactId= {}", contactId);
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = ConnectionManager.receiveConnection();
         Collection<ContactAttachment> resultCollection = new ArrayList<>();
         PreparedStatement statementGetByContactId = null;
         try {
@@ -89,7 +80,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             } catch (SQLException e) {
                 logger.error("{}", e);
             }
-            connectionManager.putBackConnection(connection);
+            ConnectionManager.putBackConnection(connection);
         }
         return resultCollection;
     }
@@ -97,7 +88,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
     @Override
     public void save(ContactAttachment contactAttachment, Integer contactId) {
 
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = ConnectionManager.receiveConnection();
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
@@ -117,12 +108,12 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             } catch (SQLException e) {
                 logger.error("{}", e);
             }
-            connectionManager.putBackConnection(connection);
+            ConnectionManager.putBackConnection(connection);
         }
     }
 
     @Override
-    public void save(ContactAttachment contactAttachment, Integer contactId, Connection connection){
+    public void save(ContactAttachment contactAttachment, Integer contactId, Connection connection) throws SQLException {
         logger.debug("saving attachment with id= {} contactId= {}", contactAttachment.getId(), contactId);
         PreparedStatement statementSaveAttachment = null;
         String queryAddAttachment = defineSaveAttachmentQuery(contactAttachment.getId());
@@ -130,8 +121,6 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             statementSaveAttachment = connection.prepareStatement(queryAddAttachment);
             setSaveStatementParams(statementSaveAttachment, contactAttachment, contactId);
             statementSaveAttachment.executeUpdate();
-        } catch (SQLException e) {
-            logger.error("{}", e);
         } finally {
             try {
                 if (statementSaveAttachment != null) {
@@ -147,7 +136,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
     public void delete(Integer id) {
         logger.debug("deleting attachment with id= {} ", id);
         PreparedStatement statementDeleteAttachment = null;
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = ConnectionManager.receiveConnection();
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
@@ -168,7 +157,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             } catch (SQLException e) {
                 logger.error("{}", e);
             }
-            connectionManager.putBackConnection(connection);
+            ConnectionManager.putBackConnection(connection);
         }
     }
 

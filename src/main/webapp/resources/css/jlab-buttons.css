@@ -2,7 +2,8 @@
     border: 1px solid gray;
     border-radius: 3px;
     padding: 8px 30px;
-    background-color: rgb(245, 245, 245);
+    /*background-color: rgb(245, 245, 245);*/
+    background-color: rgba(35, 153, 255, 0.52);
     color: black;
     font-size: 12px;
     font-weight: 900;

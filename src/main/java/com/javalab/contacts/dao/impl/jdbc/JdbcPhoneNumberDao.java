@@ -14,15 +14,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.receiveConnection;
+import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.closeResources;
+
 public class JdbcPhoneNumberDao implements PhoneNumberDao {
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcPhoneNumberDao.class);
-    private ConnectionManager connectionManager = ConnectionManager.getInstance();
 
     public PhoneNumber get(Integer id) {
         logger.debug("try to get phone number by id=" + id);
         PreparedStatement statementGetPhoneNumber = null;
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = receiveConnection();
         PhoneNumber resultObject = new PhoneNumber();
         try {
             connection.setAutoCommit(false);
@@ -39,15 +41,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-            try {
-                if (statementGetPhoneNumber != null) {
-                    statementGetPhoneNumber.close();
-                }
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
-            connectionManager.putBackConnection(connection);
+            closeResources(connection, statementGetPhoneNumber);
         }
         if (resultObject.getId() != null){
             return resultObject;
@@ -60,7 +54,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
     @Override
     public Collection<PhoneNumber> getByContactId(Integer contactId) {
         logger.debug("try to get phone number by contact id= " + contactId);
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = receiveConnection();
         Collection<PhoneNumber> resultCollection = new ArrayList<>();
         PreparedStatement statementGetByContactId = null;
         try {
@@ -78,22 +72,14 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-            try {
-                if (statementGetByContactId != null) {
-                    statementGetByContactId.close();
-                }
-                connection.setAutoCommit(false);
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
-            connectionManager.putBackConnection(connection);
+           closeResources(connection, statementGetByContactId);
         }
         return resultCollection;
     }
 
     public void save(PhoneNumber phoneNumber, Integer contactId) {
 
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = receiveConnection();
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
@@ -103,47 +89,34 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
         } catch (SQLException e) {
             logger.error("{}", e);
             try {
-                logger.debug("transaction rolled back");
                 connection.rollback();
+                logger.debug("transaction rolled back");
             } catch (SQLException ex) {
                 logger.error("{}", ex);
             }
         } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
-            connectionManager.putBackConnection(connection);
+            closeResources(connection, null);
         }
     }
 
     @Override
-    public void save(PhoneNumber phoneNumber, Integer contactId, Connection connection) {
+    public void save(PhoneNumber phoneNumber, Integer contactId, Connection connection) throws SQLException {
         logger.debug("saving phone number id= " + phoneNumber.getId() + " contact id= " + contactId);
         PreparedStatement statementSavePhoneNumber = null;
-        String savePhoneQuery = defineSavePhoneQuery(phoneNumber.getId());
+        String savePhoneQuery = defineSavePhoneQueryString(phoneNumber.getId());
         try {
             statementSavePhoneNumber = connection.prepareStatement(savePhoneQuery);
             setSaveStatementParams(statementSavePhoneNumber, phoneNumber, contactId);
             statementSavePhoneNumber.executeUpdate();
-        } catch (SQLException e) {
-            logger.error("{}", e);
         } finally {
-            try {
-                if (statementSavePhoneNumber != null) {
-                    statementSavePhoneNumber.close();
-                }
-            } catch (Exception e) {
-                logger.error("{}", e);
-            }
+           closeResources(null, statementSavePhoneNumber);
         }
     }
 
     public void delete(Integer id) {
         logger.debug("deleting phone number with id= " + id);
         PreparedStatement statementDeletePhoneNumber = null;
-        Connection connection = connectionManager.receiveConnection();
+        Connection connection = receiveConnection();
         try {
             connection.setAutoCommit(false);
             logger.debug("opened transaction");
@@ -155,15 +128,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-            try {
-                if (statementDeletePhoneNumber != null) {
-                    statementDeletePhoneNumber.close();
-                }
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
-            connectionManager.putBackConnection(connection);
+            closeResources(connection, statementDeletePhoneNumber);
         }
     }
 
@@ -180,7 +145,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
         return resultObject;
     }
 
-    private String defineSavePhoneQuery(Integer phoneNumberId) {
+    private String defineSavePhoneQueryString(Integer phoneNumberId) {
         logger.debug("defining save phone query");
         if (phoneNumberId == null) {
             return "INSERT INTO phone_number " +

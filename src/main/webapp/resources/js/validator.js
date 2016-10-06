@@ -25,6 +25,9 @@
         email : function (node) {
             return new RegExp('^$|^[\\w-.]{1,40}@[\\w]+\.[\\w]{2,4}$').test(node.value);
         },
+        comment : function (node) {
+            return node.value.length <= 1000;
+        },
         url : function (node) {
             return new RegExp('^$|^[\/\\w\.-:&=]{1,100}$').test(node.value);
         },
@@ -98,9 +101,19 @@
     }
 
     function checkDate(data) {
-        var d = data.day;
-        var m = data.month;
-        var y = data.year;
+        var day = data.day;
+        var month = data.month;
+        var year = data.year;
+        return (isDateValid(day, month, year) && !isDateFuture(day, month, year))
+    }
+
+    function isDateFuture(day, month, year) {
+        var dateNow = new Date();
+        var dateToCheck = new Date(year + '-' + month + '-' + day);
+        return dateToCheck > dateNow;
+    }
+
+    function isDateValid(d, m, y) {
         if (d && m && y){
             var endY = new Date().getFullYear();
             var startY = endY - 100;
