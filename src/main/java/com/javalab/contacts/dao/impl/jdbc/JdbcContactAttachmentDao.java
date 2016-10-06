@@ -176,10 +176,12 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
         logger.debug("creating 'ContactAttachment' entity from {}", resultSet);
         ContactAttachment resultObject = new ContactAttachment();
         Integer id = resultSet.getInt("id");
+        String attachmentName = resultSet.getString("attachment_name");
         String attachmentLink = resultSet.getString("attachment_link");
         String attachmentComment = resultSet.getString("attachment_comment");
         Date sqlDateOfUpload = resultSet.getDate("date_of_upload");
         resultObject.setId(id);
+        resultObject.setAttachmentName(attachmentName);
         resultObject.setAttachmentLink(attachmentLink);
         resultObject.setAttachmentComment(attachmentComment);
         LocalDate dateOfUpload = null;
@@ -195,24 +197,25 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
         logger.debug("defining save attachment query string");
         if (attachmentId == null){
             return "INSERT INTO contact_attachment "
-                    + "(attachment_link, attachment_comment, date_of_upload, contact_id) "
-                    + "VALUES (?,?,?,?)";
+                    + "(attachment_name, attachment_link, attachment_comment, date_of_upload, contact_id) "
+                    + "VALUES (?, ?, ?, ?, ?)";
         } else {
             return "UPDATE contact_attachment SET "
-                    + "attachment_link=?, attachment_comment=?, date_of_upload=?, contact_id=? "
+                    + "attachment_name=?, attachment_link=?, attachment_comment=?, date_of_upload=?, contact_id=? "
                     + "WHERE id=" + attachmentId;
         }
     }
 
     private void setSaveStatementParams(PreparedStatement statement, ContactAttachment attachment, Integer contactId) throws SQLException {
         logger.debug("setting params to save attachment statement");
-        statement.setString(1, attachment.getAttachmentLink());
-        statement.setString(2, attachment.getAttachmentComment());
+        statement.setString(1, attachment.getAttachmentName());
+        statement.setString(2, attachment.getAttachmentLink());
+        statement.setString(3, attachment.getAttachmentComment());
         String stringDate = null;
         if (attachment.getDateOfUpload() != null) {
             stringDate = attachment.getDateOfUpload().format(formatter);
         }
-        statement.setString(3, stringDate);
-        statement.setInt(4, contactId);
+        statement.setString(4, stringDate);
+        statement.setInt(5, contactId);
     }
 }

@@ -4,7 +4,6 @@
 <c:set var="rootContext" value="${pageContext.request.contextPath}/" scope="session"/>
 <c:set var="labels" value="${labels}" scope="session"/>
 <c:set var="locale" value="${localeKey}"/>
-<%--<c:set var="currentURL" value="${currentUrl}" scope="session"/>--%>
 <c:set var="currentURL"
        value="${requestScope['javax.servlet.forward.request_uri']}?${requestScope['javax.servlet.forward.query_string']}"
        scope="session"/>
@@ -38,6 +37,17 @@
         <span>|</span>
         <a id="localeSelectRu" class="${ruClass}" href="setLocale?localeKey=ru">RU</a>
     </span>
+
+    <%--debug--%>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+    <jsp:useBean id="now" class="java.util.Date"/>
+    <c:set var="year" value="${now.year +1900}"/>
+    <span class="jlab-required">${year}</span>
+    <%--<fmt:formatDate value="${now}" dateStyle="long"/>--%>
+    <%--<fmt:formatDate value="${now}" pattern="dd-MM-yyyy HH:mm:ss a z" />--%>
+    <%--debug--%>
+
     <a class="jlab-home-page-link" href="${rootContext}index.jsp">${labels.get('go.home')}</a>
 
 </header>

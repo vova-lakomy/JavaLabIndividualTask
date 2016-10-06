@@ -10,13 +10,15 @@ import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public final class CustomFileUtils {
-    private static final Logger logger = LoggerFactory.getLogger(SqlScriptLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(CustomFileUtils.class);
     private static ContactDtoRepository repository = new ContactDtoRepositoryImpl();
     private static final int RANDOM_STRING_CHARS_COUNT = 6;
 
@@ -74,7 +76,7 @@ public final class CustomFileUtils {
         }
     }
 
-    public static String defineAttachmentUploadPath(HttpServletRequest request, String attachmentIndex, String saveDir) {
+    public static String defineAttachmentFileName(HttpServletRequest request, String attachmentIndex, String saveDir) {
         String fileNameFromRequest = request.getParameter("attachmentFileName-" + attachmentIndex);
         if (isBlank(fileNameFromRequest)) {
             fileNameFromRequest = "no-name";
@@ -92,7 +94,6 @@ public final class CustomFileUtils {
             fileNameFromRequest = fileNameWithoutExt + "(1)" + ext;
             resultFile = new File(saveDir + fileNameFromRequest);
         }
-
         return fileNameFromRequest;
     }
 
@@ -102,6 +103,11 @@ public final class CustomFileUtils {
         } catch (IOException e) {
             logger.error("", e);
         }
+    }
+
+    public static String getFileRandomDir(){
+        String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm:ss"));
+        return timeStamp + generateRandomString(5);
     }
 
 }

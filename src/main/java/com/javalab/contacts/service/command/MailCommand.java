@@ -48,7 +48,7 @@ public class MailCommand implements Command {
         Map<String, String> templates = stringTemplates.getTemplateMap();
         request.setAttribute("templates", templates);
 
-        logger.debug("searching for selected checkboxes");
+
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
             logger.debug("found {} checkboxes",selectedIds.length);
@@ -70,11 +70,6 @@ public class MailCommand implements Command {
             sendMails(request);
             request.getSession().setAttribute("messageKey","message.email.sent");
             request.getSession().setAttribute("showMessage","true");
-            try {
-                response.sendRedirect("list");
-            } catch (IOException e) {
-                logger.error("{}",e);
-            }
             return "";
         } else {
             return "contact-email-form.jsp";

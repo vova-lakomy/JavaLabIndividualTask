@@ -84,9 +84,9 @@ public class PhoneNumber {
     public String toString() {
         return "PhoneNumber{" +
                 "id=" + id +
-                " +" + countryCode +
-                "(" + operatorCode +
-                ")" + phoneNumber +
+                ", countryCode=" + countryCode +
+                ", operatorCode=" + operatorCode +
+                ", phoneNumber=" + phoneNumber +
                 ", phoneType=" + phoneType +
                 ", phoneComment='" + phoneComment + '\'' +
                 '}';

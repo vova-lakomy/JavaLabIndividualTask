@@ -362,6 +362,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
         Collection<ContactAttachment> attachments = new ArrayList<>();
         contact.getAttachments().forEach(attachment -> {
                     Integer id = attachment.getId();
+                    String attachmentName = attachment.getFileName();
                     String attachmentLink = attachment.getAttachmentLink();
                     String comment = attachment.getComment();
                     LocalDate dateOfUpload = null;
@@ -370,6 +371,7 @@ public class ContactDtoRepositoryImpl implements ContactDtoRepository {
                     }
                     ContactAttachment contactAttachment = new ContactAttachment();
                     contactAttachment.setId(id);
+                    contactAttachment.setAttachmentName(attachmentName);
                     contactAttachment.setAttachmentLink(attachmentLink);
                     contactAttachment.setAttachmentComment(comment);
                     contactAttachment.setDateOfUpload(dateOfUpload);

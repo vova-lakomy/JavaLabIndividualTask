@@ -6,6 +6,7 @@ import java.time.LocalDate;
 public class ContactAttachment {
 
     private Integer id;
+    private String attachmentName;
     private String attachmentLink;
     private String attachmentComment;
     private LocalDate dateOfUpload;
@@ -42,6 +43,14 @@ public class ContactAttachment {
         this.dateOfUpload = dateOfUpload;
     }
 
+    public String getAttachmentName() {
+        return attachmentName;
+    }
+
+    public void setAttachmentName(String attachmentName) {
+        this.attachmentName = attachmentName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -49,6 +58,9 @@ public class ContactAttachment {
 
         ContactAttachment that = (ContactAttachment) o;
 
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (attachmentName != null ? !attachmentName.equals(that.attachmentName) : that.attachmentName != null)
+            return false;
         if (attachmentLink != null ? !attachmentLink.equals(that.attachmentLink) : that.attachmentLink != null)
             return false;
         if (attachmentComment != null ? !attachmentComment.equals(that.attachmentComment) : that.attachmentComment != null)
@@ -66,6 +78,7 @@ public class ContactAttachment {
     public String toString() {
         return "ContactAttachment{" +
                 "id=" + id +
+                ", attachmentName='" + attachmentName + '\'' +
                 ", attachmentLink='" + attachmentLink + '\'' +
                 ", attachmentComment='" + attachmentComment + '\'' +
                 ", dateOfUpload=" + dateOfUpload +

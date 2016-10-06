@@ -13,8 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import static com.javalab.contacts.util.CustomFileUtils.defineAttachmentUploadPath;
+import static com.javalab.contacts.util.CustomFileUtils.defineAttachmentFileName;
 import static com.javalab.contacts.util.CustomFileUtils.definePersonalDirectory;
+import static com.javalab.contacts.util.CustomFileUtils.getFileRandomDir;
 import static com.javalab.contacts.util.CustomFileUtils.writePartToDisk;
 
 
@@ -34,11 +35,14 @@ public class UploadAttachmentCommand implements Command {
         String personalDirectory = definePersonalDirectory(request);
         String attachmentsFolder = properties.getProperty("attachments.folder.name");
         String personalAttachmentPath = personalDirectory + File.separator + attachmentsFolder + File.separator;
+        String randomFileDir =  getFileRandomDir();
 
         String uploadFilePath = applicationPath
                 + relativeUploadPath
                 + File.separator
-                + personalAttachmentPath;
+                + personalAttachmentPath
+                + File.separator
+                + randomFileDir;
 
         File fileSaveDir = new File(uploadFilePath);
         try {
@@ -55,11 +59,18 @@ public class UploadAttachmentCommand implements Command {
                 if (part.getName().contains("attachedFile")) {
                     logger.debug("found attached file {}", part.getSubmittedFileName());
                     String attachmentIndex = part.getName().substring(part.getName().lastIndexOf('-') + 1);
-                    String fileName = defineAttachmentUploadPath(request, attachmentIndex, uploadFilePath);
-                    String fullUploadPath = uploadFilePath + File.separator + fileName;
+                    String fileName = defineAttachmentFileName(request, attachmentIndex, uploadFilePath);
+                    String fullUploadPath = uploadFilePath
+                            + File.separator
+                            + fileName;
                     writePartToDisk(part, fullUploadPath);
                     logger.debug("{} uploaded ", part.getSubmittedFileName());
-                    String attachmentLink = relativeUploadPath + personalAttachmentPath + File.separator + fileName;
+                    String attachmentLink = relativeUploadPath
+                            + personalAttachmentPath
+                            + File.separator
+                            + randomFileDir
+                            + File.separator
+                            + fileName;
                     request.setAttribute("attachmentLink-" + attachmentIndex, attachmentLink);
                 }
             }

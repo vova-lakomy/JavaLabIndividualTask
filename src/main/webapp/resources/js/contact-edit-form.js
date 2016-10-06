@@ -504,42 +504,39 @@
 
     function handleUploadFileNameChange(e) {
         if (e.target.value.length > 50){
-         disableButton('#button-upload-attachment');
-         disableButton('#button-save-attachment-edit-modal');
+            disableButton('#button-upload-attachment');
         } else {
             enableButton('#button-upload-attachment');
-            enableButton('#button-save-attachment-edit-modal');
+
         }
     }
 
     function handleUploadCommentChange(e){
-        if (e.target.value.length > 100){
+        if (e.target.value.length > 500){
             disableButton('#button-upload-attachment');
-            disableButton('#button-save-attachment-edit-modal');
         } else {
             enableButton('#button-upload-attachment');
-            enableButton('#button-save-attachment-edit-modal');
         }
     }
 
     function handleEditFileNameChange(e) {
         if (e.target.value.length > 50){
-            disableButton('#button-upload-attachment');
             disableButton('#button-save-attachment-edit-modal');
         } else {
-            enableButton('#button-upload-attachment');
             enableButton('#button-save-attachment-edit-modal');
         }
     }
 
     function handleEditCommentChange(e){
         if (e.target.value.length > 100){
-            disableButton('#button-upload-attachment');
             disableButton('#button-save-attachment-edit-modal');
         } else {
-            enableButton('#button-upload-attachment');
             enableButton('#button-save-attachment-edit-modal');
         }
+    }
+
+    function expandTextarea(element) {
+        element.style.height = element.scrollHeight + "px";
     }
 
 // listeners

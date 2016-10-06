@@ -42,8 +42,7 @@
         <div class="jlab-form-item">
             <label for="phone-number-comment">${labels.get('comment')}</label>
             <textarea id="phone-number-comment" class="jlab-comment-textarea" name="phoneComment"
-                      placeholder="${labels.get('comment.placeholder')}" data-validation-type="comment">
-            </textarea>
+                      placeholder="${labels.get('comment.placeholder')}" data-validation-type="comment"></textarea>
         </div>
 
         <div class="jlab-pull-right jlab-button-block ">

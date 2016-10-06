@@ -5,11 +5,14 @@ import com.javalab.contacts.repository.AttachmentDtoRepository;
 import com.javalab.contacts.repository.impl.AttachmentDtoRepositoryImpl;
 import com.javalab.contacts.util.CustomFileUtils;
 import com.javalab.contacts.util.PropertiesProvider;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 public class DeleteAttachmentCommand implements Command {
@@ -33,7 +36,13 @@ public class DeleteAttachmentCommand implements Command {
                 AttachmentDTO attachmentDTO = repository.get(id);
                 String attachmentLink = attachmentDTO.getAttachmentLink();
                 String fullPath = applicationPath + attachmentLink;
-                CustomFileUtils.deleteFile(fullPath);
+                File fileToDelete = new File(fullPath);
+                File parentDirectory = fileToDelete.getParentFile();
+                try {
+                    FileUtils.deleteDirectory(parentDirectory);
+                } catch (IOException e) {
+                    logger.error("error while deleting file {} \n{}", fileToDelete, e);
+                }
                 repository.delete(id);
             }
         }

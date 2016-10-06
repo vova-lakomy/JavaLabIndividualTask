@@ -201,6 +201,7 @@ public class Contact {
                 ", contactAddress=" + contactAddress +
                 ", attachments=" + attachments +
                 ", photoLink='" + photoLink + '\'' +
+                ", personalLink='" + personalLink + '\'' +
                 ", phoneNumbers=" + phoneNumbers +
                 '}';
     }

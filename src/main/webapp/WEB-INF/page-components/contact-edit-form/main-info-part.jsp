@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<jsp:useBean id="now" class="java.util.Date"/>
+<c:set var="yearNow" value="${now.year +1900}"/>
 <div class="jlab-row">
     <div class="jlab-cell-12">
 
@@ -57,8 +58,8 @@
                         </select>
                         <select class="jlab-date-field-item" id="edit-form-birth-year" title="${labels.get('year')}" name="yearOfBirth" data-date-part="year">
                             <option value="">${labels.get('year')}</option>
-                            <c:forEach var="i" begin="1936" end="2016">
-                                <c:set var="year" value="${2016 - i + 1936}"/>
+                            <c:forEach var="i" begin="${yearNow-70}" end="${yearNow}">
+                                <c:set var="year" value="${yearNow - i + yearNow -70}"/>
                                 <c:choose>
                                     <c:when test="${year == fullContact.yearOfBirth}">
                                         <option selected value="${year}">${year}</option>

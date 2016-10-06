@@ -74,14 +74,13 @@ public class FrontServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        request.setCharacterEncoding("utf-8");
         try {
             checkForExceededSize(request, response);
         } catch (Exception e) {
             logger.error("{}",e);
             return;
         }
-
-        request.setCharacterEncoding("utf-8");
         Set<String> commandKeys = new LinkedHashSet<>();
         logger.debug("searching for command keys....");
         String[] optionalCommands = request.getParameterValues("optionalCommand");
@@ -102,9 +101,8 @@ public class FrontServlet extends HttpServlet {
         for (String key : commandKeys){
             Command command = commandHelper.getCommand(key);
             if (command != null) {
-                logger.debug("executing {}", command);
                 path = command.execute(request,response);
-                logger.debug("command execution returned '{}'", path);
+                logger.debug("{} command execution returned '{}'", key, path);
             }
         }
         dispatch(request, response, path);
@@ -117,14 +115,17 @@ public class FrontServlet extends HttpServlet {
             String redirectURL = (String) request.getAttribute("redirectURL");
             if (isNotBlank(redirectURL)){
                 response.sendRedirect(redirectURL);
+                logger.debug("redirected to {}", redirectURL);
             } else {
                 response.sendRedirect("list");
+                logger.debug("redirected to main view");
             }
         } else {
             logger.debug("defined forward path as '{}'", path);
             request.setAttribute("path",path);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/app.jsp");
             dispatcher.forward(request, response);
+            logger.debug("forwarded to app.jsp with path {}", path);
         }
     }
 

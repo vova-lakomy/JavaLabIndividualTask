@@ -8,6 +8,7 @@ import com.javalab.contacts.repository.AttachmentDtoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,17 +27,21 @@ public class AttachmentDtoRepositoryImpl implements AttachmentDtoRepository {
 
     @Override
     public Collection<AttachmentDTO> getByContactId(Integer contactId) {
+        Collection<AttachmentDTO> attachmentDTOs = null;
         if (contactId != null) {
-            Collection<AttachmentDTO> attachmentDTOs = new ArrayList<>();
+            attachmentDTOs = new ArrayList<>();
             Collection<ContactAttachment> attachments = attachmentDao.getByContactId(contactId);
-            attachments.forEach(attachment -> {
+            for (ContactAttachment attachment: attachments){
                 AttachmentDTO attachmentDTO = createDtoFromContactAttachment(attachment);
                 attachmentDTOs.add(attachmentDTO);
-            });
+            }
             if (attachmentDTOs.size() > 0) {
                 return attachmentDTOs;
-            } else return null;
-        } else return null;
+            } else {
+                return null;
+            }
+        }
+        return attachmentDTOs;
     }
 
     @Override
@@ -48,8 +53,12 @@ public class AttachmentDtoRepositoryImpl implements AttachmentDtoRepository {
     private AttachmentDTO createDtoFromContactAttachment(ContactAttachment attachment){
         Integer id = attachment.getId();
         String attachmentLink = attachment.getAttachmentLink();
-        String fileName = attachmentLink.substring(attachmentLink.lastIndexOf("/") + 1);
-        String uploadDate = attachment.getDateOfUpload().format(formatter);
+        String fileName = attachment.getAttachmentName();
+        LocalDate dateOfUpload = attachment.getDateOfUpload();
+        String uploadDate = null;
+        if (dateOfUpload != null) {
+            uploadDate = dateOfUpload.format(formatter);
+        }
         String comment = attachment.getAttachmentComment();
         AttachmentDTO attachmentDTO = new AttachmentDTO();
         attachmentDTO.setId(id);

@@ -16,6 +16,7 @@ public final class CustomReflectionUtil {
     }
 
     public static Map<String,Object> getObjectFieldsWithValues(Object object){
+        logger.debug("searching for available fields in {}", object);
         Class clazz = object.getClass();
         Field[] fields = clazz.getDeclaredFields();
         Map<String,Object> objectFieldValues = new HashMap<>();
@@ -27,6 +28,7 @@ public final class CustomReflectionUtil {
                 logger.error("{}",e.getMessage());
             }
         }
+        logger.debug("found fields in {} - {}", object,fields);
         return objectFieldValues;
     }
 }

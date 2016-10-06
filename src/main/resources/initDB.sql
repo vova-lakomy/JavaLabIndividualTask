@@ -30,8 +30,9 @@ CREATE TABLE contacts_vladimir_lakomy.contact
 CREATE TABLE contacts_vladimir_lakomy.contact_attachment
 (
   id                  INT PRIMARY KEY  NOT NULL AUTO_INCREMENT,
+  attachment_name     VARCHAR(50),
   attachment_link     VARCHAR(200),
-  attachment_comment  TEXT,
+  attachment_comment  VARCHAR(1000),
   date_of_upload      DATE,
   contact_id          INT,
   FOREIGN KEY (contact_id)
@@ -46,7 +47,7 @@ CREATE TABLE contacts_vladimir_lakomy.phone_number
   operator_code       INT,
   phone_number        INT,
   phone_type          VARCHAR(10),
-  phone_comment       VARCHAR(100),
+  phone_comment       VARCHAR(1000),
   contact_id          INT,
   FOREIGN KEY (contact_id)
     REFERENCES contacts_vladimir_lakomy.contact(id)

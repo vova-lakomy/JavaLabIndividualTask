@@ -29,11 +29,12 @@ public final class MailSender {
             message.setReplyTo(InternetAddress.parse(mailProps.getProperty("mail.from")));
             message.setRecipient(Message.RecipientType.TO, address);
             message.setSubject(mailSubject);
-            message.setContent(messageText,"text/html;charset=utf-8");
+//            message.setContent(messageText,"text/html;charset=utf-8");
+            message.setText(messageText);
             Transport.send(message);
             logger.info("sending e-mail to {} done" ,address);
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            logger.error("there was an exception while sending mail {}",e);
         }
 
     }
