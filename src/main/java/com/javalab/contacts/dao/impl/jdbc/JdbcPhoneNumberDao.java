@@ -67,16 +67,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
         return resultCollection;
     }
 
-    public void save(PhoneNumber phoneNumber, Integer contactId) {
-        try {
-            save(phoneNumber, contactId, connection);
-        } catch (SQLException e) {
-            logger.error("{}", e);
-        }
-    }
-
-    @Override
-    public void save(PhoneNumber phoneNumber, Integer contactId, Connection connection) throws SQLException {
+    public void save(PhoneNumber phoneNumber, Integer contactId) throws SQLException {
         logger.debug("saving phone number id= " + phoneNumber.getId() + " contact id= " + contactId);
         PreparedStatement statementSavePhoneNumber = null;
         String savePhoneQuery = defineSavePhoneQueryString(phoneNumber.getId());
@@ -85,7 +76,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
             setSaveStatementParams(statementSavePhoneNumber, phoneNumber, contactId);
             statementSavePhoneNumber.executeUpdate();
         } finally {
-           closeStatement(statementSavePhoneNumber);
+            closeStatement(statementSavePhoneNumber);
         }
     }
 

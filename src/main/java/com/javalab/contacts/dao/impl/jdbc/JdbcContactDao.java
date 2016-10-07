@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.closeStatement;
@@ -118,17 +119,9 @@ public class JdbcContactDao implements ContactDao {
     @Override
     public Collection<Contact> search(ContactSearchDTO searchObject, int pageNumber) {
         PreparedStatement searchStatement = null;
-        String searchQueryString = buildSearchQueryString(searchObject);
-        if (pageNumber >= 0) {
-            searchQueryString = searchQueryString + " LIMIT ?, ?;";
-        }
         Collection<Contact> resultCollection = new ArrayList<>();
         try {
-            searchStatement = connection.prepareStatement(searchQueryString);
-            if (pageNumber >= 0) {
-                searchStatement.setInt(1, rowsPerPageCount * pageNumber);
-                searchStatement.setInt(2, rowsPerPageCount);
-            }
+            searchStatement = createSearchStatement(searchObject, connection, pageNumber);
             ResultSet resultSet = searchStatement.executeQuery();
             while (resultSet.next()) {
                 resultCollection.add(createContactFromResultSet(resultSet));
@@ -334,10 +327,12 @@ public class JdbcContactDao implements ContactDao {
         }
     }
 
-    private String buildSearchQueryString(ContactSearchDTO searchObject) {
+    private PreparedStatement createSearchStatement(ContactSearchDTO searchObject, Connection connection, Integer pageNumber) throws SQLException {
         logger.debug("start building search query");
         Map<String, Object> objectFieldValues = CustomReflectionUtil.getObjectFieldsWithValues(searchObject);
         StringBuilder query = new StringBuilder("SELECT SQL_CALC_FOUND_ROWS * FROM contact WHERE TRUE ");
+        Map<Integer, Object> queryParamsMap = new HashMap<>();
+        Integer paramCounter = 1;
         String orderBy = null;
         for (Map.Entry<String, Object> mapEntry : objectFieldValues.entrySet()) {
             String fieldName = mapEntry.getKey();
@@ -352,9 +347,8 @@ public class JdbcContactDao implements ContactDao {
                 if (isNotBlank((String) fieldValue)) {
                     query.append(" AND ");
                     query.append(convertFieldNameToColumnName(fieldName));
-                    query.append(" > '");
-                    query.append(fieldValue);
-                    query.append("' ");
+                    query.append(" > ? ");
+                    queryParamsMap.put(paramCounter++, fieldValue);
                     logger.debug("adding condition '{} > {}' to search query", fieldName, fieldValue);
                 }
             } else if (fieldName.contains("LessThan")) {
@@ -362,26 +356,33 @@ public class JdbcContactDao implements ContactDao {
                 if (isNotBlank((String) fieldValue)) {
                     query.append(" AND ");
                     query.append(convertFieldNameToColumnName(fieldName));
-                    query.append(" < '");
-                    query.append(fieldValue);
-                    query.append("' ");
+                    query.append(" < ? ");
+                    queryParamsMap.put(paramCounter++, fieldValue);
                     logger.debug("adding condition '{} < {}' to search query", fieldName, fieldValue);
                 }
             } else if (isNotBlank(String.valueOf(fieldValue)) && !String.valueOf(fieldValue).equals("null")) {
                 query.append(" AND UPPER(");
                 query.append(convertFieldNameToColumnName(fieldName));
-                query.append(") LIKE '");
-                query.append(fieldValue.toString().toUpperCase());
-                query.append("%'");
+                query.append(") LIKE ? ");
+                queryParamsMap.put(paramCounter++, fieldValue.toString().toUpperCase() + "%");
                 logger.debug("adding condition '{} like \"{}\"' to search query", fieldName, fieldValue);
             }
         }
         if (orderBy != null) {
-            query.append(" ORDER BY ");
-            query.append(orderBy);
+            query.append(" ORDER BY ? ");
+            queryParamsMap.put(paramCounter++, orderBy);
         }
-        logger.debug("built search query: {}", query);
-        return query.toString();
+        if (pageNumber >= 0) {
+            query.append(" LIMIT ?, ?;");
+            queryParamsMap.put(paramCounter++, rowsPerPageCount * pageNumber);
+            queryParamsMap.put(paramCounter++, rowsPerPageCount);
+        }
+        PreparedStatement preparedStatement = connection.prepareStatement(query.toString());
+        for(Map.Entry<Integer,Object> mapEntry : queryParamsMap.entrySet()){
+            preparedStatement.setObject(mapEntry.getKey(), mapEntry.getValue());
+        }
+        logger.debug("defined prepared statement {}", preparedStatement);
+        return preparedStatement;
     }
 
     private String convertFieldNameToColumnName(String fieldName) {

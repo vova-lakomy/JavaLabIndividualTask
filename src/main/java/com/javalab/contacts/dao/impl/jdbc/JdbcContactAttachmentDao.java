@@ -71,16 +71,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
     }
 
     @Override
-    public void save(ContactAttachment contactAttachment, Integer contactId) {
-        try {
-            save(contactAttachment, contactId, connection);
-        } catch (SQLException e) {
-            logger.error("{}", e);
-        }
-    }
-
-    @Override
-    public void save(ContactAttachment contactAttachment, Integer contactId, Connection connection) throws SQLException {
+    public void save(ContactAttachment contactAttachment, Integer contactId) throws SQLException {
         logger.debug("saving attachment with id= {} contactId= {}", contactAttachment.getId(), contactId);
         PreparedStatement statementSaveAttachment = null;
         String queryAddAttachment = defineSaveAttachmentQuery(contactAttachment.getId());
@@ -89,7 +80,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             setSaveStatementParams(statementSaveAttachment, contactAttachment, contactId);
             statementSaveAttachment.executeUpdate();
         } finally {
-          closeStatement(statementSaveAttachment);
+            closeStatement(statementSaveAttachment);
         }
     }
 

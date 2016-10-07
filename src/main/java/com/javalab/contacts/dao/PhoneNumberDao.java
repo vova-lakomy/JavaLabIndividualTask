@@ -13,9 +13,7 @@ public interface PhoneNumberDao {
 
     Collection<PhoneNumber> getByContactId(Integer contactId);
 
-    void save(PhoneNumber phoneNumber, Integer contactId);
-
-    void save(PhoneNumber phoneNumber, Integer contactId, Connection connection) throws SQLException;
+    void save(PhoneNumber phoneNumber, Integer contactId) throws SQLException;
 
     void delete(Integer id);
 
