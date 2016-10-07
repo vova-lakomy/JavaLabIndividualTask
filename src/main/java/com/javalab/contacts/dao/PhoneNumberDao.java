@@ -19,4 +19,5 @@ public interface PhoneNumberDao {
 
     void delete(Integer id);
 
+    void setConnection(Connection connection);
 }

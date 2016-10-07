@@ -2,8 +2,8 @@ package com.javalab.contacts.util;
 
 
 import com.javalab.contacts.dto.ContactShortDTO;
-import com.javalab.contacts.repository.ContactDtoRepository;
-import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
+import com.javalab.contacts.repository.ContactRepository;
+import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -17,7 +17,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class MailerJob implements Job{
     private static final Logger logger = LoggerFactory.getLogger(MailerJob.class);
-    private ContactDtoRepository repository = new ContactDtoRepositoryImpl();
+    private ContactRepository repository = new ContactRepositoryImpl();
     private MailSender mailSender = new MailSender();
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {

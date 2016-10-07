@@ -2,8 +2,8 @@ package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
-import com.javalab.contacts.repository.ContactDtoRepository;
-import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
+import com.javalab.contacts.repository.ContactRepository;
+import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.LabelsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 public class SearchCommand implements Command {
 
     private static final Logger logger = LoggerFactory.getLogger(SearchCommand.class);
-    private ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
+    private ContactRepository contactRepository = new ContactRepositoryImpl();
     private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override

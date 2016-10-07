@@ -19,4 +19,5 @@ public interface ContactAttachmentDao {
 
     void delete(Integer id);
 
+    void setConnection(Connection connection);
 }

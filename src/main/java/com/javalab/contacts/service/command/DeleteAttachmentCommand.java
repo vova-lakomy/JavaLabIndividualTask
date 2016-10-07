@@ -1,9 +1,8 @@
 package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.AttachmentDTO;
-import com.javalab.contacts.repository.AttachmentDtoRepository;
-import com.javalab.contacts.repository.impl.AttachmentDtoRepositoryImpl;
-import com.javalab.contacts.util.CustomFileUtils;
+import com.javalab.contacts.repository.AttachmentRepository;
+import com.javalab.contacts.repository.impl.AttachmentRepositoryImpl;
 import com.javalab.contacts.util.PropertiesProvider;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -18,7 +17,7 @@ import java.util.Properties;
 public class DeleteAttachmentCommand implements Command {
 
     private static final Logger logger = LoggerFactory.getLogger(DeleteAttachmentCommand.class);
-    private AttachmentDtoRepository repository = new AttachmentDtoRepositoryImpl();
+    private AttachmentRepository repository = new AttachmentRepositoryImpl();
     private static Properties properties = PropertiesProvider.getInstance().getFileUploadProperties();
 
     @Override

@@ -14,36 +14,31 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.receiveConnection;
-import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.closeResources;
+import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.closeStatement;
 
 public class JdbcPhoneNumberDao implements PhoneNumberDao {
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcPhoneNumberDao.class);
+    private Connection connection;
 
     public PhoneNumber get(Integer id) {
         logger.debug("try to get phone number by id=" + id);
         PreparedStatement statementGetPhoneNumber = null;
-        Connection connection = receiveConnection();
         PhoneNumber resultObject = new PhoneNumber();
         try {
-            connection.setAutoCommit(false);
-            logger.debug("opened transaction");
             statementGetPhoneNumber = connection.prepareStatement("SELECT * FROM phone_number WHERE id= ?");
             statementGetPhoneNumber.setInt(1, id);
             ResultSet resultSet = statementGetPhoneNumber.executeQuery();
             while (resultSet.next()) {
                 resultObject = createPhoneNumberFromResultSet(resultSet);
             }
-            resultSet.close();
-            connection.commit();
-            logger.debug("closed transaction");
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-            closeResources(connection, statementGetPhoneNumber);
+            closeStatement(statementGetPhoneNumber);
         }
         if (resultObject.getId() != null){
+            logger.debug("returning {}", resultObject);
             return resultObject;
         }
         else {
@@ -54,48 +49,29 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
     @Override
     public Collection<PhoneNumber> getByContactId(Integer contactId) {
         logger.debug("try to get phone number by contact id= " + contactId);
-        Connection connection = receiveConnection();
         Collection<PhoneNumber> resultCollection = new ArrayList<>();
         PreparedStatement statementGetByContactId = null;
         try {
-            connection.setAutoCommit(false);
-            logger.debug("opened transaction");
             statementGetByContactId = connection.prepareStatement("SELECT * FROM phone_number WHERE contact_id=?");
             statementGetByContactId.setInt(1, contactId);
             ResultSet resultSet = statementGetByContactId.executeQuery();
             while (resultSet.next()) {
                 resultCollection.add(createPhoneNumberFromResultSet(resultSet));
             }
-            resultSet.close();
-            connection.commit();
-            logger.debug("closed transaction");
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-           closeResources(connection, statementGetByContactId);
+           closeStatement(statementGetByContactId);
         }
+        logger.debug("returning {}",resultCollection);
         return resultCollection;
     }
 
     public void save(PhoneNumber phoneNumber, Integer contactId) {
-
-        Connection connection = receiveConnection();
         try {
-            connection.setAutoCommit(false);
-            logger.debug("opened transaction");
             save(phoneNumber, contactId, connection);
-            connection.commit();
-            logger.debug("closed transaction");
         } catch (SQLException e) {
             logger.error("{}", e);
-            try {
-                connection.rollback();
-                logger.debug("transaction rolled back");
-            } catch (SQLException ex) {
-                logger.error("{}", ex);
-            }
-        } finally {
-            closeResources(connection, null);
         }
     }
 
@@ -109,26 +85,21 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
             setSaveStatementParams(statementSavePhoneNumber, phoneNumber, contactId);
             statementSavePhoneNumber.executeUpdate();
         } finally {
-           closeResources(null, statementSavePhoneNumber);
+           closeStatement(statementSavePhoneNumber);
         }
     }
 
     public void delete(Integer id) {
         logger.debug("deleting phone number with id= " + id);
         PreparedStatement statementDeletePhoneNumber = null;
-        Connection connection = receiveConnection();
         try {
-            connection.setAutoCommit(false);
-            logger.debug("opened transaction");
             statementDeletePhoneNumber = connection.prepareStatement("DELETE FROM phone_number WHERE id= ?");
             statementDeletePhoneNumber.setInt(1, id);
             statementDeletePhoneNumber.executeUpdate();
-            connection.commit();
-            logger.debug("closed transaction");
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-            closeResources(connection, statementDeletePhoneNumber);
+            closeStatement(statementDeletePhoneNumber);
         }
     }
 
@@ -170,5 +141,10 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
         statement.setString(4, phoneType);
         statement.setString(5, phoneNumber.getPhoneComment());
         statement.setObject(6, contactId);
+    }
+
+    @Override
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 }
