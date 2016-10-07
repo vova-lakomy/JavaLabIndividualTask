@@ -5,9 +5,10 @@ import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 
+import java.sql.SQLException;
 import java.util.Collection;
 
-public interface ContactDtoRepository {
+public interface ContactRepository {
 
     ContactShortDTO getContactShortDTO(Integer contactId);
 
@@ -30,8 +31,6 @@ public interface ContactDtoRepository {
     Collection<String> getPhoneTypeList();
 
     String getPersonalLink(Integer id);
-
-    void setPersonalLink(String personalLink, Integer id);
 
     Integer getNumberOfRecordsFound();
 

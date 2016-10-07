@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:choose>
     <c:when test="${!(searchQueryString eq null)}">
-        <c:set var="hrefString" value="${rootContext}${'contacts/' + searchQueryString}"/>
+        <c:set var="hrefString" value="${rootContext}contacts/${searchQueryString}"/>
     </c:when>
     <c:otherwise>
         <c:set var="hrefString" value="${rootContext}${'contacts/list?page='}"/>

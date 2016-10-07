@@ -16,35 +16,33 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.closeStatement;
+
 public class JdbcContactAttachmentDao implements ContactAttachmentDao {
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcContactAttachmentDao.class);
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private Connection connection;
 
     @Override
     public ContactAttachment get(Integer id) {
         logger.debug("try to get attachment by id= {}", id);
         PreparedStatement statementGetAttachment = null;
-        Connection connection = ConnectionManager.receiveConnection();
         ContactAttachment resultObject = new ContactAttachment();
         try {
-            connection.setAutoCommit(false);
-            logger.debug("opened transaction");
             statementGetAttachment = connection.prepareStatement("SELECT * FROM contact_attachment WHERE id= ?");
             statementGetAttachment.setInt(1, id);
             ResultSet resultSet = statementGetAttachment.executeQuery();
             while (resultSet.next()) {
                 resultObject = createAttachmentFromResultSet(resultSet);
             }
-            resultSet.close();
-            connection.commit();
-            logger.debug("closed transaction");
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-            ConnectionManager.closeResources(connection, statementGetAttachment);
+            closeStatement(statementGetAttachment);
         }
         if (resultObject.getId() != null) {
+            logger.debug("returning {}", resultObject);
             return resultObject;
         } else {
             return null;
@@ -54,66 +52,26 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
     @Override
     public Collection<ContactAttachment> getByContactId(Integer contactId) {
         logger.debug("try to get contacts by contactId= {}", contactId);
-        Connection connection = ConnectionManager.receiveConnection();
         Collection<ContactAttachment> resultCollection = new ArrayList<>();
         PreparedStatement statementGetByContactId = null;
         try {
-            connection.setAutoCommit(false);
-            logger.debug("opened transaction");
             statementGetByContactId = connection.prepareStatement("SELECT * FROM contact_attachment WHERE contact_id=?");
             statementGetByContactId.setInt(1, contactId);
             ResultSet resultSet = statementGetByContactId.executeQuery();
             while (resultSet.next()) {
                 resultCollection.add(createAttachmentFromResultSet(resultSet));
             }
-            resultSet.close();
-            connection.commit();
-            logger.debug("closed transaction");
         } catch (SQLException e) {
             logger.error("{}", e);
         } finally {
-            try {
-                if (statementGetByContactId != null) {
-                    statementGetByContactId.close();
-                }
-                connection.setAutoCommit(false);
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
-            ConnectionManager.putBackConnection(connection);
+            closeStatement(statementGetByContactId);
         }
+        logger.debug("returning {}", resultCollection);
         return resultCollection;
     }
 
     @Override
-    public void save(ContactAttachment contactAttachment, Integer contactId) {
-
-        Connection connection = ConnectionManager.receiveConnection();
-        try {
-            connection.setAutoCommit(false);
-            logger.debug("opened transaction");
-            save(contactAttachment, contactId, connection);
-            connection.commit();
-            logger.debug("closed transaction");
-        } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                logger.error("{}", e1);
-            }
-            logger.error("{}", e);
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
-            ConnectionManager.putBackConnection(connection);
-        }
-    }
-
-    @Override
-    public void save(ContactAttachment contactAttachment, Integer contactId, Connection connection) throws SQLException {
+    public void save(ContactAttachment contactAttachment, Integer contactId) throws SQLException {
         logger.debug("saving attachment with id= {} contactId= {}", contactAttachment.getId(), contactId);
         PreparedStatement statementSaveAttachment = null;
         String queryAddAttachment = defineSaveAttachmentQuery(contactAttachment.getId());
@@ -122,13 +80,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             setSaveStatementParams(statementSaveAttachment, contactAttachment, contactId);
             statementSaveAttachment.executeUpdate();
         } finally {
-            try {
-                if (statementSaveAttachment != null) {
-                    statementSaveAttachment.close();
-                }
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
+            closeStatement(statementSaveAttachment);
         }
     }
 
@@ -136,28 +88,15 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
     public void delete(Integer id) {
         logger.debug("deleting attachment with id= {} ", id);
         PreparedStatement statementDeleteAttachment = null;
-        Connection connection = ConnectionManager.receiveConnection();
         try {
-            connection.setAutoCommit(false);
-            logger.debug("opened transaction");
             statementDeleteAttachment = connection.prepareStatement("DELETE FROM contact_attachment WHERE id= ?");
             statementDeleteAttachment.setInt(1, id);
             statementDeleteAttachment.executeUpdate();
-            connection.commit();
-            logger.debug("closed transaction");
         } catch (SQLException e) {
             logger.error("{}", e);
         }
         finally {
-            try {
-                if (statementDeleteAttachment != null) {
-                    statementDeleteAttachment.close();
-                }
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                logger.error("{}", e);
-            }
-            ConnectionManager.putBackConnection(connection);
+            closeStatement(statementDeleteAttachment);
         }
     }
 
@@ -206,5 +145,10 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
         }
         statement.setString(4, stringDate);
         statement.setInt(5, contactId);
+    }
+
+    @Override
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 }

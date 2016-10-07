@@ -1,8 +1,8 @@
 package com.javalab.contacts.service.command;
 
 
-import com.javalab.contacts.repository.PhoneDtoRepository;
-import com.javalab.contacts.repository.impl.PhoneDtoRepositoryImpl;
+import com.javalab.contacts.repository.PhoneRepository;
+import com.javalab.contacts.repository.impl.PhoneRepositoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 public class DeletePhoneCommand implements Command{
 
     private static final Logger logger = LoggerFactory.getLogger(DeletePhoneCommand.class);
-    private PhoneDtoRepository repository = new PhoneDtoRepositoryImpl();
+    private PhoneRepository repository = new PhoneRepositoryImpl();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

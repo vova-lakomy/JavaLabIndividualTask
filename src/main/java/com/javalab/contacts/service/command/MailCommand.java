@@ -3,8 +3,8 @@ package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
-import com.javalab.contacts.repository.ContactDtoRepository;
-import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
+import com.javalab.contacts.repository.ContactRepository;
+import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.CustomReflectionUtil;
 import com.javalab.contacts.util.LabelsManager;
 import com.javalab.contacts.util.MailSender;
@@ -19,7 +19,6 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -37,7 +36,7 @@ public class MailCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(MailCommand.class);
 
     private MailSender mailSender = new MailSender();
-    private ContactDtoRepository repository = new ContactDtoRepositoryImpl();
+    private ContactRepository repository = new ContactRepositoryImpl();
     private STemplates stringTemplates = STemplates.getInstance();
     private LabelsManager labelsManager = LabelsManager.getInstance();
 

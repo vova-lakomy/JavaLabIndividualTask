@@ -1,7 +1,7 @@
 package com.javalab.contacts.service.command;
 
-import com.javalab.contacts.repository.ContactDtoRepository;
-import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
+import com.javalab.contacts.repository.ContactRepository;
+import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.PropertiesProvider;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ import static org.apache.commons.lang3.StringUtils.trim;
 public class DeleteContactCommand implements Command {
 
     private static final Logger logger = LoggerFactory.getLogger(DeleteContactCommand.class);
-    private ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
+    private ContactRepository contactRepository = new ContactRepositoryImpl();
     private static Properties properties = PropertiesProvider.getInstance().getFileUploadProperties();
 
     @Override

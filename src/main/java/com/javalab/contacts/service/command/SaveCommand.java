@@ -3,8 +3,8 @@ package com.javalab.contacts.service.command;
 import com.javalab.contacts.dto.AttachmentDTO;
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
-import com.javalab.contacts.repository.ContactDtoRepository;
-import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
+import com.javalab.contacts.repository.ContactRepository;
+import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 public class SaveCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(SaveCommand.class);
 
-    private ContactDtoRepository repository = new ContactDtoRepositoryImpl();
+    private ContactRepository repository = new ContactRepositoryImpl();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

@@ -14,8 +14,6 @@ public interface ContactDao {
 
     Collection<Contact> getByDayAndMonth(Integer day, Integer month);
 
-    Contact getContactShortInfo(Integer contactId);
-
     Collection<Contact> getContactList(int pageNumber);
 
     Collection<Contact> search(ContactSearchDTO searchObject, int pageNumber);
@@ -24,13 +22,15 @@ public interface ContactDao {
 
     void delete(Integer id);
 
-    void setPersonalLink(String personalLink, Integer id, Connection connection) throws SQLException;
+    void setPersonalLink(String personalLink, Integer id) throws SQLException;
 
-    int getRowsPerPageCount();
+    Integer getRowsPerPageCount();
 
     void setRowsPerPageCount(int rowsCount);
 
-    int getNumberOfRecordsFound();
+    Integer getNumberOfRecordsFound();
 
     String getPersonalLink(Integer id);
+
+    void setConnection(Connection connection);
 }

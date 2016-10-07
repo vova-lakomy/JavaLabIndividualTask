@@ -4,50 +4,57 @@ import com.javalab.contacts.dao.ContactAttachmentDao;
 import com.javalab.contacts.dao.impl.jdbc.JdbcContactAttachmentDao;
 import com.javalab.contacts.dto.AttachmentDTO;
 import com.javalab.contacts.model.ContactAttachment;
-import com.javalab.contacts.repository.AttachmentDtoRepository;
+import com.javalab.contacts.repository.AttachmentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
+
+import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.closeConnection;
+import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.receiveConnection;
 
 
-public class AttachmentDtoRepositoryImpl implements AttachmentDtoRepository {
+public class AttachmentRepositoryImpl implements AttachmentRepository {
 
-    private static final Logger logger = LoggerFactory.getLogger(AttachmentDtoRepositoryImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AttachmentRepositoryImpl.class);
     private ContactAttachmentDao attachmentDao = new JdbcContactAttachmentDao();
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     @Override
     public void delete(Integer id) {
-        attachmentDao.delete(id);
-    }
-
-    @Override
-    public Collection<AttachmentDTO> getByContactId(Integer contactId) {
-        Collection<AttachmentDTO> attachmentDTOs = null;
-        if (contactId != null) {
-            attachmentDTOs = new ArrayList<>();
-            Collection<ContactAttachment> attachments = attachmentDao.getByContactId(contactId);
-            for (ContactAttachment attachment: attachments){
-                AttachmentDTO attachmentDTO = createDtoFromContactAttachment(attachment);
-                attachmentDTOs.add(attachmentDTO);
-            }
-            if (attachmentDTOs.size() > 0) {
-                return attachmentDTOs;
-            } else {
-                return null;
-            }
+        Connection connection = receiveConnection();
+        attachmentDao.setConnection(connection);
+        try {
+            connection.setAutoCommit(false);
+            attachmentDao.delete(id);
+            connection.commit();
+        } catch (SQLException e) {
+            logger.error("",e);
+        } finally {
+            closeConnection(connection);
         }
-        return attachmentDTOs;
+
     }
 
     @Override
     public AttachmentDTO get(Integer id){
-        ContactAttachment attachment = attachmentDao.get(id);
-        return createDtoFromContactAttachment(attachment);
+        AttachmentDTO attachmentDTO = null;
+        Connection connection = receiveConnection();
+        attachmentDao.setConnection(connection);
+        try {
+            connection.setAutoCommit(false);
+            ContactAttachment attachment = attachmentDao.get(id);
+            attachmentDTO = createDtoFromContactAttachment(attachment);
+            connection.commit();
+        } catch (SQLException e) {
+            logger.error("",e);
+        } finally {
+            closeConnection(connection);
+        }
+        return attachmentDTO;
     }
 
     private AttachmentDTO createDtoFromContactAttachment(ContactAttachment attachment){

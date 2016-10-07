@@ -1,8 +1,8 @@
 package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.ContactFullDTO;
-import com.javalab.contacts.repository.ContactDtoRepository;
-import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
+import com.javalab.contacts.repository.ContactRepository;
+import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.LabelsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 public class EditCommand implements Command {
 
     private static final Logger logger = LoggerFactory.getLogger(EditCommand.class);
-    private ContactDtoRepository contactRepository = new ContactDtoRepositoryImpl();
+    private ContactRepository contactRepository = new ContactRepositoryImpl();
     private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override

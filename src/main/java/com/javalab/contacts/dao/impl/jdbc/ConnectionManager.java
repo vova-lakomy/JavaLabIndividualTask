@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.atomic.AtomicInteger;
 
-class ConnectionManager {
+public class ConnectionManager {
     private static final Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
     private static AtomicInteger openedConnectionCount = new AtomicInteger(0);
     private static AtomicInteger totalConnectionsMade = new AtomicInteger(0);
@@ -32,7 +32,7 @@ class ConnectionManager {
         }
     }
 
-    static Connection receiveConnection() {
+    public static Connection receiveConnection() {
         Connection connection = null;
         logger.debug("trying to get connection from pool");
         try {
@@ -45,25 +45,31 @@ class ConnectionManager {
         return connection;
     }
 
-    static void putBackConnection(Connection connection) {
-        try {
-            connection.close();
-            logger.debug("db connection closed... opened connections - {}", openedConnectionCount.decrementAndGet());
-        } catch (SQLException e) {
-            logger.error("{}", e);
+
+
+    static void closeResources(Connection connection, Statement statement){
+        closeStatement(statement);
+        closeConnection(connection);
+    }
+
+    public static void closeConnection(Connection connection) {
+        if (connection != null){
+            try {
+                connection.close();
+                logger.debug("db connection closed... opened connections - {}", openedConnectionCount.decrementAndGet());
+            } catch (SQLException e) {
+                logger.error("{}", e);
+            }
         }
     }
 
-    static void closeResources(Connection connection, Statement statement){
+    static void closeStatement(Statement statement){
         try {
             if (statement != null) {
                 statement.close();
             }
         } catch (SQLException e) {
             logger.error("error {}", e);
-        }
-        if (connection != null) {
-            putBackConnection(connection);
         }
     }
 }

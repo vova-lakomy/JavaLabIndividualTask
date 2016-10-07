@@ -1,7 +1,7 @@
 package com.javalab.contacts.util;
 
-import com.javalab.contacts.repository.ContactDtoRepository;
-import com.javalab.contacts.repository.impl.ContactDtoRepositoryImpl;
+import com.javalab.contacts.repository.ContactRepository;
+import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +19,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public final class CustomFileUtils {
     private static final Logger logger = LoggerFactory.getLogger(CustomFileUtils.class);
-    private static ContactDtoRepository repository = new ContactDtoRepositoryImpl();
+    private static ContactRepository repository = new ContactRepositoryImpl();
     private static final int RANDOM_STRING_CHARS_COUNT = 6;
 
     private CustomFileUtils() {
