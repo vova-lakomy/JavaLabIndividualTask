@@ -26,10 +26,13 @@ public class UploadAttachmentCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String applicationPath = request.getServletContext().getRealPath("");
         Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
-        if (shouldUploadToSpecificDir) {
+        String applicationPath;
+        if (shouldUploadToSpecificDir){
             applicationPath = properties.getProperty("specific.upload.dir");
+        } else {
+            logger.warn("USING TOMCAT CONTEXT DIRECTORY TO STORE UPLOADS. CHECK file-upload.properties");
+            applicationPath = request.getServletContext().getRealPath("");
         }
         String relativeUploadPath = properties.getProperty("upload.relative.dir");
         String personalDirectory = definePersonalDirectory(request);
@@ -55,7 +58,8 @@ public class UploadAttachmentCommand implements Command {
                             FileUtils.forceMkdir(fileSaveDir);
                         }
                     } catch (IOException e) {
-                        logger.error("error creating directory {} {}", uploadFilePath, e);
+                        logger.error("failed to access directory {} {} ", fileSaveDir, e);
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "failed to access directory " + fileSaveDir);
                     }
                     String fileName = defineAttachmentFileName(request, attachmentIndex, uploadFilePath);
                     String fullUploadPath = uploadFilePath

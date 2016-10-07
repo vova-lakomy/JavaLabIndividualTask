@@ -22,10 +22,13 @@ public class DeleteAttachmentCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String applicationPath = request.getServletContext().getRealPath("");
         Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
+        String applicationPath;
         if (shouldUploadToSpecificDir){
             applicationPath = properties.getProperty("specific.upload.dir");
+        } else {
+            logger.warn("USING TOMCAT CONTEXT DIRECTORY TO STORE UPLOADS. CHECK file-upload.properties");
+            applicationPath = request.getServletContext().getRealPath("");
         }
 
         String[] selectedIds = request.getParameterValues("selectedId");
@@ -41,6 +44,11 @@ public class DeleteAttachmentCommand implements Command {
                     FileUtils.deleteDirectory(parentDirectory);
                 } catch (IOException e) {
                     logger.error("error while deleting file {} \n{}", fileToDelete, e);
+                    try {
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "failed to access directory " + fileToDelete);
+                    } catch (IOException e1) {
+                        logger.error("",e);
+                    }
                 }
                 repository.delete(id);
             }

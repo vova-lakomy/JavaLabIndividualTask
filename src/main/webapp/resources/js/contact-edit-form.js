@@ -166,6 +166,7 @@
 
     function toggleUploadPhotoModal() {
         toggleClass($('#modal-upload-photo'), 'jlab-fade');
+        $('#photo-file-input').value = '';
     }
 
     function generatePhoneRecord(counter, data) {

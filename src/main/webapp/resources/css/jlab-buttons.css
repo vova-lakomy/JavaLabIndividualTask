@@ -17,7 +17,7 @@
 }
 
 .jlab-button:disabled{
-    background-color: rgb(245, 245, 245);
+    background-color: rgba(140,202,255,0.55);
     color:rgba(0, 0, 0, 0.34);
     cursor: not-allowed;
 }

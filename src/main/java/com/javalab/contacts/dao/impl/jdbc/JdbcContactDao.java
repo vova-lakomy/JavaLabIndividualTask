@@ -86,7 +86,7 @@ public class JdbcContactDao implements ContactDao {
             logger.debug("returning {}", resultObject);
             return resultObject;
         } else{
-            return null;
+            return null;   // TODO: 08.10.16 throw exception here
         }
     }
 

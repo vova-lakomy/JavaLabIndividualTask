@@ -26,7 +26,15 @@ public class UploadsCommand implements Command {
 
         String filePath = String.valueOf(request.getAttribute("uriParams"));
         if (filePath != null && !filePath.equals("null")) {
-            String uploadsRealPath = properties.getProperty("specific.upload.dir");
+            Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
+            String applicationPath;
+            if (shouldUploadToSpecificDir){
+                applicationPath = properties.getProperty("specific.upload.dir");
+            } else {
+                logger.warn("USING TOMCAT CONTEXT DIRECTORY TO STORE UPLOADS. CHECK file-upload.properties");
+                applicationPath = request.getServletContext().getRealPath("");
+            }
+            String uploadsRealPath = applicationPath;
             String uploadsRelativePath = properties.getProperty("upload.relative.dir");
             File fileToRead = new File(uploadsRealPath + uploadsRelativePath + filePath);
 

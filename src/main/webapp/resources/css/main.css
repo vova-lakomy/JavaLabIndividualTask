@@ -337,6 +337,29 @@ select{
     width: 100%;
 }
 
+.jlab-error-message-caption{
+    color: #ed1c24;
+    margin-top: -60px;
+    padding-bottom: 50px;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.jlab-error-message-container{
+    min-height: 180px;
+    background-color: rgba(245, 245, 245, 1);
+    text-align: center;
+    max-width: 470px;
+    margin: 97px auto auto;
+    padding: 70px 30px 10px;
+    border-radius: 3px;
+    border: 1px solid #ed1c24;
+    font-size: 24px;
+    color: black;
+    font-weight: 900;
+    width: 100%;
+}
+
 .jlab-hidden{
     display: none !important;
 }

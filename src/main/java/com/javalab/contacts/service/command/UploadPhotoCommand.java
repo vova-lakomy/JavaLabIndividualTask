@@ -25,10 +25,13 @@ public class UploadPhotoCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String applicationPath = request.getServletContext().getRealPath("");
         Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
+        String applicationPath;
         if (shouldUploadToSpecificDir){
             applicationPath = properties.getProperty("specific.upload.dir");
+        } else {
+            logger.warn("USING TOMCAT CONTEXT DIRECTORY TO STORE UPLOADS. CHECK file-upload.properties");
+            applicationPath = request.getServletContext().getRealPath("");
         }
         String relativeUploadPath = properties.getProperty("upload.relative.dir");
         String personalLink = definePersonalDirectory(request);
@@ -49,7 +52,12 @@ public class UploadPhotoCommand implements Command {
                 FileUtils.cleanDirectory(fileSaveDir);
             }
         } catch (IOException e) {
-            logger.error("error while processing directory {} {}", uploadImagePath, e);
+            logger.error("failed to access directory {} {} ", uploadImagePath, e);
+            try {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "failed to access directory " + fileSaveDir);
+            } catch (IOException e1) {
+                logger.error("", e1);
+            }
         }
 
         logger.debug("looking for attached photo in request {}", request);

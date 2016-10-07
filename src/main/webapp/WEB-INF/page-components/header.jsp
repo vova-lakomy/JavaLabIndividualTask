@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <c:set var="rootContext" value="${pageContext.request.contextPath}/" scope="session"/>
 <c:set var="labels" value="${labels}" scope="session"/>
 <c:set var="locale" value="${localeKey}"/>
@@ -45,4 +44,5 @@
 <div class="jlab-margin-top-70">
 </div>
 <jsp:include page="message-container.jsp"/>
+<jsp:include page="error-message-container.jsp"/>
 

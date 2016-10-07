@@ -15,6 +15,7 @@ import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 
 import javax.mail.Address;
+import javax.mail.Session;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
@@ -50,17 +51,28 @@ public class MailCommand implements Command {
 
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
-            logger.debug("found {} checkboxes",selectedIds.length);
+            logger.debug("searching info about selected contacts");
             Collection<ContactShortDTO> contactShortDTOs = new ArrayList<>();
-            logger.debug("retrieving info abot checked contacts");
+            String failedContacts = "";
             for (String stringId : selectedIds){
                 stringId = trim(stringId);
                 Integer id;
                 if(isNumeric(stringId)){
                     id = Integer.parseInt(stringId);
                     ContactShortDTO contactShortDTO = repository.getContactShortDTO(id);
-                    contactShortDTOs.add(contactShortDTO);
+                    if (contactShortDTO.geteMail() == null){
+                        String contactName = contactShortDTO.getFullName().replace("<br/>", " ");
+                        failedContacts += contactName + ",<br>";
+                        logger.error("contact with id={} has no email address");
+                    }else {
+                        contactShortDTOs.add(contactShortDTO);
+                    }
                 }
+            }
+            if (isNotBlank(failedContacts)){
+                String errorMessage = createErrorMessage(failedContacts, request);
+                request.getSession().setAttribute("messageKey", errorMessage);
+                request.getSession().setAttribute("showErrorMessage","true");
             }
             request.setAttribute("emailContacts", contactShortDTOs);
             return "contact-email-form.jsp";
@@ -83,10 +95,11 @@ public class MailCommand implements Command {
         }
         logger.debug("creating map recipient -> message");
         Map<Address, String> messageMap = mapMessagesToAddresses(request);
+        Session mailSession = mailSender.createMailSession();
         for (Map.Entry<Address, String> entry : messageMap.entrySet()) {
             Address address = entry.getKey();
             String messageText = entry.getValue();
-            mailSender.sendMail(address, mailSubject, messageText);
+            mailSender.sendMail(mailSession, address, mailSubject, messageText, MailSender.USE_HTML_FALSE);
         }
     }
 
@@ -177,5 +190,15 @@ public class MailCommand implements Command {
             }
         }
         return emailMap;
+    }
+
+    private String createErrorMessage(String failedContacts, HttpServletRequest request) {
+        Map<String, String> labels = labelsManager.getLabels((String) request.getSession().getAttribute("localeKey"));
+        failedContacts = failedContacts.substring(0, failedContacts.lastIndexOf(',')) + "<br>";
+        StringBuilder message = new StringBuilder(labels.get("message.no.email.begin"));
+        message.append("<br>");
+        message.append(failedContacts);
+        message.append(labels.get("message.no.email.end"));
+        return message.toString();
     }
 }

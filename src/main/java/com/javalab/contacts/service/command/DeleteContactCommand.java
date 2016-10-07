@@ -49,16 +49,27 @@ public class DeleteContactCommand implements Command {
                             FileUtils.deleteDirectory(personalDirFullPath);
                         } catch (IOException e) {
                             logger.error("{}",e);
+                            try {
+                                response.sendError(HttpServletResponse.SC_FORBIDDEN, "failed to delete contact attachments directory");
+                            } catch (IOException e1) {
+                                logger.error("", e1);
+                            }
                         }
                     }
                     contactRepository.delete(id);
+                    request.getSession().setAttribute("messageKey","message.contact.delete");
+                    request.getSession().setAttribute("showMessage","true");
                 } else {
                     logger.debug("selected id is 'null' can not perform delete");
+                    try {
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "can not perfom delete, selected contact does not exist");
+                    } catch (IOException e) {
+                        logger.error("", e);
+                    }
+
                 }
             }
         }
-        request.getSession().setAttribute("messageKey","message.contact.delete");
-        request.getSession().setAttribute("showMessage","true");
         request.getSession().setAttribute("currentPage",request.getParameter("currentPage"));
         return "";
     }

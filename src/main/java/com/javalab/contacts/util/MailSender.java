@@ -17,26 +17,35 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public final class MailSender {
+    public static final Boolean USE_HTML_TRUE = true;
+    public static final Boolean USE_HTML_FALSE = false;
     private static final Logger logger = LoggerFactory.getLogger(MailSender.class);
 
     private Properties mailProps = PropertiesProvider.getInstance().getMailProperties();
 
-    public void sendMail(Address address, String mailSubject, String messageText) {
+    public void sendMail(Session mailSession, Address address, String mailSubject, String messageText, Boolean useHTML) {
 
         try {
-            Message message = new MimeMessage(getMailSession(getMailServerProperties()));
+            Message message = new MimeMessage(mailSession);
             message.setFrom(new InternetAddress(mailProps.getProperty("mail.from")));
             message.setReplyTo(InternetAddress.parse(mailProps.getProperty("mail.from")));
             message.setRecipient(Message.RecipientType.TO, address);
             message.setSubject(mailSubject);
-//            message.setContent(messageText,"text/html;charset=utf-8");
-            message.setText(messageText);
+            if (useHTML){
+                message.setContent(messageText,"text/html;charset=utf-8");
+            } else {
+                message.setText(messageText);
+            }
             Transport.send(message);
             logger.info("sending e-mail to {} done" ,address);
         } catch (MessagingException e) {
             logger.error("there was an exception while sending mail {}",e);
         }
 
+    }
+
+    public Session createMailSession(){
+        return getMailSession(getMailServerProperties());
     }
 
     private Session getMailSession(Properties serverProperties) {
@@ -62,7 +71,7 @@ public final class MailSender {
         String administratorAddressString = mailProps.getProperty("administrator.mail");
         try {
             Address administratorAddress = new InternetAddress(administratorAddressString);
-            sendMail(administratorAddress, mailSubject, messageText);
+            sendMail(createMailSession(), administratorAddress, mailSubject, messageText, USE_HTML_TRUE);
         } catch (AddressException e) {
             logger.error("failed to create address from string {}", administratorAddressString);
         }
