@@ -4,25 +4,26 @@ package com.javalab.contacts.repository;
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
+import com.javalab.contacts.exception.ConnectionDeniedException;
 
 import java.sql.SQLException;
 import java.util.Collection;
 
 public interface ContactRepository {
 
-    ContactShortDTO getContactShortDTO(Integer contactId);
+    ContactShortDTO getContactShortDTO(Integer contactId) throws ConnectionDeniedException;
 
-    ContactFullDTO getContactFullInfo(Integer id);
+    ContactFullDTO getContactFullInfo(Integer id) throws ConnectionDeniedException;
 
-    Collection<ContactShortDTO> getContactsList(Integer pageNumber);
+    Collection<ContactShortDTO> getContactsList(Integer pageNumber) throws ConnectionDeniedException;
 
-    Collection<ContactShortDTO> getByDayAndMonth(Integer day, Integer month);
+    Collection<ContactShortDTO> getByDayAndMonth(Integer day, Integer month) throws ConnectionDeniedException;
 
-    Collection<ContactShortDTO> search(ContactSearchDTO searchObject, int pageNumber);
+    Collection<ContactShortDTO> search(ContactSearchDTO searchObject, int pageNumber) throws ConnectionDeniedException;
 
-    Integer saveContact(ContactFullDTO contact);
+    Integer saveContact(ContactFullDTO contact) throws ConnectionDeniedException;
 
-    void delete(Integer id);
+    void delete(Integer id) throws ConnectionDeniedException;
 
     Collection<String> getSexList();
 
@@ -30,7 +31,7 @@ public interface ContactRepository {
 
     Collection<String> getPhoneTypeList();
 
-    String getPersonalLink(Integer id);
+    String getPersonalLink(Integer id) throws ConnectionDeniedException;
 
     Integer getNumberOfRecordsFound();
 

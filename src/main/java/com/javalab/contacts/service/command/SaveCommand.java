@@ -3,6 +3,7 @@ package com.javalab.contacts.service.command;
 import com.javalab.contacts.dto.AttachmentDTO;
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
+import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import org.slf4j.Logger;
@@ -31,7 +32,17 @@ public class SaveCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("executing Save Command");
         ContactFullDTO contact = getContactDtoFromRequest(request,response);
-        Integer returnedId = repository.saveContact(contact);
+        Integer returnedId = null;
+        try {
+            returnedId = repository.saveContact(contact);
+        } catch (ConnectionDeniedException e) {
+            try {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        "Could not connect to data base\nContact your system administrator");
+            } catch (IOException e1) {
+                logger.error("", e1);
+            }
+        }
         request.getSession().setAttribute("messageKey","message.contact.saved");
         request.getSession().setAttribute("showMessage","true");
         String urlRedirectTo = "edit?contactId=" + returnedId;

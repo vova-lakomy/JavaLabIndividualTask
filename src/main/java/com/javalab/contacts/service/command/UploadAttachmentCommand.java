@@ -1,5 +1,6 @@
 package com.javalab.contacts.service.command;
 
+import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.util.PropertiesProvider;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -35,7 +36,17 @@ public class UploadAttachmentCommand implements Command {
             applicationPath = request.getServletContext().getRealPath("");
         }
         String relativeUploadPath = properties.getProperty("upload.relative.dir");
-        String personalDirectory = definePersonalDirectory(request);
+        String personalDirectory = null;
+        try {
+            personalDirectory = definePersonalDirectory(request);
+        } catch (ConnectionDeniedException e) {
+            try {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        "Could not connect to data base\nContact your system administrator");
+            } catch (IOException e1) {
+                logger.error("", e1);
+            }
+        }
         String attachmentsFolder = properties.getProperty("attachments.folder.name");
         String personalAttachmentPath = personalDirectory + File.separator + attachmentsFolder + File.separator;
 

@@ -3,6 +3,7 @@ package com.javalab.contacts.repository.impl;
 import com.javalab.contacts.dao.ContactAttachmentDao;
 import com.javalab.contacts.dao.impl.jdbc.JdbcContactAttachmentDao;
 import com.javalab.contacts.dto.AttachmentDTO;
+import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.model.ContactAttachment;
 import com.javalab.contacts.repository.AttachmentRepository;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ public class AttachmentRepositoryImpl implements AttachmentRepository {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws ConnectionDeniedException {
         Connection connection = receiveConnection();
         attachmentDao.setConnection(connection);
         try {
@@ -40,7 +41,7 @@ public class AttachmentRepositoryImpl implements AttachmentRepository {
     }
 
     @Override
-    public AttachmentDTO get(Integer id){
+    public AttachmentDTO get(Integer id) throws ConnectionDeniedException {
         AttachmentDTO attachmentDTO = null;
         Connection connection = receiveConnection();
         attachmentDao.setConnection(connection);

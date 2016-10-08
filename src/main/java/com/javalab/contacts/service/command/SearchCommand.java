@@ -2,6 +2,7 @@ package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
+import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.LabelsManager;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Collection;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -48,14 +50,26 @@ public class SearchCommand implements Command {
                 }
             }
             ContactSearchDTO searchObject = createSearchDTO(request);
-            Collection<ContactShortDTO> searchResult = contactRepository.search(searchObject, pageNumber-1);
-            Integer recordsFound = contactRepository.getNumberOfRecordsFound();
-            Integer rowsPerPage = contactRepository.getRowsPePageCount();
-            int numberOfPages = (int) Math.ceil(recordsFound*1.00/rowsPerPage);
-            if (pageNumber > numberOfPages){
-                pageNumber = numberOfPages;
+            Collection<ContactShortDTO> searchResult = null;
+            Integer numberOfPages = 0;
+            try {
                 searchResult = contactRepository.search(searchObject, pageNumber-1);
+                Integer recordsFound = contactRepository.getNumberOfRecordsFound();
+                Integer rowsPerPage = contactRepository.getRowsPePageCount();
+                numberOfPages = (int) Math.ceil(recordsFound*1.00/rowsPerPage);
+                if (pageNumber > numberOfPages){
+                    pageNumber = numberOfPages;
+                    searchResult = contactRepository.search(searchObject, pageNumber-1);
+                }
+            } catch (ConnectionDeniedException e) {
+                try {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                            "Could not connect to data base\nContact your system administrator");
+                } catch (IOException e1) {
+                    logger.error("", e1);
+                }
             }
+
             request.setAttribute("numberOfPages",numberOfPages);
             request.setAttribute("searchQueryString",searchQueryString);
             request.setAttribute("currentPage",pageNumber);

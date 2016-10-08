@@ -1,5 +1,6 @@
 package com.javalab.contacts.service.command;
 
+import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.PropertiesProvider;
@@ -42,7 +43,17 @@ public class DeleteContactCommand implements Command {
                     id = Integer.parseInt(stringId);
                 }
                 if (id != null) {
-                    String personalDir = contactRepository.getPersonalLink(id);
+                    String personalDir = null;
+                    try {
+                        personalDir = contactRepository.getPersonalLink(id);
+                    } catch (ConnectionDeniedException e) {
+                        try {
+                            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                                    "Could not connect to data base\nContact your system administrator");
+                        } catch (IOException e1) {
+                            logger.error("", e1);
+                        }
+                    }
                     if (personalDir != null) {
                         File personalDirFullPath = new File(uploadsFullPath + personalDir);
                         try {
@@ -56,7 +67,16 @@ public class DeleteContactCommand implements Command {
                             }
                         }
                     }
-                    contactRepository.delete(id);
+                    try {
+                        contactRepository.delete(id);
+                    } catch (ConnectionDeniedException e) {
+                        try {
+                            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                                    "Could not connect to data base\nContact your system administrator");
+                        } catch (IOException e1) {
+                            logger.error("", e1);
+                        }
+                    }
                     request.getSession().setAttribute("messageKey","message.contact.delete");
                     request.getSession().setAttribute("showMessage","true");
                 } else {

@@ -2,6 +2,7 @@ package com.javalab.contacts.repository.impl;
 
 import com.javalab.contacts.dao.PhoneNumberDao;
 import com.javalab.contacts.dao.impl.jdbc.JdbcPhoneNumberDao;
+import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.repository.PhoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ public class PhoneRepositoryImpl implements PhoneRepository {
 
 
     @Override
-    public void delete(Integer id){
+    public void delete(Integer id) throws ConnectionDeniedException {
         Connection connection = receiveConnection();
         numberDao.setConnection(connection);
         try {

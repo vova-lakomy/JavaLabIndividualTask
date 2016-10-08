@@ -3,6 +3,7 @@ package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
+import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.CustomReflectionUtil;
@@ -20,6 +21,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -59,7 +61,17 @@ public class MailCommand implements Command {
                 Integer id;
                 if(isNumeric(stringId)){
                     id = Integer.parseInt(stringId);
-                    ContactShortDTO contactShortDTO = repository.getContactShortDTO(id);
+                    ContactShortDTO contactShortDTO = null;
+                    try {
+                        contactShortDTO = repository.getContactShortDTO(id);
+                    } catch (ConnectionDeniedException e) {
+                        try {
+                            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                                    "Could not connect to data base\nContact your system administrator");
+                        } catch (IOException e1) {
+                            logger.error("", e1);
+                        }
+                    }
                     if (contactShortDTO.geteMail() == null){
                         String contactName = contactShortDTO.getFullName().replace("<br/>", " ");
                         failedContacts += contactName + ",<br>";
@@ -78,7 +90,16 @@ public class MailCommand implements Command {
             return "contact-email-form.jsp";
         } else if (request.getParameterValues("mailTo") != null) {
             logger.debug("trying to send emails");
-            sendMails(request);
+            try {
+                sendMails(request);
+            } catch (ConnectionDeniedException e) {
+                try {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                            "Could not connect to data base\nContact your system administrator");
+                } catch (IOException e1) {
+                    logger.error("", e1);
+                }
+            }
             request.getSession().setAttribute("messageKey","message.email.sent");
             request.getSession().setAttribute("showMessage","true");
             return "";
@@ -87,7 +108,7 @@ public class MailCommand implements Command {
         }
     }
 
-    private void sendMails(HttpServletRequest request) {
+    private void sendMails(HttpServletRequest request) throws ConnectionDeniedException {
         logger.debug("defining letter fields");
         String mailSubject = request.getParameter("mailSubject");
         if (isBlank(mailSubject)) {
@@ -103,7 +124,7 @@ public class MailCommand implements Command {
         }
     }
 
-    private Map<Address, String> mapMessagesToAddresses(HttpServletRequest request) {
+    private Map<Address, String> mapMessagesToAddresses(HttpServletRequest request) throws ConnectionDeniedException {
         Map<Address, String> resultMap = new HashMap<>();
         Map<String, Integer> addressesMapFromRequest = getAddressesMapFromRequest(request);
         for (Map.Entry<String, Integer> entry : addressesMapFromRequest.entrySet()) {
@@ -122,7 +143,7 @@ public class MailCommand implements Command {
         return resultMap;
     }
 
-    private String defineMailMessage(HttpServletRequest request, Integer contactId) {
+    private String defineMailMessage(HttpServletRequest request, Integer contactId) throws ConnectionDeniedException {
         logger.debug("creating letter body");
         String message = request.getParameter("mailText");
         if (isBlank(message)) {
@@ -147,7 +168,7 @@ public class MailCommand implements Command {
         return message;
     }
 
-    private Map<String, Object> definePossibleParamValues(Integer contactId) {
+    private Map<String, Object> definePossibleParamValues(Integer contactId) throws ConnectionDeniedException {
         ContactFullDTO contact = repository.getContactFullInfo(contactId);
         return CustomReflectionUtil.getObjectFieldsWithValues(contact);
     }

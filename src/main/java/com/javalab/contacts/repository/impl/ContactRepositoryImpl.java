@@ -12,6 +12,7 @@ import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
+import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
 import com.javalab.contacts.model.ContactAttachment;
@@ -44,7 +45,7 @@ public class ContactRepositoryImpl implements ContactRepository {
 
 
     @Override
-    public ContactShortDTO getContactShortDTO(Integer contactId) {
+    public ContactShortDTO getContactShortDTO(Integer contactId) throws ConnectionDeniedException {
         ContactShortDTO contactShortDTO = null;
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);
@@ -62,7 +63,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
-    public ContactFullDTO getContactFullInfo(Integer id) {
+    public ContactFullDTO getContactFullInfo(Integer id) throws ConnectionDeniedException {
         Contact contact = null;
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);
@@ -85,7 +86,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
-    public Integer saveContact(ContactFullDTO contactDTO){
+    public Integer saveContact(ContactFullDTO contactDTO) throws ConnectionDeniedException {
         Contact contact = getContactFromContactDTO(contactDTO);
         Collection<PhoneNumber> phoneNumbers = getPhoneNumbersFromContactDTO(contactDTO);
         Collection<ContactAttachment> attachments = getAttachmentsFromContactDTO(contactDTO);
@@ -118,7 +119,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws ConnectionDeniedException {
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);
         try {
@@ -133,7 +134,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
-    public Collection<ContactShortDTO> getContactsList(Integer pageNumber) {
+    public Collection<ContactShortDTO> getContactsList(Integer pageNumber) throws ConnectionDeniedException {
         Collection<Contact> contactList = null;
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);
@@ -158,7 +159,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
-    public Collection<ContactShortDTO> getByDayAndMonth(Integer day, Integer month) {
+    public Collection<ContactShortDTO> getByDayAndMonth(Integer day, Integer month) throws ConnectionDeniedException {
         Collection<Contact> contactList = null;
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);
@@ -182,7 +183,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
-    public Collection<ContactShortDTO> search(ContactSearchDTO searchObject, int pageNumber) {
+    public Collection<ContactShortDTO> search(ContactSearchDTO searchObject, int pageNumber) throws ConnectionDeniedException {
         Collection<Contact> contactList = null;
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);
@@ -206,7 +207,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
-    public String getPersonalLink(Integer id) {
+    public String getPersonalLink(Integer id) throws ConnectionDeniedException {
         String personalLink = null;
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);

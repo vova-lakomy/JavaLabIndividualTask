@@ -1,6 +1,7 @@
 package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.AttachmentDTO;
+import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.repository.AttachmentRepository;
 import com.javalab.contacts.repository.impl.AttachmentRepositoryImpl;
 import com.javalab.contacts.util.PropertiesProvider;
@@ -35,22 +36,33 @@ public class DeleteAttachmentCommand implements Command {
         if (selectedIds != null) {
             for (String stringId : selectedIds){
                 Integer id = Integer.parseInt(stringId);
-                AttachmentDTO attachmentDTO = repository.get(id);
-                String attachmentLink = attachmentDTO.getAttachmentLink();
-                String fullPath = applicationPath + attachmentLink;
-                File fileToDelete = new File(fullPath);
-                File parentDirectory = fileToDelete.getParentFile();
+                AttachmentDTO attachmentDTO = null;
                 try {
-                    FileUtils.deleteDirectory(parentDirectory);
-                } catch (IOException e) {
-                    logger.error("error while deleting file {} \n{}", fileToDelete, e);
+                    attachmentDTO = repository.get(id);
+                    String attachmentLink = attachmentDTO.getAttachmentLink();
+                    String fullPath = applicationPath + attachmentLink;
+                    File fileToDelete = new File(fullPath);
+                    File parentDirectory = fileToDelete.getParentFile();
                     try {
-                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "failed to access directory " + fileToDelete);
+                        FileUtils.deleteDirectory(parentDirectory);
+                    } catch (IOException e) {
+                        logger.error("error while deleting file {} \n{}", fileToDelete, e);
+                        try {
+                            response.sendError(HttpServletResponse.SC_FORBIDDEN, "failed to access directory " + fileToDelete);
+                        } catch (IOException e1) {
+                            logger.error("",e);
+                        }
+                    }
+                    repository.delete(id);
+                } catch (ConnectionDeniedException e) {
+                    try {
+                        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                                "Could not connect to data base\nContact your system administrator");
                     } catch (IOException e1) {
-                        logger.error("",e);
+                        logger.error("", e1);
                     }
                 }
-                repository.delete(id);
+
             }
         }
         return "";
