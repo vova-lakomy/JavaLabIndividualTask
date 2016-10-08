@@ -48,13 +48,15 @@
     }
 
     function setBackGroundChecked(element) {
-        setCSS(element.parentNode.parentNode, 'background-color', '#c1c1c1');
-        setCSS(element.parentNode.parentNode, 'outline', '1px solid grey');
+        addClass(element.parentNode.parentNode, 'jlab-li-checked');
+        // setCSS(element.parentNode.parentNode, 'background-color', '#c1c1c1');
+        // setCSS(element.parentNode.parentNode, 'outline', '1px solid grey');
     }
 
     function removeBackGroundChecked(element) {
-        element.parentNode.parentNode.style.removeProperty('background-color');
-        element.parentNode.parentNode.style.removeProperty('outline')
+        removeClass(element.parentNode.parentNode, 'jlab-li-checked');
+        // element.parentNode.parentNode.style.removeProperty('background-color');
+        // element.parentNode.parentNode.style.removeProperty('outline')
     }
 
     function disableMenuButtons() {

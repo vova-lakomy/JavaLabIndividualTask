@@ -48,13 +48,16 @@ public class ContactRepositoryImpl implements ContactRepository {
 
     @Override
     public ContactShortDTO getContactShortDTO(Integer contactId) throws ConnectionDeniedException, ContactNotFoundException {
+        logger.debug("try to get contact with id={}", contactId);
         ContactShortDTO contactShortDTO = null;
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);
         try {
             connection.setAutoCommit(false);
+            logger.debug("opened transaction");
             Contact contactShortInfo = contactDao.get(contactId);
             connection.commit();
+            logger.debug("opened transaction");
             contactShortDTO = createContactShortDTO(contactShortInfo);
         } catch (SQLException e) {
             logger.error("",e);
@@ -66,6 +69,7 @@ public class ContactRepositoryImpl implements ContactRepository {
 
     @Override
     public ContactFullDTO getContactFullInfo(Integer id) throws ConnectionDeniedException, ContactNotFoundException {
+        logger.debug("trying to get full contact info by id={}", id);
         Contact contact = null;
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);
@@ -73,10 +77,12 @@ public class ContactRepositoryImpl implements ContactRepository {
         attachmentDao.setConnection(connection);
         try {
             connection.setAutoCommit(false);
+            logger.debug("opened transaction");
             contact = contactDao.get(id);
             Collection<PhoneNumber> phoneNumbers = phoneDao.getByContactId(id);
             Collection<ContactAttachment> attachments = attachmentDao.getByContactId(id);
             connection.commit();
+            logger.debug("cosed transaction");
             contact.setAttachments(attachments);
             contact.setPhoneNumbers(phoneNumbers);
         } catch (SQLException e) {
@@ -89,6 +95,7 @@ public class ContactRepositoryImpl implements ContactRepository {
 
     @Override
     public Integer saveContact(ContactFullDTO contactDTO) throws ConnectionDeniedException, PersistException {
+        logger.debug("trying to save contact {}", contactDTO);
         Contact contact = getContactFromContactDTO(contactDTO);
         Collection<PhoneNumber> phoneNumbers = getPhoneNumbersFromContactDTO(contactDTO);
         Collection<ContactAttachment> attachments = getAttachmentsFromContactDTO(contactDTO);
@@ -99,6 +106,7 @@ public class ContactRepositoryImpl implements ContactRepository {
         Integer generatedId = null;
         try {
             connection.setAutoCommit(false);
+            logger.debug("opened transaction");
             generatedId = contactDao.save(contact);
             for (PhoneNumber phoneNumber : phoneNumbers){
                 phoneDao.save(phoneNumber, generatedId);
@@ -107,14 +115,15 @@ public class ContactRepositoryImpl implements ContactRepository {
                 attachmentDao.save(attachment, generatedId);
             }
             connection.commit();
+            logger.debug("closed transaction");
         } catch (SQLException e) {
-            logger.error("", e);
+            logger.error("error while saving contact", e);
             try {
                 connection.rollback();
             } catch (SQLException e1) {
                 logger.error("error while rollback transaction \n{}", e1);
             }
-            throw new PersistException("");
+            throw new PersistException();
         } finally {
             closeConnection(connection);
         }
@@ -123,12 +132,15 @@ public class ContactRepositoryImpl implements ContactRepository {
 
     @Override
     public void delete(Integer id) throws ConnectionDeniedException {
+        logger.debug("trying to delete contact with id={}", id);
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);
         try {
             connection.setAutoCommit(false);
+            logger.debug("opened transaction");
             contactDao.delete(id);
             connection.commit();
+            logger.debug("closed transaction");
         } catch (SQLException e) {
             logger.error("", e);
         } finally {
@@ -138,13 +150,16 @@ public class ContactRepositoryImpl implements ContactRepository {
 
     @Override
     public Collection<ContactShortDTO> getContactsList(Integer pageNumber) throws ConnectionDeniedException {
+        logger.debug("trying to get contact list, page number={}", pageNumber);
         Collection<Contact> contactList = null;
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);
         try {
             connection.setAutoCommit(false);
+            logger.debug("opened transaction");
             contactList = contactDao.getContactList(pageNumber);
             connection.commit();
+            logger.debug("closed transaction");
         } catch (SQLException e) {
             logger.error("", e);
         }

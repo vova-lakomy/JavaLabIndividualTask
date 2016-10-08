@@ -69,6 +69,20 @@ function resetForm(formSelector) {
     $(formSelector).reset();
 }
 
+function addEvent(params) {
+    var element = $(params.selector);
+    if (element){
+        params.event.split(' ')
+            .forEach(function (eventName) {
+                element.addEventListener(eventName, params.handler, false);
+            });
+    }
+}
+
+function addEvents(events){
+    events.forEach(addEvent);
+}
+
 
 
 

@@ -500,24 +500,19 @@
     }
 
     function isFileValid(file) {
-        if (file.size > 0 && file.size < 10485759){
-            return true;
-        } else {
-            return false;
-        }
+        return (file.size > 0 && file.size < 10485759);
     }
 
     function handleUploadFileNameChange(e) {
-        if (e.target.value.length > 50){
+        if (e.target.value.length > 100){
             disableButton('#button-upload-attachment');
         } else {
             enableButton('#button-upload-attachment');
-
         }
     }
 
     function handleUploadCommentChange(e){
-        if (e.target.value.length > 500){
+        if (e.target.value.length > 900){
             disableButton('#button-upload-attachment');
         } else {
             enableButton('#button-upload-attachment');
@@ -525,7 +520,7 @@
     }
 
     function handleEditFileNameChange(e) {
-        if (e.target.value.length > 50){
+        if (e.target.value.length > 100){
             disableButton('#button-save-attachment-edit-modal');
         } else {
             enableButton('#button-save-attachment-edit-modal');
@@ -533,7 +528,7 @@
     }
 
     function handleEditCommentChange(e){
-        if (e.target.value.length > 100){
+        if (e.target.value.length > 900){
             disableButton('#button-save-attachment-edit-modal');
         } else {
             enableButton('#button-save-attachment-edit-modal');
@@ -545,44 +540,144 @@
     }
 
 // listeners
-    $('#button-upload-photo').addEventListener('click', submitPhotoHandler, false);
-    $('#contact-photo-container').addEventListener('click', toggleUploadPhotoModal, false);
-    $('#button-cancel-upload-photo').addEventListener('click', cancelUploadPhotoModal   , false);
-    $('#button-add-phone-number').addEventListener('click', addPhoneNumberHandler, false);
-    $('#button-save-phone-number').addEventListener('click', saveEditedPhoneNumber, false);
-    $('#button-show-phone-number-modal').addEventListener('click', toggleAddPhoneNumberModal, false);
-    $('#button-cancel-phone-number-add').addEventListener('click', toggleAddPhoneNumberModal, false);
-    $('#button-cancel-phone-number-edit').addEventListener('click', toggleEditPhoneNumberModal, false);
-    $('#button-cancel-attachments-edit-modal').addEventListener('click', toggleAttachmentsEditModal, false);
-    $('#button-show-attachments-upload-modal').addEventListener('click', openAttachmentsUploadModal, false);
-    $('#button-cancel-upload-attachment').addEventListener('click', closeAttachmentsUploadModal, false);
-    $('#button-upload-attachment').addEventListener('click', addAttachmentHandler, false);
-    $('#button-delete-phone-number').addEventListener('click', deleteCheckedPhoneNumbers, false);
-    $('#button-delete-attachment').addEventListener('click', deleteCheckedAttachments, false);
-    $('#button-save-attachment-edit-modal').addEventListener('click', saveEditedAttachment, false);
-    $('#inner-phone-number-table').addEventListener('click', fillPhoneEditModalForm, false);
-    $('#inner-attachment-table').addEventListener('click', fillAttachmentEditModalForm, false);
-    $('#photo-file-input').addEventListener('change', handleChosenImage, false);
-    $('#attachment-file-input').addEventListener('change', handleChosenFile, false);
-    $('#attachment-file-name').addEventListener('keyup', handleUploadFileNameChange, false);
-    $('#attachment-file-name').addEventListener('input', handleUploadFileNameChange, false);
-    $('#attachment-file-comment').addEventListener('keyup', handleUploadCommentChange, false);
-    $('#attachment-file-comment').addEventListener('input', handleUploadCommentChange, false);
-    $('#attachment-name').addEventListener('input', handleEditFileNameChange, false);
-    $('#attachment-name').addEventListener('keyup', handleEditFileNameChange, false);
-    $('#attachment-comment').addEventListener('input', handleEditCommentChange, false);
-    $('#attachment-comment').addEventListener('keyup', handleEditCommentChange, false);
-    if ($('#hrefAddAttachment') !== null){
-        $('#hrefAddAttachment').addEventListener('click', openAttachmentsUploadModal, false);
-    }
+    addEvents( [
+        {
+            selector : '#button-upload-photo',
+            event : 'click',
+            handler : submitPhotoHandler,
+        },
+        {
+            selector : '#contact-photo-container',
+            event : 'click',
+            handler : toggleUploadPhotoModal,
+        },
+        {
+            selector : '#button-cancel-upload-photo',
+            event : 'click',
+            handler : cancelUploadPhotoModal,
+        },
+        {
+            selector : '#button-add-phone-number',
+            event : 'click',
+            handler : addPhoneNumberHandler,
+        },
+        {
+            selector : '#button-save-phone-number',
+            event : 'click',
+            handler : saveEditedPhoneNumber,
+        },
+        {
+            selector : '#button-show-phone-number-modal',
+            event : 'click',
+            handler : toggleAddPhoneNumberModal,
+        },
+        {
+            selector : '#button-cancel-phone-number-add',
+            event : 'click',
+            handler : toggleAddPhoneNumberModal,
+        },
+        {
+            selector : '#button-cancel-phone-number-edit',
+            event : 'click',
+            handler : toggleEditPhoneNumberModal,
+        },
+        {
+            selector : '#button-cancel-attachments-edit-modal',
+            event : 'click',
+            handler : toggleAttachmentsEditModal,
+        },
+        {
+            selector : '#button-show-attachments-upload-modal',
+            event : 'click',
+            handler : openAttachmentsUploadModal,
+        },
+        {
+            selector : '#button-cancel-upload-attachment',
+            event : 'click',
+            handler : closeAttachmentsUploadModal,
+        },
+        {
+            selector : '#button-upload-attachment',
+            event : 'click',
+            handler : addAttachmentHandler,
+        },
+        {
+            selector : '#button-delete-phone-number',
+            event : 'click',
+            handler : deleteCheckedPhoneNumbers,
+        },
 
-//validation listeners
-    $('#contact-edit-form').addEventListener('keyup', formValidation, false);
-    $('#contact-edit-form').addEventListener('input', formValidation, false);
-    $('#phone-add-form').addEventListener('keyup', formValidation, false);
-    $('#phone-add-form').addEventListener('input', formValidation, false);
-    $('#phone-edit-form').addEventListener('keyup', formValidation, false);
-    $('#phone-edit-form').addEventListener('input', formValidation, false);
+        {
+            selector : '#button-delete-attachment',
+            event : 'click',
+            handler : deleteCheckedAttachments,
+        },
+        {
+            selector : '#button-save-attachment-edit-modal',
+            event : 'click',
+            handler : saveEditedAttachment,
+        },
+        {
+            selector : '#inner-phone-number-table',
+            event : 'click',
+            handler : fillPhoneEditModalForm,
+        },
+        {
+            selector : '#inner-attachment-table',
+            event : 'click',
+            handler : fillAttachmentEditModalForm,
+        },
+        {
+            selector : '#photo-file-input',
+            event : 'change',
+            handler : handleChosenImage,
+        },
+        {
+            selector : '#attachment-file-input',
+            event : 'change',
+            handler : handleChosenFile,
+        },
+        {
+            selector : '#attachment-file-name',
+            event : 'keyup input',
+            handler : handleUploadFileNameChange,
+        },
+        {
+            selector : '#attachment-file-comment',
+            event : 'keyup input',
+            handler : handleUploadCommentChange,
+        },
+        {
+            selector : '#attachment-name',
+            event : 'keyup input',
+            handler : handleEditFileNameChange,
+        },
+        {
+            selector : '#attachment-comment',
+            event : 'keyup input',
+            handler : handleEditCommentChange,
+        },
+        {
+            selector : '#hrefAddAttachment',
+            event : 'click',
+            handler : openAttachmentsUploadModal,
+        },
+        {
+            selector : '#contact-edit-form',
+            event : 'keyup input',
+            handler : formValidation,
+        },
+        {
+            selector : '#phone-add-form',
+            event : 'keyup input',
+            handler : formValidation,
+        },
+        {
+            selector : '#phone-edit-form',
+            event : 'keyup input',
+            handler : formValidation,
+        },
+    ]);
 
 //counters
     var phoneNumberCounter = (isElementExist('#phone-number-rows')) ? $('#phone-number-rows').childElementCount : 0;

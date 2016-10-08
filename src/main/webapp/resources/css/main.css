@@ -11,7 +11,7 @@ a label {
 }
 
 .jlab-main-list ul {
-    margin-top: 0;
+    /*margin-top: 0;*/
     margin-bottom: 0;
     list-style-type: none;
     padding: 0;
@@ -19,8 +19,8 @@ a label {
 }
 
 .jlab-main-list ul li {
-    padding: 8px 16px;
-    border-bottom: 1px solid #c3c3c3;
+    padding: 6px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .jlab-main-list ul li:first-child{
@@ -28,14 +28,18 @@ a label {
     border-top-right-radius: 3px;
 }
 
-.jlab-main-list ul li:nth-child(even) {
-    background-color: rgba(247, 247, 247, 0.9);
+.jlab-selected-contact:nth-child(even) {
+    background-color: rgba(72, 186, 207, 0.05);
 }
 
 .jlab-main-list ul li:last-child {
     border-bottom: none;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
+}
+
+.jlab-main-list .jlab-li-checked {
+    background-color: rgba(72, 186, 207, 0.3);
 }
 
 .jlab-inner-table-container ul{
@@ -54,9 +58,10 @@ a label {
 body{
     margin: 0;
     padding: 0;
-    background-color: #f7f7f7;
+    background-color: #f3f3f3;
     font-family: "OpenSansRegular",FreeSans,Arimo,"Droid Sans",Helvetica,Arial,sans-serif;
     font-size: 15px;
+    color: #323333;
 }
 
 label {
@@ -64,11 +69,13 @@ label {
 }
 input[type="text"], select {
     padding: 4px 5px;
-    border: 1px solid #c3c3c3;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 3px;
     width: 70%;
     font-size: 15px;
     margin-left: 10px;
+    height: 36px;
+    line-height: 26px;
 }
 select{
     background-color: white;
@@ -130,6 +137,7 @@ select{
     border-bottom: 5px solid #f0f0f0;
     border-top: 1px solid #383838;
     box-shadow: 6px 1px 10px 1px rgba(0, 0, 0, 0.71);
+    z-index: 1;
 }
 
 .jlab-locale-select{
@@ -144,7 +152,7 @@ select{
 }
 
 .jlab-home-page-link{
-    background-color: #ed1c24;
+    background-color: #48BACF;
     padding: 5px 10px;
     font-weight: 100;
     font-size: 12px;
@@ -184,13 +192,13 @@ select{
     margin: auto;
 }
 .jlab-main-content{
-    padding: 5px;
+    padding: 12px;
     margin-left: 10px;
     margin-right: 10px;
-    border: 1px solid grey;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 3px;
     background-color: #fff;
-    box-shadow: 6px 6px 10px 1px rgba(0, 0, 0, 0.71);
+    /*box-shadow: 6px 6px 10px 1px rgba(0, 0, 0, 0.71);*/
 }
 
 .jlab-not-valid{
@@ -212,7 +220,8 @@ select{
     transition: background-color 250ms;
 }
 .jlab-selected-contact:hover{
-    background-color:#c1c1c1 !important;
+    /*background-color:#f0f0f0 !important;*/
+    outline: 1px solid #48BACF;
     transition: 130ms;
 }
 
@@ -276,7 +285,7 @@ select{
 }
 
 .jlab-footer-panel-margin{
-    margin-bottom: 50px;
+    margin-bottom: 0px;
 }
 
 .jlab-inner-table-column-caption {
@@ -384,14 +393,14 @@ select{
     padding: 9px 23px;
     margin-left: -50px;
     margin-right: 0px;
-    width: 326px;
+    width: 475px;
 }
 
 .jlab-modal li:nth-child(1){
-    border-bottom: 2px rgba(246, 246, 246, 0.47);
+    border-bottom: 1px rgba(0, 0, 0, 0.1);
     border-bottom-style: ridge;
-    padding-bottom: 28px;
-    margin-bottom: 22px;
+    padding-bottom: 26px;
+    margin-bottom: 24px;
 }
 
 .jlab-modal li:nth-child(3){
@@ -409,7 +418,7 @@ select{
     width: 70%;
     margin-left: 10px;
     border-radius: 3px;
-    border: 1px solid #c3c3c3;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     height: 150px;
     font: inherit;
     padding: 5px;
@@ -450,15 +459,16 @@ select{
 }
 
 .jlab-page-select.jlab-button{
-    width: 100px;
+    width: 110px;
     margin: 0;
     cursor: default;
-    border-color: grey;
+    border-color: rgba(0, 0, 0, 0.1);
     text-align: center;
     font-size: 12px;
     font-style: italic;
     background-color: white;
     font-weight: 500;
+    color: #323333;
 }
 
 .jlab-page-select.jlab-button:hover{
@@ -527,7 +537,7 @@ select{
     height: 200px;
     resize: none;
     padding: 4px 5px;
-    border: 1px solid #c3c3c3;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 3px;
     font-size: 15px;
     margin-left: 10px;
@@ -544,7 +554,7 @@ select{
 
 #label-attachment-file-input{
     text-align: center;
-    padding: 9px 0px;
+    padding: 12px 0px;
 }
 
 #label-attachment-upload{
