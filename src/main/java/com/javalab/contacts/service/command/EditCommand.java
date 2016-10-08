@@ -2,6 +2,7 @@ package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ContactNotFoundException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.LabelsManager;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -34,10 +36,14 @@ public class EditCommand implements Command {
             } catch (ConnectionDeniedException e) {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                            "Could not connect to data base\nContact your system administrator");
+                            "Could not connect to data base<br>Contact your system administrator");
                 } catch (IOException e1) {
                     logger.error("", e1);
                 }
+            } catch (ContactNotFoundException e) {
+                String messageKey = createContactNotFoundErrorMessage(request);
+                request.getSession().setAttribute("messageKey", messageKey);
+                request.getSession().setAttribute("showErrorMessage","true");
             }
             request.setAttribute("fullContactInfo", contactFullInfo);
         }
@@ -48,5 +54,10 @@ public class EditCommand implements Command {
         request.setAttribute("maritalStatusList", maritalStatusList);
         request.setAttribute("phoneTypeList", phoneTypeList);
         return "contact-edit-form.jsp";
+    }
+
+    private String createContactNotFoundErrorMessage(HttpServletRequest request) {
+        Map<String, String> labels = labelsManager.getLabels((String) request.getSession().getAttribute("localeKey"));
+        return labels.get("message.contact.not.found");
     }
 }

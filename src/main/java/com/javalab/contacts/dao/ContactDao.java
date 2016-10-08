@@ -2,6 +2,7 @@ package com.javalab.contacts.dao;
 
 
 import com.javalab.contacts.dto.ContactSearchDTO;
+import com.javalab.contacts.exception.ContactNotFoundException;
 import com.javalab.contacts.model.Contact;
 
 import java.sql.Connection;
@@ -10,7 +11,7 @@ import java.util.Collection;
 
 public interface ContactDao {
 
-    Contact get(Integer id);
+    Contact get(Integer id) throws ContactNotFoundException;
 
     Collection<Contact> getByDayAndMonth(Integer day, Integer month);
 

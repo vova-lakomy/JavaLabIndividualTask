@@ -5,15 +5,17 @@ import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ContactNotFoundException;
+import com.javalab.contacts.exception.PersistException;
 
 import java.sql.SQLException;
 import java.util.Collection;
 
 public interface ContactRepository {
 
-    ContactShortDTO getContactShortDTO(Integer contactId) throws ConnectionDeniedException;
+    ContactShortDTO getContactShortDTO(Integer contactId) throws ConnectionDeniedException, ContactNotFoundException;
 
-    ContactFullDTO getContactFullInfo(Integer id) throws ConnectionDeniedException;
+    ContactFullDTO getContactFullInfo(Integer id) throws ConnectionDeniedException, ContactNotFoundException;
 
     Collection<ContactShortDTO> getContactsList(Integer pageNumber) throws ConnectionDeniedException;
 
@@ -21,7 +23,7 @@ public interface ContactRepository {
 
     Collection<ContactShortDTO> search(ContactSearchDTO searchObject, int pageNumber) throws ConnectionDeniedException;
 
-    Integer saveContact(ContactFullDTO contact) throws ConnectionDeniedException;
+    Integer saveContact(ContactFullDTO contact) throws ConnectionDeniedException, PersistException;
 
     void delete(Integer id) throws ConnectionDeniedException;
 

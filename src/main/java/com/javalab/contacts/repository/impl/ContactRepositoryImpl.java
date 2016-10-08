@@ -13,6 +13,8 @@ import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
 import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ContactNotFoundException;
+import com.javalab.contacts.exception.PersistException;
 import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
 import com.javalab.contacts.model.ContactAttachment;
@@ -45,7 +47,7 @@ public class ContactRepositoryImpl implements ContactRepository {
 
 
     @Override
-    public ContactShortDTO getContactShortDTO(Integer contactId) throws ConnectionDeniedException {
+    public ContactShortDTO getContactShortDTO(Integer contactId) throws ConnectionDeniedException, ContactNotFoundException {
         ContactShortDTO contactShortDTO = null;
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);
@@ -63,7 +65,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
-    public ContactFullDTO getContactFullInfo(Integer id) throws ConnectionDeniedException {
+    public ContactFullDTO getContactFullInfo(Integer id) throws ConnectionDeniedException, ContactNotFoundException {
         Contact contact = null;
         Connection connection = receiveConnection();
         contactDao.setConnection(connection);
@@ -86,7 +88,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
-    public Integer saveContact(ContactFullDTO contactDTO) throws ConnectionDeniedException {
+    public Integer saveContact(ContactFullDTO contactDTO) throws ConnectionDeniedException, PersistException {
         Contact contact = getContactFromContactDTO(contactDTO);
         Collection<PhoneNumber> phoneNumbers = getPhoneNumbersFromContactDTO(contactDTO);
         Collection<ContactAttachment> attachments = getAttachmentsFromContactDTO(contactDTO);
@@ -112,6 +114,7 @@ public class ContactRepositoryImpl implements ContactRepository {
             } catch (SQLException e1) {
                 logger.error("error while rollback transaction \n{}", e1);
             }
+            throw new PersistException("");
         } finally {
             closeConnection(connection);
         }

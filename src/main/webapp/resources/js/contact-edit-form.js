@@ -166,6 +166,10 @@
 
     function toggleUploadPhotoModal() {
         toggleClass($('#modal-upload-photo'), 'jlab-fade');
+    }
+
+    function cancelUploadPhotoModal() {
+        toggleClass($('#modal-upload-photo'), 'jlab-fade');
         $('#photo-file-input').value = '';
     }
 
@@ -543,13 +547,12 @@
 // listeners
     $('#button-upload-photo').addEventListener('click', submitPhotoHandler, false);
     $('#contact-photo-container').addEventListener('click', toggleUploadPhotoModal, false);
-    $('#button-cancel-upload-photo').addEventListener('click', toggleUploadPhotoModal, false);
+    $('#button-cancel-upload-photo').addEventListener('click', cancelUploadPhotoModal   , false);
     $('#button-add-phone-number').addEventListener('click', addPhoneNumberHandler, false);
     $('#button-save-phone-number').addEventListener('click', saveEditedPhoneNumber, false);
     $('#button-show-phone-number-modal').addEventListener('click', toggleAddPhoneNumberModal, false);
     $('#button-cancel-phone-number-add').addEventListener('click', toggleAddPhoneNumberModal, false);
     $('#button-cancel-phone-number-edit').addEventListener('click', toggleEditPhoneNumberModal, false);
-    // $('#button-show-attachments-edit-modal').addEventListener('click', toggleAttachmentsEditModal, false);
     $('#button-cancel-attachments-edit-modal').addEventListener('click', toggleAttachmentsEditModal, false);
     $('#button-show-attachments-upload-modal').addEventListener('click', openAttachmentsUploadModal, false);
     $('#button-cancel-upload-attachment').addEventListener('click', closeAttachmentsUploadModal, false);

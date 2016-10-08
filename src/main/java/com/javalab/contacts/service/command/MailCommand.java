@@ -4,6 +4,7 @@ package com.javalab.contacts.service.command;
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ContactNotFoundException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.CustomReflectionUtil;
@@ -67,10 +68,14 @@ public class MailCommand implements Command {
                     } catch (ConnectionDeniedException e) {
                         try {
                             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                                    "Could not connect to data base\nContact your system administrator");
+                                    "Could not connect to data base<br>Contact your system administrator");
                         } catch (IOException e1) {
                             logger.error("", e1);
                         }
+                    } catch (ContactNotFoundException e) {
+                        String messageKey = createContactNotFoundErrorMessage(request);
+                        request.getSession().setAttribute("messageKey", messageKey);
+                        request.getSession().setAttribute("showErrorMessage","true");
                     }
                     if (contactShortDTO.geteMail() == null){
                         String contactName = contactShortDTO.getFullName().replace("<br/>", " ");
@@ -82,7 +87,7 @@ public class MailCommand implements Command {
                 }
             }
             if (isNotBlank(failedContacts)){
-                String errorMessage = createErrorMessage(failedContacts, request);
+                String errorMessage = createEmailErrorMessage(failedContacts, request);
                 request.getSession().setAttribute("messageKey", errorMessage);
                 request.getSession().setAttribute("showErrorMessage","true");
             }
@@ -99,6 +104,13 @@ public class MailCommand implements Command {
                 } catch (IOException e1) {
                     logger.error("", e1);
                 }
+            } catch (ContactNotFoundException e) {
+                String errorMessage = createContactNotFoundErrorMessage(request);
+                try {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMessage);
+                } catch (IOException e1) {
+                    logger.error("", e1);
+                }
             }
             request.getSession().setAttribute("messageKey","message.email.sent");
             request.getSession().setAttribute("showMessage","true");
@@ -108,7 +120,7 @@ public class MailCommand implements Command {
         }
     }
 
-    private void sendMails(HttpServletRequest request) throws ConnectionDeniedException {
+    private void sendMails(HttpServletRequest request) throws ConnectionDeniedException, ContactNotFoundException {
         logger.debug("defining letter fields");
         String mailSubject = request.getParameter("mailSubject");
         if (isBlank(mailSubject)) {
@@ -124,7 +136,7 @@ public class MailCommand implements Command {
         }
     }
 
-    private Map<Address, String> mapMessagesToAddresses(HttpServletRequest request) throws ConnectionDeniedException {
+    private Map<Address, String> mapMessagesToAddresses(HttpServletRequest request) throws ConnectionDeniedException, ContactNotFoundException {
         Map<Address, String> resultMap = new HashMap<>();
         Map<String, Integer> addressesMapFromRequest = getAddressesMapFromRequest(request);
         for (Map.Entry<String, Integer> entry : addressesMapFromRequest.entrySet()) {
@@ -143,7 +155,7 @@ public class MailCommand implements Command {
         return resultMap;
     }
 
-    private String defineMailMessage(HttpServletRequest request, Integer contactId) throws ConnectionDeniedException {
+    private String defineMailMessage(HttpServletRequest request, Integer contactId) throws ConnectionDeniedException, ContactNotFoundException {
         logger.debug("creating letter body");
         String message = request.getParameter("mailText");
         if (isBlank(message)) {
@@ -168,7 +180,7 @@ public class MailCommand implements Command {
         return message;
     }
 
-    private Map<String, Object> definePossibleParamValues(Integer contactId) throws ConnectionDeniedException {
+    private Map<String, Object> definePossibleParamValues(Integer contactId) throws ConnectionDeniedException, ContactNotFoundException {
         ContactFullDTO contact = repository.getContactFullInfo(contactId);
         return CustomReflectionUtil.getObjectFieldsWithValues(contact);
     }
@@ -213,7 +225,12 @@ public class MailCommand implements Command {
         return emailMap;
     }
 
-    private String createErrorMessage(String failedContacts, HttpServletRequest request) {
+    private String createContactNotFoundErrorMessage(HttpServletRequest request) {
+        Map<String, String> labels = labelsManager.getLabels((String) request.getSession().getAttribute("localeKey"));
+        return labels.get("message.contact.not.found");
+    }
+
+    private String createEmailErrorMessage(String failedContacts, HttpServletRequest request) {
         Map<String, String> labels = labelsManager.getLabels((String) request.getSession().getAttribute("localeKey"));
         failedContacts = failedContacts.substring(0, failedContacts.lastIndexOf(',')) + "<br>";
         StringBuilder message = new StringBuilder(labels.get("message.no.email.begin"));

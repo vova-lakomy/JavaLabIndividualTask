@@ -4,8 +4,10 @@ import com.javalab.contacts.dto.AttachmentDTO;
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
 import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.PersistException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
+import com.javalab.contacts.util.LabelsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -25,6 +28,7 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 public class SaveCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(SaveCommand.class);
+    LabelsManager labelsManager = LabelsManager.getInstance();
 
     private ContactRepository repository = new ContactRepositoryImpl();
 
@@ -39,6 +43,13 @@ public class SaveCommand implements Command {
             try {
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                         "Could not connect to data base\nContact your system administrator");
+            } catch (IOException e1) {
+                logger.error("", e1);
+            }
+        } catch (PersistException e) {
+            String errorMessage = createSaveContactErrorMessage(request);
+            try {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, errorMessage);
             } catch (IOException e1) {
                 logger.error("", e1);
             }
@@ -270,5 +281,10 @@ public class SaveCommand implements Command {
             attachmentDTOs.add(attachmentDTO);
         });
         return attachmentDTOs;
+    }
+
+    private String createSaveContactErrorMessage(HttpServletRequest request) {
+        Map<String, String> labels = labelsManager.getLabels((String) request.getSession().getAttribute("localeKey"));
+        return labels.get("message.failed.save.contact");
     }
 }

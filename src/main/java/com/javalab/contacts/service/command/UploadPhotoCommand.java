@@ -1,6 +1,7 @@
 package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.util.LabelsManager;
 import com.javalab.contacts.util.PropertiesProvider;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
 
 
@@ -23,6 +25,7 @@ import static com.javalab.contacts.util.CustomFileUtils.definePersonalDirectory;
 public class UploadPhotoCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(UploadPhotoCommand.class);
     private static Properties properties = PropertiesProvider.getInstance().getFileUploadProperties();
+    private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -80,8 +83,20 @@ public class UploadPhotoCommand implements Command {
             logger.debug("{} uploaded ", part.getSubmittedFileName());
             request.setAttribute("photoLink", relativeUploadPath + personalImagePath + File.separator + fileName);
         } catch (IOException | ServletException e) {
-           logger.error("{}",e);
+            logger.error("failed to save image to disk {} {} ", uploadImagePath, e);
+            String errorMessage = createFileSaveErrorMessage(request);
+
+            try {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, errorMessage);
+            } catch (IOException e1) {
+                logger.error("", e1);
+            }
         }
         return "";
+    }
+
+    private String createFileSaveErrorMessage(HttpServletRequest request) {
+        Map<String, String> labels = labelsManager.getLabels((String) request.getSession().getAttribute("localeKey"));
+        return labels.get("message.photo.save.failed");
     }
 }

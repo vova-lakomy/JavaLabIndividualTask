@@ -43,6 +43,5 @@
 </header>
 <div class="jlab-margin-top-70">
 </div>
-<jsp:include page="message-container.jsp"/>
-<jsp:include page="error-message-container.jsp"/>
+
 

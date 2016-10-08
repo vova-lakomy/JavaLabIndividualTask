@@ -2,6 +2,7 @@ package com.javalab.contacts.dao.impl.jdbc;
 
 import com.javalab.contacts.dao.ContactDao;
 import com.javalab.contacts.dto.ContactSearchDTO;
+import com.javalab.contacts.exception.ContactNotFoundException;
 import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
 import com.javalab.contacts.model.enumerations.MaritalStatus;
@@ -37,7 +38,7 @@ public class JdbcContactDao implements ContactDao {
     private Connection connection;
 
     @Override
-    public Contact get(Integer contactId) {
+    public Contact get(Integer contactId) throws ContactNotFoundException {
         return getContactFromDB(contactId);
     }
 
@@ -66,7 +67,7 @@ public class JdbcContactDao implements ContactDao {
         return resultCollection;
     }
 
-    private Contact getContactFromDB(Integer id) {
+    private Contact getContactFromDB(Integer id) throws ContactNotFoundException {
         logger.debug("search for contact with id - {}", id);
         PreparedStatement statementGetContact = null;
         Contact resultObject = new Contact();
@@ -86,7 +87,7 @@ public class JdbcContactDao implements ContactDao {
             logger.debug("returning {}", resultObject);
             return resultObject;
         } else{
-            return null;   // TODO: 08.10.16 throw exception here
+            throw new ContactNotFoundException();
         }
     }
 
