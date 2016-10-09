@@ -11,6 +11,7 @@ import com.javalab.contacts.util.CustomReflectionUtil;
 import com.javalab.contacts.util.LabelsManager;
 import com.javalab.contacts.util.MailSender;
 import com.javalab.contacts.util.STemplates;
+import com.javalab.contacts.util.UiMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.stringtemplate.v4.ST;
@@ -22,7 +23,6 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,7 +38,6 @@ import static org.apache.commons.lang3.StringUtils.trim;
 
 public class MailCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(MailCommand.class);
-
     private MailSender mailSender = new MailSender();
     private ContactRepository repository = new ContactRepositoryImpl();
     private STemplates stringTemplates = STemplates.getInstance();
@@ -48,13 +47,12 @@ public class MailCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("executing Mail Command");
         labelsManager.setLocaleLabelsToSession(request.getSession());
+        logger.debug("retrieving mail templates");
         Map<String, String> templates = stringTemplates.getTemplateMap();
         request.setAttribute("templates", templates);
-
-
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
-            logger.debug("searching info about selected contacts");
+            logger.debug("found {} contacts to send mail", selectedIds.length);
             Collection<ContactShortDTO> contactShortDTOs = new ArrayList<>();
             String failedContacts = "";
             for (String stringId : selectedIds){
@@ -64,20 +62,15 @@ public class MailCommand implements Command {
                     id = Integer.parseInt(stringId);
                     ContactShortDTO contactShortDTO = null;
                     try {
+                        logger.debug("getting short info about contact with id ={}", id);
                         contactShortDTO = repository.getContactShortDTO(id);
+                        logger.debug("got contact short info");
                     } catch (ConnectionDeniedException e) {
-                        try {
-                            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                                    "Could not connect to data base<br>Contact your system administrator");
-                        } catch (IOException e1) {
-                            logger.error("", e1);
-                        }
+                        UiMessageService.sendConnectionErrorMessageToUI(request, response);
                     } catch (ContactNotFoundException e) {
-                        String messageKey = createContactNotFoundErrorMessage(request);
-                        request.getSession().setAttribute("messageKey", messageKey);
-                        request.getSession().setAttribute("showErrorMessage","true");
+                        UiMessageService.sendContactNotFoundErrorToUI(request, response);
                     }
-                    if (contactShortDTO.geteMail() == null){
+                    if (contactShortDTO != null && contactShortDTO.geteMail() == null){
                         String contactName = contactShortDTO.getFullName().replace("<br/>", " ");
                         failedContacts += contactName + ",<br>";
                         logger.error("contact with id={} has no email address");
@@ -87,56 +80,51 @@ public class MailCommand implements Command {
                 }
             }
             if (isNotBlank(failedContacts)){
-                String errorMessage = createEmailErrorMessage(failedContacts, request);
-                request.getSession().setAttribute("messageKey", errorMessage);
-                request.getSession().setAttribute("showErrorMessage","true");
+                UiMessageService.prepareEmptyEmailPopUpErrorMessage(request, failedContacts);
             }
             request.setAttribute("emailContacts", contactShortDTOs);
+            logger.debug("execution Mail command end");
             return "contact-email-form.jsp";
         } else if (request.getParameterValues("mailTo") != null) {
             logger.debug("trying to send emails");
             try {
                 sendMails(request);
+                logger.debug("emails were sent");
             } catch (ConnectionDeniedException e) {
-                try {
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                            "Could not connect to data base\nContact your system administrator");
-                } catch (IOException e1) {
-                    logger.error("", e1);
-                }
+                UiMessageService.sendConnectionErrorMessageToUI(request, response);
             } catch (ContactNotFoundException e) {
-                String errorMessage = createContactNotFoundErrorMessage(request);
-                try {
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMessage);
-                } catch (IOException e1) {
-                    logger.error("", e1);
-                }
+                UiMessageService.sendContactNotFoundErrorToUI(request, response);
             }
-            request.getSession().setAttribute("messageKey","message.email.sent");
-            request.getSession().setAttribute("showMessage","true");
+            UiMessageService.prepareEmailsSentPopUpInfoMessage(request);
+            logger.debug("execution Mail command end");
             return "";
         } else {
+            logger.debug("execution Mail command end");
             return "contact-email-form.jsp";
         }
     }
 
     private void sendMails(HttpServletRequest request) throws ConnectionDeniedException, ContactNotFoundException {
-        logger.debug("defining letter fields");
+        logger.debug("defining mail parameters");
         String mailSubject = request.getParameter("mailSubject");
         if (isBlank(mailSubject)) {
             mailSubject = "(No subject)";
         }
-        logger.debug("creating map recipient -> message");
+        logger.debug("creating messages map");
         Map<Address, String> messageMap = mapMessagesToAddresses(request);
+        logger.debug("message map created.. retrieving session");
         Session mailSession = mailSender.createMailSession();
+        logger.debug("session got... sending mails");
         for (Map.Entry<Address, String> entry : messageMap.entrySet()) {
             Address address = entry.getKey();
             String messageText = entry.getValue();
+            logger.debug("sending mail to {}", address.toString());
             mailSender.sendMail(mailSession, address, mailSubject, messageText, MailSender.USE_HTML_FALSE);
         }
     }
 
     private Map<Address, String> mapMessagesToAddresses(HttpServletRequest request) throws ConnectionDeniedException, ContactNotFoundException {
+        logger.debug("mapping messages to addresses");
         Map<Address, String> resultMap = new HashMap<>();
         Map<String, Integer> addressesMapFromRequest = getAddressesMapFromRequest(request);
         for (Map.Entry<String, Integer> entry : addressesMapFromRequest.entrySet()) {
@@ -156,7 +144,7 @@ public class MailCommand implements Command {
     }
 
     private String defineMailMessage(HttpServletRequest request, Integer contactId) throws ConnectionDeniedException, ContactNotFoundException {
-        logger.debug("creating letter body");
+        logger.debug("creating message body");
         String message = request.getParameter("mailText");
         if (isBlank(message)) {
             message = "";
@@ -165,6 +153,7 @@ public class MailCommand implements Command {
             if (templateParams.size() > 0){
                 logger.debug("creating text template");
                 ST template = createStringTemplate(message);
+                logger.debug("defining fields of 'Contact' instance as StringTemplate parameters");
                 Map<String, Object> parameterMap = definePossibleParamValues(contactId);
                 templateParams.forEach(param -> {
                     Object paramValue = parameterMap.get(param);
@@ -174,6 +163,7 @@ public class MailCommand implements Command {
                         logger.error("failed to find parameter {}",param);
                     }
                 });
+                logger.debug("rendering message from template");
                 message = template.render();
             }
         }
@@ -186,6 +176,7 @@ public class MailCommand implements Command {
     }
 
     private ST createStringTemplate(String message) {
+        logger.debug("creating custom StringTemplate");
         String templateName = "customTemplate";
         STGroup stGroup = stringTemplates.getTemplatesGroup();
         List<String> templateParams = defineTemplateParams(message);
@@ -195,6 +186,7 @@ public class MailCommand implements Command {
             oneStringParams.append(',');
         });
         stGroup.defineTemplate(templateName,oneStringParams.toString(),message);
+        logger.debug("template defined");
         return stGroup.getInstanceOf(templateName);
     }
 
@@ -223,20 +215,5 @@ public class MailCommand implements Command {
             }
         }
         return emailMap;
-    }
-
-    private String createContactNotFoundErrorMessage(HttpServletRequest request) {
-        Map<String, String> labels = labelsManager.getLabels((String) request.getSession().getAttribute("localeKey"));
-        return labels.get("message.contact.not.found");
-    }
-
-    private String createEmailErrorMessage(String failedContacts, HttpServletRequest request) {
-        Map<String, String> labels = labelsManager.getLabels((String) request.getSession().getAttribute("localeKey"));
-        failedContacts = failedContacts.substring(0, failedContacts.lastIndexOf(',')) + "<br>";
-        StringBuilder message = new StringBuilder(labels.get("message.no.email.begin"));
-        message.append("<br>");
-        message.append(failedContacts);
-        message.append(labels.get("message.no.email.end"));
-        return message.toString();
     }
 }

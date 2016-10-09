@@ -6,12 +6,12 @@ import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.LabelsManager;
+import com.javalab.contacts.util.UiMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Collection;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -26,10 +26,11 @@ public class SearchCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        logger.debug("executing Search command");
         labelsManager.setLocaleLabelsToSession(request.getSession());
-
         if (request.getParameterMap().size() > 0){
             String query = request.getQueryString();
+            logger.debug("saving search query string to perform further pagination");
             String queryNoPage;
             if (query.contains("page=")){
                 queryNoPage = query.substring(0, query.lastIndexOf("page=")-1);
@@ -49,43 +50,43 @@ public class SearchCommand implements Command {
                     pageNumber = 1;
                 }
             }
+            logger.debug("creating search object instance");
             ContactSearchDTO searchObject = createSearchDTO(request);
             Collection<ContactShortDTO> searchResult = null;
             Integer numberOfPages = 0;
             try {
+                logger.debug("searching for requested contacts");
                 searchResult = contactRepository.search(searchObject, pageNumber-1);
-                Integer recordsFound = contactRepository.getNumberOfRecordsFound();
-                Integer rowsPerPage = contactRepository.getRowsPePageCount();
-                numberOfPages = (int) Math.ceil(recordsFound*1.00/rowsPerPage);
+                logger.debug("search complete");
+                numberOfPages = defineNumberOfPages();
                 if (pageNumber > numberOfPages){
                     pageNumber = numberOfPages;
                     searchResult = contactRepository.search(searchObject, pageNumber-1);
                 }
             } catch (ConnectionDeniedException e) {
-                try {
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                            "Could not connect to data base\nContact your system administrator");
-                } catch (IOException e1) {
-                    logger.error("", e1);
-                }
+                UiMessageService.sendConnectionErrorMessageToUI(request, response);
             }
-
+            logger.debug("setting found collection as attribute to request");
             request.setAttribute("numberOfPages",numberOfPages);
             request.setAttribute("searchQueryString",searchQueryString);
             request.setAttribute("currentPage",pageNumber);
             request.setAttribute("searchResult", searchResult);
             request.setAttribute("path","contact-list-form.jsp");
+            logger.debug("execution of Search command end");
             return "contact-list-form.jsp";
         } else {
+            logger.debug("no search parameters found, returning search form view");
             Collection<String> sexList = contactRepository.getSexList();
             Collection<String> maritalStatusList = contactRepository.getMaritalStatusList();
             request.setAttribute("sexList", sexList);
             request.setAttribute("maritalStatusList", maritalStatusList);
+            logger.debug("execution of Search command end");
             return "contact-search-form.jsp";
         }
     }
 
     private ContactSearchDTO createSearchDTO(HttpServletRequest request){
+        logger.debug("defining search object fields");
         String firstName = trim(request.getParameter("firstName"));
         String lastName = trim(request.getParameter("lastName"));
         String secondName = trim(request.getParameter("secondName"));
@@ -103,7 +104,6 @@ public class SearchCommand implements Command {
         if (isNotBlank(strZipCode)){
             zipCode = Integer.parseInt(strZipCode);
         }
-
         Integer houseNumber = null;
         String strHouseNumber = trim(request.getParameter("houseNumber"));
         if(isNotBlank(strHouseNumber)){
@@ -114,7 +114,7 @@ public class SearchCommand implements Command {
         if (isNotBlank(strFlatNumber)){
             flatNumber = Integer.valueOf(strFlatNumber);
         }
-
+        logger.debug("fields of search object defined, creating instance");
         ContactSearchDTO searchDTO = new ContactSearchDTO();
         searchDTO.setFirstName(firstName);
         searchDTO.setSecondName(secondName);
@@ -131,6 +131,7 @@ public class SearchCommand implements Command {
         searchDTO.setHouseNumber(houseNumber);
         searchDTO.setFlatNumber(flatNumber);
         searchDTO.setOrderBy("lastName");
+        logger.debug("returning {}", searchDTO);
         return searchDTO;
     }
 
@@ -158,5 +159,11 @@ public class SearchCommand implements Command {
         } else {
             return null;
         }
+    }
+
+    private Integer defineNumberOfPages() {
+        Integer recordsFound = contactRepository.getNumberOfRecordsFound();
+        Integer rowsPerPage = contactRepository.getRowsPePageCount();
+        return (int) Math.ceil(recordsFound*1.00/rowsPerPage);
     }
 }

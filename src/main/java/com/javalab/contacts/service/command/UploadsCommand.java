@@ -23,7 +23,8 @@ public class UploadsCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-
+        logger.debug("executing Uploads command");
+        logger.debug("defining requested filepath");
         String filePath = String.valueOf(request.getAttribute("uriParams"));
         if (filePath != null && !filePath.equals("null")) {
             Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
@@ -36,22 +37,26 @@ public class UploadsCommand implements Command {
             }
             String uploadsRealPath = applicationPath;
             String uploadsRelativePath = properties.getProperty("upload.relative.dir");
+            logger.debug("defining requested file");
             File fileToRead = new File(uploadsRealPath + uploadsRelativePath + filePath);
-
+            logger.debug("defined file to read [{}]", fileToRead);
             try (InputStream inputStream = new FileInputStream(fileToRead);
                                         OutputStream outputStream = response.getOutputStream()) {
                 response.setContentLength((int) fileToRead.length());
                 response.setContentType(new MimetypesFileTypeMap().getContentType(fileToRead));
                 byte[] buffer = new byte[BUFFER_LENGTH];
                 int data;
+                logger.debug("reading file");
                 while ((data = inputStream.read(buffer, 0, BUFFER_LENGTH)) != -1) {
                     outputStream.write(buffer, 0, data);
                     outputStream.flush();
                 }
+                logger.debug("file has been read");
             } catch (IOException e) {
                 logger.error("error while reading file {}", fileToRead, e);
             }
         }
+        logger.debug("execution of Uploads command end");
         return "";
     }
 

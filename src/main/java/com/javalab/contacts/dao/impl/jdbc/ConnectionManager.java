@@ -38,9 +38,10 @@ public class ConnectionManager {
         logger.debug("trying to get connection from pool");
         try {
             connection = dataSource.getConnection();
-            logger.debug("connection from pool got.. opened connections - {}", openedConnectionCount.incrementAndGet());
-            logger.debug("total connections made - {}", totalConnectionsMade.incrementAndGet());
-
+            logger.debug("connection from pool got.. opened connections - {} \n" +
+                    "total connections made - {}",
+                    openedConnectionCount.incrementAndGet(),
+                    totalConnectionsMade.incrementAndGet());
         } catch (SQLException e) {
             logger.error("{}", e);
             throw new ConnectionDeniedException("can not receive connection to data base");

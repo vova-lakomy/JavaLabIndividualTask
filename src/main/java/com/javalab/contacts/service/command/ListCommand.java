@@ -6,12 +6,12 @@ import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.LabelsManager;
+import com.javalab.contacts.util.UiMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Collection;
 
 import static org.apache.commons.lang3.StringUtils.isNumeric;
@@ -31,7 +31,9 @@ public class ListCommand implements Command{
         Collection<ContactShortDTO> contactList = null;
         Integer numberOfPages = 0;
         try {
+            logger.debug("getting list of contacts from db");
             contactList = contactRepository.getContactsList(pageNumber-1);
+            logger.debug("got list of {} contacts", contactList.size());
             numberOfPages = calculateNumberOfPages();
             logger.debug("total number of pages - {}", numberOfPages);
             if (pageNumber > numberOfPages){
@@ -41,17 +43,12 @@ public class ListCommand implements Command{
             }
 
         } catch (ConnectionDeniedException e) {
-            try {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                        "Could not connect to data base\nContact your system administrator");
-            } catch (IOException e1) {
-                logger.error("", e1);
-            }
+            UiMessageService.sendConnectionErrorMessageToUI(request, response);
         }
-
         request.setAttribute("numberOfPages",numberOfPages);
         request.setAttribute("contactsList", contactList);
         request.getSession().setAttribute("currentPage",pageNumber);
+        logger.debug("execution of List command end");
         return "contact-list-form.jsp";
     }
 

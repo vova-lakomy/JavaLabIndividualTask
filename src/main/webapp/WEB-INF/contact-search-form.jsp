@@ -3,6 +3,7 @@
 <jsp:include page="page-components/message-container.jsp"/>
 <jsp:include page="page-components/error-message-container.jsp"/>
 <script type="application/javascript" src="${rootContext}resources/js/validator.js"></script>
+<c:set var="yearNow" value="${now.year +1900}"/>
 
 <div class="jlab-main-content-container">
     <div class="jlab-main-content">
@@ -46,8 +47,8 @@
                                 </select>
                                 <select class="jlab-date-field-item" id="search-form-birth-year-after" title="${labels.get('year')}" name="yearOfBirthAfter" data-date-part="year">
                                     <option value="">${labels.get('year')}</option>
-                                    <c:forEach var="i" begin="1936" end="2016">
-                                        <c:set var="year" value="${2016 - i + 1936}"/>
+                                    <c:forEach var="i" begin="${yearNow-70}" end="${yearNow}">
+                                        <c:set var="year" value="${yearNow - i + yearNow -70}"/>
                                             <option value="${year}">${year}</option>
                                     </c:forEach>
                                 </select>

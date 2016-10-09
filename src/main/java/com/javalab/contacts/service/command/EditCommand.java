@@ -6,14 +6,13 @@ import com.javalab.contacts.exception.ContactNotFoundException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.LabelsManager;
+import com.javalab.contacts.util.UiMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Collection;
-import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -25,25 +24,23 @@ public class EditCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        logger.debug("executing Edit command");
         labelsManager.setLocaleLabelsToSession(request.getSession());
-        Integer contactId;
+        logger.debug("searching for contact ID");
         String contactIdStr = request.getParameter("contactId");
+        Integer contactId;
         if (isNotBlank(contactIdStr)) {
             contactId = Integer.valueOf(contactIdStr);
+            logger.debug("found contact id={}... retrieving full info", contactId);
             ContactFullDTO contactFullInfo = null;
             try {
                 contactFullInfo = contactRepository.getContactFullInfo(contactId);
+                logger.debug("got full info about contact with id={}", contactId);
             } catch (ConnectionDeniedException e) {
-                try {
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                            "Could not connect to data base<br>Contact your system administrator");
-                } catch (IOException e1) {
-                    logger.error("", e1);
-                }
+                UiMessageService.sendConnectionErrorMessageToUI(request, response);
             } catch (ContactNotFoundException e) {
-                String messageKey = createContactNotFoundErrorMessage(request);
-                request.getSession().setAttribute("messageKey", messageKey);
-                request.getSession().setAttribute("showErrorMessage","true");
+                logger.debug("", e);
+                UiMessageService.sendContactNotFoundErrorToUI(request, response);
             }
             request.setAttribute("fullContactInfo", contactFullInfo);
         }
@@ -53,11 +50,7 @@ public class EditCommand implements Command {
         request.setAttribute("sexList", sexList);
         request.setAttribute("maritalStatusList", maritalStatusList);
         request.setAttribute("phoneTypeList", phoneTypeList);
+        logger.debug("execution of Edit command finished");
         return "contact-edit-form.jsp";
-    }
-
-    private String createContactNotFoundErrorMessage(HttpServletRequest request) {
-        Map<String, String> labels = labelsManager.getLabels((String) request.getSession().getAttribute("localeKey"));
-        return labels.get("message.contact.not.found");
     }
 }

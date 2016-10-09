@@ -33,7 +33,7 @@ public final class CustomFileUtils {
     }
 
     public static boolean renameFile(File oldFile, File newFile) {
-        logger.debug("trying to rename files {} >> {}", oldFile, newFile);
+        logger.debug("trying to rename file [{}] to [{}]", oldFile, newFile);
         return oldFile.renameTo(newFile);
     }
 

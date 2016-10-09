@@ -30,8 +30,8 @@ CREATE TABLE contacts_vladimir_lakomy.contact
 CREATE TABLE contacts_vladimir_lakomy.contact_attachment
 (
   id                  INT PRIMARY KEY  NOT NULL AUTO_INCREMENT,
-  attachment_name     VARCHAR(50),
-  attachment_link     VARCHAR(200),
+  attachment_name     VARCHAR(70),
+  attachment_link     VARCHAR(250),
   attachment_comment  VARCHAR(1000),
   date_of_upload      DATE,
   contact_id          INT,

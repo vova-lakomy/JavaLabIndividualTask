@@ -7,7 +7,7 @@ import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.exception.PersistException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
-import com.javalab.contacts.util.LabelsManager;
+import com.javalab.contacts.util.UiMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -28,41 +27,40 @@ import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 public class SaveCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(SaveCommand.class);
-    LabelsManager labelsManager = LabelsManager.getInstance();
 
     private ContactRepository repository = new ContactRepositoryImpl();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("executing Save Command");
-        ContactFullDTO contact = getContactDtoFromRequest(request,response);
+        ContactFullDTO contact = null;
+        try {
+            logger.debug("defining contact DTO instance");
+            contact = getContactDtoFromRequest(request,response);
+        } catch (IOException | ServletException e) {
+            logger.error("", e);
+            UiMessageService.sendAttachmentProcessErrorToUI(request, response);
+        }
         Integer returnedId = null;
         try {
+            logger.debug("saving defined contact DTO instance");
             returnedId = repository.saveContact(contact);
+            logger.debug("contact DTO saved");
         } catch (ConnectionDeniedException e) {
-            try {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                        "Could not connect to data base\nContact your system administrator");
-            } catch (IOException e1) {
-                logger.error("", e1);
-            }
+            UiMessageService.sendConnectionErrorMessageToUI(request, response);
         } catch (PersistException e) {
-            String errorMessage = createSaveContactErrorMessage(request);
-            try {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, errorMessage);
-            } catch (IOException e1) {
-                logger.error("", e1);
-            }
+            logger.error("",e);
+            UiMessageService.sendSaveErrorMessageToUI(request, response);
         }
-        request.getSession().setAttribute("messageKey","message.contact.saved");
-        request.getSession().setAttribute("showMessage","true");
+        UiMessageService.prepareContactSavedPopUpInfoMessage(request);
         String urlRedirectTo = "edit?contactId=" + returnedId;
         request.setAttribute("redirectURL", urlRedirectTo);
+        logger.debug("execution of Save command end");
         return "";
     }
 
-    private ContactFullDTO getContactDtoFromRequest(HttpServletRequest request, HttpServletResponse response) {
-        logger.debug("creating DTO contact from request");
+    private ContactFullDTO getContactDtoFromRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        logger.debug("creating DTO contact from request... getting fields");
         Integer contactId = null;
         if (isNumeric(request.getParameter("contactId"))) {
             contactId = Integer.parseInt(request.getParameter("contactId"));
@@ -70,12 +68,7 @@ public class SaveCommand implements Command {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         if (isBlank(firstName) || isBlank(lastName)){
-            logger.error("one of the required fields is empty!! sending an error");
-            try {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,"one of the required fields is empty");
-            } catch (IOException e) {
-                logger.error("{}",e);
-            }
+            UiMessageService.sendEmptyFieldErrorToUI(request, response);
         }
         String secondName = request.getParameter("secondName");
         if (isBlank(secondName)) {
@@ -157,7 +150,7 @@ public class SaveCommand implements Command {
         }
         Collection<PhoneNumberDTO> phoneNumbers= getPhoneNumbersFromRequest(request);
         Collection<AttachmentDTO> attachments = getAttachmentsFromRequest(request);
-
+        logger.debug("got all fields for ContactDTO from request... Creating instance...");
         ContactFullDTO contact = new ContactFullDTO();
         contact.setId(contactId);
         contact.setFirstName(firstName);
@@ -182,10 +175,12 @@ public class SaveCommand implements Command {
         contact.setPersonalLink(personalLink);
         contact.setPhoneNumbers(phoneNumbers);
         contact.setAttachments(attachments);
+        logger.debug("returning {}", contact);
         return contact;
     }
 
     private Collection<PhoneNumberDTO> getPhoneNumbersFromRequest(HttpServletRequest request) {
+        logger.debug("getting phone numbers fields from request");
         String[] phoneNumberIds = request.getParameterValues("phoneNumberId");
         String[] countryCodes = request.getParameterValues("countryCode");
         String[] operatorCodes = request.getParameterValues("operatorCode");
@@ -217,6 +212,7 @@ public class SaveCommand implements Command {
             }
             String phoneType = phoneTypes[i];
             String comment = comments[i];
+            logger.debug("creating phone number DTO");
             PhoneNumberDTO phoneDTO = new PhoneNumberDTO();
             phoneDTO.setId(phoneId);
             phoneDTO.setCountryCode(countryCode);
@@ -224,8 +220,10 @@ public class SaveCommand implements Command {
             phoneDTO.setNumber(number);
             phoneDTO.setType(phoneType);
             phoneDTO.setComment(comment);
+            logger.debug("created phone number DTO instance {}, adding to collection", phoneDTO);
             phoneNumbers.add(phoneDTO);
         }
+        logger.debug("returning collection of {} phone number DTOs", phoneNumbers.size());
         return phoneNumbers;
     }
 
@@ -237,23 +235,22 @@ public class SaveCommand implements Command {
         }
     }
 
-    private Collection<AttachmentDTO> getAttachmentsFromRequest(HttpServletRequest request) {
+    private Collection<AttachmentDTO> getAttachmentsFromRequest(HttpServletRequest request) throws IOException, ServletException {
+        logger.debug("retrieving attachments info from request");
         List<String> idNames = new ArrayList<>();
-        try {
-            Collection<Part> parts = request.getParts();
-            idNames.addAll(parts
-                    .stream()
-                    .filter(part -> part.getName().contains("attachmentId"))
-                    .map(Part::getName)
-                    .collect(Collectors.toList()));
-        } catch (IOException | ServletException e) {
-            logger.error("{}",e);
-        }
+        Collection<Part> parts = request.getParts();
+        idNames.addAll(parts
+                .stream()
+                .filter(part -> part.getName().contains("attachmentId"))
+                .map(Part::getName)
+                .collect(Collectors.toList()));
+        logger.debug("found {} files to process", idNames.size());
         Collection<AttachmentDTO> attachmentDTOs = new ArrayList<>();
         idNames.forEach(idName -> {
             String index = idName.substring(idName.lastIndexOf('-'));
             String idNameStr = request.getParameter(idName);
             Integer id = null;
+            logger.debug("defining attachment DTO fields");
             if (isNumeric(idNameStr)){
                id = Integer.valueOf(idNameStr);
             }
@@ -271,20 +268,17 @@ public class SaveCommand implements Command {
             } else {
                 attachmentLink = request.getParameter("attachmentLink" + index);
             }
-
+            logger.debug("attachment DTO fields defined... creating instance");
             AttachmentDTO attachmentDTO = new AttachmentDTO();
             attachmentDTO.setId(id);
             attachmentDTO.setAttachmentLink(attachmentLink);
             attachmentDTO.setFileName(fileName);
             attachmentDTO.setUploadDate(uploadDate);
             attachmentDTO.setComment(comment);
+            logger.debug("created attachment DTO instance {}, adding to collection", attachmentDTO);
             attachmentDTOs.add(attachmentDTO);
         });
+        logger.debug("returning collection of {} attachment DTOs", attachmentDTOs.size());
         return attachmentDTOs;
-    }
-
-    private String createSaveContactErrorMessage(HttpServletRequest request) {
-        Map<String, String> labels = labelsManager.getLabels((String) request.getSession().getAttribute("localeKey"));
-        return labels.get("message.failed.save.contact");
     }
 }

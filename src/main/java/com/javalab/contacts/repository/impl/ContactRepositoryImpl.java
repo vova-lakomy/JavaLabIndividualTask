@@ -119,11 +119,13 @@ public class ContactRepositoryImpl implements ContactRepository {
         } catch (SQLException e) {
             logger.error("error while saving contact", e);
             try {
+                logger.debug("trying to rollback all changes");
                 connection.rollback();
+                logger.debug("rollback done");
             } catch (SQLException e1) {
                 logger.error("error while rollback transaction \n{}", e1);
             }
-            throw new PersistException();
+            throw new PersistException("error while saving contact " + contact);
         } finally {
             closeConnection(connection);
         }

@@ -1,8 +1,9 @@
 package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.exception.ConnectionDeniedException;
-import com.javalab.contacts.util.LabelsManager;
+import com.javalab.contacts.util.CustomFileUtils;
 import com.javalab.contacts.util.PropertiesProvider;
+import com.javalab.contacts.util.UiMessageService;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,22 +14,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Properties;
-
-
-
-import static com.javalab.contacts.util.CustomFileUtils.defineFileName;
-import static com.javalab.contacts.util.CustomFileUtils.definePersonalDirectory;
-
 
 public class UploadPhotoCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(UploadPhotoCommand.class);
     private static Properties properties = PropertiesProvider.getInstance().getFileUploadProperties();
-    private LabelsManager labelsManager = LabelsManager.getInstance();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        logger.debug("executing Upload photo command");
         Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
         String applicationPath;
         if (shouldUploadToSpecificDir){
@@ -38,16 +32,12 @@ public class UploadPhotoCommand implements Command {
             applicationPath = request.getServletContext().getRealPath("");
         }
         String relativeUploadPath = properties.getProperty("upload.relative.dir");
+        logger.debug("defining image upload path");
         String personalLink = null;
         try {
-            personalLink = definePersonalDirectory(request);
+            personalLink = CustomFileUtils.definePersonalDirectory(request);
         } catch (ConnectionDeniedException e) {
-            try {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                        "Could not connect to data base\nContact your system administrator");
-            } catch (IOException e1) {
-                logger.error("", e1);
-            }
+            UiMessageService.sendConnectionErrorMessageToUI(request, response);
         }
         String imagesFolder = properties.getProperty("contact.photo.folder.name");
         String personalImagePath = personalLink + File.separator + imagesFolder + File.separator;
@@ -57,9 +47,10 @@ public class UploadPhotoCommand implements Command {
                 + relativeUploadPath
                 + File.separator
                 + personalImagePath;
-
+        logger.debug("defined image upload path as {}", uploadImagePath);
         File fileSaveDir = new File(uploadImagePath);
         try{
+            logger.debug("trying to create directories");
             if (!fileSaveDir.exists()){
                 FileUtils.forceMkdir(fileSaveDir);
             }else {
@@ -67,36 +58,24 @@ public class UploadPhotoCommand implements Command {
             }
         } catch (IOException e) {
             logger.error("failed to access directory {} {} ", uploadImagePath, e);
-            try {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "failed to access directory " + fileSaveDir);
-            } catch (IOException e1) {
-                logger.error("", e1);
-            }
+            UiMessageService.sendDirectoryAccessErrorToUI(request, response, uploadImagePath);
         }
 
         logger.debug("looking for attached photo in request {}", request);
         try {
             Part part = request.getPart("attachedPhoto");
             logger.debug("found attached photo {}", part.getSubmittedFileName());
-            String fileName = defineFileName(part,fileSaveDir);
+            String fileName = CustomFileUtils.defineFileName(part,fileSaveDir);
+            logger.debug("writing file to disk");
             part.write(uploadImagePath + File.separator + fileName);
             logger.debug("{} uploaded ", part.getSubmittedFileName());
-            request.setAttribute("photoLink", relativeUploadPath + personalImagePath + File.separator + fileName);
+            String photoLink = relativeUploadPath + personalImagePath + File.separator + fileName;
+            request.setAttribute("photoLink", photoLink);
         } catch (IOException | ServletException e) {
             logger.error("failed to save image to disk {} {} ", uploadImagePath, e);
-            String errorMessage = createFileSaveErrorMessage(request);
-
-            try {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, errorMessage);
-            } catch (IOException e1) {
-                logger.error("", e1);
-            }
+            UiMessageService.sendPhotoProcessErrorToUI(request, response);
         }
+        logger.debug("execution Upload Photo command end");
         return "";
-    }
-
-    private String createFileSaveErrorMessage(HttpServletRequest request) {
-        Map<String, String> labels = labelsManager.getLabels((String) request.getSession().getAttribute("localeKey"));
-        return labels.get("message.photo.save.failed");
     }
 }

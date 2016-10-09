@@ -4,13 +4,12 @@ package com.javalab.contacts.service.command;
 import com.javalab.contacts.exception.ConnectionDeniedException;
 import com.javalab.contacts.repository.PhoneRepository;
 import com.javalab.contacts.repository.impl.PhoneRepositoryImpl;
+import com.javalab.contacts.util.UiMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -21,24 +20,25 @@ public class DeletePhoneCommand implements Command{
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        logger.debug("executing Delete Phone command");
+        logger.debug("searching for phone IDs to delete");
         String[] selectedIds = request.getParameterValues("selectedId");
         if (selectedIds != null) {
+            logger.debug("found {] phone numbers to delete", selectedIds.length);
             for (String stringId: selectedIds){
                 if(isNotBlank(stringId)){
                     Integer id = Integer.parseInt(stringId);
                     try {
+                        logger.debug("deleting phone with id = {}", id);
                         repository.delete(id);
+                        logger.debug("phone number with id={} deleted", id);
                     } catch (ConnectionDeniedException e) {
-                        try {
-                            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                                    "Could not connect to data base\nContact your system administrator");
-                        } catch (IOException e1) {
-                            logger.error("", e1);
-                        }
+                        UiMessageService.sendConnectionErrorMessageToUI(request, response);
                     }
                 }
             }
         }
+        logger.debug("execution Delete Phone command ended");
         return "";
     }
 }

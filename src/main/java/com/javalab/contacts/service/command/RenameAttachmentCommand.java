@@ -3,6 +3,7 @@ package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.util.CustomFileUtils;
 import com.javalab.contacts.util.PropertiesProvider;
+import com.javalab.contacts.util.UiMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import static com.javalab.contacts.util.CustomFileUtils.definePersonalDirectory;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class RenameAttachmentCommand implements Command {
@@ -24,11 +24,14 @@ public class RenameAttachmentCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        logger.debug("executing rename attachment command");
-        String applicationPath = request.getServletContext().getRealPath("");
+        logger.debug("executing Rename Attachment command");
         Boolean shouldUploadToSpecificDir = Boolean.parseBoolean(properties.getProperty("upload.to.specific.dir"));
-        if (shouldUploadToSpecificDir) {
+        String applicationPath;
+        if (shouldUploadToSpecificDir){
             applicationPath = properties.getProperty("specific.upload.dir");
+        } else {
+            logger.warn("USING TOMCAT CONTEXT DIRECTORY TO STORE UPLOADS. CHECK file-upload.properties");
+            applicationPath = request.getServletContext().getRealPath("");
         }
         logger.debug("upload dir defined as {}", applicationPath);
 
@@ -40,15 +43,18 @@ public class RenameAttachmentCommand implements Command {
                     fileNames.add(part.getName());
                 }
             });
-            logger.debug("found {} files to rename {}", fileNames.size(), fileNames);
+            logger.debug("found {} files to rename", fileNames.size());
         } catch (IOException | ServletException e) {
             logger.error("{}", e);
+            UiMessageService.sendAttachmentProcessErrorToUI(request, response);
         }
         for (String fileName : fileNames){
+            logger.debug("renaming file {}", fileName);
             String attachmentIndex = fileName.substring(fileName.lastIndexOf('-'));
             String newFileName = request.getParameter("attachmentFileName" + attachmentIndex);
             String oldFileName = request.getParameter("attachmentOldFileName" + attachmentIndex);
             if (isBlank(newFileName)) {
+                logger.debug("new file name is empty, setting as 'no-name'");
                 newFileName = "no-name";
             }
             String newAttachmentLink = request.getParameter("attachmentLink" + attachmentIndex);
@@ -58,7 +64,9 @@ public class RenameAttachmentCommand implements Command {
             File newFile = new File(newFullPath);
             File oldFile = new File(oldFullPath);
             CustomFileUtils.renameFile(oldFile, newFile);
+            logger.debug("file renamed to [{}]", newFileName);
         }
+        logger.debug("execution Rename Attachment command end");
         return "";
     }
 }
