@@ -1,6 +1,6 @@
 package com.javalab.contacts.service.command;
 
-import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.util.CustomFileUtils;
 import com.javalab.contacts.util.PropertiesProvider;
 import com.javalab.contacts.util.UiMessageService;
@@ -36,7 +36,7 @@ public class UploadAttachmentCommand implements Command {
         String personalDirectory = null;
         try {
             personalDirectory = CustomFileUtils.definePersonalDirectory(request);
-        } catch (ConnectionDeniedException e) {
+        } catch (ConnectionFailedException e) {
             UiMessageService.sendConnectionErrorMessageToUI(request, response);
         }
         String attachmentsFolder = properties.getProperty("attachments.folder.name");
@@ -90,7 +90,7 @@ public class UploadAttachmentCommand implements Command {
                 logger.error("", e);
             }
         }
-        logger.debug("execution of Upload Attachment command end");
+        logger.debug("execution of Upload Attachment command finished");
         return "";
     }
 }

@@ -3,8 +3,8 @@ package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
-import com.javalab.contacts.exception.ConnectionDeniedException;
-import com.javalab.contacts.exception.ContactNotFoundException;
+import com.javalab.contacts.exception.ConnectionFailedException;
+import com.javalab.contacts.exception.EntityNotFoundException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.CustomReflectionUtil;
@@ -65,9 +65,9 @@ public class MailCommand implements Command {
                         logger.debug("getting short info about contact with id ={}", id);
                         contactShortDTO = repository.getContactShortDTO(id);
                         logger.debug("got contact short info");
-                    } catch (ConnectionDeniedException e) {
+                    } catch (ConnectionFailedException e) {
                         UiMessageService.sendConnectionErrorMessageToUI(request, response);
-                    } catch (ContactNotFoundException e) {
+                    } catch (EntityNotFoundException e) {
                         UiMessageService.sendContactNotFoundErrorToUI(request, response);
                     }
                     if (contactShortDTO != null && contactShortDTO.geteMail() == null){
@@ -90,9 +90,9 @@ public class MailCommand implements Command {
             try {
                 sendMails(request);
                 logger.debug("emails were sent");
-            } catch (ConnectionDeniedException e) {
+            } catch (ConnectionFailedException e) {
                 UiMessageService.sendConnectionErrorMessageToUI(request, response);
-            } catch (ContactNotFoundException e) {
+            } catch (EntityNotFoundException e) {
                 UiMessageService.sendContactNotFoundErrorToUI(request, response);
             }
             UiMessageService.prepareEmailsSentPopUpInfoMessage(request);
@@ -104,7 +104,7 @@ public class MailCommand implements Command {
         }
     }
 
-    private void sendMails(HttpServletRequest request) throws ConnectionDeniedException, ContactNotFoundException {
+    private void sendMails(HttpServletRequest request) throws ConnectionFailedException, EntityNotFoundException {
         logger.debug("defining mail parameters");
         String mailSubject = request.getParameter("mailSubject");
         if (isBlank(mailSubject)) {
@@ -123,7 +123,7 @@ public class MailCommand implements Command {
         }
     }
 
-    private Map<Address, String> mapMessagesToAddresses(HttpServletRequest request) throws ConnectionDeniedException, ContactNotFoundException {
+    private Map<Address, String> mapMessagesToAddresses(HttpServletRequest request) throws ConnectionFailedException, EntityNotFoundException {
         logger.debug("mapping messages to addresses");
         Map<Address, String> resultMap = new HashMap<>();
         Map<String, Integer> addressesMapFromRequest = getAddressesMapFromRequest(request);
@@ -143,7 +143,7 @@ public class MailCommand implements Command {
         return resultMap;
     }
 
-    private String defineMailMessage(HttpServletRequest request, Integer contactId) throws ConnectionDeniedException, ContactNotFoundException {
+    private String defineMailMessage(HttpServletRequest request, Integer contactId) throws ConnectionFailedException, EntityNotFoundException {
         logger.debug("creating message body");
         String message = request.getParameter("mailText");
         if (isBlank(message)) {
@@ -170,7 +170,7 @@ public class MailCommand implements Command {
         return message;
     }
 
-    private Map<String, Object> definePossibleParamValues(Integer contactId) throws ConnectionDeniedException, ContactNotFoundException {
+    private Map<String, Object> definePossibleParamValues(Integer contactId) throws ConnectionFailedException, EntityNotFoundException {
         ContactFullDTO contact = repository.getContactFullInfo(contactId);
         return CustomReflectionUtil.getObjectFieldsWithValues(contact);
     }

@@ -2,7 +2,7 @@ package com.javalab.contacts.util;
 
 
 import com.javalab.contacts.dto.ContactShortDTO;
-import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import org.quartz.Job;
@@ -26,7 +26,7 @@ public class MailerJob implements Job{
         String messageText = null;
         try {
             messageText = createBirthdayPeopleMessageForAdministrator();
-        } catch (ConnectionDeniedException e) {
+        } catch (ConnectionFailedException e) {
             logger.error("could not connect to data base");
             throw  new JobExecutionException("could not connect to db");
         }
@@ -39,7 +39,7 @@ public class MailerJob implements Job{
         }
     }
 
-    private String createBirthdayPeopleMessageForAdministrator() throws ConnectionDeniedException {
+    private String createBirthdayPeopleMessageForAdministrator() throws ConnectionFailedException {
         String message = "";
         LocalDate todayDate = LocalDate.now();
         Collection<ContactShortDTO> birthdayPeople = findBirthdayPeople(todayDate);
@@ -75,7 +75,7 @@ public class MailerJob implements Job{
         return message;
     }
 
-    private Collection<ContactShortDTO> findBirthdayPeople(LocalDate todayDate) throws ConnectionDeniedException {
+    private Collection<ContactShortDTO> findBirthdayPeople(LocalDate todayDate) throws ConnectionFailedException {
         Integer day = 1;
         Integer month = 1;
         if (todayDate != null) {

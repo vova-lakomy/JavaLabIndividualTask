@@ -3,8 +3,8 @@ package com.javalab.contacts.service.command;
 import com.javalab.contacts.dto.AttachmentDTO;
 import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
-import com.javalab.contacts.exception.ConnectionDeniedException;
-import com.javalab.contacts.exception.PersistException;
+import com.javalab.contacts.exception.ConnectionFailedException;
+import com.javalab.contacts.exception.EntityPersistException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.UiMessageService;
@@ -46,9 +46,9 @@ public class SaveCommand implements Command {
             logger.debug("saving defined contact DTO instance");
             returnedId = repository.saveContact(contact);
             logger.debug("contact DTO saved");
-        } catch (ConnectionDeniedException e) {
+        } catch (ConnectionFailedException e) {
             UiMessageService.sendConnectionErrorMessageToUI(request, response);
-        } catch (PersistException e) {
+        } catch (EntityPersistException e) {
             logger.error("",e);
             UiMessageService.sendSaveErrorMessageToUI(request, response);
         }

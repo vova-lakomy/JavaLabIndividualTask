@@ -1,6 +1,6 @@
 package com.javalab.contacts.service.command;
 
-import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.PropertiesProvider;
@@ -52,7 +52,7 @@ public class DeleteContactCommand implements Command {
                     String personalDir = null;
                     try {
                         personalDir = contactRepository.getPersonalLink(id);
-                    } catch (ConnectionDeniedException e) {
+                    } catch (ConnectionFailedException e) {
                         UiMessageService.sendConnectionErrorMessageToUI(request, response);
                     }
                     if (personalDir != null) {
@@ -69,7 +69,7 @@ public class DeleteContactCommand implements Command {
                         logger.debug("deleting contact id=", id);
                         contactRepository.delete(id);
                         logger.debug("contact with id={} deleted", id);
-                    } catch (ConnectionDeniedException e) {
+                    } catch (ConnectionFailedException e) {
                         UiMessageService.sendConnectionErrorMessageToUI(request, response);
                     }
                     request.getSession().setAttribute("messageKey","message.contact.delete");

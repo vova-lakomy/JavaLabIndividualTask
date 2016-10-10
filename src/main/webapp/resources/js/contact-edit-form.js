@@ -185,7 +185,7 @@
             '<input class="jlab-hidden" type="text" name="phoneType" value="' + data.phoneType + '">' +
             '<textarea class="jlab-hidden" name="comment">' + data.phoneComment + '</textarea>' +
 
-            '<input type="checkbox" name="selectedId" value="" id="PhoneNumberId-' + counter + '" data-action="deletePhone">' +
+            '<input type="checkbox" name="selectedPhoneId" value="" id="PhoneNumberId-' + counter + '" data-action="deletePhone">' +
             '<label for="PhoneNumberId-' + counter + '"> +' + data.countryCode + ' (' + data.operatorCode + ') '
             + data.phoneNumber + '&nbsp;&nbsp;</label> ' +
             '<img class="jlab-edit-image" src="../resources/img/pencil_12x12.png" title="edit" data-action="edit">' +
@@ -210,7 +210,7 @@
             '<textarea id="attachment-row-input-comment-' + counter + '" class="jlab-hidden" ' +
             ' name="attachmentComment-' + counter + '"></textarea>' +
             '<input id="attachment-row-input-uploadDate-' + counter + '" class="jlab-hidden" type="text" name="uploadDate-' + counter + '" value="">' +
-            '<input type="checkbox" name="selectedId" value="" id="attachment-' + counter + '" data-action="deleteAttachment">' +
+            '<input type="checkbox" name="selectedAttachmentId" value="" id="attachment-' + counter + '" data-action="deleteAttachment">' +
             '<a href="#" ' +
             '<label id="attachment-row-label-fileName-' + counter + '" class="jlab-not-submited" title="submit to upload"></label>' +
             '</a>' +
@@ -237,7 +237,7 @@
             '<textarea class="jlab-hidden" name="attachmentComment-' + counter + '">' + data.attachmentComment + '</textarea>' +
             '<input class="jlab-hidden" type="text" name="uploadDate-' + counter + '" value="' + data.uploadDate + '">' +
 
-            '<input type="checkbox" name="selectedId" value="" id="attachment-' + counter + '" data-action="deleteAttachment">' +
+            '<input type="checkbox" name="selectedAttachmentId" value="" id="attachment-' + counter + '" data-action="deleteAttachment">' +
             '<a href="#">' +
             '<label for="attachedFileId-' + counter + '" title="submit to save changes">' + data.fileName + '</label>' +
             '</a>' +
@@ -353,7 +353,7 @@
                 case 'comment' :
                     data.comment = node.children[i].value;
                     break;
-                case 'selectedId' :
+                case 'selectedPhoneId' :
                     var counter = node.children[i].id;
                     data.counter = counter.substring(counter.indexOf('-') + 1);
                     break;

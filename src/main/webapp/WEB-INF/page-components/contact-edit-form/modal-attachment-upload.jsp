@@ -5,9 +5,8 @@
     <form id="upload-attachment-form" class="jlab-modal jlab-phone-number-edit-form">
         <h4>${labels.get('caption.add.attachment')}</h4>
         <div class="jlab-form-item">
-            <input class="jlab-hidden" id="attachment-file-input" type="file" name="attachedFile">
             <label id="label-attachment-file-input" class="jlab-button"
-                   for="attachment-file-input">${labels.get('select.file')}</label>
+                   for="label-attachment-upload">${labels.get('select.file')}</label>
             <label id="label-attachment-upload">${labels.get('no.file.selected')}</label>
         </div>
         <div class="jlab-form-item">

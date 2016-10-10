@@ -156,6 +156,5 @@ public class FrontServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE, "File size exceeds maximum allowed");
             throw new Exception("File size exceeds maximum allowed");
         }
-
     }
 }

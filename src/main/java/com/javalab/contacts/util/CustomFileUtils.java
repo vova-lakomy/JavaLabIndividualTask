@@ -1,6 +1,6 @@
 package com.javalab.contacts.util;
 
-import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import org.slf4j.Logger;
@@ -48,7 +48,7 @@ public final class CustomFileUtils {
         return stringBuilder.toString();
     }
 
-    public static String definePersonalDirectory(HttpServletRequest request) throws ConnectionDeniedException {
+    public static String definePersonalDirectory(HttpServletRequest request) throws ConnectionFailedException {
         String contactIdString = request.getParameter("contactId");
         logger.debug("defining personal directory for contact with id");
         String personalLink = null;

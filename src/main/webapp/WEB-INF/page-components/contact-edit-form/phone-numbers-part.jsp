@@ -31,7 +31,7 @@
                             <input class="jlab-hidden" type="text" name="phoneType"  value="${phoneNumber.type}">
                             <textarea class="jlab-hidden" name="comment">${phoneNumber.comment}</textarea>
 
-                            <input type="checkbox" name="selectedId" value="${phoneNumber.id}" id="phoneNumberId-${counter.index}" data-action="deletePhone" >
+                            <input type="checkbox" name="selectedPhoneId" value="${phoneNumber.id}" id="phoneNumberId-${counter.index}" data-action="deletePhone" >
                             <label for="phoneNumberId-${counter.index}">${phoneNumber.fullNumber}&nbsp;&nbsp;</label>
                             <img class="jlab-edit-image" src="${rootContext}resources/img/pencil_12x12.png" title="edit" data-action="edit">
                         </li>

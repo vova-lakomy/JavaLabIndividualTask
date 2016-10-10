@@ -2,7 +2,7 @@ package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
-import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.LabelsManager;
@@ -63,7 +63,7 @@ public class SearchCommand implements Command {
                     pageNumber = numberOfPages;
                     searchResult = contactRepository.search(searchObject, pageNumber-1);
                 }
-            } catch (ConnectionDeniedException e) {
+            } catch (ConnectionFailedException e) {
                 UiMessageService.sendConnectionErrorMessageToUI(request, response);
             }
             logger.debug("setting found collection as attribute to request");

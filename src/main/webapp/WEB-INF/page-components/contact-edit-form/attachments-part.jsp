@@ -32,7 +32,7 @@
                             <input class="jlab-hidden" type="text" name="uploadDate-${counter.index}"
                                    value="${attachment.uploadDate}">
 
-                            <input type="checkbox" id="attachment-${counter.index}" name="selectedId"
+                            <input type="checkbox" id="attachment-${counter.index}" name="selectedAttachmentId"
                                    value="${attachment.id}" data-action="deleteAttachment">
                             <a href="${rootContext}contacts/${attachment.attachmentLink}" target="_blank" download>
                                 <label>${attachment.fileName}</label>

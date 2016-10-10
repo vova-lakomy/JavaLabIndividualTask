@@ -1,8 +1,8 @@
 package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.ContactFullDTO;
-import com.javalab.contacts.exception.ConnectionDeniedException;
-import com.javalab.contacts.exception.ContactNotFoundException;
+import com.javalab.contacts.exception.ConnectionFailedException;
+import com.javalab.contacts.exception.EntityNotFoundException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.LabelsManager;
@@ -36,9 +36,9 @@ public class EditCommand implements Command {
             try {
                 contactFullInfo = contactRepository.getContactFullInfo(contactId);
                 logger.debug("got full info about contact with id={}", contactId);
-            } catch (ConnectionDeniedException e) {
+            } catch (ConnectionFailedException e) {
                 UiMessageService.sendConnectionErrorMessageToUI(request, response);
-            } catch (ContactNotFoundException e) {
+            } catch (EntityNotFoundException e) {
                 logger.debug("", e);
                 UiMessageService.sendContactNotFoundErrorToUI(request, response);
             }

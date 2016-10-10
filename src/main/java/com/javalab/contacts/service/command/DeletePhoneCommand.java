@@ -1,7 +1,7 @@
 package com.javalab.contacts.service.command;
 
 
-import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.repository.PhoneRepository;
 import com.javalab.contacts.repository.impl.PhoneRepositoryImpl;
 import com.javalab.contacts.util.UiMessageService;
@@ -22,9 +22,9 @@ public class DeletePhoneCommand implements Command{
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("executing Delete Phone command");
         logger.debug("searching for phone IDs to delete");
-        String[] selectedIds = request.getParameterValues("selectedId");
+        String[] selectedIds = request.getParameterValues("selectedPhoneId");
         if (selectedIds != null) {
-            logger.debug("found {] phone numbers to delete", selectedIds.length);
+            logger.debug("found {} phone numbers to delete", selectedIds.length);
             for (String stringId: selectedIds){
                 if(isNotBlank(stringId)){
                     Integer id = Integer.parseInt(stringId);
@@ -32,13 +32,13 @@ public class DeletePhoneCommand implements Command{
                         logger.debug("deleting phone with id = {}", id);
                         repository.delete(id);
                         logger.debug("phone number with id={} deleted", id);
-                    } catch (ConnectionDeniedException e) {
+                    } catch (ConnectionFailedException e) {
                         UiMessageService.sendConnectionErrorMessageToUI(request, response);
                     }
                 }
             }
         }
-        logger.debug("execution Delete Phone command ended");
+        logger.debug("execution of Delete Phone command finished");
         return "";
     }
 }

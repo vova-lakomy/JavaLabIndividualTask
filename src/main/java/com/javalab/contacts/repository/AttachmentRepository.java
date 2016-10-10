@@ -2,13 +2,11 @@ package com.javalab.contacts.repository;
 
 
 import com.javalab.contacts.dto.AttachmentDTO;
-import com.javalab.contacts.exception.ConnectionDeniedException;
-
-import java.util.Collection;
+import com.javalab.contacts.exception.ConnectionFailedException;
 
 public interface AttachmentRepository {
 
-    void delete(Integer id) throws ConnectionDeniedException;
+    void delete(Integer id) throws ConnectionFailedException;
 
-    AttachmentDTO get(Integer id) throws ConnectionDeniedException;
+    AttachmentDTO get(Integer id) throws ConnectionFailedException;
 }

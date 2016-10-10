@@ -1,7 +1,7 @@
 package com.javalab.contacts.service.command;
 
 import com.javalab.contacts.dto.AttachmentDTO;
-import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.repository.AttachmentRepository;
 import com.javalab.contacts.repository.impl.AttachmentRepositoryImpl;
 import com.javalab.contacts.util.PropertiesProvider;
@@ -34,7 +34,7 @@ public class DeleteAttachmentCommand implements Command {
             applicationPath = request.getServletContext().getRealPath("");
         }
         logger.debug("defining attachments IDs to delete");
-        String[] selectedIds = request.getParameterValues("selectedId");
+        String[] selectedIds = request.getParameterValues("selectedAttachmentId");
         if (selectedIds != null) {
             logger.debug("found {} IDs to delete", selectedIds.length);
             for (String stringId : selectedIds){
@@ -43,20 +43,23 @@ public class DeleteAttachmentCommand implements Command {
                 try {
                     logger.debug("trying to delete selected attachments");
                     attachmentDTO = repository.get(id);
-                    String attachmentLink = attachmentDTO.getAttachmentLink();
-                    String fullPath = applicationPath + attachmentLink;
-                    File fileToDelete = new File(fullPath);
-                    File parentDirectory = fileToDelete.getParentFile();
-                    logger.debug("directory to delete - [{}]", parentDirectory);
-                    try {
-                        FileUtils.deleteDirectory(parentDirectory);
-                        logger.debug("contact attachments deleted");
-                    } catch (IOException e) {
-                        logger.error("error while deleting file {} \n{}", fileToDelete, e);
-                        UiMessageService.sendDirectoryAccessErrorToUI(request, response, fileToDelete.toString());
+                    if (attachmentDTO != null) {
+                        String attachmentLink = attachmentDTO.getAttachmentLink();
+                        String fullPath = applicationPath + attachmentLink;
+                        File fileToDelete = new File(fullPath);
+                        File parentDirectory = fileToDelete.getParentFile();
+                        logger.debug("directory to delete - [{}]", parentDirectory);
+                        try {
+                            FileUtils.deleteDirectory(parentDirectory);
+                            logger.debug("contact attachments deleted");
+                        } catch (IOException e) {
+                            logger.error("error while deleting file {} \n{}", fileToDelete, e);
+                            UiMessageService.sendDirectoryAccessErrorToUI(request, response, fileToDelete.toString());
+                        }
+                        repository.delete(id);
                     }
-                    repository.delete(id);
-                } catch (ConnectionDeniedException e) {
+                    // TODO: 10.10.16 do something if null
+                } catch (ConnectionFailedException e) {
                     UiMessageService.sendConnectionErrorMessageToUI(request, response);
                 }
             }

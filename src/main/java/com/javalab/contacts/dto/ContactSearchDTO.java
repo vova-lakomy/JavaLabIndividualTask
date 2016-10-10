@@ -137,4 +137,85 @@ public class ContactSearchDTO {
     public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder("{");
+        if (firstName != null) {
+            output.append("firstName='");
+            output.append(firstName);
+            output.append("', ");
+        }
+        if (lastName != null) {
+            output.append("lastName='");
+            output.append(lastName);
+            output.append("', ");
+        }
+        if (secondName != null) {
+            output.append("secondName='");
+            output.append(secondName);
+            output.append("', ");
+        }
+        if (dateOfBirthGreaterThan != null) {
+            output.append("dateOfBirth>'");
+            output.append(dateOfBirthGreaterThan);
+            output.append("', ");
+        }
+        if (dateOfBirthLessThan != null) {
+            output.append("dateOfBirth<'");
+            output.append(dateOfBirthLessThan);
+            output.append("', ");
+        }
+        if (sex != null) {
+            output.append("sex='");
+            output.append(sex);
+            output.append("', ");
+        }
+        if (nationality != null) {
+            output.append("nationality='");
+            output.append(nationality);
+            output.append("', ");
+        }if (maritalStatus != null) {
+            output.append("maritalStatus='");
+            output.append(maritalStatus);
+            output.append("', ");
+        }
+        if (country != null) {
+            output.append("country='");
+            output.append(country);
+            output.append("', ");
+        }
+        if (town != null) {
+            output.append("town='");
+            output.append(town);
+            output.append("', ");
+        }
+        if (zipCode != null) {
+            output.append("zipCode='");
+            output.append(zipCode);
+            output.append("', ");
+        }
+        if (street != null) {
+            output.append("street='");
+            output.append(street);
+            output.append("', ");
+        }
+        if (houseNumber != null) {
+            output.append("houseNumber='");
+            output.append(houseNumber);
+            output.append("', ");
+        }
+        if (flatNumber != null) {
+            output.append("flatNumber='");
+            output.append(flatNumber);
+            output.append("', ");
+        }
+        if (orderBy != null) {
+            output.append("orderBy='");
+            output.append(orderBy);
+            output.append("', ");
+        }
+        output.append('}');
+        return output.toString();
+    }
 }

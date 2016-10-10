@@ -1,7 +1,7 @@
 package com.javalab.contacts.dao.impl.jdbc;
 
 
-import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public class ConnectionManager {
         }
     }
 
-    public static Connection receiveConnection() throws ConnectionDeniedException {
+    public static Connection receiveConnection() throws ConnectionFailedException {
         Connection connection;
         logger.debug("trying to get connection from pool");
         try {
@@ -44,7 +44,7 @@ public class ConnectionManager {
                     totalConnectionsMade.incrementAndGet());
         } catch (SQLException e) {
             logger.error("{}", e);
-            throw new ConnectionDeniedException("can not receive connection to data base");
+            throw new ConnectionFailedException("can not receive connection to data base");
         }
         return connection;
     }

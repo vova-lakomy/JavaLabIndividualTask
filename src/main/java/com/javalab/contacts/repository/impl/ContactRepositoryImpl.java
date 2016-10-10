@@ -4,6 +4,7 @@ package com.javalab.contacts.repository.impl;
 import com.javalab.contacts.dao.ContactAttachmentDao;
 import com.javalab.contacts.dao.ContactDao;
 import com.javalab.contacts.dao.PhoneNumberDao;
+import com.javalab.contacts.dao.impl.jdbc.ConnectionManager;
 import com.javalab.contacts.dao.impl.jdbc.JdbcContactAttachmentDao;
 import com.javalab.contacts.dao.impl.jdbc.JdbcContactDao;
 import com.javalab.contacts.dao.impl.jdbc.JdbcPhoneNumberDao;
@@ -12,9 +13,9 @@ import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactSearchDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.dto.PhoneNumberDTO;
-import com.javalab.contacts.exception.ConnectionDeniedException;
-import com.javalab.contacts.exception.ContactNotFoundException;
-import com.javalab.contacts.exception.PersistException;
+import com.javalab.contacts.exception.ConnectionFailedException;
+import com.javalab.contacts.exception.EntityNotFoundException;
+import com.javalab.contacts.exception.EntityPersistException;
 import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
 import com.javalab.contacts.model.ContactAttachment;
@@ -35,9 +36,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.closeConnection;
-import static com.javalab.contacts.dao.impl.jdbc.ConnectionManager.receiveConnection;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.remove;
 
 public class ContactRepositoryImpl implements ContactRepository {
     private static final Logger logger = LoggerFactory.getLogger(ContactRepository.class);
@@ -45,68 +45,81 @@ public class ContactRepositoryImpl implements ContactRepository {
     private PhoneNumberDao phoneDao = new JdbcPhoneNumberDao();
     private ContactAttachmentDao attachmentDao = new JdbcContactAttachmentDao();
 
-
     @Override
-    public ContactShortDTO getContactShortDTO(Integer contactId) throws ConnectionDeniedException, ContactNotFoundException {
-        logger.debug("try to get contact with id={}", contactId);
-        ContactShortDTO contactShortDTO = null;
-        Connection connection = receiveConnection();
+    public ContactShortDTO getContactShortDTO(Integer contactId) throws ConnectionFailedException, EntityNotFoundException {
+        logger.debug("try to get contact short info by id={}", contactId);
+        Contact contactShortInfo = null;
+        Connection connection = ConnectionManager.receiveConnection();
         contactDao.setConnection(connection);
         try {
             connection.setAutoCommit(false);
-            logger.debug("opened transaction");
-            Contact contactShortInfo = contactDao.get(contactId);
+            logger.debug("transaction opened");
+            contactShortInfo = contactDao.get(contactId);
             connection.commit();
-            logger.debug("opened transaction");
-            contactShortDTO = createContactShortDTO(contactShortInfo);
+            logger.debug("transaction closed");
         } catch (SQLException e) {
             logger.error("",e);
+            throw new ConnectionFailedException();
         } finally {
-            closeConnection(connection);
+            ConnectionManager.closeConnection(connection);
+        }
+        ContactShortDTO contactShortDTO = null;
+        if (contactShortInfo != null) {
+            logger.debug("converting Contact entity to DTO");
+            contactShortDTO = createContactShortDTO(contactShortInfo);
         }
         return contactShortDTO;
     }
 
     @Override
-    public ContactFullDTO getContactFullInfo(Integer id) throws ConnectionDeniedException, ContactNotFoundException {
+    public ContactFullDTO getContactFullInfo(Integer id) throws ConnectionFailedException, EntityNotFoundException {
         logger.debug("trying to get full contact info by id={}", id);
         Contact contact = null;
-        Connection connection = receiveConnection();
+        Collection<PhoneNumber> phoneNumbers = null;
+        Collection<ContactAttachment> attachments = null;
+        Connection connection = ConnectionManager.receiveConnection();
         contactDao.setConnection(connection);
         phoneDao.setConnection(connection);
         attachmentDao.setConnection(connection);
         try {
             connection.setAutoCommit(false);
-            logger.debug("opened transaction");
+            logger.debug("transaction opened");
             contact = contactDao.get(id);
-            Collection<PhoneNumber> phoneNumbers = phoneDao.getByContactId(id);
-            Collection<ContactAttachment> attachments = attachmentDao.getByContactId(id);
+            phoneNumbers = phoneDao.getByContactId(id);
+            attachments = attachmentDao.getByContactId(id);
             connection.commit();
-            logger.debug("cosed transaction");
-            contact.setAttachments(attachments);
-            contact.setPhoneNumbers(phoneNumbers);
+            logger.debug("transaction closed");
         } catch (SQLException e) {
             logger.error("", e);
+            throw new ConnectionFailedException();
         } finally {
-            closeConnection(connection);
+            ConnectionManager.closeConnection(connection);
         }
-        return createDtoFromContact(contact);
+        ContactFullDTO contactFullDTO = null;
+        if (contact != null) {
+            logger.debug("got contact instance from db, converting to DTO");
+            contact.setAttachments(attachments);
+            contact.setPhoneNumbers(phoneNumbers);
+            contactFullDTO = createDtoFromContact(contact);
+        }
+        return contactFullDTO;
     }
 
     @Override
-    public Integer saveContact(ContactFullDTO contactDTO) throws ConnectionDeniedException, PersistException {
+    public Integer saveContact(ContactFullDTO contactDTO) throws ConnectionFailedException, EntityPersistException {
         logger.debug("trying to save contact {}", contactDTO);
+        logger.debug("receiving entities from DTO");
         Contact contact = getContactFromContactDTO(contactDTO);
         Collection<PhoneNumber> phoneNumbers = getPhoneNumbersFromContactDTO(contactDTO);
         Collection<ContactAttachment> attachments = getAttachmentsFromContactDTO(contactDTO);
-        Connection connection = receiveConnection();
+        Connection connection = ConnectionManager.receiveConnection();
         contactDao.setConnection(connection);
         phoneDao.setConnection(connection);
         attachmentDao.setConnection(connection);
         Integer generatedId = null;
         try {
             connection.setAutoCommit(false);
-            logger.debug("opened transaction");
+            logger.debug("transaction opened");
             generatedId = contactDao.save(contact);
             for (PhoneNumber phoneNumber : phoneNumbers){
                 phoneDao.save(phoneNumber, generatedId);
@@ -115,7 +128,7 @@ public class ContactRepositoryImpl implements ContactRepository {
                 attachmentDao.save(attachment, generatedId);
             }
             connection.commit();
-            logger.debug("closed transaction");
+            logger.debug("transaction closed");
         } catch (SQLException e) {
             logger.error("error while saving contact", e);
             try {
@@ -123,53 +136,64 @@ public class ContactRepositoryImpl implements ContactRepository {
                 connection.rollback();
                 logger.debug("rollback done");
             } catch (SQLException e1) {
-                logger.error("error while rollback transaction \n{}", e1);
+                logger.error("error while rollback transaction \n", e1);
             }
-            throw new PersistException("error while saving contact " + contact);
+            throw new EntityPersistException("error while saving contact " + contact);
         } finally {
-            closeConnection(connection);
+            ConnectionManager.closeConnection(connection);
         }
+        logger.debug("returning generated ID = {}", generatedId);
         return generatedId;
     }
 
     @Override
-    public void delete(Integer id) throws ConnectionDeniedException {
+    public void delete(Integer id) throws ConnectionFailedException {
         logger.debug("trying to delete contact with id={}", id);
-        Connection connection = receiveConnection();
+        Connection connection = ConnectionManager.receiveConnection();
         contactDao.setConnection(connection);
         try {
             connection.setAutoCommit(false);
-            logger.debug("opened transaction");
+            logger.debug("transaction opened");
             contactDao.delete(id);
             connection.commit();
-            logger.debug("closed transaction");
+            logger.debug("transaction closed");
         } catch (SQLException e) {
             logger.error("", e);
+            try {
+                logger.error("exception while deleting contact, start rollback changes");
+                connection.rollback();
+                logger.error("rollback done");
+            } catch (SQLException e1) {
+                logger.error("", e1);
+            }
+            throw new ConnectionFailedException();
         } finally {
-            closeConnection(connection);
+            ConnectionManager.closeConnection(connection);
         }
     }
 
     @Override
-    public Collection<ContactShortDTO> getContactsList(Integer pageNumber) throws ConnectionDeniedException {
+    public Collection<ContactShortDTO> getContactsList(Integer pageNumber) throws ConnectionFailedException {
         logger.debug("trying to get contact list, page number={}", pageNumber);
         Collection<Contact> contactList = null;
-        Connection connection = receiveConnection();
+        Connection connection = ConnectionManager.receiveConnection();
         contactDao.setConnection(connection);
         try {
             connection.setAutoCommit(false);
-            logger.debug("opened transaction");
+            logger.debug("transaction opened");
             contactList = contactDao.getContactList(pageNumber);
             connection.commit();
-            logger.debug("closed transaction");
+            logger.debug("transaction closed");
         } catch (SQLException e) {
             logger.error("", e);
+            throw new ConnectionFailedException();
         }
         finally {
-            closeConnection(connection);
+            ConnectionManager.closeConnection(connection);
         }
         Collection<ContactShortDTO> contactDTOs = new ArrayList<>();
         if (contactList != null) {
+            logger.debug("received list of Contact entities, converting to DTOs");
             for (Contact contact : contactList){
                 ContactShortDTO contactShortDTO = createContactShortDTO(contact);
                 contactDTOs.add(contactShortDTO);
@@ -179,67 +203,78 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     @Override
-    public Collection<ContactShortDTO> getByDayAndMonth(Integer day, Integer month) throws ConnectionDeniedException {
+    public Collection<ContactShortDTO> getByDayAndMonth(Integer day, Integer month) throws ConnectionFailedException {
+        logger.debug("receiving Contact entities by day={} and month={} values", day, month);
         Collection<Contact> contactList = null;
-        Connection connection = receiveConnection();
+        Connection connection = ConnectionManager.receiveConnection();
         contactDao.setConnection(connection);
         try {
             connection.setAutoCommit(false);
+            logger.debug("transaction opened");
             contactList = contactDao.getByDayAndMonth(day, month);
             connection.commit();
+            logger.debug("transaction closed");
         } catch (SQLException e) {
             logger.error("", e);
+            throw new ConnectionFailedException();
         } finally {
-            closeConnection(connection);
+            ConnectionManager.closeConnection(connection);
         }
-        Collection<ContactShortDTO> contactDTOs = new ArrayList<>();
+        Collection<ContactShortDTO> contactDTOs = null;
         if (contactList != null) {
-            for (Contact contact : contactList){
-                ContactShortDTO contactShortDTO = createContactShortDTO(contact);
-                contactDTOs.add(contactShortDTO);
-            }
+            logger.debug("received list of Contact instances, converting to DTOs");
+            contactDTOs = getDTOsFromContactList(contactList);
         }
+        logger.debug("returning {}", contactDTOs);
         return contactDTOs;
     }
 
     @Override
-    public Collection<ContactShortDTO> search(ContactSearchDTO searchObject, int pageNumber) throws ConnectionDeniedException {
+    public Collection<ContactShortDTO> search(ContactSearchDTO searchObject, int pageNumber) throws ConnectionFailedException {
+        logger.debug("searching for contact entities. parameters - {}", searchObject);
         Collection<Contact> contactList = null;
-        Connection connection = receiveConnection();
+        Connection connection = ConnectionManager.receiveConnection();
         contactDao.setConnection(connection);
         try {
             connection.setAutoCommit(false);
+            logger.debug("transaction opened");
             contactList = contactDao.search(searchObject, pageNumber);
             connection.commit();
+            logger.debug("transaction closed");
         } catch (SQLException e) {
             logger.error("", e);
+            throw new ConnectionFailedException();
         } finally {
-            closeConnection(connection);
+            ConnectionManager.closeConnection(connection);
         }
-        Collection<ContactShortDTO> contactDTOs = new ArrayList<>();
+        Collection<ContactShortDTO> contactDTOs = null;
         if (contactList != null) {
-            for (Contact contact : contactList){
-                ContactShortDTO contactShortDTO = createContactShortDTO(contact);
-                contactDTOs.add(contactShortDTO);
-            }
+            logger.debug("received list of Contact entities, converting to DTOs");
+            contactDTOs = getDTOsFromContactList(contactList);
         }
+        logger.debug("returning {}", contactDTOs);
         return contactDTOs;
     }
 
     @Override
-    public String getPersonalLink(Integer id) throws ConnectionDeniedException {
+    public String getPersonalLink(Integer id) throws ConnectionFailedException {
+        logger.debug("retrieving contact attachments directory");
         String personalLink = null;
-        Connection connection = receiveConnection();
+        Connection connection = ConnectionManager.receiveConnection();
         contactDao.setConnection(connection);
         try {
             connection.setAutoCommit(false);
+            logger.debug("transaction opened");
             personalLink = contactDao.getPersonalLink(id);
             connection.commit();
+            logger.debug("transaction closed");
         } catch (SQLException e) {
             logger.error("", e);
+            throw new ConnectionFailedException();
         } finally {
-            closeConnection(connection);
+            ConnectionManager.closeConnection(connection);
         }
+        logger.debug("returning {}", personalLink);
         return personalLink;
     }
 
@@ -280,6 +315,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     private ContactShortDTO createContactShortDTO(Contact contact) {
+        logger.debug("converting contact entity to DTO, retrieving fields");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         Integer id = contact.getId();
         String secondName = contact.getSecondName();
@@ -340,6 +376,7 @@ public class ContactRepositoryImpl implements ContactRepository {
         }
         String eMail = contact.geteMail();
         ContactShortDTO contactShortDTO = new ContactShortDTO();
+        logger.debug("setting fields values to ContactDTO");
         contactShortDTO.setId(id);
         contactShortDTO.setFullName(fullName);
         contactShortDTO.setDateOfBirth(dateOfBirthString);
@@ -350,6 +387,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     private Contact getContactFromContactDTO(ContactFullDTO contactDTO) {
+        logger.debug("converting DTO to contact entity... retrieving fields");
         Integer id = contactDTO.getId();
         String firstName = contactDTO.getFirstName();
         String secondName = contactDTO.getSecondName();
@@ -382,6 +420,7 @@ public class ContactRepositoryImpl implements ContactRepository {
         String personalLink = contactDTO.getPersonalLink();
 
         Contact contact = new Contact();
+        logger.debug("setting fields values to Contact instance");
         contact.setId(id);
         contact.setFirstName(firstName);
         contact.setSecondName(secondName);
@@ -401,6 +440,7 @@ public class ContactRepositoryImpl implements ContactRepository {
 
 
     private Collection<PhoneNumber> getPhoneNumbersFromContactDTO(ContactFullDTO contact) {
+        logger.debug("creating PhoneNumber entities list from DTO fields");
         Collection<PhoneNumber> phoneNumbers = new ArrayList<>();
         contact.getPhoneNumbers().forEach(phoneNumber -> {
                     Integer id = phoneNumber.getId();
@@ -423,6 +463,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     private Collection<ContactAttachment> getAttachmentsFromContactDTO(ContactFullDTO contact) {
+        logger.debug("creating ContactAttachment entities list from DTO fields");
         Collection<ContactAttachment> attachments = new ArrayList<>();
         contact.getAttachments().forEach(attachment -> {
                     Integer id = attachment.getId();
@@ -446,6 +487,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     private ContactAddress getAddressFromContactDTO(ContactFullDTO contact) {
+        logger.debug("creating ContactAddress entity from DTO fields");
         Integer id = contact.getId();
         String country = contact.getCountry();
         String town = contact.getTown();
@@ -468,6 +510,7 @@ public class ContactRepositoryImpl implements ContactRepository {
         if (phoneNumbers == null) {
             return null;
         } else {
+            logger.debug("creating PhoneNumberDTOs list from  PhoneNumber entities list");
             Collection<PhoneNumberDTO> phoneNumberDTOs = new ArrayList<>();
             phoneNumbers.forEach(phone -> {
                 Integer id = phone.getId();
@@ -498,6 +541,7 @@ public class ContactRepositoryImpl implements ContactRepository {
     }
 
     private ContactFullDTO createDtoFromContact(Contact contact) {
+        logger.debug("converting contact entity to DTO... getting fields");
         ContactAddress address = contact.getContactAddress();
         LocalDate dateOfBirth = contact.getDateOfBirth();
         String firstName = contact.getFirstName();
@@ -536,6 +580,7 @@ public class ContactRepositoryImpl implements ContactRepository {
         Collection<AttachmentDTO> attachments = convertAttachmentsToDTO(contact.getAttachments());
 
         ContactFullDTO contactDTO = new ContactFullDTO();
+        logger.debug("setting fields to contactDTO");
         contactDTO.setId(contact.getId());
         contactDTO.setFirstName(firstName);
         contactDTO.setSecondName(secondName);
@@ -558,10 +603,12 @@ public class ContactRepositoryImpl implements ContactRepository {
         contactDTO.setPhotoLink(photoLink);
         contactDTO.setPhoneNumbers(phoneNumbers);
         contactDTO.setAttachments(attachments);
+        logger.debug("contact DTO ready");
         return contactDTO;
     }
 
     private Collection<AttachmentDTO> convertAttachmentsToDTO(Collection<ContactAttachment> attachments) {
+        logger.debug("converting attachment entities to DTOs");
         Collection<AttachmentDTO> attachmentDTOs = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         attachments.forEach(attachment -> {
@@ -588,5 +635,15 @@ public class ContactRepositoryImpl implements ContactRepository {
             attachmentDTOs.add(attachmentDTO);
         });
         return attachmentDTOs;
+    }
+
+    private Collection<ContactShortDTO> getDTOsFromContactList(Collection<Contact> contactList) {
+        logger.debug("converting contact entity list to contact DTO list");
+        Collection<ContactShortDTO> contactDTOs = new ArrayList<>();
+        for (Contact contact : contactList){
+            ContactShortDTO contactShortDTO = createContactShortDTO(contact);
+            contactDTOs.add(contactShortDTO);
+        }
+        return contactDTOs;
     }
 }

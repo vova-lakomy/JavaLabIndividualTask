@@ -1,6 +1,6 @@
 package com.javalab.contacts.service.command;
 
-import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.util.CustomFileUtils;
 import com.javalab.contacts.util.PropertiesProvider;
 import com.javalab.contacts.util.UiMessageService;
@@ -36,7 +36,7 @@ public class UploadPhotoCommand implements Command {
         String personalLink = null;
         try {
             personalLink = CustomFileUtils.definePersonalDirectory(request);
-        } catch (ConnectionDeniedException e) {
+        } catch (ConnectionFailedException e) {
             UiMessageService.sendConnectionErrorMessageToUI(request, response);
         }
         String imagesFolder = properties.getProperty("contact.photo.folder.name");
@@ -48,34 +48,35 @@ public class UploadPhotoCommand implements Command {
                 + File.separator
                 + personalImagePath;
         logger.debug("defined image upload path as {}", uploadImagePath);
-        File fileSaveDir = new File(uploadImagePath);
-        try{
-            logger.debug("trying to create directories");
-            if (!fileSaveDir.exists()){
-                FileUtils.forceMkdir(fileSaveDir);
-            }else {
-                FileUtils.cleanDirectory(fileSaveDir);
-            }
-        } catch (IOException e) {
-            logger.error("failed to access directory {} {} ", uploadImagePath, e);
-            UiMessageService.sendDirectoryAccessErrorToUI(request, response, uploadImagePath);
-        }
-
         logger.debug("looking for attached photo in request {}", request);
         try {
             Part part = request.getPart("attachedPhoto");
-            logger.debug("found attached photo {}", part.getSubmittedFileName());
-            String fileName = CustomFileUtils.defineFileName(part,fileSaveDir);
-            logger.debug("writing file to disk");
-            part.write(uploadImagePath + File.separator + fileName);
-            logger.debug("{} uploaded ", part.getSubmittedFileName());
-            String photoLink = relativeUploadPath + personalImagePath + File.separator + fileName;
-            request.setAttribute("photoLink", photoLink);
+            if (part.getSize() > 0){
+                File fileSaveDir = new File(uploadImagePath);
+                try{
+                    logger.debug("trying to create directories");
+                    if (!fileSaveDir.exists()){
+                        FileUtils.forceMkdir(fileSaveDir);
+                    }else {
+                        FileUtils.cleanDirectory(fileSaveDir);
+                    }
+                } catch (IOException e) {
+                    logger.error("failed to access directory {} {} ", uploadImagePath, e);
+                    UiMessageService.sendDirectoryAccessErrorToUI(request, response, uploadImagePath);
+                }
+                logger.debug("found attached photo {}", part.getSubmittedFileName());
+                String fileName = CustomFileUtils.defineFileName(part,fileSaveDir);
+                logger.debug("writing file to disk");
+                part.write(uploadImagePath + File.separator + fileName);
+                logger.debug("{} uploaded ", part.getSubmittedFileName());
+                String photoLink = relativeUploadPath + personalImagePath + File.separator + fileName;
+                request.setAttribute("photoLink", photoLink);
+            }
         } catch (IOException | ServletException e) {
             logger.error("failed to save image to disk {} {} ", uploadImagePath, e);
             UiMessageService.sendPhotoProcessErrorToUI(request, response);
         }
-        logger.debug("execution Upload Photo command end");
+        logger.debug("execution Upload Photo command finished");
         return "";
     }
 }

@@ -2,7 +2,7 @@ package com.javalab.contacts.service.command;
 
 
 import com.javalab.contacts.dto.ContactShortDTO;
-import com.javalab.contacts.exception.ConnectionDeniedException;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.LabelsManager;
@@ -42,7 +42,7 @@ public class ListCommand implements Command{
                 contactList = contactRepository.getContactsList(pageNumber-1);
             }
 
-        } catch (ConnectionDeniedException e) {
+        } catch (ConnectionFailedException e) {
             UiMessageService.sendConnectionErrorMessageToUI(request, response);
         }
         request.setAttribute("numberOfPages",numberOfPages);
