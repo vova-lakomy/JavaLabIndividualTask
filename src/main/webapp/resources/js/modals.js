@@ -1,1 +1,3 @@
-//TODO move modals here
+(function () {
+
+})();

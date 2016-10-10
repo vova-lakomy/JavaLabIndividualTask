@@ -14,42 +14,55 @@
             <div class="jlab-button-block jlab-pull-right">
                 <c:choose>
                     <c:when test="${(currentPage - 1) <= 0}">
-                        <button class="jlab-button" disabled> <<</button>
+                        <button class="jlab-button"
+                                disabled> <<</button>
                     </c:when>
                     <c:otherwise>
-                        <a class="jlab-button" href="${hrefString}${currentPage - 1}"> << </a>
+                        <a class="jlab-button"
+                           href="${hrefString}${currentPage - 1}"> << </a>
                     </c:otherwise>
                 </c:choose>
                 <c:choose>
                     <c:when test="${numberOfPages == 0}">
-                        <button id="jlab-page-selector" class="jlab-button" disabled>...</button>
-                        <input id="page-selector-input" class="jlab-button jlab-page-select jlab-hidden" type="text"
+                        <button id="jlab-page-selector"
+                                class="jlab-button"
+                                disabled>...</button>
+                        <input id="page-selector-input"
+                               class="jlab-button jlab-page-select jlab-hidden"
+                               type="text"
                                placeholder="${labels.get('page')}">
-                        <a id="page-selector-go-button" class="jlab-button jlab-page-select-go jlab-hidden" type="button"
+                        <a id="page-selector-go-button"
+                           class="jlab-button jlab-page-select-go jlab-hidden"
+                           type="button"
                            href="${hrefString}${currentPage}">OK</a>
                     </c:when>
                     <c:otherwise>
-                        <span id="jlab-page-selector" class="jlab-button">
-                            ${labels.get('page')} ${currentPage} ${labels.get('page.of')} ${numberOfPages}
+                        <span id="jlab-page-selector"
+                              class="jlab-button">
+                              ${labels.get('page')} ${currentPage} ${labels.get('page.of')} ${numberOfPages}
                         </span>
-                        <input id="page-selector-input" class="jlab-button jlab-page-select jlab-hidden" type="text"
+                        <input id="page-selector-input"
+                               class="jlab-button jlab-page-select jlab-hidden"
+                               type="text"
                                placeholder="${labels.get('page')}">
-                        <a id="page-selector-go-button" class="jlab-button jlab-page-select-go jlab-hidden" type="button"
+                        <a id="page-selector-go-button"
+                           class="jlab-button jlab-page-select-go jlab-hidden"
+                           type="button"
                            href="${hrefString}${currentPage}">OK</a>
                     </c:otherwise>
                 </c:choose>
 
                 <c:choose>
                     <c:when test="${(currentPage + 1) > numberOfPages}">
-                        <button class="jlab-button" disabled> >></button>
+                        <button class="jlab-button"
+                                disabled> >></button>
                     </c:when>
                     <c:otherwise>
-                        <a class="jlab-button" href="${hrefString}${currentPage + 1}"> >> </a>
+                        <a class="jlab-button"
+                           href="${hrefString}${currentPage + 1}"> >> </a>
                     </c:otherwise>
                 </c:choose>
             </div>
         </div>
     </div>
-
-
 </div>

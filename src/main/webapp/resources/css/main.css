@@ -428,13 +428,29 @@ select{
 }
 
 .jlab-textarea-read-only{
+    padding: 0;
+    line-height: 15px;
     border: none;
     background: inherit;
     resize: none;
     outline: none;
-    height: 60px;
-    width: 100%;
+    height: 22px;
+    width: 94%;
+    transition: 600ms;
     font: inherit;
+    overflow: hidden;
+}
+
+.jlab-expand-textarea-span{
+    display: inline-block;
+    width: 5%;
+    cursor: pointer;
+    text-align: right;
+    vertical-align: bottom;
+    height: 26px;
+    color: blue;
+    letter-spacing: 2px;
+    font-weight: 900;
 }
 
 .jlab-email-form{

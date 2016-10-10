@@ -58,7 +58,6 @@ public class DeleteAttachmentCommand implements Command {
                         }
                         repository.delete(id);
                     }
-                    // TODO: 10.10.16 do something if null
                 } catch (ConnectionFailedException e) {
                     UiMessageService.sendConnectionErrorMessageToUI(request, response);
                 }

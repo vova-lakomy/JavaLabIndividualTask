@@ -464,16 +464,6 @@
             reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(imageNode);
             reader.readAsDataURL(image);
         }
-
-
-    }
-
-    function disableButton(selector) {
-        $(selector).setAttribute('disabled','disabled');
-    }
-
-    function enableButton(selector) {
-        $(selector).removeAttribute('disabled');
     }
 
     function handleChosenFile() {
@@ -535,11 +525,43 @@
         }
     }
 
-    function expandTextarea(element) {
-        element.style.height = element.scrollHeight + "px";
+    function disableButton(selector) {
+        $(selector).setAttribute('disabled','disabled');
     }
 
-// listeners
+    function enableButton(selector) {
+        $(selector).removeAttribute('disabled');
+    }
+
+    function expandTextarea(element, target) {
+        if (element.type === 'textarea'){
+            target.innerHTML = '↑';
+            element.setAttribute('data-expanded', 'true');
+            element.style.transition = '600ms';
+            element.style.height = element.scrollHeight + "px";
+        }
+    }
+
+    function collapseTextarea(element, target) {
+        if (element.type === 'textarea'){
+            target.innerHTML = '...';
+            element.setAttribute('data-expanded', 'false');
+            element.style.removeProperty('height');
+            element.style.removeProperty('transition');
+        }
+    }
+
+    function toggleTextareaExpand(e) {
+        var element = e.target.parentNode.children[0];
+
+        if (element.getAttribute('data-expanded') === 'true'){
+            collapseTextarea(element, e.target)
+        } else {
+            expandTextarea(element, e.target);
+        }
+    }
+
+//adding listeners
     addEvents( [
         {
             selector : '#button-upload-photo',
@@ -663,6 +685,11 @@
             handler : openAttachmentsUploadModal,
         },
         {
+            selector : '#hrefModalPhoneAdd',
+            event : 'click',
+            handler : toggleAddPhoneNumberModal,
+        },
+        {
             selector : '#contact-edit-form',
             event : 'keyup input',
             handler : formValidation,
@@ -678,6 +705,10 @@
             handler : formValidation,
         },
     ]);
+    var textareas = $all('[class="jlab-expand-textarea-span"');
+    for (var i=0; i<textareas.length; i++){
+        textareas[i].addEventListener('click', toggleTextareaExpand, false);
+    }
 
 //counters
     var phoneNumberCounter = (isElementExist('#phone-number-rows')) ? $('#phone-number-rows').childElementCount : 0;

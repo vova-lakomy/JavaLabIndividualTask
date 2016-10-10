@@ -23,7 +23,7 @@ CREATE TABLE contacts_vladimir_lakomy.contact
   house_number        INT,
   flat_number         INT,
   zip_code            INT,
-  personal_link       VARCHAR(30)
+  personal_link       VARCHAR(40)
 
 );
 

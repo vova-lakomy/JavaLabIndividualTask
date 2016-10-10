@@ -4,8 +4,13 @@
 <jsp:include page="page-components/error-message-container.jsp"/>
 
 <div class="jlab-main-content-container">
-    <form id="contact-list-form" class="jlab-main-content jlab-main-list" method="post" data-form-name="contactForm">
+    <form id="contact-list-form"
+          class="jlab-main-content jlab-main-list"
+          method="post"
+          data-form-name="contactForm">
+
         <jsp:include page="page-components/contacts-list-form/top-navigation-bar.jsp"/>
+
         <ul>
             <li>
                 <jsp:include page="page-components/contacts-list-form/contact-table-caption.jsp"/>
@@ -18,6 +23,7 @@
                     <c:set var="contactItems" value="${contactsList}"/>
                 </c:otherwise>
             </c:choose>
+
             <c:choose>
                 <c:when test="${contactItems.size() > 0}">
                     <c:forEach items="${contactItems}" var="contactItem">
@@ -36,9 +42,12 @@
                 <jsp:include page="page-components/contacts-list-form/bottom-navigation-bar.jsp"/>
             </li>
         </ul>
-        <input class="jlab-hidden" value="${currentPage}" name="currentPage">
+        <input class="jlab-hidden"
+               value="${currentPage}"
+               name="currentPage">
     </form>
 </div>
-<script type="text/javascript" src="${rootContext}resources/js/paginator.js"></script>
-<script type="text/javascript" src="${rootContext}resources/js/contact-list-form.js"></script>
-
+<script type="text/javascript"
+        src="${rootContext}resources/js/paginator.js"></script>
+<script type="text/javascript"
+        src="${rootContext}resources/js/contact-list-form.js"></script>

@@ -1,22 +1,36 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<script type="application/javascript" src="${rootContext}resources/js/validator.js"></script>
-<c:set var="fullContact" value="${fullContactInfo}" scope="request"/>
+
+<script type="application/javascript"
+        src="${rootContext}resources/js/validator.js"></script>
+<c:set var="fullContact"
+       value="${fullContactInfo}"
+       scope="request"/>
+
 <jsp:include page="page-components/message-container.jsp"/>
+
 <jsp:include page="page-components/error-message-container.jsp"/>
 
 <div class="jlab-main-content-container">
     <div class="jlab-main-content">
         <div class="jlab-form-container">
 
-            <form id="contact-edit-form" action="save" accept-charset="UTF-8" method="post"
-                                                       enctype="multipart/form-data" data-form-name="contact-edit-form">
+            <form id="contact-edit-form"
+                  action="save"
+                  accept-charset="UTF-8"
+                  method="post"
+                  enctype="multipart/form-data"
+                  data-form-name="contact-edit-form">
                 <div class="jlab-row">
                     <div class="jlab-cell-3">
+
                         <jsp:include page="page-components/contact-edit-form/contact-photo-part.jsp"/>
+
                     </div>
                     <div class="jlab-cell-9">
+
                         <jsp:include page="page-components/contact-edit-form/main-info-part.jsp"/>
+
                     </div>
                 </div>
 
@@ -29,14 +43,15 @@
                 <div class="jlab-row jlab-vertical-padding-10">
                     <div class="jlab-cell-12 ">
                         <div class="jlab-button-block jlab-vertical-padding-10 jlab-pull-right">
-                            <a class="jlab-button" href="list">${labels.get('cancel')}</a>
-                            <button type="submit" class="jlab-button">${labels.get('submit')}</button>
+                            <a class="jlab-button"
+                               href="list">${labels.get('cancel')}</a>
+                            <button type="submit"
+                                    class="jlab-button">${labels.get('submit')}</button>
                         </div>
                     </div>
                 </div>
 
             </form>
-
         </div>
     </div>
 </div>
@@ -45,7 +60,9 @@
 <jsp:include page="page-components/contact-edit-form/modal-phone-add.jsp"/>
 <jsp:include page="page-components/contact-edit-form/modal-attachment-edit.jsp"/>
 <jsp:include page="page-components/contact-edit-form/modal-attachment-upload.jsp"/>
-<script type="text/javascript" src="${rootContext}resources/js/contact-edit-form.js"></script>
+
+<script type="text/javascript"
+        src="${rootContext}resources/js/contact-edit-form.js"></script>
 
 
 

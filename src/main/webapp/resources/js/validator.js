@@ -32,7 +32,7 @@
             return new RegExp('^$|^[\/\\w\.-:&=]{1,100}$').test(node.value);
         },
         zip : function (node) {
-            return new RegExp('^$|^[0-9]{5,6}$').test(node.value);
+            return new RegExp('^$|^[0-9-]{5,10}$').test(node.value);
         },
         countryCode : function (node) {
             return new RegExp('^[0-9]{1,3}$').test(node.value);

@@ -1,7 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% request.getSession().setAttribute("showErrorMessage","false");%>
 <% request.getSession().setAttribute("showMessage","false");%>
+
 <jsp:include page="WEB-INF/page-components/header.jsp"/>
+
     <div class="jlab-error-page">
         <c:choose>
             <c:when test="${(message eq '') || (message eq null)}">
@@ -17,4 +19,5 @@
         </c:choose>
         <i>back to <a href="../index.jsp" target="_self">main page</a></i>
     </div>
+
 <jsp:include page="WEB-INF/page-components/footer.jsp"/>

@@ -4,6 +4,7 @@
 <c:set var="message" value="${requestScope.get('javax.servlet.error.message')}"/>
 <% request.getSession().setAttribute("showErrorMessage","false");%>
 <% request.getSession().setAttribute("showMessage","false");%>
+
 <div class="jlab-page-not-found">
     <h3>${labels.get('error')} 404</h3>
     <c:choose>
@@ -15,6 +16,10 @@
         </c:otherwise>
     </c:choose>
 
-    <i>${labels.get('back.to')} <a href="${rootContext}index.jsp" target="_self">${labels.get('to.main.page')}</a></i>
+    <i>${labels.get('back.to')}
+        <a href="${rootContext}index.jsp"
+           target="_self">${labels.get('to.main.page')}</a>
+    </i>
 </div>
+
 <jsp:include page="WEB-INF/page-components/footer.jsp"/>

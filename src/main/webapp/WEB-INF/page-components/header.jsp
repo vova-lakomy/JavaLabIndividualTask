@@ -1,8 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="rootContext" value="${pageContext.request.contextPath}/" scope="session"/>
-<c:set var="labels" value="${labels}" scope="session"/>
-<c:set var="locale" value="${localeKey}"/>
+
+<c:set var="rootContext"
+       value="${pageContext.request.contextPath}/"
+       scope="session"/>
+<c:set var="labels"
+       value="${labels}"
+       scope="session"/>
+<c:set var="locale"
+       value="${localeKey}"/>
 <c:set var="currentURL"
        value="${requestScope['javax.servlet.forward.request_uri']}?${requestScope['javax.servlet.forward.query_string']}"
        scope="session"/>
@@ -34,15 +40,19 @@
                    <c:set var="enClass" value="jlab-selected-locale"/>
                </c:otherwise>
            </c:choose>
-        <a id="localeSelectEn" class="${enClass}" href="${rootContext}contacts/setLocale?localeKey=en">EN</a>
+        <a id="localeSelectEn"
+           class="${enClass}"
+           href="${rootContext}contacts/setLocale?localeKey=en">EN</a>
         <span>|</span>
-        <a id="localeSelectRu" class="${ruClass}" href="${rootContext}contacts/setLocale?localeKey=ru">RU</a>
+        <a id="localeSelectRu"
+           class="${ruClass}"
+           href="${rootContext}contacts/setLocale?localeKey=ru">RU</a>
     </span>
 
-    <a class="jlab-home-page-link" href="${rootContext}index.jsp">${labels.get('go.home')}</a>
+    <a class="jlab-home-page-link"
+       href="${rootContext}index.jsp">${labels.get('go.home')}</a>
 
 </header>
-<div class="jlab-margin-top-70">
-</div>
+<div class="jlab-margin-top-70"></div>
 
 
