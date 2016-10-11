@@ -26,11 +26,11 @@ public final class MailSender {
     public void sendMail(Session mailSession, Address address, String mailSubject, String messageText, Boolean useHTML) {
 
         try {
-            Message message = new MimeMessage(mailSession);
+            MimeMessage message = new MimeMessage(mailSession);
             message.setFrom(new InternetAddress(mailProps.getProperty("mail.from")));
             message.setReplyTo(InternetAddress.parse(mailProps.getProperty("mail.from")));
             message.setRecipient(Message.RecipientType.TO, address);
-            message.setSubject(mailSubject);
+            message.setSubject(mailSubject, "utf-8");
             if (useHTML){
                 message.setContent(messageText, "text/html; charset=utf-8");
             } else {
