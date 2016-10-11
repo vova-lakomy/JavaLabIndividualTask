@@ -32,7 +32,7 @@ public class UploadAttachmentCommand implements Command {
             logger.warn("USING TOMCAT CONTEXT DIRECTORY TO STORE UPLOADS. CHECK file-upload.properties");
             attachmentUploadPath = request.getServletContext().getRealPath("");
         }
-        String relativeUploadPath = properties.getProperty("upload.relative.dir");
+        String relativeUploadPath = "uploads" + File.separator;
         String personalDirectory = null;
         try {
             personalDirectory = CustomFileUtils.definePersonalDirectory(request);

@@ -10,11 +10,13 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class STemplates {
 
     private static final Logger logger = LoggerFactory.getLogger(STemplates.class);
     private STGroup templates;
+    private AtomicInteger templateCounter = new AtomicInteger(1);
     private static STemplates instance = new STemplates();
     public static STemplates getInstance(){
         return instance;
@@ -42,5 +44,9 @@ public final class STemplates {
 
     public STGroup getTemplatesGroup() {
         return templates;
+    }
+
+    public int getAndIncrementTemplateCounter() {
+        return templateCounter.incrementAndGet();
     }
 }

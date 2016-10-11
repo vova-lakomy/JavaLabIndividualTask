@@ -2,11 +2,10 @@
     border: 1px solid white;
     border-radius: 3px;
     padding: 11px 30px;
-    /*background-color: rgb(245, 245, 245);*/
     background-color: #FFB54F;
     color: white;
     font-size: 12px;
-    font-weight: 900;
+    font-weight: 700;
     transition: background-color, color, 500ms;
     cursor: pointer;
     text-decoration: none;
@@ -25,6 +24,7 @@
 
 .jlab-button:hover:not(:disabled){
     transition: background-color, color, 250ms;
+    background-color: #ffb55f;
     /*box-shadow: 0px 0px 19px white;*/
     text-shadow: 0 0 9px;
 }
@@ -53,7 +53,7 @@
     color: white;
     text-transform: uppercase;
     font-size: 22px;
-    font-weight: 900;
+    font-weight: 700;
     margin-top: 60px;
     transition: background-color, color, 250ms;
 }

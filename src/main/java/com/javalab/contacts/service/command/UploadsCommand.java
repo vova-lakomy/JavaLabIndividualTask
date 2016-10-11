@@ -35,8 +35,8 @@ public class UploadsCommand implements Command {
                 logger.warn("USING TOMCAT CONTEXT DIRECTORY TO STORE UPLOADS. CHECK file-upload.properties");
                 applicationPath = request.getServletContext().getRealPath("");
             }
-            String uploadsRealPath = applicationPath;
-            String uploadsRelativePath = properties.getProperty("upload.relative.dir");
+            String uploadsRealPath = applicationPath + File.separator;
+            String uploadsRelativePath = "uploads" + File.separator;
             logger.debug("defining requested file");
             File fileToRead = new File(uploadsRealPath + uploadsRelativePath + filePath);
             logger.debug("defined file to read [{}]", fileToRead);

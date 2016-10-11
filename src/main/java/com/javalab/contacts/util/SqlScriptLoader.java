@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,14 +22,14 @@ public final class SqlScriptLoader {
     public static void loadScript(String path) {
         logger.debug("Try loading script at path: {}", path);
         String[] sqlLines = new String[0];
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(new File(path)))) {
+        try (BufferedReader bufferedReader =new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"))) {
             String line;
             StringBuilder fileBody = new StringBuilder();
             logger.debug("Start reading file: {}",  path);
             while ((line = bufferedReader.readLine()) != null) {
                 fileBody.append(line);
             }
-            sqlLines = fileBody.toString().split(";");  // one line for every query
+            sqlLines = fileBody.toString().split(";");
         } catch (Exception e) {
             logger.error("{}", e.getMessage());
         }
@@ -63,5 +63,4 @@ public final class SqlScriptLoader {
             }
         }
     }
-
 }

@@ -35,7 +35,7 @@ public class DeleteContactCommand implements Command {
             logger.warn("USING TOMCAT CONTEXT DIRECTORY TO STORE UPLOADS. CHECK file-upload.properties");
             applicationPath = request.getServletContext().getRealPath("");
         }
-        String relativeUploadPath = properties.getProperty("upload.relative.dir");
+        String relativeUploadPath = "uploads" + File.separator;
         String uploadsFullPath = applicationPath + File.separator + relativeUploadPath + File.separator;
         logger.debug("defining IDs of contacts to delete");
         String[] selectedIds = request.getParameterValues("selectedId");

@@ -177,7 +177,7 @@ public class MailCommand implements Command {
 
     private ST createStringTemplate(String message) {
         logger.debug("creating custom StringTemplate");
-        String templateName = "customTemplate";
+        String templateName = "customTemplate-" + stringTemplates.getAndIncrementTemplateCounter();
         STGroup stGroup = stringTemplates.getTemplatesGroup();
         List<String> templateParams = defineTemplateParams(message);
         StringBuilder oneStringParams = new StringBuilder();

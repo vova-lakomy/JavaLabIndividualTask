@@ -20,12 +20,12 @@ CREATE TABLE contacts_vladimir_lakomy.contact
   country             VARCHAR(30),
   town                VARCHAR(30),
   street              VARCHAR(30),
-  house_number        INT,
-  flat_number         INT,
-  zip_code            INT,
+  house_number        INT(11),
+  flat_number         INT(11),
+  zip_code            INT(11),
   personal_link       VARCHAR(40)
 
-);
+) ENGINE = InnoDB;
 
 CREATE TABLE contacts_vladimir_lakomy.contact_attachment
 (
@@ -34,28 +34,22 @@ CREATE TABLE contacts_vladimir_lakomy.contact_attachment
   attachment_link     VARCHAR(250),
   attachment_comment  VARCHAR(1000),
   date_of_upload      DATE,
-  contact_id          INT,
+  contact_id          INT(11),
   FOREIGN KEY (contact_id)
     REFERENCES contacts_vladimir_lakomy.contact(id)
     ON DELETE CASCADE
-);
+) ENGINE = InnoDB;
 
 CREATE TABLE contacts_vladimir_lakomy.phone_number
 (
   id                  INT PRIMARY KEY  NOT NULL AUTO_INCREMENT,
-  country_code        INT,
-  operator_code       INT,
-  phone_number        INT,
+  country_code        INT(11),
+  operator_code       INT(11),
+  phone_number        INT(11),
   phone_type          VARCHAR(10),
   phone_comment       VARCHAR(1000),
   contact_id          INT,
   FOREIGN KEY (contact_id)
     REFERENCES contacts_vladimir_lakomy.contact(id)
     ON DELETE CASCADE
-);
-
-
-
-
-
-
+) ENGINE = InnoDB;

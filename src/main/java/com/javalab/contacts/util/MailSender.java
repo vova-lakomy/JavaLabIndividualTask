@@ -32,9 +32,9 @@ public final class MailSender {
             message.setRecipient(Message.RecipientType.TO, address);
             message.setSubject(mailSubject);
             if (useHTML){
-                message.setContent(messageText,"text/html;charset=utf-8");
+                message.setContent(messageText, "text/html; charset=utf-8");
             } else {
-                message.setText(messageText);
+                message.setContent(messageText, "text/plain; charset=utf-8");
             }
             Transport.send(message);
             logger.info("sending e-mail to {} done" ,address);

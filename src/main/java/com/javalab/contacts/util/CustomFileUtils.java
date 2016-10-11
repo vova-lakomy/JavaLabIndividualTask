@@ -107,7 +107,7 @@ public final class CustomFileUtils {
     }
 
     public static String getFileRandomDir(){
-        String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm:ss"));
+        String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"));
         return timeStamp + generateRandomString(5);
     }
 

@@ -31,7 +31,7 @@ public class UploadPhotoCommand implements Command {
             logger.warn("USING TOMCAT CONTEXT DIRECTORY TO STORE UPLOADS. CHECK file-upload.properties");
             applicationPath = request.getServletContext().getRealPath("");
         }
-        String relativeUploadPath = properties.getProperty("upload.relative.dir");
+        String relativeUploadPath = "uploads" + File.separator;
         logger.debug("defining image upload path");
         String personalLink = null;
         try {
