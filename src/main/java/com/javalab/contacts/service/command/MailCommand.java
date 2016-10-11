@@ -5,6 +5,7 @@ import com.javalab.contacts.dto.ContactFullDTO;
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.exception.EntityNotFoundException;
+import com.javalab.contacts.exception.SendingMailException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import com.javalab.contacts.util.CustomReflectionUtil;
@@ -23,6 +24,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -94,6 +96,8 @@ public class MailCommand implements Command {
                 UiMessageService.sendConnectionErrorMessageToUI(request, response);
             } catch (EntityNotFoundException e) {
                 UiMessageService.sendContactNotFoundErrorToUI(request, response);
+            } catch (SendingMailException e) {
+                UiMessageService.sendServerErrorToUI(e,response);
             }
             UiMessageService.prepareEmailsSentPopUpInfoMessage(request);
             logger.debug("execution of Mail command finished");
@@ -104,7 +108,7 @@ public class MailCommand implements Command {
         }
     }
 
-    private void sendMails(HttpServletRequest request) throws ConnectionFailedException, EntityNotFoundException {
+    private void sendMails(HttpServletRequest request) throws ConnectionFailedException, EntityNotFoundException, SendingMailException {
         logger.debug("defining mail parameters");
         String mailSubject = request.getParameter("mailSubject");
         if (isBlank(mailSubject)) {

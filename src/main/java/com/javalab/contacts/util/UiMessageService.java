@@ -129,6 +129,14 @@ public final class UiMessageService {
         }
     }
 
+    public static void sendServerErrorToUI(Throwable e, HttpServletResponse response){
+        try {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+        } catch (IOException e1) {
+            logger.error("",e1);
+        }
+    }
+
     public static void prepareDeleteFailedPopUpErrorMessage(HttpServletRequest request){
         String localeKey = (String) request.getSession().getAttribute("localeKey");
         String errorMessage = createContactNotFoundErrorMessage(localeKey);

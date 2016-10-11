@@ -98,19 +98,3 @@ INSERT INTO contacts_vladimir_lakomy.phone_number (id,country_code,operator_code
            (14, 120, 98, 3154687, 'MOBILE', 'bla bal bla bla', 10);
 
 
-# INSERT INTO contacts_vladimir_lakomy.contact_attachment (id,attachment_link,attachment_comment,date_of_upload,contact_id)
-#     VALUES (1,'./uploads/file1.txt','text file1', '2016-09-15',1),
-#            (2,'./uploads/file2.txt','text file2', '2016-09-16',1),
-#            (3,'./uploads/file3.txt','text file3', '2016-09-15',1),
-#            (4,'./uploads/file4.txt','text file4', '2016-09-12',2),
-#            (5,'./uploads/file5.txt','text file5', '2016-09-12',3),
-#            (6,'./uploads/file6.txt','text file6', '2016-09-14',4),
-#            (7,'./uploads/file7.txt','text file7', '2016-09-14',2),
-#            (8,'./uploads/file8.txt','text file8', '2016-09-13',2),
-#            (9,'./uploads/file9.txt','text file9', '2016-09-13',4),
-#            (10,'./uploads/file10.txt','text file10', '2016-09-12',3),
-#            (11,'./uploads/file11.txt','text file11', '2016-09-12',5),
-#            (12,'./uploads/file12.txt','text file12', '2016-09-11',5),
-#            (13,'./uploads/file13.txt','text file13', '2016-09-13',7),
-#            (14,'./uploads/file14.txt','text file14', '2016-09-15',7);
-

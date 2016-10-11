@@ -1,6 +1,7 @@
 package com.javalab.contacts.util;
 
 
+import com.javalab.contacts.exception.SendingMailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,7 @@ public final class MailSender {
 
     private Properties mailProps = PropertiesProvider.getInstance().getMailProperties();
 
-    public void sendMail(Session mailSession, Address address, String mailSubject, String messageText, Boolean useHTML) {
+    public void sendMail(Session mailSession, Address address, String mailSubject, String messageText, Boolean useHTML) throws SendingMailException {
 
         try {
             MimeMessage message = new MimeMessage(mailSession);
@@ -40,6 +41,7 @@ public final class MailSender {
             logger.info("sending e-mail to {} done" ,address);
         } catch (MessagingException e) {
             logger.error("there was an exception while sending mail {}",e);
+            throw new SendingMailException(e.getMessage());
         }
 
     }
@@ -67,7 +69,7 @@ public final class MailSender {
         return serverProperties;
     }
 
-    public void sendMailToAdministrator(String mailSubject, String messageText){
+    public void sendMailToAdministrator(String mailSubject, String messageText) throws SendingMailException {
         String administratorAddressString = mailProps.getProperty("administrator.mail");
         try {
             Address administratorAddress = new InternetAddress(administratorAddressString);

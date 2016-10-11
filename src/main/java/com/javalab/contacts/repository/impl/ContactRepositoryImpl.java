@@ -37,7 +37,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.remove;
 
 public class ContactRepositoryImpl implements ContactRepository {
     private static final Logger logger = LoggerFactory.getLogger(ContactRepository.class);

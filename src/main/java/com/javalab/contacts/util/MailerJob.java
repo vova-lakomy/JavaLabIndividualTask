@@ -3,6 +3,7 @@ package com.javalab.contacts.util;
 
 import com.javalab.contacts.dto.ContactShortDTO;
 import com.javalab.contacts.exception.ConnectionFailedException;
+import com.javalab.contacts.exception.SendingMailException;
 import com.javalab.contacts.repository.ContactRepository;
 import com.javalab.contacts.repository.impl.ContactRepositoryImpl;
 import org.quartz.Job;
@@ -33,7 +34,11 @@ public class MailerJob implements Job{
         if (isNotBlank(messageText)){
             logger.debug("sending email to administrator");
             String mailSubject = "Birthdays for today";
-            mailSender.sendMailToAdministrator(mailSubject, messageText);
+            try {
+                mailSender.sendMailToAdministrator(mailSubject, messageText);
+            } catch (SendingMailException e) {
+                throw new JobExecutionException(e);
+            }
         } else {
             logger.debug("not found birthday people for today");
         }
