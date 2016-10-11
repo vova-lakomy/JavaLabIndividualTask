@@ -40,6 +40,7 @@ public class MailerJob implements Job{
     }
 
     private String createBirthdayPeopleMessageForAdministrator() throws ConnectionFailedException {
+        logger.debug("creating message for administrator");
         String message = "";
         LocalDate todayDate = LocalDate.now();
         Collection<ContactShortDTO> birthdayPeople = findBirthdayPeople(todayDate);

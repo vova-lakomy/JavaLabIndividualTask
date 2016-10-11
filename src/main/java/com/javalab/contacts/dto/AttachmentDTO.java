@@ -4,13 +4,9 @@ package com.javalab.contacts.dto;
 public class AttachmentDTO {
 
     private Integer id;
-
     private String fileName;
-
     private String uploadDate;
-
     private String comment;
-
     private String attachmentLink;
 
     public Integer getId() {

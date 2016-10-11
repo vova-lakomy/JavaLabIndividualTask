@@ -2,7 +2,9 @@ package com.javalab.contacts.dao.impl.jdbc;
 
 import com.javalab.contacts.dao.ContactDao;
 import com.javalab.contacts.dto.ContactSearchDTO;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.exception.EntityNotFoundException;
+import com.javalab.contacts.exception.EntityPersistException;
 import com.javalab.contacts.model.Contact;
 import com.javalab.contacts.model.ContactAddress;
 import com.javalab.contacts.model.enumerations.MaritalStatus;
@@ -38,12 +40,12 @@ public class JdbcContactDao implements ContactDao {
     private Connection connection;
 
     @Override
-    public Contact get(Integer contactId) throws EntityNotFoundException {
+    public Contact get(Integer contactId) throws EntityNotFoundException, ConnectionFailedException {
         return getContactFromDB(contactId);
     }
 
     @Override
-    public Collection<Contact> getByDayAndMonth(Integer day, Integer month){
+    public Collection<Contact> getByDayAndMonth(Integer day, Integer month) throws ConnectionFailedException {
         logger.debug("try to get contacts by day - {} and month - {}", day, month);
         PreparedStatement getByDayAndMonthStatement = null;
         Collection<Contact> resultCollection = new ArrayList<>();
@@ -60,14 +62,15 @@ public class JdbcContactDao implements ContactDao {
             }
         } catch (SQLException e) {
             logger.error("{}", e);
+            throw new ConnectionFailedException(e.getMessage());
         } finally {
             closeStatement(getByDayAndMonthStatement);
         }
-        logger.debug("returning {]", resultCollection);
+        logger.debug("returning collection of {} contacts", resultCollection.size());
         return resultCollection;
     }
 
-    private Contact getContactFromDB(Integer id) throws EntityNotFoundException {
+    private Contact getContactFromDB(Integer id) throws EntityNotFoundException, ConnectionFailedException {
         logger.debug("search for contact with id - {}", id);
         PreparedStatement statementGetContact = null;
         Contact resultObject = new Contact();
@@ -80,6 +83,7 @@ public class JdbcContactDao implements ContactDao {
             }
         } catch (SQLException e) {
             logger.error("{}", e);
+            throw new ConnectionFailedException(e.getMessage());
         } finally {
             closeStatement(statementGetContact);
         }
@@ -92,7 +96,7 @@ public class JdbcContactDao implements ContactDao {
     }
 
     @Override
-    public Collection<Contact> getContactList(int pageNumber) {
+    public Collection<Contact> getContactList(int pageNumber) throws ConnectionFailedException {
         logger.debug("try to get contacts list");
         PreparedStatement statementGetContactList = null;
         Collection<Contact> resultCollection = new ArrayList<>();
@@ -110,6 +114,7 @@ public class JdbcContactDao implements ContactDao {
             numberOfRecordsFound = getNumberOfRecordsFound(connection);
         } catch (SQLException e) {
             logger.error("{}", e);
+            throw new ConnectionFailedException(e.getMessage());
         } finally {
             closeStatement(statementGetContactList);
         }
@@ -118,7 +123,7 @@ public class JdbcContactDao implements ContactDao {
     }
 
     @Override
-    public Collection<Contact> search(ContactSearchDTO searchObject, int pageNumber) {
+    public Collection<Contact> search(ContactSearchDTO searchObject, int pageNumber) throws ConnectionFailedException {
         PreparedStatement searchStatement = null;
         Collection<Contact> resultCollection = new ArrayList<>();
         try {
@@ -130,15 +135,16 @@ public class JdbcContactDao implements ContactDao {
             numberOfRecordsFound = getNumberOfRecordsFound(connection);
         } catch (SQLException e) {
             logger.error("{}", e);
+            throw new ConnectionFailedException(e.getMessage());
         } finally {
             closeStatement(searchStatement);
         }
-        logger.debug("returning {}", resultCollection);
+        logger.debug("returning collection of {} contacts", resultCollection.size());
         return resultCollection;
     }
 
     @Override
-    public Integer save(Contact contact) {
+    public Integer save(Contact contact) throws EntityPersistException {
         logger.debug("saving contact with id= {}", contact.getId());
         String saveContactQuery = defineSaveQueryString(contact.getId());
         PreparedStatement statementSaveContact = null;
@@ -154,6 +160,7 @@ public class JdbcContactDao implements ContactDao {
             }
         } catch (SQLException e) {
             logger.error("", e);
+            throw new EntityPersistException();
         } finally {
             closeStatement(statementSaveContact);
         }
@@ -162,7 +169,7 @@ public class JdbcContactDao implements ContactDao {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws ConnectionFailedException {
         logger.debug("deleting contact with id= {}", id);
         PreparedStatement statementDeleteContact = null;
         try {
@@ -170,14 +177,15 @@ public class JdbcContactDao implements ContactDao {
             statementDeleteContact.setInt(1, id);
             statementDeleteContact.executeUpdate();
         } catch (SQLException e) {
-            logger.error("{}", e);
+            logger.error("", e);
+            throw new ConnectionFailedException(e.getMessage());
         } finally {
             closeStatement(statementDeleteContact);
         }
     }
 
     @Override
-    public String getPersonalLink(Integer id) {
+    public String getPersonalLink(Integer id) throws ConnectionFailedException {
         logger.debug("looking for personal link for contact with id= {}", id);
         PreparedStatement statementGetPersonalLink = null;
         String personalLink = null;
@@ -190,6 +198,7 @@ public class JdbcContactDao implements ContactDao {
             }
         } catch (SQLException e) {
             logger.error("{}", e);
+            throw new ConnectionFailedException(e.getMessage());
         } finally {
             closeStatement(statementGetPersonalLink);
         }
@@ -250,12 +259,12 @@ public class JdbcContactDao implements ContactDao {
         resultObject.setCurrentJob(resultSet.getString("current_job"));
         resultObject.setPhotoLink(resultSet.getString("photo_link"));
         resultObject.setContactAddress(address);
-        logger.debug("created {}", resultObject);
+        logger.debug("contact entity created");
         return resultObject;
     }
 
     private void setSaveStatementParams(PreparedStatement statement, Contact contact) throws SQLException {
-        logger.debug("setting params to {} ", statement);
+        logger.debug("setting params to statement");
         LocalDate dateOfBirth = contact.getDateOfBirth();
         String dateOfBirthString = null;
         if (dateOfBirth != null) {
@@ -289,7 +298,7 @@ public class JdbcContactDao implements ContactDao {
         statement.setObject(15, address.getHouseNumber());
         statement.setObject(16, address.getFlatNumber());
         statement.setObject(17, address.getZipCode());
-        logger.debug("setting params to {} done", statement);
+        logger.debug("statement defined as {}", statement);
     }
 
     private Integer getLastGeneratedValue(PreparedStatement statement) throws SQLException {
@@ -389,18 +398,18 @@ public class JdbcContactDao implements ContactDao {
     private String convertFieldNameToColumnName(String fieldName) {
         logger.debug("converting field name {} to name of column", fieldName);
         String[] words = splitByCharacterTypeCamelCase(fieldName);
-        StringBuilder tableName = new StringBuilder();
+        StringBuilder columnName = new StringBuilder();
         if (words.length == 1) {
-            tableName.append(words[0]);
+            columnName.append(words[0]);
         } else {
             for (String word : words) {
-                tableName.append(word.toLowerCase());
-                tableName.append('_');
+                columnName.append(word.toLowerCase());
+                columnName.append('_');
             }
-            tableName.setLength(tableName.length() - 1);
+            columnName.setLength(columnName.length() - 1);
         }
-        logger.debug("name of column defined as {}", tableName);
-        return tableName.toString();
+        logger.debug("name of column defined as {}", columnName);
+        return columnName.toString();
     }
 
     @Override

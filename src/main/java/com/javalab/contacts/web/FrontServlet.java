@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -27,7 +26,6 @@ import java.util.Set;
 import static com.javalab.contacts.util.SqlScriptLoader.loadScript;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.replace;
 
 @MultipartConfig(maxFileSize = 1024 * 1024 * 10)     //10mb
 @WebServlet(loadOnStartup = 1, urlPatterns = {"/contacts/*"})

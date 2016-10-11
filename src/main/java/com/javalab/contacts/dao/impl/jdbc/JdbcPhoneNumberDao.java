@@ -1,6 +1,7 @@
 package com.javalab.contacts.dao.impl.jdbc;
 
 import com.javalab.contacts.dao.PhoneNumberDao;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.model.PhoneNumber;
 import com.javalab.contacts.model.enumerations.PhoneType;
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
     private static final Logger logger = LoggerFactory.getLogger(JdbcPhoneNumberDao.class);
     private Connection connection;
 
-    public PhoneNumber get(Integer id) {
+    public PhoneNumber get(Integer id) throws ConnectionFailedException {
         logger.debug("try to get phone number by id=" + id);
         PreparedStatement statementGetPhoneNumber = null;
         PhoneNumber resultObject = new PhoneNumber();
@@ -34,6 +35,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
             }
         } catch (SQLException e) {
             logger.error("{}", e);
+            throw new ConnectionFailedException(e.getMessage());
         } finally {
             closeStatement(statementGetPhoneNumber);
         }
@@ -47,7 +49,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
     }
 
     @Override
-    public Collection<PhoneNumber> getByContactId(Integer contactId) {
+    public Collection<PhoneNumber> getByContactId(Integer contactId) throws ConnectionFailedException {
         logger.debug("try to get phone number by contact id= " + contactId);
         Collection<PhoneNumber> resultCollection = new ArrayList<>();
         PreparedStatement statementGetByContactId = null;
@@ -60,6 +62,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
             }
         } catch (SQLException e) {
             logger.error("{}", e);
+            throw new ConnectionFailedException(e.getMessage());
         } finally {
            closeStatement(statementGetByContactId);
         }
@@ -80,7 +83,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
         }
     }
 
-    public void delete(Integer id) {
+    public void delete(Integer id) throws ConnectionFailedException {
         logger.debug("deleting phone number with id= " + id);
         PreparedStatement statementDeletePhoneNumber = null;
         try {
@@ -89,6 +92,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
             statementDeletePhoneNumber.executeUpdate();
         } catch (SQLException e) {
             logger.error("{}", e);
+            throw new ConnectionFailedException(e.getMessage());
         } finally {
             closeStatement(statementDeletePhoneNumber);
         }
@@ -121,7 +125,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
     }
 
     private void setSaveStatementParams(PreparedStatement statement, PhoneNumber phoneNumber, Integer contactId) throws SQLException {
-        logger.debug("setting params to {}", statement);
+        logger.debug("setting params to statement");
         statement.setObject(1, phoneNumber.getCountryCode());
         statement.setObject(2, phoneNumber.getOperatorCode());
         statement.setObject(3, phoneNumber.getPhoneNumber());
@@ -132,6 +136,7 @@ public class JdbcPhoneNumberDao implements PhoneNumberDao {
         statement.setString(4, phoneType);
         statement.setString(5, phoneNumber.getPhoneComment());
         statement.setObject(6, contactId);
+        logger.debug("statement defined as {}", statement);
     }
 
     @Override

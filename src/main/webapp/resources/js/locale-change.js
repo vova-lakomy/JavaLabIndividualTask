@@ -21,6 +21,4 @@
         event.target.parentNode.submit();
     }
 
-    // $('#localeSelectEn').addEventListener('click', enLocaleHandler, false);
-    // $('#localeSelectRu').addEventListener('click', ruLocaleHandler, false);
 })();

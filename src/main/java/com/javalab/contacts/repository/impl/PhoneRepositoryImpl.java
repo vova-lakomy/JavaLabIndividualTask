@@ -18,7 +18,6 @@ public class PhoneRepositoryImpl implements PhoneRepository {
     private static final Logger logger = LoggerFactory.getLogger(PhoneRepositoryImpl.class);
     private PhoneNumberDao numberDao = new JdbcPhoneNumberDao();
 
-
     @Override
     public void delete(Integer id) throws ConnectionFailedException {
         logger.debug("deleting PhoneNumber by id={}", id);
@@ -43,6 +42,5 @@ public class PhoneRepositoryImpl implements PhoneRepository {
         } finally {
             closeConnection(connection);
         }
-
     }
 }

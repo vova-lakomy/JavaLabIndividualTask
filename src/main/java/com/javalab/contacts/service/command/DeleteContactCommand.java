@@ -81,7 +81,7 @@ public class DeleteContactCommand implements Command {
             }
         }
         request.getSession().setAttribute("currentPage",request.getParameter("currentPage"));
-        logger.debug("execution Delete Contact command ended");
+        logger.debug("execution of Delete Contact command finished");
         return "";
     }
 

@@ -438,7 +438,6 @@ public class ContactRepositoryImpl implements ContactRepository {
         return contact;
     }
 
-
     private Collection<PhoneNumber> getPhoneNumbersFromContactDTO(ContactFullDTO contact) {
         logger.debug("creating PhoneNumber entities list from DTO fields");
         Collection<PhoneNumber> phoneNumbers = new ArrayList<>();

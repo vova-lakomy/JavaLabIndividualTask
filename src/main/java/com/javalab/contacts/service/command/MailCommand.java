@@ -83,7 +83,7 @@ public class MailCommand implements Command {
                 UiMessageService.prepareEmptyEmailPopUpErrorMessage(request, failedContacts);
             }
             request.setAttribute("emailContacts", contactShortDTOs);
-            logger.debug("execution Mail command end");
+            logger.debug("execution of Mail command finished");
             return "contact-email-form.jsp";
         } else if (request.getParameterValues("mailTo") != null) {
             logger.debug("trying to send emails");
@@ -96,10 +96,10 @@ public class MailCommand implements Command {
                 UiMessageService.sendContactNotFoundErrorToUI(request, response);
             }
             UiMessageService.prepareEmailsSentPopUpInfoMessage(request);
-            logger.debug("execution Mail command end");
+            logger.debug("execution of Mail command finished");
             return "";
         } else {
-            logger.debug("execution Mail command end");
+            logger.debug("execution of Mail command finished");
             return "contact-email-form.jsp";
         }
     }

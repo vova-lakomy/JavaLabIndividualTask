@@ -63,7 +63,7 @@ public class DeleteAttachmentCommand implements Command {
                 }
             }
         }
-        logger.debug("execution Delete Attachment command ended");
+        logger.debug("execution of Delete Attachment command finished");
         return "";
     }
 }

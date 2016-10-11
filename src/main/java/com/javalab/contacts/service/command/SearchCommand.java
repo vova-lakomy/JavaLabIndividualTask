@@ -80,7 +80,7 @@ public class SearchCommand implements Command {
             Collection<String> maritalStatusList = contactRepository.getMaritalStatusList();
             request.setAttribute("sexList", sexList);
             request.setAttribute("maritalStatusList", maritalStatusList);
-            logger.debug("execution of Search command end");
+            logger.debug("execution of Search command finished");
             return "contact-search-form.jsp";
         }
     }

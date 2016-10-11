@@ -32,6 +32,7 @@ public final class STemplates {
     }
 
     public Map<String,String> getTemplateMap(){
+        logger.debug("retrieving template map");
         Map<String,String> resultMap = new HashMap<>();
         Set<String> templateNames = instance.templates.getTemplateNames();
         templateNames.forEach(templateName -> {
@@ -39,6 +40,7 @@ public final class STemplates {
             String templateSource = this.templates.lookupTemplate(templateName).getTemplateSource();
             resultMap.put(templateName, templateSource);
         });
+        logger.debug("returning map of {} templates", resultMap.size());
         return resultMap;
     }
 

@@ -1,6 +1,7 @@
 package com.javalab.contacts.dao.impl.jdbc;
 
 import com.javalab.contacts.dao.ContactAttachmentDao;
+import com.javalab.contacts.exception.ConnectionFailedException;
 import com.javalab.contacts.model.ContactAttachment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
     private Connection connection;
 
     @Override
-    public ContactAttachment get(Integer id) {
+    public ContactAttachment get(Integer id) throws ConnectionFailedException {
         logger.debug("try to get attachment by id= {}", id);
         PreparedStatement statementGetAttachment = null;
         ContactAttachment resultObject = new ContactAttachment();
@@ -38,6 +39,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             }
         } catch (SQLException e) {
             logger.error("{}", e);
+            throw new ConnectionFailedException(e.getMessage());
         } finally {
             closeStatement(statementGetAttachment);
         }
@@ -50,7 +52,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
     }
 
     @Override
-    public Collection<ContactAttachment> getByContactId(Integer contactId) {
+    public Collection<ContactAttachment> getByContactId(Integer contactId) throws ConnectionFailedException {
         logger.debug("try to get contacts by contactId= {}", contactId);
         Collection<ContactAttachment> resultCollection = new ArrayList<>();
         PreparedStatement statementGetByContactId = null;
@@ -62,11 +64,12 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
                 resultCollection.add(createAttachmentFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            logger.error("{}", e);
+            logger.error("", e);
+            throw new ConnectionFailedException(e.getMessage());
         } finally {
             closeStatement(statementGetByContactId);
         }
-        logger.debug("returning {}", resultCollection);
+        logger.debug("returning collection of {} attachments", resultCollection.size());
         return resultCollection;
     }
 
@@ -85,7 +88,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws ConnectionFailedException {
         logger.debug("deleting attachment with id= {} ", id);
         PreparedStatement statementDeleteAttachment = null;
         try {
@@ -94,6 +97,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             statementDeleteAttachment.executeUpdate();
         } catch (SQLException e) {
             logger.error("{}", e);
+            throw new ConnectionFailedException(e.getMessage());
         }
         finally {
             closeStatement(statementDeleteAttachment);
@@ -117,12 +121,12 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
             dateOfUpload = sqlDateOfUpload.toLocalDate();
         }
         resultObject.setDateOfUpload(dateOfUpload);
-        logger.debug("created {}", resultObject);
+        logger.debug("attachment entity created");
         return resultObject;
     }
 
     private String defineSaveAttachmentQuery(Integer attachmentId){
-        logger.debug("defining save attachment query string");
+        logger.debug("defining query string to save attachment");
         if (attachmentId == null){
             return "INSERT INTO contact_attachment "
                     + "(attachment_name, attachment_link, attachment_comment, date_of_upload, contact_id) "
@@ -135,7 +139,7 @@ public class JdbcContactAttachmentDao implements ContactAttachmentDao {
     }
 
     private void setSaveStatementParams(PreparedStatement statement, ContactAttachment attachment, Integer contactId) throws SQLException {
-        logger.debug("setting params to save attachment statement");
+        logger.debug("setting params to attachment save statement");
         statement.setString(1, attachment.getAttachmentName());
         statement.setString(2, attachment.getAttachmentLink());
         statement.setString(3, attachment.getAttachmentComment());

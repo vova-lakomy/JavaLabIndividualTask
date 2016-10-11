@@ -7,9 +7,6 @@ happyNewYearTemplate(name) ::= <<
 Hello, %firstName%!!!
 Happy New Year! Best wishes!
 >>
-merryChristmasTemplate(name) ::= <<
-Merry Christmas, %firstName%!!!
->>
 templateRu(firstName, secondName, town, street, houseNumber, flatNumber) ::= <<
 Уважаемый %firstName% %secondName%, уточните, пожалуйста, Ваши адресные данные:
 Город %town%, улица %street%, %houseNumber%-%flatNumber%.

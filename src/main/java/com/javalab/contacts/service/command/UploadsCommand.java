@@ -56,7 +56,7 @@ public class UploadsCommand implements Command {
                 logger.error("error while reading file {}", fileToRead, e);
             }
         }
-        logger.debug("execution of Uploads command end");
+        logger.debug("execution of Uploads command finished");
         return "";
     }
 

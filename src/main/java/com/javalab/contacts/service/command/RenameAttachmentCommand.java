@@ -66,7 +66,7 @@ public class RenameAttachmentCommand implements Command {
             CustomFileUtils.renameFile(oldFile, newFile);
             logger.debug("file renamed to [{}]", newFileName);
         }
-        logger.debug("execution Rename Attachment command end");
+        logger.debug("execution of Rename Attachment command finished");
         return "";
     }
 }

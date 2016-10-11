@@ -48,7 +48,7 @@ public class ListCommand implements Command{
         request.setAttribute("numberOfPages",numberOfPages);
         request.setAttribute("contactsList", contactList);
         request.getSession().setAttribute("currentPage",pageNumber);
-        logger.debug("execution of List command end");
+        logger.debug("execution of List command finished");
         return "contact-list-form.jsp";
     }
 
